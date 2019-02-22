@@ -1,0 +1,16 @@
+#vs files 
+
+.vs/
+
+#binary
+
+Peer/debug/
+Peer/release/
+Peer/x64/ 
+
+#dont need files with next extensions:
+
+Peer/*.stash
+Peer/*.user
+Peer/*.filters
+Peer/*.pro

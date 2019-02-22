@@ -1,0 +1,16 @@
+#vs files 
+
+**/.vs/
+
+#binary
+
+**/debug/
+**/release/
+**/x64/ 
+
+#dont need files with next extensions:
+
+**/.stash
+**/.user
+**/.filters
+**/.pro
