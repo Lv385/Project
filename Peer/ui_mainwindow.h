@@ -1,7 +1,7 @@
 /********************************************************************************
 ** Form generated from reading UI file 'mainwindow.ui'
 **
-** Created by: Qt User Interface Compiler version 5.10.1
+** Created by: Qt User Interface Compiler version 5.12.0
 **
 ** WARNING! All changes made in this file will be lost when recompiling UI file!
 ********************************************************************************/
@@ -10,11 +10,8 @@
 #define UI_MAINWINDOW_H
 
 #include <QtCore/QVariant>
-#include <QtWidgets/QAction>
 #include <QtWidgets/QApplication>
-#include <QtWidgets/QButtonGroup>
 #include <QtWidgets/QFormLayout>
-#include <QtWidgets/QHeaderView>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
 #include <QtWidgets/QMainWindow>
@@ -35,7 +32,7 @@ public:
     QLineEdit *le_message;
     QPlainTextEdit *plainTextEdit;
     QLabel *l_your_status;
-    QWidget *widget;
+    QWidget *layoutWidget;
     QFormLayout *formLayout;
     QLabel *label;
     QLabel *label_2;
@@ -48,60 +45,60 @@ public:
     void setupUi(QMainWindow *MainWindow)
     {
         if (MainWindow->objectName().isEmpty())
-            MainWindow->setObjectName(QStringLiteral("MainWindow"));
+            MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(553, 387);
         centralWidget = new QWidget(MainWindow);
-        centralWidget->setObjectName(QStringLiteral("centralWidget"));
+        centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         pb_send = new QPushButton(centralWidget);
-        pb_send->setObjectName(QStringLiteral("pb_send"));
+        pb_send->setObjectName(QString::fromUtf8("pb_send"));
         pb_send->setGeometry(QRect(414, 300, 131, 31));
         le_message = new QLineEdit(centralWidget);
-        le_message->setObjectName(QStringLiteral("le_message"));
+        le_message->setObjectName(QString::fromUtf8("le_message"));
         le_message->setGeometry(QRect(30, 309, 371, 21));
         plainTextEdit = new QPlainTextEdit(centralWidget);
-        plainTextEdit->setObjectName(QStringLiteral("plainTextEdit"));
+        plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
         plainTextEdit->setGeometry(QRect(30, 10, 371, 281));
         l_your_status = new QLabel(centralWidget);
-        l_your_status->setObjectName(QStringLiteral("l_your_status"));
+        l_your_status->setObjectName(QString::fromUtf8("l_your_status"));
         l_your_status->setGeometry(QRect(420, 40, 111, 91));
-        widget = new QWidget(centralWidget);
-        widget->setObjectName(QStringLiteral("widget"));
-        widget->setGeometry(QRect(410, 200, 141, 92));
-        formLayout = new QFormLayout(widget);
+        layoutWidget = new QWidget(centralWidget);
+        layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
+        layoutWidget->setGeometry(QRect(410, 200, 141, 92));
+        formLayout = new QFormLayout(layoutWidget);
         formLayout->setSpacing(6);
         formLayout->setContentsMargins(11, 11, 11, 11);
-        formLayout->setObjectName(QStringLiteral("formLayout"));
+        formLayout->setObjectName(QString::fromUtf8("formLayout"));
         formLayout->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(widget);
-        label->setObjectName(QStringLiteral("label"));
+        label = new QLabel(layoutWidget);
+        label->setObjectName(QString::fromUtf8("label"));
 
         formLayout->setWidget(0, QFormLayout::LabelRole, label);
 
-        label_2 = new QLabel(widget);
-        label_2->setObjectName(QStringLiteral("label_2"));
+        label_2 = new QLabel(layoutWidget);
+        label_2->setObjectName(QString::fromUtf8("label_2"));
 
         formLayout->setWidget(2, QFormLayout::LabelRole, label_2);
 
-        le_port = new QLineEdit(widget);
-        le_port->setObjectName(QStringLiteral("le_port"));
+        le_port = new QLineEdit(layoutWidget);
+        le_port->setObjectName(QString::fromUtf8("le_port"));
 
         formLayout->setWidget(3, QFormLayout::LabelRole, le_port);
 
-        le_ip = new QLineEdit(widget);
-        le_ip->setObjectName(QStringLiteral("le_ip"));
+        le_ip = new QLineEdit(layoutWidget);
+        le_ip->setObjectName(QString::fromUtf8("le_ip"));
 
         formLayout->setWidget(1, QFormLayout::LabelRole, le_ip);
 
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
-        menuBar->setObjectName(QStringLiteral("menuBar"));
+        menuBar->setObjectName(QString::fromUtf8("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 553, 21));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
-        mainToolBar->setObjectName(QStringLiteral("mainToolBar"));
+        mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
         MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
         statusBar = new QStatusBar(MainWindow);
-        statusBar->setObjectName(QStringLiteral("statusBar"));
+        statusBar->setObjectName(QString::fromUtf8("statusBar"));
         MainWindow->setStatusBar(statusBar);
 
         retranslateUi(MainWindow);
@@ -116,8 +113,8 @@ public:
         l_your_status->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
         label->setText(QApplication::translate("MainWindow", "Enter IP", nullptr));
         label_2->setText(QApplication::translate("MainWindow", "Enter port", nullptr));
-        le_port->setText(QApplication::translate("MainWindow", "5555", nullptr));
-        le_ip->setText(QApplication::translate("MainWindow", "192.168.103.88", nullptr));
+        le_port->setText(QApplication::translate("MainWindow", "4568", nullptr));
+        le_ip->setText(QApplication::translate("MainWindow", "127.0.0.1", nullptr));
     } // retranslateUi
 
 };

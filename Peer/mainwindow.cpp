@@ -1,43 +1,45 @@
 #include "mainwindow.h"
 #include "ui_mainwindow.h"
-
+#include <iostream>
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
-    ui(new Ui::MainWindow)
+    ui_(new Ui::MainWindow)
 {
-    ui->setupUi(this);
+    ui_->setupUi(this);
 
-    QString ipRange = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
-    QRegExp ipRegex ("^" + ipRange
-                     + "\\." + ipRange
-                     + "\\." + ipRange
-                     + "\\." + ipRange + "$");
-    QRegExpValidator *ipValidator = new QRegExpValidator(ipRegex, this);
-    ui->le_ip->setValidator(ipValidator);
+    QString ip_range = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
+    QRegExp ip_regex ("^" + ip_range
+                     + "\\." + ip_range
+                     + "\\." + ip_range
+                     + "\\." + ip_range + "$");
+    QRegExpValidator *ip_validator = new QRegExpValidator(ip_regex, this);
+    ui_->le_ip->setValidator(ip_validator);
 
 
 
-    peer = new Peer(this);
-    ui->l_your_status->setText(tr("The server is running on\n\nIP: %1\nport: %2\n")
-                               .arg(peer->get_my_IP())
-                               .arg(peer->get_receiver_server()->serverPort()));
-    connect(peer, SIGNAL(sendMessageToUI(QString)), this, SLOT(appendMessage(QString)));
+    peer_ = new Peer(this);
+    ui_->l_your_status->setText(tr("The server is running on\n\nIP: %1\nport: %2\n")
+                               .arg(peer_->get_my_ip().toString())
+                               .arg(peer_->get_my_port()));
+    connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
+	connect(ui_->pb_send, SIGNAL(clicked()), this, SLOT(OnPbSendClicked()));
 }
 
 MainWindow::~MainWindow()
 {
-    delete ui;
+    delete ui_;
 }
 
-void MainWindow::appendMessage(QString message)
+void MainWindow::AppendMessage(QString message)
 {
-    ui->plainTextEdit->appendPlainText(message);
+    ui_->plainTextEdit->appendPlainText(message);
 }
 
-void MainWindow::on_pb_send_clicked()
+void MainWindow::OnPbSendClicked()
 {
-    peer->set_receiver_IP(ui->le_ip->text());
-    peer->set_receiver_port(ui->le_port->text());
-    peer->sendMessage(ui->le_message->text());
+	qDebug() << "clicked";
+	peer_->set_receiver_ip(ui_->le_ip->text());
+    peer_->set_receiver_port(ui_->le_port->text());
+    peer_->SendMessage(ui_->le_message->text());
 }

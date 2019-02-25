@@ -2,6 +2,8 @@
 #define MAINWINDOW_H
 
 #include <QMainWindow>
+#include <QRegExpValidator>
+
 #include "peer.h"
 
 namespace Ui {
@@ -17,13 +19,13 @@ public:
     ~MainWindow();
 
 private slots:
-    void appendMessage(QString);
+    void AppendMessage(QString);
 
-    void on_pb_send_clicked();
+    void OnPbSendClicked();
 
 private:
-    Ui::MainWindow *ui;
-    Peer* peer ;
+    Ui::MainWindow *ui_;
+    Peer* peer_;
 };
 
 #endif // MAINWINDOW_H

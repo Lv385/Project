@@ -7,6 +7,7 @@
 Peer/debug/
 Peer/release/
 Peer/x64/ 
+enc_temp_folder/
 
 #dont need files with next extensions:
 

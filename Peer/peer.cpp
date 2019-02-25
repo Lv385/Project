@@ -2,86 +2,95 @@
 
 Peer::Peer(QObject *parent)
         : QObject(parent)
-        , m_receiver_server(new QTcpServer(this))
-        , m_receiver_socket(new QTcpSocket(this))
+        , receiver_server_(new QTcpServer(this))
+        , receiver_socket_(new QTcpSocket(this))
 {
 
-    if (!m_receiver_server->listen()) //we can leave parameters empty
+    if (!receiver_server_->listen()) //we can leave parameters empty
     {
-                //(tcpServer->errorString()));
+                //(tcpServer->errorString()));0
         return;
     }
 
+
+	qDebug() << "my ip: " <<receiver_server_->serverAddress().toString();
+
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
-    // use the first non-localhost IPv4 address
+    
+	// use the first non-localhost IPv4 address
     for (int i = 0; i < ipAddressesList.size(); ++i) {
         if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
             ipAddressesList.at(i).toIPv4Address()) {
-            m_my_IP = ipAddressesList.at(i).toString();
+            my_ip_ = ipAddressesList.at(i);
             break;
         }
     }
     // if we did not find one, use IPv4 localhost
-    if (m_my_IP.isEmpty())
-        m_my_IP = QHostAddress(QHostAddress::LocalHost).toString();
+    if (my_ip_.toString().isEmpty())
+        my_ip_ = QHostAddress(QHostAddress::LocalHost);
 
 
-    in.setDevice(m_receiver_socket);
+    in_.setDevice(receiver_socket_);
 
+	qDebug() <<" fjeriofr" <<my_ip_;
 
-    connect(m_receiver_server, &QTcpServer::newConnection, this, &Peer::setReceiverSocket);
-    connect(m_sender_socket, QOverload<QAbstractSocket::SocketError>::of(&QAbstractSocket::error),
-            this, &Peer::displayError);
+    connect(receiver_server_, &QTcpServer::newConnection, this, &Peer::SetReceiverSocket);
+
+	// connect(sender_socket_, SIGNAL(error()),this, SLOT(DisplayError())); //for future errors
 
     //cannot catch this signal
-    //connect(m_receiver_socket, &QIODevice::readyRead, this, &Peer::readMessage);
+    //connect(m_receiver_socket, &QIODevice::readyRead, this, &Peer::readMessage);	
 
-
-    connect(m_receiver_socket, &QAbstractSocket::disconnected, m_receiver_socket, &QObject::deleteLater);
-
+    connect(receiver_socket_, &QAbstractSocket::disconnected, receiver_socket_, &QObject::deleteLater);
 }
 
-void Peer::sendMessage(QString message)
+void Peer::SendMessage(QString message)
 {
-    qDebug() << "send";
-    m_sender_socket = new QTcpSocket(this);
-    m_sender_socket->connectToHost(m_receiver_IP, m_receiver_port.toInt());
+    sender_socket_ = new QTcpSocket(this);
+    sender_socket_->connectToHost(receiver_ip_, receiver_port_.toInt());
 
-    if (m_sender_socket->waitForConnected()) //or make connect(... , SIGNAL(connected())...);)
+    if (sender_socket_->waitForConnected()) //or make connect(... , SIGNAL(connected())...);)
     {
-        m_sender_socket->write(message.toStdString().c_str());
-        m_sender_socket->waitForBytesWritten();  //bytesWritten() signal
+		qDebug() << "send";
+		qDebug() << "my server port: "<< receiver_server_->serverPort(); 
+
+
+        sender_socket_->write(message.toStdString().c_str());
+        sender_socket_->waitForBytesWritten();  //bytesWritten() signal
+
 
         QString qstr = "->: " + message;
-        emit sendMessageToUI(qstr);
+        emit SendMessageToUI(qstr);
 
-        m_sender_socket->close();
+        sender_socket_->close();
         //m_sender_socket->disconnectFromHost();
     }
-
-    delete m_sender_socket;
+	if(sender_socket_)
+	{
+		delete sender_socket_;
+	}
 }
 
 
-void Peer::setReceiverSocket()
+void Peer::SetReceiverSocket()
 {
     qDebug() << "setting RECIEVEd message";
-    m_receiver_socket = m_receiver_server->nextPendingConnection();
+    receiver_socket_ = receiver_server_->nextPendingConnection();
 
     //kostyl
 
-    m_receiver_socket->waitForReadyRead();
-    QByteArray qba = m_receiver_socket->readAll();
+    receiver_socket_->waitForReadyRead();
+    QByteArray qba = receiver_socket_->readAll();
 
-    m_received_message = qba;
-    QString str = tr("<%1>: %2").arg(m_receiver_socket->peerAddress().toString()).arg(m_received_message);
-    emit sendMessageToUI(str);
-    m_receiver_socket->disconnectFromHost();
+    received_message_ = qba;
+    QString str = tr("<%1>: %2").arg(receiver_socket_->peerAddress().toString()).arg(received_message_);
+    emit SendMessageToUI(str);
+    receiver_socket_->disconnectFromHost();
 
     //end kostyl
 }
 
-void Peer::readMessage()
+void Peer::ReadMessage()
 {
     //is not used
 /*
@@ -103,7 +112,7 @@ void Peer::readMessage()
 */
 }
 
-void Peer::displayError(QAbstractSocket::SocketError socketError)
+void Peer::DisplayError(QAbstractSocket::SocketError socketError)
 {
     /*
     switch (socketError) {
@@ -131,12 +140,12 @@ void Peer::displayError(QAbstractSocket::SocketError socketError)
 
 void Peer::set_receiver_port(const QString &receiver_port)
 {
-    m_receiver_port = receiver_port;
+    receiver_port_ = receiver_port;
 }
 
-void Peer::set_receiver_IP(const QString &receiver_IP)
+void Peer::set_receiver_ip(const QString &receiver_ip)
 {
-    m_receiver_IP = receiver_IP;
+    receiver_ip_ = receiver_ip;
 }
 
 

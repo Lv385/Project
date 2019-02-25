@@ -8,6 +8,7 @@
 #include <QTcpSocket>
 #include <QTcpServer>
 #include<ui_mainwindow.h>
+#include <QDebug>
 
 
 class Peer : public QObject
@@ -17,37 +18,34 @@ class Peer : public QObject
 public:
     explicit Peer(QObject *parent = nullptr);
 
-    void sendMessage(QString message);
+    void SendMessage(QString message);
 
-    QTcpServer* get_receiver_server() const {return m_receiver_server;}
-    QString get_my_IP() const {return m_my_IP;}
-    void set_receiver_IP(const QString &receiver_IP);
+    quint16		 get_my_port() const {return receiver_server_->serverPort();}
+    QHostAddress get_my_ip()   const {return my_ip_;}
+    void set_receiver_ip  (const QString &receiver_IP);
     void set_receiver_port(const QString &receiver_port);
 
 signals:
-    void sendMessageToUI(QString);
-
+    void SendMessageToUI(QString);
 
 private slots:
-    void setReceiverSocket();
-    void readMessage(); // doesn't work
-    void displayError(QAbstractSocket::SocketError socketError);
+    void SetReceiverSocket();
+    void ReadMessage(); // doesn't work
+    void DisplayError(QAbstractSocket::SocketError socketError);
 
 private:
-    QTcpServer* m_receiver_server = nullptr;
-    QTcpSocket* m_sender_socket = nullptr;
-    QTcpSocket* m_receiver_socket = nullptr;
+    QTcpServer* receiver_server_ = nullptr;
+    QTcpSocket* sender_socket_ = nullptr;
+    QTcpSocket* receiver_socket_ = nullptr;
     //QNetworkSession *networkSession = nullptr;
 
-    QString m_my_IP;
-    QString m_receiver_IP;
-    QString m_receiver_port;
+	QHostAddress my_ip_;
+    QString receiver_ip_;
+    QString receiver_port_;
 
-    QString m_received_message;
+    QString received_message_;
 
-    QDataStream in; // not working
-
-
+    QDataStream in_; // not working
 };
 
 #endif // TEST_H

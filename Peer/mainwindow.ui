@@ -60,7 +60,7 @@
      <string>TextLabel</string>
     </property>
    </widget>
-   <widget class="QWidget" name="">
+   <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
       <x>410</x>
@@ -87,14 +87,14 @@
      <item row="3" column="0">
       <widget class="QLineEdit" name="le_port">
        <property name="text">
-        <string>5555</string>
+        <string>4568</string>
        </property>
       </widget>
      </item>
      <item row="1" column="0">
       <widget class="QLineEdit" name="le_ip">
        <property name="text">
-        <string>192.168.103.88</string>
+        <string>127.0.0.1</string>
        </property>
       </widget>
      </item>
