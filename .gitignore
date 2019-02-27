@@ -15,3 +15,6 @@ Peer/*.stash
 Peer/*.user
 Peer/*.filters
 Peer/*.pro
+Peer/*.pri
+
+

@@ -38,6 +38,8 @@ public:
     QLabel *label_2;
     QLineEdit *le_port;
     QLineEdit *le_ip;
+    QPlainTextEdit *plainTextEdit_Log;
+    QLabel *label_logs;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -46,7 +48,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(553, 387);
+        MainWindow->resize(553, 575);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         pb_send = new QPushButton(centralWidget);
@@ -89,6 +91,12 @@ public:
 
         formLayout->setWidget(1, QFormLayout::LabelRole, le_ip);
 
+        plainTextEdit_Log = new QPlainTextEdit(centralWidget);
+        plainTextEdit_Log->setObjectName(QString::fromUtf8("plainTextEdit_Log"));
+        plainTextEdit_Log->setGeometry(QRect(30, 360, 371, 161));
+        label_logs = new QLabel(centralWidget);
+        label_logs->setObjectName(QString::fromUtf8("label_logs"));
+        label_logs->setGeometry(QRect(410, 360, 47, 13));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
@@ -113,8 +121,9 @@ public:
         l_your_status->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
         label->setText(QApplication::translate("MainWindow", "Enter IP", nullptr));
         label_2->setText(QApplication::translate("MainWindow", "Enter port", nullptr));
-        le_port->setText(QApplication::translate("MainWindow", "4568", nullptr));
+        le_port->setText(QApplication::translate("MainWindow", "8989", nullptr));
         le_ip->setText(QApplication::translate("MainWindow", "127.0.0.1", nullptr));
+        label_logs->setText(QApplication::translate("MainWindow", "logs", nullptr));
     } // retranslateUi
 
 };

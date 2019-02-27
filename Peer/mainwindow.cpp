@@ -19,10 +19,16 @@ MainWindow::MainWindow(QWidget *parent) :
 
 
     peer_ = new Peer(this);
+
+	connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
+	connect(peer_, SIGNAL(SendLog(QString)),		 this, SLOT(AppendLogMessage(QString)));
+
     ui_->l_your_status->setText(tr("The server is running on\n\nIP: %1\nport: %2\n")
                                .arg(peer_->get_my_ip().toString())
                                .arg(peer_->get_my_port()));
-    connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
+    /*connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
+	connect(peer_, SIGNAL(SendLog(QString)),		 this, SLOT(AppendLogMessage(QString)));*/
+
 	connect(ui_->pb_send, SIGNAL(clicked()), this, SLOT(OnPbSendClicked()));
 }
 
@@ -39,7 +45,15 @@ void MainWindow::AppendMessage(QString message)
 void MainWindow::OnPbSendClicked()
 {
 	qDebug() << "clicked";
-	peer_->set_receiver_ip(ui_->le_ip->text());
-    peer_->set_receiver_port(ui_->le_port->text());
+	peer_->set_receiver_ip  (QHostAddress(ui_->le_ip->text()));
+    peer_->set_receiver_port(ui_->le_port->text().toUShort());
     peer_->SendMessage(ui_->le_message->text());
+
+	ui_->plainTextEdit_Log->appendPlainText("\\\\\\\\\\\\\\\\\\\\\\\\\\\\/");
+
+}
+
+void MainWindow::AppendLogMessage(QString message)
+{
+	ui_->plainTextEdit_Log->appendPlainText(message);
 }

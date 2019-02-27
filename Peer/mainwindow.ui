@@ -7,7 +7,7 @@
     <x>0</x>
     <y>0</y>
     <width>553</width>
-    <height>387</height>
+    <height>575</height>
    </rect>
   </property>
   <property name="windowTitle">
@@ -87,7 +87,7 @@
      <item row="3" column="0">
       <widget class="QLineEdit" name="le_port">
        <property name="text">
-        <string>4568</string>
+        <string>8989</string>
        </property>
       </widget>
      </item>
@@ -99,6 +99,29 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QPlainTextEdit" name="plainTextEdit_Log">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>360</y>
+      <width>371</width>
+      <height>161</height>
+     </rect>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_logs">
+    <property name="geometry">
+     <rect>
+      <x>410</x>
+      <y>360</y>
+      <width>47</width>
+      <height>13</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>logs</string>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

@@ -23,6 +23,9 @@ private slots:
 
     void OnPbSendClicked();
 
+
+	void AppendLogMessage(QString);
+	
 private:
     Ui::MainWindow *ui_;
     Peer* peer_;
