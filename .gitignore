@@ -17,4 +17,15 @@ Peer/*.filters
 Peer/*.pro
 Peer/*.pri
 
+ChatServerV3/debug/
+ChatServerV3/release/
+ChatServerV3/x64/ 
+enc_temp_folder/
 
+#dont need files with next extensions:
+
+ChatServerV3/*.stash
+ChatServerV3/*.user
+ChatServerV3/*.filters
+ChatServerV3/*.pro
+ChatServerV3/*.pri
