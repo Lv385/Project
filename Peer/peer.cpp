@@ -1,11 +1,10 @@
 #include "peer.h"
-
+#include <../DAL/Client/clientdb.h>
 Peer::Peer(QObject *parent)
         : QObject(parent)
         , tcp_server_(new QTcpServer(this))
         , tcp_socket_(new QTcpSocket(this))
 {
-
     if (tcp_server_->listen(QHostAddress::Any, 8989)) //we can leave parameters empty
     {
 		emit SendLog("Start listening on" + QString::number(8989));
@@ -16,6 +15,11 @@ Peer::Peer(QObject *parent)
 		emit SendLog("cannot start listenig");
 		return;
 	}
+	
+
+	//ClientDB db;
+	//db.AddNewFriend("admin", 1);
+
 
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
     
