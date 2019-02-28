@@ -6,7 +6,7 @@
    <rect>
     <x>0</x>
     <y>0</y>
-    <width>553</width>
+    <width>739</width>
     <height>575</height>
    </rect>
   </property>
@@ -17,8 +17,8 @@
    <widget class="QPushButton" name="pb_send">
     <property name="geometry">
      <rect>
-      <x>414</x>
-      <y>300</y>
+      <x>550</x>
+      <y>280</y>
       <width>131</width>
       <height>31</height>
      </rect>
@@ -32,7 +32,7 @@
      <rect>
       <x>30</x>
       <y>309</y>
-      <width>371</width>
+      <width>491</width>
       <height>21</height>
      </rect>
     </property>
@@ -42,7 +42,7 @@
      <rect>
       <x>30</x>
       <y>10</y>
-      <width>371</width>
+      <width>491</width>
       <height>281</height>
      </rect>
     </property>
@@ -50,8 +50,8 @@
    <widget class="QLabel" name="l_your_status">
     <property name="geometry">
      <rect>
-      <x>420</x>
-      <y>40</y>
+      <x>550</x>
+      <y>50</y>
       <width>111</width>
       <height>91</height>
      </rect>
@@ -63,8 +63,8 @@
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>410</x>
-      <y>200</y>
+      <x>550</x>
+      <y>170</y>
       <width>141</width>
       <height>92</height>
      </rect>
@@ -105,7 +105,7 @@
      <rect>
       <x>30</x>
       <y>360</y>
-      <width>371</width>
+      <width>491</width>
       <height>161</height>
      </rect>
     </property>
@@ -113,8 +113,8 @@
    <widget class="QLabel" name="label_logs">
     <property name="geometry">
      <rect>
-      <x>410</x>
-      <y>360</y>
+      <x>560</x>
+      <y>330</y>
       <width>47</width>
       <height>13</height>
      </rect>
@@ -123,13 +123,23 @@
      <string>logs</string>
     </property>
    </widget>
+   <widget class="QComboBox" name="comboBoxFriends">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>30</y>
+      <width>141</width>
+      <height>22</height>
+     </rect>
+    </property>
+   </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">
    <property name="geometry">
     <rect>
      <x>0</x>
      <y>0</y>
-     <width>553</width>
+     <width>739</width>
      <height>21</height>
     </rect>
    </property>

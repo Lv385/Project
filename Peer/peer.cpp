@@ -32,6 +32,10 @@ Peer::Peer(QObject *parent)
         my_ip_ = QHostAddress(QHostAddress::LocalHost);
 
 
+	//BD
+
+	//ClientDB testBD;
+
     //in_.setDevice(tcp_socket_);
 
 	emit SendLog("My IP: " + my_ip_.toString());
@@ -68,35 +72,44 @@ bool Peer::ConnectToPeer(QHostAddress receiver_ip, quint16 port)
 
 void Peer::SendMessage(QString message)
 {
-		if (tcp_socket_->state() == QAbstractSocket::UnconnectedState)
-		{
-			ConnectToPeer(receiver_ip_, receiver_port_);
-		}
-		if (tcp_socket_->state() == QAbstractSocket::ConnectedState)
-		{
-			//message += '\n';
-			//qDebug() << "my server port: " << receiver_server_->serverPort();
-			QString mes_log = "Me: " + tcp_socket_->localAddress().toString() + ':' + QString::number(tcp_socket_->localPort()) +
-						   "\nPeer: " + tcp_socket_->peerAddress().toString() + ':' + QString::number(tcp_socket_->peerPort());
-			emit SendLog(mes_log);
-			message += '\0';
+	if (tcp_socket_->state() == QAbstractSocket::UnconnectedState)
+	{
+		ConnectToPeer(receiver_ip_, receiver_port_);
+	}
+	if (tcp_socket_->state() == QAbstractSocket::ConnectedState)
+	{
+		//message += '\n';
+		//qDebug() << "my server port: " << receiver_server_->serverPort();
+		QString mes_log = "Me: " + tcp_socket_->localAddress().toString() + ':' + QString::number(tcp_socket_->localPort()) +
+						"\nPeer: " + tcp_socket_->peerAddress().toString() + ':' + QString::number(tcp_socket_->peerPort());
+		emit SendLog(mes_log);
+		message += '\0';
 
-			tcp_socket_->write(message.toUtf8());
-			emit SendLog("send");
+		QByteArray arr = message.toUtf8();
+		QByteArray test;
+		char cstr[4] = { '1', '\0', '2', '\0' };
+		test.resize(4);
+		memcpy(test.data(), cstr, 4);
 
-			QString str = "->: " + message;
-			emit SendMessageToUI(str);
+		tcp_socket_->write(test);
 
-			//receiver_socket_->close(); // calls disconnectFromHost which emits disconnected()
-			//receiver_socket_ = nullptr;
-			//m_sender_socket->disconnectFromHost();
-		}
-		else
-		{
-			QString str = QString("cannot coonect to") + receiver_ip_.toString() + ' : ' + QString::number(receiver_port_);
-			emit SendLog(str);
-			emit SendMessageToUI(str);
-		}
+		//tcp_socket_->write(message.toUtf8());
+		
+		emit SendLog("send");
+
+		QString str = "->: " + message;
+		emit SendMessageToUI(str);
+
+		//receiver_socket_->close(); // calls disconnectFromHost which emits disconnected()
+		//receiver_socket_ = nullptr;
+		//m_sender_socket->disconnectFromHost();
+	}
+	else
+	{
+		QString str = QString("cannot coonect to") + receiver_ip_.toString() + ' : ' + QString::number(receiver_port_);
+		emit SendLog(str);
+		emit SendMessageToUI(str);
+	}
 }
 
 
@@ -118,29 +131,27 @@ void Peer::SetSocket()
 void Peer::TryReadLine()
 {
 	QByteArray temp = tcp_socket_->readAll();
-	if (temp.contains('\0'))
+	while (temp.contains('\0'))
 	{
-		received_message_.append(temp);
+		QByteArray lastPart = temp.left(temp.indexOf('\0'));
+		temp = temp.right(temp.size() - temp.indexOf('\0') - 1);
+
+		emit SendLog("last part" + lastPart);
+		emit SendLog("nextMes" + temp);
+
+
+		received_message_.append(lastPart);
 		QString str = QString("<%1>: %2").arg(tcp_socket_->peerAddress().toString())
 										 .arg(QString(received_message_));
+		//str.section()
 		emit SendMessageToUI(str);
 		received_message_.clear();
+		received_message_ = temp;
 	}
-	else
+	if(!temp.contains('\0'))
 	{
 		received_message_.append(temp);
-	}		
-	//if (tcp_socket_->canReadLine())
-	//{
-	//	QByteArray qba = tcp_socket_->readAll();
-
-	//	received_message_ = qba;
-
-	//	QString str = tr("<%1>: %2").arg(tcp_socket_->peerAddress().toString()).arg(QString(received_message_));
-
-	//	emit SendMessageToUI(str);
-	//}
-
+	}
 }
 
 void Peer::nullTcpSocket()

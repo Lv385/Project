@@ -8,6 +8,13 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui_->setupUi(this);
 
+	QByteArray ba("Hello");
+	char c = ba.data()[5];
+	auto a = QString("Hello");
+	QChar z = a[5];
+	QByteArray bb(QString("Hello").toUtf8());
+	char d = bb.data()[5];
+
     QString ip_range = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
     QRegExp ip_regex ("^" + ip_range
                      + "\\." + ip_range
@@ -15,7 +22,6 @@ MainWindow::MainWindow(QWidget *parent) :
                      + "\\." + ip_range + "$");
     QRegExpValidator *ip_validator = new QRegExpValidator(ip_regex, this);
     ui_->le_ip->setValidator(ip_validator);
-
 
 
     peer_ = new Peer(this);

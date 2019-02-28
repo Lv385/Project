@@ -1,7 +1,7 @@
-#include "chatserver.h"
-
 #include <QDataStream>
 #include <QNetworkInterface>
+
+#include "chatserver.h"
 
 ChatServer::ChatServer(QObject *parent) : QObject(parent)
 {

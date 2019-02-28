@@ -10,7 +10,9 @@
 #include <ui_mainwindow.h>
 #include <QDebug>
 
-class Peer : public QObject
+//#include "../../DAL/Client/clientdb.h"
+
+class Peer : public QObject	
 {
      Q_OBJECT
 
@@ -36,7 +38,7 @@ private slots:
     void ReadMessage();		//doesn't work
     void DisplayError(QAbstractSocket::SocketError socketError);
 	void TryReadLine();		//read if \n is occured
-	void nullTcpSocket(); 
+	void nullTcpSocket();
 
 private:
     QTcpServer* tcp_server_; //server for listening

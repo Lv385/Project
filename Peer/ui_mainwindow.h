@@ -48,24 +48,24 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(553, 575);
+        MainWindow->resize(739, 575);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         pb_send = new QPushButton(centralWidget);
         pb_send->setObjectName(QString::fromUtf8("pb_send"));
-        pb_send->setGeometry(QRect(414, 300, 131, 31));
+        pb_send->setGeometry(QRect(550, 280, 131, 31));
         le_message = new QLineEdit(centralWidget);
         le_message->setObjectName(QString::fromUtf8("le_message"));
-        le_message->setGeometry(QRect(30, 309, 371, 21));
+        le_message->setGeometry(QRect(30, 309, 491, 21));
         plainTextEdit = new QPlainTextEdit(centralWidget);
         plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
-        plainTextEdit->setGeometry(QRect(30, 10, 371, 281));
+        plainTextEdit->setGeometry(QRect(30, 10, 491, 281));
         l_your_status = new QLabel(centralWidget);
         l_your_status->setObjectName(QString::fromUtf8("l_your_status"));
-        l_your_status->setGeometry(QRect(420, 40, 111, 91));
+        l_your_status->setGeometry(QRect(550, 50, 111, 91));
         layoutWidget = new QWidget(centralWidget);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(410, 200, 141, 92));
+        layoutWidget->setGeometry(QRect(550, 170, 141, 92));
         formLayout = new QFormLayout(layoutWidget);
         formLayout->setSpacing(6);
         formLayout->setContentsMargins(11, 11, 11, 11);
@@ -93,14 +93,14 @@ public:
 
         plainTextEdit_Log = new QPlainTextEdit(centralWidget);
         plainTextEdit_Log->setObjectName(QString::fromUtf8("plainTextEdit_Log"));
-        plainTextEdit_Log->setGeometry(QRect(30, 360, 371, 161));
+        plainTextEdit_Log->setGeometry(QRect(30, 360, 491, 161));
         label_logs = new QLabel(centralWidget);
         label_logs->setObjectName(QString::fromUtf8("label_logs"));
-        label_logs->setGeometry(QRect(410, 360, 47, 13));
+        label_logs->setGeometry(QRect(560, 330, 47, 13));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 553, 21));
+        menuBar->setGeometry(QRect(0, 0, 739, 21));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
