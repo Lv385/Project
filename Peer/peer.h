@@ -7,8 +7,9 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <QTcpServer>
-#include <ui_mainwindow.h>
 #include <QDebug>
+#include <../DAL/Client/clientdb.h>
+#include <ui_mainwindow.h>
 
 class Peer : public QObject
 {
