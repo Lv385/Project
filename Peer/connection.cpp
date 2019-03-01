@@ -1,12 +1,16 @@
 #include "connection.h"
 
+
 Connection::Connection(QObject *parent)
 	: QTcpSocket(parent),
 	receiver_ip_(QHostAddress::Null),
 	receiver_port_(0),
 	k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()) //the only idea i had, must be fixed
 {
+<<<<<<< HEAD
                                                     
+=======
+>>>>>>> dbb9eb7... Moving connection logic to Connection class
 
 }
 
@@ -23,6 +27,7 @@ void Connection::SendMessage(QString message)
 		//message += '\n';
 		//qDebug() << "my server port: " << receiver_server_->serverPort();
 		QString mes_log = "Me: " + this->localAddress().toString() + ':' + QString::number(this->localPort()) +
+<<<<<<< HEAD
 					  "\nPeer: " + this->peerAddress().toString() + ':' + QString::number(this->peerPort()) +
 						"\nsending";
 
@@ -43,6 +48,17 @@ void Connection::SendMessage(QString message)
 		msg.date = QDate::currentDate();
 		msg.time = QTime::currentTime();
 		db.AddMessage(msg, db.GetIDByIpPort(peerAddress().toString(),8989));
+=======
+					  "\nPeer: " + this->peerAddress().toString() + ':' + QString::number(this->peerPort());
+		emit SendLog(mes_log);
+		message += '\0';
+
+		this->write(message.toUtf8());
+		emit SendLog("send");
+
+		QString str = "->: " + message;
+		emit SendMessageToUI(str);
+>>>>>>> dbb9eb7... Moving connection logic to Connection class
 
 		//receiver_socket_->close(); // calls disconnectFromHost which emits disconnected()
 		//receiver_socket_ = nullptr;
@@ -56,6 +72,7 @@ void Connection::SendMessage(QString message)
 	}*/
 }
 
+<<<<<<< HEAD
 
 void Connection::TryReadLine()
 {
@@ -98,6 +115,23 @@ void Connection::TryReadLine()
 
 	//if there is a part of another request, save it
 	received_data_.append(temp);
+=======
+void Connection::TryReadLine()
+{
+	QByteArray temp = this->readAll();
+	if (temp.contains('\0'))
+	{
+		received_message_.append(temp);
+		QString str = QString("<%1>: %2").arg(this->peerAddress().toString())
+			.arg(QString(received_message_));
+		emit SendMessageToUI(str);
+		received_message_.clear();
+	}
+	else
+	{
+		received_message_.append(temp);
+	}
+>>>>>>> dbb9eb7... Moving connection logic to Connection class
 }
 
 

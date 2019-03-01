@@ -97,10 +97,14 @@ void MainWindow::OnPbSendClicked()
 	qDebug() << "clicked";
 	peer_->set_receiver_ip  (QHostAddress(ui_->le_ip->text()));
     peer_->set_receiver_port(ui_->le_port->text().toUShort());
+<<<<<<< HEAD
 
 	ClientDAL::ClientDB cdb;
 	QString selected_login = ui_->combo_box_friends->currentText();
     peer_->SendRequest(cdb.GetIDByLogin(selected_login) ,ui_->le_message->text());  //id + mes  zzz
+=======
+    peer_->SendRequest(ui_->le_message->text());
+>>>>>>> dbb9eb7... Moving connection logic to Connection class
 
 	ui_->plainTextEdit_Log->appendPlainText("\\\\\\\\\\\\\\\\\\\\\\\\\\\\/");
 
