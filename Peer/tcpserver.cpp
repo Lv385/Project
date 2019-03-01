@@ -4,7 +4,11 @@
 TcpServer::TcpServer(QObject *parent)
 	: QTcpServer(parent)
 {
+<<<<<<< HEAD
 	listen(QHostAddress::Any, 8989);
+=======
+	listen(QHostAddress::Any);
+>>>>>>> 4aabedb... added server and connection
 }
 
 void TcpServer::incomingConnection(qintptr socketDescriptor)

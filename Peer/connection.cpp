@@ -1,5 +1,6 @@
 #include "connection.h"
 
+<<<<<<< HEAD
 
 Connection::Connection(QObject *parent)
 	: QTcpSocket(parent),
@@ -16,10 +17,19 @@ Connection::Connection(QObject *parent)
 
 Connection::Connection(qintptr socketDescriptor, QObject * parent)
 	: k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence())
+=======
+Connection::Connection(QObject *parent)
+	: QTcpSocket(parent)
+{
+}
+
+Connection::Connection(qintptr socketDescriptor, QObject * parent)
+>>>>>>> 4aabedb... added server and connection
 {
 	setSocketDescriptor(socketDescriptor);
 }
 
+<<<<<<< HEAD
 void Connection::SendMessage(QString message)
 {
 	if (this->state() == QAbstractSocket::ConnectedState)
@@ -135,6 +145,8 @@ void Connection::TryReadLine()
 }
 
 
+=======
+>>>>>>> 4aabedb... added server and connection
 Connection::~Connection()
 {
 }

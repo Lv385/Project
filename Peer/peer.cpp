@@ -1,5 +1,11 @@
 #include "peer.h"
+<<<<<<< HEAD
 
+=======
+#include <../DAL/Client/clientdb.h>
+
+//test
+>>>>>>> 4aabedb... added server and connection
 Peer::Peer(QObject *parent)
         : QObject(parent)
         , tcp_server_(new TcpServer(this))
