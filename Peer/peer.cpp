@@ -1,5 +1,6 @@
 #include "peer.h"
-#include <../DAL/Client/clientdb.h>
+
+
 Peer::Peer(QObject *parent)
         : QObject(parent)
         , tcp_server_(new QTcpServer(this))
