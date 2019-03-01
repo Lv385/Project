@@ -6,9 +6,8 @@ Peer::Peer(QObject *parent)
         , connection_(new Connection(this))
 {
 
-	//ClientDB db;
+	ClientDB db;
 	//db.AddNewFriend("admin", 1);
-
 
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
     
