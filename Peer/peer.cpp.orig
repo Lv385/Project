@@ -1,5 +1,12 @@
 #include "peer.h"
+<<<<<<< HEAD
+#include <../DAL/Client/clientdb.h>
 
+//test
+=======
+
+
+>>>>>>> 2b01311f131a25b8b2c92f6bf9601516c3be5129
 Peer::Peer(QObject *parent)
         : QObject(parent)
         , tcp_server_(new QTcpServer(this))
@@ -17,8 +24,9 @@ Peer::Peer(QObject *parent)
 	}
 	
 
-	ClientDB db;
+	//ClientDB db;
 	//db.AddNewFriend("admin", 1);
+
 
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
     

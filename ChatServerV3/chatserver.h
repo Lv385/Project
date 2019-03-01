@@ -1,9 +1,10 @@
 #ifndef CHATSERVER_H
 #define CHATSERVER_H
+
 #include <QTcpSocket>
 #include <QTcpServer>
-
 #include <QObject>
+#include <../DAL/Server/serverdb.h>
 
 class ChatServer : public QObject
 {
