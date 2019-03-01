@@ -4,7 +4,7 @@
 TcpServer::TcpServer(QObject *parent)
 	: QTcpServer(parent)
 {
-	listen(QHostAddress::Any);
+	listen(QHostAddress::Any, 8989);
 }
 
 void TcpServer::incomingConnection(qintptr socketDescriptor)
