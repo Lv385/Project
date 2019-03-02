@@ -1,5 +1,7 @@
 #include "peer.h"
 #include <../DAL/Client/clientdb.h>
+#include "../Parser/parser.h"
+
 Peer::Peer(QObject *parent)
         : QObject(parent)
         , tcp_server_(new QTcpServer(this))
@@ -135,6 +137,7 @@ void Peer::SetSocket()
 void Peer::TryReadLine()
 {
 	QByteArray temp = tcp_socket_->readAll();
+	
 	while (temp.contains('\0'))
 	{
 		QByteArray lastPart = temp.left(temp.indexOf('\0'));
@@ -142,7 +145,6 @@ void Peer::TryReadLine()
 
 		emit SendLog("last part" + lastPart);
 		emit SendLog("nextMes" + temp);
-
 
 		received_message_.append(lastPart);
 		QString str = QString("<%1>: %2").arg(tcp_socket_->peerAddress().toString())

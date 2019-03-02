@@ -183,6 +183,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\DAL\Client\clientdb.cpp" />
+    <ClCompile Include="..\Parser\parser.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
     <ClCompile Include="peer.cpp" />
@@ -211,6 +212,8 @@
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </CustomBuild>
     <ClInclude Include="..\DAL\Client\clientdb.h" />
+    <ClInclude Include="..\Parser\parser.h" />
+    <ClInclude Include="..\Parser\request_types.h" />
     <ClInclude Include="ui_mainwindow.h" />
   </ItemGroup>
   <ItemGroup>

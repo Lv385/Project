@@ -10,7 +10,6 @@
 #include <ui_mainwindow.h>
 #include <QDebug>
 
-//#include "../../DAL/Client/clientdb.h"
 
 class Peer : public QObject	
 {
