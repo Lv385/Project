@@ -1,28 +1,22 @@
-#include "../Parser/parser.h"
-
-
+#include "parser.h"
 
 QByteArray Parser::LoginInfo_ToByteArray(LoginInfo & login_info)
 {
 	QByteArray result;
+	QDataStream out(&result, QIODevice::WriteOnly);
 
-	//type
-	result.append(char(ClientT::LOGIN));
+	out << quint8(ClientT::LOGIN);        //type
+	out << login_info.ip.toIPv4Address(); //ip
+	out << login_info.port;				  //port
+	out << login_info.login;              //login
+	out << login_info.password;			  //password
 
-	//ip
-	quint32 temp = login_info.ip.toIPv4Address();
-	result.append((char*)&temp, sizeof(quint32));
+	return result;
+}
 
-	//port
-	result.append((char*)&login_info.port, 2);
-
-	//login
-	result.append(login_info.login);
-	result.append('#');
-
-	//password
-	result.append(login_info.password);
-
+quint8 Parser::getRequestType(QByteArray & data)
+{
+	quint8 result = data.data()[0];
 	return result;
 }
 
@@ -30,40 +24,25 @@ LoginInfo Parser::ParseAsLoginInfo(QByteArray& data)
 {
 	LoginInfo result;
 
-	//ip
-	quint32 ipv4;
-	memcpy(&ipv4, data.data() + 1, 4);		                  // first byte is type, sizeof(quint32) == 4
-	result.ip.setAddress(ipv4);						          
-													          
-	//port											          
-	memcpy(&result.port, data.data() + 5, 2);		          //sizeof(quint32) == 4, so start at 5, sizeof(quint) is 2
-													          
-	//login											          
-	result.login = data.mid(7, data.indexOf('#') - 7);        //sizeof(quint) is 2, so start at 7 to #
-													          
-	//password										          
-	result.password = data.mid(data.indexOf('#') + 1);        //without #
+	QDataStream in(&data, QIODevice::ReadOnly);
+
+	quint8 type;
+	quint32 ip;
+	in >> type >> ip >> result.port >> result.login >> result.password;
+	result.ip = QHostAddress(ip);
 
 	return result;
 }
 
-
 QByteArray Parser::FriendUpdateInfo_ToByteArray(FriendUpdateInfo & friend_update_info)
 {
 	QByteArray result;
+	QDataStream out(&result, QIODevice::WriteOnly);
 
-	//type
-	result.append(char(ServerT::FRIEND_UPDATE_INFO));
-
-	//ip
-	quint32 temp = friend_update_info.ip.toIPv4Address();
-	result.append((char*)&temp, sizeof(quint32));
-
-	//port
-	result.append((char*)&friend_update_info.port, 2);
-
-	//id
-	result.append((char*)&friend_update_info.id, sizeof(int));
+	out << quint8(ClientT::LOGIN);				  //type
+	out << friend_update_info.ip.toIPv4Address(); //ip
+	out << friend_update_info.port;				  //port
+	out << friend_update_info.id;				  //id
 
 	return result;
 }
@@ -71,16 +50,14 @@ QByteArray Parser::FriendUpdateInfo_ToByteArray(FriendUpdateInfo & friend_update
 FriendUpdateInfo Parser::ParseAsFriendUpdateInfo(QByteArray& data)
 {
 	FriendUpdateInfo result;
-	//ip
-	quint32 ipv4;
-	memcpy(&ipv4, data.data() + 1, 4);					     //first byte is type, sizeof(quint32) == 4
-	result.ip.setAddress(ipv4);
 
-	//port
-	memcpy(&result.port, data.data() + 5, 2);                //sizeof(quint32) == 4, so start at 5, sizeof(quint) is 2
+	QDataStream in(&data, QIODevice::ReadOnly);
 
-	//id
-	memcpy(&result.port, data.data() + 7, sizeof(int));      //sizeof(quint) is 2, so start at 7
+	quint8 type;								  
+	quint32 ip;						
+
+	in >> type >> ip >> result.port >> result.id;
+	result.ip = QHostAddress(ip);
 
 	return result;
 }
@@ -89,19 +66,24 @@ FriendUpdateInfo Parser::ParseAsFriendUpdateInfo(QByteArray& data)
 QByteArray Parser::Message_ToByteArray(QString & message)
 {
 	QByteArray result;
+	QDataStream out(&result, QIODevice::WriteOnly);
 
-	//type
-	result.append(char(ClientT::MESSAGE));
-
-	//message
-	result.append(message);
+	out << quint8(ClientT::LOGIN);				  //type
+	out << message;								  //message
 
 	return result;
 }
 
 QString Parser::ParseAsMessage(QByteArray& data)
 {
-	return data.mid(1);                                      //whithout type
+	QString result;
+	QDataStream in(&data, QIODevice::ReadOnly);
+
+	quint8 type;
+
+	in >> type >> result;
+
+	return result;                           //messsage whithout type
 }
 
 

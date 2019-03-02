@@ -53,7 +53,7 @@ void MainWindow::OnPbSendClicked()
 	qDebug() << "clicked";
 	peer_->set_receiver_ip  (QHostAddress(ui_->le_ip->text()));
     peer_->set_receiver_port(ui_->le_port->text().toUShort());
-    peer_->SendMessage(ui_->le_message->text());
+    peer_->SendRequest(ui_->le_message->text());
 
 	ui_->plainTextEdit_Log->appendPlainText("\\\\\\\\\\\\\\\\\\\\\\\\\\\\/");
 

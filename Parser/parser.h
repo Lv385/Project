@@ -2,13 +2,15 @@
 #define PARSER_H
 
 #include <QByteArray>
+#include <QDataStream>
 
 #include "../Parser/request_types.h"
 
 class Parser
 {
 public:
-	Parser() = delete;
+	quint8 static getRequestType(QByteArray& data);
+
 	static LoginInfo		ParseAsLoginInfo(QByteArray& data);
 	static FriendUpdateInfo ParseAsFriendUpdateInfo(QByteArray& data);
 	static QString          ParseAsMessage(QByteArray& data);

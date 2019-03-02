@@ -1,11 +1,11 @@
 #ifndef REQUEST_TYPES_H
 #define REQUEST_TYPES_H
 
+#include <QtGlobal>
 #include <QString>
 #include <QHostAddress>
 
-
-enum class ClientT : char
+enum class ClientT : quint8
 {
 	MESSAGE = 0,
 	LOGIN,
@@ -13,15 +13,15 @@ enum class ClientT : char
 	LAST // this should be last to avoid errors
 };
 
-enum class ServerT : char
+enum class ServerT : quint8
 {
 	LOGIN_SUCCEED = (char)ClientT::LAST + 1,
 	LOGIN_FAILED,
 
-	REGISTER_SUCCEED, 
-	REGISTER_FAILED, 
+	REGISTER_SUCCEED,
+	REGISTER_FAILED,
 
-	FRIEND_UPDATE_INFO	
+	FRIEND_UPDATE_INFO
 };
 
 struct LoginInfo
@@ -34,9 +34,9 @@ struct LoginInfo
 
 struct FriendUpdateInfo
 {
-	int id;
 	QHostAddress ip;
 	quint16 port;
+	quint32 id;
 };
 
 struct FriendRequest
@@ -44,11 +44,4 @@ struct FriendRequest
 
 };
 
-struct IPv4
-{
-	char byte1;
-	char byte2;
-	char byte3;
-	char byte4;
-};
 #endif // !REQUEST_TYPES_H

@@ -5,6 +5,7 @@
 
 ChatServer::ChatServer(QObject *parent) : QObject(parent)
 {
+	//ServerDB db;
     server = new QTcpServer(this);
     connect(server,SIGNAL(newConnection()),this,SLOT(newConnection()));
 
