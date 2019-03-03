@@ -16,5 +16,5 @@
 **/*.filters
 **/*.pro
 **/*.pri
-
+**/*.orig
 
