@@ -70,6 +70,7 @@ void Connection::TryReadLine()
 											 .arg(Parser::ParseAsMessage(received_data_));
 			emit SendMessageToUI(str);
 		}
+		//no longer needed after using
 		received_data_.clear();
 	}
 
