@@ -70,17 +70,17 @@
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
-     <item row="0" column="0">
-      <widget class="QLabel" name="label">
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="le_ip">
        <property name="text">
-        <string>Enter IP</string>
+        <string>127.0.0.1</string>
        </property>
       </widget>
      </item>
      <item row="2" column="0">
       <widget class="QLabel" name="label_2">
        <property name="text">
-        <string>Enter port</string>
+        <string>Enter host port</string>
        </property>
       </widget>
      </item>
@@ -91,10 +91,10 @@
        </property>
       </widget>
      </item>
-     <item row="1" column="0">
-      <widget class="QLineEdit" name="le_ip">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label">
        <property name="text">
-        <string>127.0.0.1</string>
+        <string>Enter host IP</string>
        </property>
       </widget>
      </item>
@@ -114,13 +114,13 @@
     <property name="geometry">
      <rect>
       <x>560</x>
-      <y>330</y>
-      <width>47</width>
-      <height>13</height>
+      <y>350</y>
+      <width>101</width>
+      <height>16</height>
      </rect>
     </property>
     <property name="text">
-     <string>logs</string>
+     <string>logs and testing</string>
     </property>
    </widget>
    <widget class="QComboBox" name="comboBoxFriends">
@@ -132,6 +132,45 @@
       <height>22</height>
      </rect>
     </property>
+   </widget>
+   <widget class="QPushButton" name="pb_start">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>380</y>
+      <width>141</width>
+      <height>23</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Start</string>
+    </property>
+   </widget>
+   <widget class="QWidget" name="layoutWidget_2">
+    <property name="geometry">
+     <rect>
+      <x>540</x>
+      <y>410</y>
+      <width>141</width>
+      <height>92</height>
+     </rect>
+    </property>
+    <layout class="QFormLayout" name="formLayout_2">
+     <item row="0" column="0">
+      <widget class="QLabel" name="label_3">
+       <property name="text">
+        <string>Enter your port to listen</string>
+       </property>
+      </widget>
+     </item>
+     <item row="1" column="0">
+      <widget class="QLineEdit" name="le_port_my">
+       <property name="text">
+        <string>8989</string>
+       </property>
+      </widget>
+     </item>
+    </layout>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

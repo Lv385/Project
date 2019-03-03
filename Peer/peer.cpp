@@ -1,14 +1,25 @@
 #include "peer.h"
-#include <../DAL/Client/clientdb.h>
-#include "../Parser/parser.h"
 
-Peer::Peer(QObject *parent)
+
+Peer::Peer(QObject *parent, quint16 listen_port)
         : QObject(parent)
         , tcp_server_(new TcpServer(this))
         , connection_(new Connection(this))
+		, my_listen_port_(listen_port)
 {
+	is_active_ = true;
+	if (!tcp_server_->listen(QHostAddress::Any, my_listen_port_))
+	{
+		qDebug() << "cannot start on: " + QString::number(my_listen_port_);
+		if (!tcp_server_->listen())
+		{
+			is_active_ = false;
+			return;
+		}
+	}
+	qDebug() << "started listening on: " + QString::number(my_listen_port_);
 
-	ClientDAL::ClientDB db;
+		ClientDAL::ClientDB db;
 	//db.AddNewFriend("admin", 1);
 
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
@@ -40,6 +51,11 @@ Peer::Peer(QObject *parent)
     //cannot catch this signal
 }
 
+bool Peer::is_active()
+{
+	return is_active_;
+}
+
 bool Peer::ConnectToPeer(QHostAddress receiver_ip, quint16 port)
 {
 	//tcp_socket_ = new QTcpSocket(this);
@@ -51,7 +67,7 @@ bool Peer::ConnectToPeer(QHostAddress receiver_ip, quint16 port)
 		emit SendLog("connected to:" + logMessage);
 		//connect(tcp_socket_, SIGNAL(disconnected()), tcp_socket_, SLOT(deleteLater())); //woking with one socket so temporary commnent
 		//connect(tcp_socket_, SIGNAL(destroyed()), this, SLOT(nullTcpSocket()));         
-		connect(connection_, SIGNAL(readyRead()), this, SLOT(TryReadLine()));
+		connect(connection_, SIGNAL(readyRead()), connection_, SLOT(TryReadLine()));
 		connect(connection_, SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
 		connect(connection_, SIGNAL(SendMessageToUI(QString)), this, SIGNAL(SendMessageToUI(QString)));
 		return true;
@@ -72,6 +88,7 @@ void Peer::SendRequest(QString message)
 	{
 		ConnectToPeer(receiver_ip_, receiver_port_);
 	}	
+
 	connection_->SendMessage(message);
 }
 

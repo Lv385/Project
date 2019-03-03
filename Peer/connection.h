@@ -5,7 +5,7 @@
 #include <QHostAddress>
 
 #include <ui_mainwindow.h>
-
+#include "../Parser&Structs/parser.h"
 
 class Connection : public QTcpSocket
 {
@@ -27,6 +27,8 @@ signals:
 	void SendMessageToUI(QString);
 
 private:
-	QByteArray received_message_;
+	QByteArray received_data_;
+
+	const QByteArray k_unpossiblle_2_bytes_sequence_;
 };
 #endif

@@ -8,12 +8,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui_->setupUi(this);
 
-	QByteArray ba("Hello");
-	char c = ba.data()[5];
-	auto a = QString("Hello");
-	QChar z = a[5];
-	QByteArray bb(QString("Hello").toUtf8());
-	char d = bb.data()[5];
 
     QString ip_range = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
     QRegExp ip_regex ("^" + ip_range
@@ -23,19 +17,38 @@ MainWindow::MainWindow(QWidget *parent) :
     QRegExpValidator *ip_validator = new QRegExpValidator(ip_regex, this);
     ui_->le_ip->setValidator(ip_validator);
 
-
-    peer_ = new Peer(this);
-
-	connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
-	connect(peer_, SIGNAL(SendLog(QString)),		 this, SLOT(AppendLogMessage(QString)));
-
-    ui_->l_your_status->setText(tr("The server is running on\n\nIP: %1\nport: %2\n")
-                               .arg(peer_->get_my_ip().toString())
-                               .arg(peer_->get_my_port()));
+	ui_->pb_send->setEnabled(false);
+    
     /*connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
 	connect(peer_, SIGNAL(SendLog(QString)),		 this, SLOT(AppendLogMessage(QString)));*/
+	connect(ui_->pb_start, SIGNAL(clicked()), this, SLOT(OnPbStartClicker()));
 
 	connect(ui_->pb_send, SIGNAL(clicked()), this, SLOT(OnPbSendClicked()));
+
+	
+}
+
+void MainWindow::OnPbStartClicker()
+{
+	if (!peer_)
+	{
+		peer_ = new Peer(this, ui_->le_port_my->text().toUShort());
+
+		connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
+		connect(peer_, SIGNAL(SendLog(QString)), this, SLOT(AppendLogMessage(QString)));
+
+		ui_->l_your_status->setText(tr("The server is running on\n\nIP: %1\nport: %2\n")
+			.arg(peer_->get_my_ip().toString())
+			.arg(peer_->get_my_port()));
+		if (peer_->is_active())
+		{
+			ui_->pb_send->setEnabled(true);
+
+			//sending by ENTER
+			//QShortcut *shortcut = new QShortcut(QKeySequence("Enter"), this);
+			//connect(shortcut, SIGNAL(activated()), this, SLOT(OnPbSendClicked()));
+		}
+	}
 }
 
 MainWindow::~MainWindow()

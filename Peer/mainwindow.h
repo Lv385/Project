@@ -3,6 +3,7 @@
 
 #include <QMainWindow>
 #include <QRegExpValidator>
+#include <QShortcut>
 
 #include "peer.h"
 
@@ -19,10 +20,11 @@ public:
     ~MainWindow();
 
 private slots:
+	void OnPbStartClicker();
+
     void AppendMessage(QString);
 
     void OnPbSendClicked();
-
 
 	void AppendLogMessage(QString);
 	

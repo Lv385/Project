@@ -5,11 +5,11 @@ QByteArray Parser::LoginInfo_ToByteArray(LoginInfo & login_info)
 	QByteArray result;
 	QDataStream out(&result, QIODevice::WriteOnly);
 
-	out << quint8(ClientT::LOGIN);        //type
-	out << login_info.ip.toIPv4Address(); //ip
-	out << login_info.port;				  //port
-	out << login_info.login;              //login
-	out << login_info.password;			  //password
+	out << quint8(ClientRequest::LOGIN);		//type
+	out << login_info.ip.toIPv4Address();		//ip
+	out << login_info.port;						//port
+	out << login_info.login;					//login
+	out << login_info.password;					//password
 
 	return result;
 }
@@ -39,10 +39,10 @@ QByteArray Parser::FriendUpdateInfo_ToByteArray(FriendUpdateInfo & friend_update
 	QByteArray result;
 	QDataStream out(&result, QIODevice::WriteOnly);
 
-	out << quint8(ClientT::LOGIN);				  //type
-	out << friend_update_info.ip.toIPv4Address(); //ip
-	out << friend_update_info.port;				  //port
-	out << friend_update_info.id;				  //id
+	out << quint8(ServerRequests::FRIEND_UPDATE_INFO);	    //type
+	out << friend_update_info.ip.toIPv4Address();			//ip
+	out << friend_update_info.port;							//port
+	out << friend_update_info.id;							//id
 
 	return result;
 }
@@ -68,11 +68,12 @@ QByteArray Parser::Message_ToByteArray(QString & message)
 	QByteArray result;
 	QDataStream out(&result, QIODevice::WriteOnly);
 
-	out << quint8(ClientT::LOGIN);				  //type
-	out << message;								  //message
+	out << quint8(ClientRequest::MESSAGE);				  //type
+	out << message;										  //message
 
 	return result;
 }
+
 
 QString Parser::ParseAsMessage(QByteArray& data)
 {
@@ -83,8 +84,18 @@ QString Parser::ParseAsMessage(QByteArray& data)
 
 	in >> type >> result;
 
-	return result;                           //messsage whithout type
+	return result;                           
 }
 
+QByteArray Parser::GetUnpossibleSequence()
+{
+	QByteArray result;
+
+	QDataStream out(&result, QIODevice::WriteOnly);
+	quint16 unpossible = 0xFFFE;
+	out << unpossible;
+
+	return result;
+}
 
 

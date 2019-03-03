@@ -11,6 +11,7 @@
 
 #include <QtCore/QVariant>
 #include <QtWidgets/QApplication>
+#include <QtWidgets/QComboBox>
 #include <QtWidgets/QFormLayout>
 #include <QtWidgets/QLabel>
 #include <QtWidgets/QLineEdit>
@@ -34,12 +35,18 @@ public:
     QLabel *l_your_status;
     QWidget *layoutWidget;
     QFormLayout *formLayout;
-    QLabel *label;
+    QLineEdit *le_ip;
     QLabel *label_2;
     QLineEdit *le_port;
-    QLineEdit *le_ip;
+    QLabel *label;
     QPlainTextEdit *plainTextEdit_Log;
     QLabel *label_logs;
+    QComboBox *comboBoxFriends;
+    QPushButton *pb_start;
+    QWidget *layoutWidget_2;
+    QFormLayout *formLayout_2;
+    QLabel *label_3;
+    QLineEdit *le_port_my;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -71,10 +78,10 @@ public:
         formLayout->setContentsMargins(11, 11, 11, 11);
         formLayout->setObjectName(QString::fromUtf8("formLayout"));
         formLayout->setContentsMargins(0, 0, 0, 0);
-        label = new QLabel(layoutWidget);
-        label->setObjectName(QString::fromUtf8("label"));
+        le_ip = new QLineEdit(layoutWidget);
+        le_ip->setObjectName(QString::fromUtf8("le_ip"));
 
-        formLayout->setWidget(0, QFormLayout::LabelRole, label);
+        formLayout->setWidget(1, QFormLayout::LabelRole, le_ip);
 
         label_2 = new QLabel(layoutWidget);
         label_2->setObjectName(QString::fromUtf8("label_2"));
@@ -86,17 +93,41 @@ public:
 
         formLayout->setWidget(3, QFormLayout::LabelRole, le_port);
 
-        le_ip = new QLineEdit(layoutWidget);
-        le_ip->setObjectName(QString::fromUtf8("le_ip"));
+        label = new QLabel(layoutWidget);
+        label->setObjectName(QString::fromUtf8("label"));
 
-        formLayout->setWidget(1, QFormLayout::LabelRole, le_ip);
+        formLayout->setWidget(0, QFormLayout::LabelRole, label);
 
         plainTextEdit_Log = new QPlainTextEdit(centralWidget);
         plainTextEdit_Log->setObjectName(QString::fromUtf8("plainTextEdit_Log"));
         plainTextEdit_Log->setGeometry(QRect(30, 360, 491, 161));
         label_logs = new QLabel(centralWidget);
         label_logs->setObjectName(QString::fromUtf8("label_logs"));
-        label_logs->setGeometry(QRect(560, 330, 47, 13));
+        label_logs->setGeometry(QRect(560, 350, 101, 16));
+        comboBoxFriends = new QComboBox(centralWidget);
+        comboBoxFriends->setObjectName(QString::fromUtf8("comboBoxFriends"));
+        comboBoxFriends->setGeometry(QRect(550, 30, 141, 22));
+        pb_start = new QPushButton(centralWidget);
+        pb_start->setObjectName(QString::fromUtf8("pb_start"));
+        pb_start->setGeometry(QRect(540, 380, 141, 23));
+        layoutWidget_2 = new QWidget(centralWidget);
+        layoutWidget_2->setObjectName(QString::fromUtf8("layoutWidget_2"));
+        layoutWidget_2->setGeometry(QRect(540, 410, 141, 92));
+        formLayout_2 = new QFormLayout(layoutWidget_2);
+        formLayout_2->setSpacing(6);
+        formLayout_2->setContentsMargins(11, 11, 11, 11);
+        formLayout_2->setObjectName(QString::fromUtf8("formLayout_2"));
+        formLayout_2->setContentsMargins(0, 0, 0, 0);
+        label_3 = new QLabel(layoutWidget_2);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+
+        formLayout_2->setWidget(0, QFormLayout::LabelRole, label_3);
+
+        le_port_my = new QLineEdit(layoutWidget_2);
+        le_port_my->setObjectName(QString::fromUtf8("le_port_my"));
+
+        formLayout_2->setWidget(1, QFormLayout::LabelRole, le_port_my);
+
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
@@ -119,11 +150,14 @@ public:
         MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
         pb_send->setText(QApplication::translate("MainWindow", "Send", nullptr));
         l_your_status->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
-        label->setText(QApplication::translate("MainWindow", "Enter IP", nullptr));
-        label_2->setText(QApplication::translate("MainWindow", "Enter port", nullptr));
-        le_port->setText(QApplication::translate("MainWindow", "8989", nullptr));
         le_ip->setText(QApplication::translate("MainWindow", "127.0.0.1", nullptr));
-        label_logs->setText(QApplication::translate("MainWindow", "logs", nullptr));
+        label_2->setText(QApplication::translate("MainWindow", "Enter host port", nullptr));
+        le_port->setText(QApplication::translate("MainWindow", "8989", nullptr));
+        label->setText(QApplication::translate("MainWindow", "Enter host IP", nullptr));
+        label_logs->setText(QApplication::translate("MainWindow", "logs and testing", nullptr));
+        pb_start->setText(QApplication::translate("MainWindow", "Start", nullptr));
+        label_3->setText(QApplication::translate("MainWindow", "Enter your port to listen", nullptr));
+        le_port_my->setText(QApplication::translate("MainWindow", "8989", nullptr));
     } // retranslateUi
 
 };
