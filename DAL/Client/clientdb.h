@@ -61,7 +61,7 @@ namespace ClientDAL {
 		void                 UpdateUserProfile(const int& user_id, const QString& user_name, const QString& user_surname);
 
 		QVector<User>		GetFriends();
-		QVector<QString>		GetFriendsLogin();
+		QVector<QString>	GetFriendsLogin();
 
 		void                 DeleteFriend(const QString& user_login);
 		void                 DeleteFriend(const int& user_id);

@@ -11,11 +11,11 @@ class Parser
 public:
 	static quint8  getRequestType(QByteArray& data);
 
-	static LoginInfo		ParseAsLoginInfo(QByteArray& data);
+	static LoginOrRegisterInfo		ParseAsLoginOrRegisterInfo(QByteArray& data);
 	static FriendUpdateInfo ParseAsFriendUpdateInfo(QByteArray& data);
 	static QString          ParseAsMessage(QByteArray& data);
 
-	static QByteArray		LoginInfo_ToByteArray(LoginInfo& login_info);
+	static QByteArray		LoginOrRegisterInfo_ToByteArray(LoginOrRegisterInfo& login_info);
 	static QByteArray		FriendUpdateInfo_ToByteArray(FriendUpdateInfo& friend_update_info);
 	static QByteArray       Message_ToByteArray(QString& message);
 
@@ -24,6 +24,7 @@ public:
 													  //hoping that this sequence will 
 													  //not appear in any of our messages
 													  //must be fixed
+	static QByteArray       yesNoResponseToByteArray(quint8 type);
 };
 
 #endif // PARSER_H

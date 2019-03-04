@@ -189,12 +189,10 @@ bool ServerDB::IsFriend(const QString& first_user_login, const QString& second_u
 
         if (result == 2)
         {
-            std::cout << true;
             return true;
         }
         else
         {
-            std::cout << false;
             return false;
         }
     }
@@ -204,6 +202,35 @@ bool ServerDB::IsFriend(const QString& first_user_login, const QString& second_u
        return false;
     }
 
+}
+
+bool ServerDB::IsFriend(const unsigned int & first_user_id, const unsigned int & second_user_id)
+{
+	query_.prepare("SELECT COUNT(*)  FROM friends WHERE (second_user_ID = :id_of_second_user AND first_user_ID = :id_of_first_user) OR (first_user_ID = :id_of_second_user AND second_user_ID = :id_of_first_user)");
+	query_.bindValue(":id_of_first_user", first_user_id);
+	query_.bindValue(":id_of_second_user", second_user_id);
+	int result = 0;
+	if (query_.exec())
+	{
+		while (query_.next())
+		{
+			result = query_.record().value(0).toInt();
+		}
+
+		if (result == 2)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		ErrorInfo();
+		return false;
+	}
 }
 
 unsigned int  ServerDB::GetIDByLogin(const QString& user_login)
@@ -280,6 +307,24 @@ void ServerDB::AddFriend(const QString& user_login ,const QString& second_user_l
      {
           qDebug("You are already friends");
      }
+}
+
+void ServerDB::AddFriend(const unsigned int & user_id, const unsigned int & second_user_id)
+{
+	if (!IsFriend(user_id, second_user_id))
+	{
+		query_.prepare("INSERT INTO friends (first_user_ID,second_user_ID) VALUES (:f_id, :s_id)");
+		query_.bindValue(":f_id", user_id);
+		query_.bindValue(":s_id", second_user_id);
+		if (!query_.exec())
+		{
+			ErrorInfo();
+		}
+	}
+	else
+	{
+		qDebug("You are already friends");
+	}
 }
 
 
