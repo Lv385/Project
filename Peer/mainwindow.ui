@@ -37,23 +37,13 @@
      </rect>
     </property>
    </widget>
-   <widget class="QPlainTextEdit" name="plainTextEdit">
-    <property name="geometry">
-     <rect>
-      <x>30</x>
-      <y>10</y>
-      <width>491</width>
-      <height>281</height>
-     </rect>
-    </property>
-   </widget>
    <widget class="QLabel" name="l_your_status">
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>50</y>
-      <width>111</width>
-      <height>91</height>
+      <y>60</y>
+      <width>141</width>
+      <height>81</height>
      </rect>
     </property>
     <property name="text">
@@ -171,6 +161,16 @@
       </widget>
      </item>
     </layout>
+   </widget>
+   <widget class="QPlainTextEdit" name="plainTextEdit">
+    <property name="geometry">
+     <rect>
+      <x>30</x>
+      <y>20</y>
+      <width>491</width>
+      <height>271</height>
+     </rect>
+    </property>
    </widget>
   </widget>
   <widget class="QMenuBar" name="menuBar">

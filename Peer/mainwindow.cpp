@@ -8,7 +8,6 @@ MainWindow::MainWindow(QWidget *parent) :
 {
     ui_->setupUi(this);
 
-
     QString ip_range = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
     QRegExp ip_regex ("^" + ip_range
                      + "\\." + ip_range
@@ -19,10 +18,18 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	ui_->pb_send->setEnabled(false);
     
+	ClientDAL::ClientDB db;
+
+	QVector<QString> friends = db.GetFriendsLogin();
+	for (const QString& login : friends)
+	{
+		ui_->comboBoxFriends->addItem(login); //TODO: delete myself from combobox
+	}
+
     /*connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
 	connect(peer_, SIGNAL(SendLog(QString)),		 this, SLOT(AppendLogMessage(QString)));*/
 	connect(ui_->pb_start, SIGNAL(clicked()), this, SLOT(OnPbStartClicker()));
-
+	connect(ui_->comboBoxFriends, SIGNAL(currentIndexChanged(QString)), this, SLOT(AppendHistory()));
 	connect(ui_->pb_send, SIGNAL(clicked()), this, SLOT(OnPbSendClicked()));
 
 	
@@ -59,6 +66,27 @@ MainWindow::~MainWindow()
 void MainWindow::AppendMessage(QString message)
 {
     ui_->plainTextEdit->appendPlainText(message);
+}
+
+void MainWindow::AppendHistory()
+{
+	ui_->plainTextEdit->clear();
+	ClientDAL::ClientDB db;
+	QString login = ui_->comboBoxFriends->currentText();
+
+	QVector<ClientDAL::Message> history = db.GetMessages(login);
+	for (auto i : history)
+	{
+		if (login == db.GetLoginById(i.owner_id))
+		{
+			ui_->plainTextEdit->appendPlainText('<' + login + "> : " + i.data);
+		}
+		else
+		{
+			ui_->plainTextEdit->appendPlainText("<Me> : " + i.data);
+			
+		}
+	}
 }
 
 void MainWindow::OnPbSendClicked()

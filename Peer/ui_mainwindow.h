@@ -31,7 +31,6 @@ public:
     QWidget *centralWidget;
     QPushButton *pb_send;
     QLineEdit *le_message;
-    QPlainTextEdit *plainTextEdit;
     QLabel *l_your_status;
     QWidget *layoutWidget;
     QFormLayout *formLayout;
@@ -47,6 +46,7 @@ public:
     QFormLayout *formLayout_2;
     QLabel *label_3;
     QLineEdit *le_port_my;
+    QPlainTextEdit *plainTextEdit;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -64,12 +64,9 @@ public:
         le_message = new QLineEdit(centralWidget);
         le_message->setObjectName(QString::fromUtf8("le_message"));
         le_message->setGeometry(QRect(30, 309, 491, 21));
-        plainTextEdit = new QPlainTextEdit(centralWidget);
-        plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
-        plainTextEdit->setGeometry(QRect(30, 10, 491, 281));
         l_your_status = new QLabel(centralWidget);
         l_your_status->setObjectName(QString::fromUtf8("l_your_status"));
-        l_your_status->setGeometry(QRect(550, 50, 111, 91));
+        l_your_status->setGeometry(QRect(550, 60, 141, 81));
         layoutWidget = new QWidget(centralWidget);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
         layoutWidget->setGeometry(QRect(550, 170, 141, 92));
@@ -128,6 +125,9 @@ public:
 
         formLayout_2->setWidget(1, QFormLayout::LabelRole, le_port_my);
 
+        plainTextEdit = new QPlainTextEdit(centralWidget);
+        plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
+        plainTextEdit->setGeometry(QRect(30, 20, 491, 271));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));

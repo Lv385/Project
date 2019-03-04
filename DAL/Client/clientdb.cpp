@@ -275,7 +275,7 @@ bool ClientDAL::ClientDB::GetFriendStatus(const int &user_id) {
 int ClientDAL::ClientDB::CountOfFriends()
 {
     int count_of_friends = 0;
-    query_.prepare("SELECT COUNT(user_ID) FROM friend_info");
+    query_.prepare("SELECT COUNT(user_ID) FROM friends");
     if (query_.exec())
     {
         while (query_.next())
@@ -378,7 +378,7 @@ QString ClientDAL::ClientDB::GetLoginById(const int &user_id)
 	{
 		while (query_.next())
 		{
-			login = query_.record().value(0).toInt();
+			login = query_.record().value(0).toString();
 		}
 	}
 	else
