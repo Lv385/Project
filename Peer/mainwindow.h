@@ -19,6 +19,8 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+	void SetIpValidator();
+
 private slots:
 	void OnPbStartClicker();
 

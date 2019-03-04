@@ -29,6 +29,9 @@ signals:
 private:
 	QByteArray received_data_;
 
+	QHostAddress receiver_ip_;
+	quint16 receiver_port_;
+
 	const QByteArray k_unpossiblle_2_bytes_sequence_;
 };
 #endif

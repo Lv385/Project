@@ -89,6 +89,9 @@
        <property name="text">
         <string>8989</string>
        </property>
+       <property name="maxLength">
+        <number>65535</number>
+       </property>
       </widget>
      </item>
      <item row="0" column="0">

@@ -2,9 +2,11 @@
 
 Connection::Connection(QObject *parent)
 	: QTcpSocket(parent),
+	receiver_ip_(QHostAddress::Null),
+	receiver_port_(0),
 	k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()) //the only idea i had, must be fixed
 {
-	                                                         
+                                                    
 
 }
 
@@ -46,6 +48,7 @@ void Connection::SendMessage(QString message)
 		emit SendMessageToUI(str);
 	}*/
 }
+
 
 void Connection::TryReadLine()
 {
