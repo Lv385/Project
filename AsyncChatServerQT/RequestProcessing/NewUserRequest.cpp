@@ -3,14 +3,15 @@
 
 
 
-NewUserRequest::NewUserRequest(std::vector<std::string>& request, DAL& d) :AbstractRequest(request, d)
+NewUserRequest::NewUserRequest(QByteArray& request, DAL& d) :AbstractRequest(request, d)
 {
+	income_data_ = Parser::ParseAsLoginOrRegisterInfo(request);
 	prepareResponse();
 }
 bool NewUserRequest::sendResponde(QTcpSocket * initByClient)
 {
-
-	initByClient->write(response.c_str());
+	outcome_data_.append(Parser::GetUnpossibleSequence());
+	initByClient->write(outcome_data_);
 	initByClient->waitForBytesWritten(3000);
 	initByClient->disconnectFromHost();
 	return true;
@@ -21,19 +22,20 @@ bool NewUserRequest::sendResponde(QTcpSocket * initByClient)
 
 void NewUserRequest::prepareResponse()
 {
+	
 	Client newClient;
-	newClient.setUserName(request[1]);
-	newClient.setUserPassword(request[2]);
-	//newClient.setUserIp(request[3]);
-	//newClient.setUserPort(request[4]);
+	newClient.setUserName(income_data_.login);
+	newClient.setUserPassword(income_data_.password);
+	newClient.setUserIp(income_data_.ip);
+	newClient.setUserPort(income_data_.port);
 	int sizeBeforeAdding = database.getSize();
 	database.setClient(newClient);
 	if (sizeBeforeAdding != database.getSize()) { //addition success
-		response = "0";
+		outcome_data_ = Parser::yesNoResponseToByteArray((quint8)ServerRequests::REGISTER_SUCCEED);
 	}
 	else {
 		//something goes wrong
-		response = "-1";
+		outcome_data_ = Parser::yesNoResponseToByteArray((quint8)ServerRequests::REGISTER_FAILED);
 	}
 
 }

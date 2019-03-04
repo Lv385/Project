@@ -8,6 +8,7 @@
 **/release/
 **/x64/ 
 **/enc_temp_folder/
+DAL/Client/Client
 
 #dont need files with next extensions:
 
