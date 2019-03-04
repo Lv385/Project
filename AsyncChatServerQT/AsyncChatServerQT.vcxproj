@@ -98,6 +98,7 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="..\Parser&amp;Structs\parser.cpp" />
     <ClCompile Include="AsyncServer.cpp" />
     <ClCompile Include="DAL\client.cpp" />
     <ClCompile Include="DAL\dal.cpp" />
@@ -113,6 +114,8 @@
     <QtMoc Include="ServerThread.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="..\Parser&amp;Structs\parser.h" />
+    <ClInclude Include="..\Parser&amp;Structs\request_types.h" />
     <ClInclude Include="DAL\Client.h" />
     <ClInclude Include="DAL\dal.h" />
     <QtMoc Include="RequestProcessing\AbstractRequest.h" />

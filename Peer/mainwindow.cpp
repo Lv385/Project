@@ -23,7 +23,7 @@ MainWindow::MainWindow(QWidget *parent) :
     /*connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
 	connect(peer_, SIGNAL(SendLog(QString)),		 this, SLOT(AppendLogMessage(QString)));*/
 	connect(ui_->pb_start, SIGNAL(clicked()), this, SLOT(OnPbStartClicker()));
-
+	connect(ui_->combo_box_friends, SIGNAL(currentIndexChanged(QString)), this, SLOT(AppendHistory()));
 	connect(ui_->pb_send, SIGNAL(clicked()), this, SLOT(OnPbSendClicked()));
 }
 
@@ -69,6 +69,27 @@ void MainWindow::SetIpValidator()
 void MainWindow::AppendMessage(QString message)
 {
     ui_->plainTextEdit->appendPlainText(message); //username by id + message zzz
+}
+
+void MainWindow::AppendHistory()
+{
+	ui_->plainTextEdit->clear();
+	ClientDAL::ClientDB db;
+	QString login = ui_->comboBoxFriends->currentText();
+
+	QVector<ClientDAL::Message> history = db.GetMessages(login);
+	for (auto i : history)
+	{
+		if (login == db.GetLoginById(i.owner_id))
+		{
+			ui_->plainTextEdit->appendPlainText('<' + login + "> : " + i.data);
+		}
+		else
+		{
+			ui_->plainTextEdit->appendPlainText("<Me> : " + i.data);
+			
+		}
+	}
 }
 
 void MainWindow::OnPbSendClicked()

@@ -14,10 +14,10 @@ public:
 	DAL();
 	//interface associated with database access will be placed here
 	void setClient(Client);
-	Client getClient(std::string);
+	Client getClient(QString);
 	int getSize();
 	void printDatabase();
 private:
 
-	std::map<std::string, Client> database;
+	std::map<QString, Client> database;
 };

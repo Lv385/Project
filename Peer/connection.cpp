@@ -36,6 +36,11 @@ void Connection::SendMessage(QString message)
 
 		QString str = "->: " + message;
 		emit SendMessageToUI(str);
+		
+		/*ClientDAL::ClientDB db;
+		ClientDAL::Message msg;
+		msg.data = message;
+		db.AddMessage(msg, "markiyan");*/
 
 		//receiver_socket_->close(); // calls disconnectFromHost which emits disconnected()
 		//receiver_socket_ = nullptr;

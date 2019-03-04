@@ -6,6 +6,7 @@
 
 #include <ui_mainwindow.h>
 #include "../Parser&Structs/parser.h"
+#include "../DAL/Client/clientdb.h"
 
 class Connection : public QTcpSocket
 {

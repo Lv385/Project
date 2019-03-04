@@ -1,13 +1,15 @@
 #pragma once
 #include "AbstractRequest.h"
+#include "../Parser&Structs/parser.h"
 
 
 class NewUserRequest : public AbstractRequest {
 public:
-	NewUserRequest(std::vector<std::string>&, DAL&);
+	NewUserRequest(QByteArray& , DAL& );
 	bool sendResponde(QTcpSocket*);
 protected:
 	void prepareResponse();
 private:
-	std::string response;
+	LoginOrRegisterInfo income_data_;
+	QByteArray outcome_data_;
 };

@@ -1,7 +1,7 @@
 #pragma once
-#include <string>
 #include <iostream>
 #include <vector>
+#include <QHostAddress>
 
 class AbstractRequest;//EPIC LINE OF CODE!!!!!
 
@@ -12,17 +12,17 @@ public:
 	Client();
 	~Client();
 
-	std::string getUserName() const;
-	void setUserName(const std::string &value);
+	QString getUserName() const;
+	void setUserName(QString &value);
 
-	std::string getUserIp() const;
-	void setUserIp(const std::string &value);
+	QHostAddress getUserIp() const;
+	void setUserIp(const QHostAddress &value);
 
-	std::string getUserPort() const;
-	void setUserPort(const std::string &value);
+	quint16 getUserPort() const;
+	void setUserPort(const quint16 value);
 
-	std::string getUserPassword() const;
-	void setUserPassword(const std::string &value);
+	QString getUserPassword() const;
+	void setUserPassword(QString &value);
 
 	void addFriend(Client*);
 	void removeFriend(Client*);
@@ -30,10 +30,11 @@ public:
 	bool operator==(const Client &);
 
 private:
-	std::string userName;//#0 indicies in a vector created after raw request parsing
-	std::string userPassword;//#1
-	std::string userIp;//#2
-	std::string userPort;//#3
+	QString userName;//#0 indicies in a vector created after raw request parsing
+	QString userPassword;//#1
+	QHostAddress userIp;//#2
+	quint16 userPort;//#3
+	quint32 id;
 	std::vector<Client*> friends;
 	std::vector<AbstractRequest*> pendingRequests;
 

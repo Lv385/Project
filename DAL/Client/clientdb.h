@@ -74,16 +74,17 @@ namespace ClientDAL {
 		bool                 GetFriendStatus(const QString& user_login);
 		bool                 GetFriendStatus(const int& user_id);
 
-		unsigned int		 GetIDByLogin(const QString& user_login);
-		unsigned			 GetIDByIpPort(const QString& ip, int port);
-
+		unsigned int  GetIDByLogin(const QString& user_login);
+		unsigned      GetIDByIpPort(const QString& ip, int port);
+		QString	      GetLoginById(const int& user_id);
 	private:
 		int           CountOfFriends();
 		int           CountOfMessages(const QString& user_login);
 		void          CreateUserProfile(const unsigned int user_id);
 		void          DeleteUserProfile(const QString& user_login);
 		void          ErrorInfo(void);
-		QString		  GetLoginById(const int& user_id);
+		
+		
 
 
 		QSqlDatabase data_base_;
