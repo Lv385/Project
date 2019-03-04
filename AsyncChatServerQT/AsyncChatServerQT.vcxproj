@@ -103,6 +103,7 @@
     <ClCompile Include="DAL\dal.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RequestProcessing\AbstractRequest.cpp" />
+    <ClCompile Include="RequestProcessing\LoginRequest.cpp" />
     <ClCompile Include="RequestProcessing\NewUserRequest.cpp" />
     <ClCompile Include="ServerThread.cpp" />
   </ItemGroup>
@@ -116,6 +117,7 @@
     <ClInclude Include="DAL\Client.h" />
     <ClInclude Include="DAL\dal.h" />
     <QtMoc Include="RequestProcessing\AbstractRequest.h" />
+    <ClInclude Include="RequestProcessing\LoginRequest.h" />
     <ClInclude Include="RequestProcessing\NewUserRequest.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
