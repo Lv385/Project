@@ -15,42 +15,42 @@ Client::~Client()
 	}
 }
 
-std::string Client::getUserName() const
+QString Client::getUserName() const
 {
 	return userName;
 }
 
-void Client::setUserName(const std::string &value)
+void Client::setUserName( QString &value)
 {
 	userName = value;
 }
 
-std::string Client::getUserIp() const
+QHostAddress Client::getUserIp() const
 {
 	return userIp;
 }
 
-void Client::setUserIp(const std::string &value)
+void Client::setUserIp(const QHostAddress &value)
 {
 	userIp = value;
 }
 
-std::string Client::getUserPort() const
+quint16  Client::getUserPort() const
 {
 	return userPort;
 }
 
-void Client::setUserPort(const std::string &value)
+void Client::setUserPort(const quint16 value)
 {
 	userPort = value;
 }
 
-std::string Client::getUserPassword() const
+QString Client::getUserPassword() const
 {
 	return userPassword;
 }
 
-void Client::setUserPassword(const std::string &value)
+void Client::setUserPassword( QString &value)
 {
 	userPassword = value;
 }
@@ -76,6 +76,6 @@ bool Client::operator==(const Client &cl)
 
 std::ostream & operator<<(std::ostream & out, const Client& cl)
 {
-	out << cl.getUserName() << " " << cl.getUserIp() << " " << cl.getUserPassword() << " " << cl.getUserPort();
+	out << cl.getUserName().toStdString() << " " << cl.getUserIp().toString().toStdString() << " " << cl.getUserPassword().toStdString() << " " << cl.getUserPort();
 	return out;
 }

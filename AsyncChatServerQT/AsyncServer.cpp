@@ -37,7 +37,7 @@ AsyncServer::~AsyncServer()
 }
 
 void AsyncServer::incomingConnection(qintptr socketDescriptor)
-{
+{	
 	ServerThread * newThread = new ServerThread(socketDescriptor, dal_, this);
 	connect(newThread, SIGNAL(finished()), newThread, SLOT(deleteLater())); // delete ServerThread obj on thread completion
 	newThread->start();

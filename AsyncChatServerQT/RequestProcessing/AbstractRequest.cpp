@@ -1,9 +1,8 @@
-#pragma once
 #include "AbstractRequest.h"
 
 
 
-AbstractRequest::AbstractRequest(std::vector<std::string>& r, DAL &d) :request(r), database(d)
+AbstractRequest::AbstractRequest(QByteArray& r, DAL &d) : database(d)
 {
 }
 

@@ -9,7 +9,7 @@ DAL::DAL()
 void DAL::setClient(Client cl) {
 	database[cl.getUserName()] = cl;
 }
-Client DAL::getClient(std::string userName) {
+Client DAL::getClient(QString userName) {
 	return database.at(userName);
 }
 
@@ -22,6 +22,6 @@ void DAL::printDatabase()
 {
 	for (auto& s : database)
 	{
-		std::cout << s.first << " " << s.second << std::endl;
+		std::cout << s.first.toStdString() << " " << s.second << std::endl;
 	}
 }
