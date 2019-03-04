@@ -269,7 +269,7 @@ bool ClientDAL::ClientDB::GetFriendStatus(const QString &user_login)
 }
 
 bool ClientDAL::ClientDB::GetFriendStatus(const int &user_id) {
-	GetFriendStatus(GetLoginById(user_id));
+	return GetFriendStatus(GetLoginById(user_id));
 }
 
 int ClientDAL::ClientDB::CountOfFriends()
