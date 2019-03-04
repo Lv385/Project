@@ -75,7 +75,7 @@ void MainWindow::AppendHistory()
 {
 	ui_->plainTextEdit->clear();
 	ClientDAL::ClientDB db;
-	QString login = ui_->comboBoxFriends->currentText();
+	QString login = ui_->combo_box_friends->currentText();
 
 	QVector<ClientDAL::Message> history = db.GetMessages(login);
 	for (auto i : history)

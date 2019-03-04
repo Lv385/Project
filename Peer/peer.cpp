@@ -104,7 +104,7 @@ void Peer::SetSocket(Connection *connection)
 {
 	ClientDAL::ClientDB cdb;
 	unsigned id = cdb.GetIDByIpPort(connection->peerAddress().toString(), connection->peerPort());
-	if (id == 0)
+	if (id == 0)	
 	{
 		connections_[id] = connection;
 
