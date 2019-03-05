@@ -82,11 +82,11 @@ void MainWindow::AppendHistory()
 	{
 		if (login == db.GetLoginById(i.owner_id))
 		{
-			ui_->plainTextEdit->appendPlainText('<' + login + "> : " + i.data);
+			ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + '<' + login + ">: " + i.data);
 		}
 		else
 		{
-			ui_->plainTextEdit->appendPlainText("<Me> : " + i.data);
+			ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + "<Me> : " + i.data);
 			
 		}
 	}
