@@ -33,7 +33,7 @@ void Connection::SendMessage(QString message)
 		this->write(to_write);                                      //need to be unpacked by Parser on the other side
 
 		QString str = "->: " + message;
-		emit SendMessageToUI(str);
+		emit SendMessageToUI(str);	
 		
 		/*ClientDAL::ClientDB db;
 		ClientDAL::Message msg;
@@ -57,7 +57,6 @@ void Connection::LoginRequest(LoginOrRegisterInfo info)
 	if (this->state() == QAbstractSocket::ConnectedState)
 	{
 		QByteArray toWrite = Parser::LoginOrRegisterInfo_ToByteArray(info);
-
 	}
 }
 
@@ -82,12 +81,24 @@ void Connection::TryReadLine()
 					  this->peerAddress().toString() + QString::number(this->peerPort()));
 
 		//here we should change behaviour depening on type of message
-		if (Parser::getRequestType(received_data_) == (quint8)ClientRequest::MESSAGE) 
+		quint16 requestType = Parser::getRequestType(received_data_);
+
+		switch (requestType)
 		{
+		case (quint8)ClientRequest::MESSAGE:
 			QString str = QString("<%1>: %2").arg(this->peerAddress().toString())
-											 .arg(Parser::ParseAsMessage(received_data_));
+				.arg(Parser::ParseAsMessage(received_data_));
 			emit SendMessageToUI(str);
+			break;
+		case (quint8)ServerRequests::LOGIN_SUCCEED:
+
+
 		}
+		if ( == (quint8)ClientRequest::MESSAGE) 
+		{
+
+		}
+		if ()
 
 		//no longer needed after using
 		received_data_ = nextData;
