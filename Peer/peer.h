@@ -9,6 +9,7 @@
 #include <QTcpServer>
 #include <QDebug>
 #include <QVector>
+#include <QHostAddress>
 
 #include <../DAL/Client/clientdb.h>
 #include <ui_mainwindow.h>
@@ -44,7 +45,9 @@ signals:
 	
 
 private slots:
-    void SetSocket(Connection *connection);		//setting 
+    void SetSocket(Connection *connection);		// setting 
+	void OnServerConnected(Connection *connection); // 
+
     void ReadMessage();		//doesn't work
     void DisplayError(QAbstractSocket::SocketError socketError);
 
@@ -53,7 +56,10 @@ private slots:
 private:
     TcpServer* tcp_server_; //server for listening
 
-	Connection *connection_; 
+	QHostAddress server_ip_;
+	quint16 server_port_;
+
+	Connection *server_connection_; 
 	QHash<unsigned, Connection*> connections_;
     //QNetworkSession *networkSession = nullptr;
 

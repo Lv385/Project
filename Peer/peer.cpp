@@ -3,9 +3,9 @@
 
 Peer::Peer(QObject *parent, quint16 listen_port)
         : QObject(parent)
-        , tcp_server_(new TcpServer(this))
-        , connection_(new Connection(this))
+        , tcp_server_(new TcpServer(this, QHostAddress(QString("192.168.103.102")), 8888)) //hardcode Olegs pc)
 		, my_listen_port_(listen_port)
+		, server_connection_ (nullptr)
 {
 	is_active_ = true;
 
@@ -20,7 +20,7 @@ Peer::Peer(QObject *parent, quint16 listen_port)
 	}
 	qDebug() << "started listening on: " + QString::number(my_listen_port_);
 
-		ClientDAL::ClientDB db;
+	ClientDAL::ClientDB db;
 	//db.AddNewFriend("admin", 1);
 
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
@@ -46,7 +46,9 @@ Peer::Peer(QObject *parent, quint16 listen_port)
 
 	emit SendLog("My IP: " + my_ip_.toString());
 
-    connect(tcp_server_, SIGNAL(NewConnection(Connection*)), this, SLOT(SetSocket(Connection*))); // 
+    connect(tcp_server_, SIGNAL(NewConnection(Connection*)), this, SLOT(SetSocket(Connection*)));
+	connect(tcp_server_, SIGNAL(NewServerConnection(Connection*)),
+						 this, SLOT(OnServerConnected(Connection*))); 
 	//connect(receiver_socket_, SIGNAL(error()),this, SLOT(DisplayError())); //for future errors
 
     //cannot catch this signal
@@ -117,7 +119,7 @@ void Peer::SetSocket(Connection *connection)
 //	emit SendLog("setting socket: ");
 		//don`t need old socket if having new connection
 
-	emit SendLog("setting socket: " + QString::number(connection_->localPort()));
+	emit SendLog("setting socket: " + QString::number(connection->localPort()));
 	//connect(connection_, SIGNAL(readyRead()), connection_, SLOT(TryReadLine())); // try to read line to \n when recieving data
 	//connect(connection_, SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
 	//connect(connection_, SIGNAL(SendMessageToUI(QString)), this, SIGNAL(SendMessageToUI(QString))); to  return 
@@ -127,7 +129,13 @@ void Peer::SetSocket(Connection *connection)
 
 void Peer::nullTcpSocket()
 {
-	connection_ = nullptr;
+}
+
+void Peer::OnServerConnected(Connection * connection)
+{
+	server_connection_ = connection;
+	connect(connection, SIGNAL(readyRead()), connection, SLOT(TryReadLine())); // try to read line to \n when recieving data
+	connect(connection, SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
 }
 
 void Peer::ReadMessage() //not working should, look at TryReadLine()

@@ -30,9 +30,7 @@ void Connection::SendMessage(QString message)
 
 		QByteArray to_write = Parser::Message_ToByteArray(message); //pack 
 		to_write.append(k_unpossiblle_2_bytes_sequence_);			//append separator
-
 		this->write(to_write);                                      //need to be unpacked by Parser on the other side
-
 
 		QString str = "->: " + message;
 		emit SendMessageToUI(str);
@@ -54,18 +52,31 @@ void Connection::SendMessage(QString message)
 	}*/
 }
 
+void Connection::LoginRequest(LoginOrRegisterInfo info)
+{
+	if (this->state() == QAbstractSocket::ConnectedState)
+	{
+		QByteArray toWrite = Parser::LoginOrRegisterInfo_ToByteArray(info);
+
+	}
+}
+
 void Connection::TryReadLine()
 {
-	QByteArray temp = this->readAll();
+	QByteArray nextData;
+	received_data_.append(this->readAll());
+
 	int separatorIndex;
 
 	//using such a separator, untill we Design something better
-	while (temp.contains(k_unpossiblle_2_bytes_sequence_))
+	while (received_data_.contains(k_unpossiblle_2_bytes_sequence_))
 	{
-		separatorIndex = temp.indexOf(k_unpossiblle_2_bytes_sequence_);
+		separatorIndex = received_data_.indexOf(k_unpossiblle_2_bytes_sequence_);
 
-		received_data_.append(temp.left(separatorIndex));                    //until separator
-		temp = temp.mid(separatorIndex + 2);						   //if there is data after separator we should save it 
+		nextData = received_data_.mid(separatorIndex + 2);
+		received_data_ = received_data_.left(separatorIndex);
+		//received_data_.append(temp.left(separatorIndex));                    //until separator
+		//temp = temp.mid(separatorIndex + 2);						   //if there is data after separator we should save it 
 
 		emit SendLog("recieving something from" +
 					  this->peerAddress().toString() + QString::number(this->peerPort()));
@@ -79,11 +90,14 @@ void Connection::TryReadLine()
 		}
 
 		//no longer needed after using
-		received_data_.clear();
+		received_data_ = nextData;
 	}
 
 	//if there is a part of another request, save it
-	received_data_.append(temp);
+}
+
+void Connection::ServerWorker()
+{
 }
 
 
@@ -91,3 +105,5 @@ Connection::~Connection()
 {
 
 }
+
+
