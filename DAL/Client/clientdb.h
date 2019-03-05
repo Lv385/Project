@@ -14,9 +14,8 @@
 #include <QVector>
 #include <QtSql/qsqlresult.h>
 
-namespace ClientDAL {
-
-
+namespace ClientDAL 
+{
 	struct Message
 	{
 		int message_id;
@@ -88,7 +87,7 @@ namespace ClientDAL {
 
 
 		QSqlDatabase data_base_;
-		QSqlQuery    query_;
+		QSqlQuery query_;
 	};
 }
 

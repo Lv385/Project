@@ -8,6 +8,7 @@ Peer::Peer(QObject *parent, quint16 listen_port)
 		, my_listen_port_(listen_port)
 {
 	is_active_ = true;
+
 	if (!tcp_server_->listen(QHostAddress::Any, my_listen_port_))
 	{
 		qDebug() << "cannot start on: " + QString::number(my_listen_port_);

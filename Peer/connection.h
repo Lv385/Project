@@ -5,6 +5,7 @@
 #include <QHostAddress>
 
 #include <ui_mainwindow.h>
+
 #include "../Parser&Structs/parser.h"
 #include "../DAL/Client/clientdb.h"
 
@@ -17,6 +18,7 @@ public:
 	Connection(qintptr socketDescriptor, QObject *parent = 0);
 
 	void SendMessage(QString message);
+	void SetStrategy(quint8  StrategyType);
 
 	~Connection();
 
@@ -26,6 +28,7 @@ private slots:
 signals:
 	void SendLog(QString);
 	void SendMessageToUI(QString);
+
 
 private:
 	QByteArray received_data_;
