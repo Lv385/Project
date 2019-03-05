@@ -61,6 +61,35 @@ public:
         pb_send = new QPushButton(centralWidget);
         pb_send->setObjectName(QString::fromUtf8("pb_send"));
         pb_send->setGeometry(QRect(550, 280, 131, 31));
+        pb_send->setStyleSheet(QString::fromUtf8("QPushButton{\n"
+"  background:#1AAB8A;\n"
+"  color:#fff;\n"
+"border:none;\n"
+"}\n"
+"QPushButton:hover{\n"
+"  background:#fff;\n"
+"  color:#1AAB8A;\n"
+"}\n"
+"QPushButton:before,QPushButton:after{\n"
+"  content:'';\n"
+"  position:absolute;\n"
+"  top:0;\n"
+"  right:0;\n"
+"  height:2px;\n"
+"  width:0;\n"
+"  background: #1AAB8A;\n"
+"  transition:400ms ease all;\n"
+"}\n"
+"QPushButton:after{\n"
+"  right:inherit;\n"
+"  top:inherit;\n"
+"  left:0;\n"
+"  bottom:0;\n"
+"}\n"
+"QPushButton:hover:before,QPushButton:hover:after{\n"
+"  width:100%;\n"
+"  transition:800ms ease all;\n"
+"}"));
         le_message = new QLineEdit(centralWidget);
         le_message->setObjectName(QString::fromUtf8("le_message"));
         le_message->setGeometry(QRect(30, 309, 491, 21));

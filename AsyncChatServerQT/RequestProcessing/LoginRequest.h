@@ -9,6 +9,6 @@ public:
 protected:
 	void prepareResponse();
 private:
-	LoginInfo log;
+	LoginOrRegisterInfo log;
 	bool logcheck;
 };

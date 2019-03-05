@@ -35,10 +35,13 @@ void Connection::SendMessage(QString message)
 		QString str = "->: " + message;
 		emit SendMessageToUI(str);	
 		
-		/*ClientDAL::ClientDB db;
+		ClientDAL::ClientDB db;
 		ClientDAL::Message msg;
 		msg.data = message;
-		db.AddMessage(msg, "markiyan");*/
+		msg.owner_id = db.GetIDByIpPort(localAddress().toString(), 8989);
+		msg.date = QDate::currentDate();
+		msg.time = QTime::currentTime();
+		db.AddMessage(msg, db.GetIDByIpPort(peerAddress().toString(),8989));
 
 		//receiver_socket_->close(); // calls disconnectFromHost which emits disconnected()
 		//receiver_socket_ = nullptr;
@@ -89,8 +92,20 @@ void Connection::TryReadLine()
 			QString str = QString("<%1>: %2").arg(this->peerAddress().toString())
 				.arg(Parser::ParseAsMessage(received_data_));
 			emit SendMessageToUI(str);
+			ClientDAL::ClientDB db;
+			ClientDAL::Message msg;
+			QString  address = peerAddress().toString();
+			address.remove(0, 7);
+
+			msg.data = Parser::ParseAsMessage(received_data_);
+			msg.owner_id = db.GetIDByIpPort(address, 8989); // should fix hardcode port
+			msg.date = QDate::currentDate();
+			msg.time = QTime::currentTime();
+			
+			db.AddMessage(msg, db.GetIDByIpPort(address, 8989));
 			break;
 		case (quint8)ServerRequests::LOGIN_SUCCEED:
+
 
 
 		}

@@ -29,15 +29,16 @@ protected:
 	ServerDB db;
         virtual void prepareResponse() = 0;
 	
-	//handel to acccess databse
-	DAL& database;
+	
+	
+	//DAL& database;
+	DAL database;
 	QTcpSocket init_by_server;
-
+	//QByteArray bytarr;
 signals:
 
 public slots:
 	virtual void connected();
-	
 
 	//void readyRead();
 };

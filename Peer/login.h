@@ -16,6 +16,6 @@ private slots:
 	void OnPbLogInClicked();
 
 private:
-	Ui::Login *ui;
-	MainWindow *main_window;
+	Ui::Login *ui_;
+	MainWindow *main_window_;
 };

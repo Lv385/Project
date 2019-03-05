@@ -2,7 +2,7 @@
 LoginRequest::LoginRequest(QByteArray&A):AbstractRequest(A)
 {
 	
-	log = Parser::ParseAsLoginInfo(A);
+	log = Parser::ParseAsLoginOrRegisterInfo(A);
 	
 	//prepareResponse();
 }
