@@ -4,6 +4,7 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+	peer_(nullptr),
     ui_(new Ui::MainWindow)
 {
     ui_->setupUi(this);
@@ -103,7 +104,6 @@ void MainWindow::OnPbSendClicked()
     peer_->SendRequest(cdb.GetIDByLogin(selected_login) ,ui_->le_message->text());  //id + mes  zzz
 
 	ui_->plainTextEdit_Log->appendPlainText("\\\\\\\\\\\\\\\\\\\\\\\\\\\\/");
-
 }
 
 void MainWindow::AppendLogMessage(QString message)
