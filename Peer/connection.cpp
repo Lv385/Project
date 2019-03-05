@@ -1,0 +1,106 @@
+#include "connection.h"
+
+Connection::Connection(QObject *parent)
+	: QTcpSocket(parent),
+	receiver_ip_(QHostAddress::Null),
+	receiver_port_(0),
+	k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()) //the only idea i had, must be fixed
+{
+                                                    
+
+}
+
+Connection::Connection(qintptr socketDescriptor, QObject * parent)
+	: k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence())
+{
+	setSocketDescriptor(socketDescriptor);
+}
+
+void Connection::SendMessage(QString message)
+{
+	if (this->state() == QAbstractSocket::ConnectedState)
+	{
+		//message += '\n';
+		//qDebug() << "my server port: " << receiver_server_->serverPort();
+		QString mes_log = "Me: " + this->localAddress().toString() + ':' + QString::number(this->localPort()) +
+					  "\nPeer: " + this->peerAddress().toString() + ':' + QString::number(this->peerPort()) +
+						"\nsending";
+
+		emit SendLog(mes_log);
+
+		QByteArray to_write = Parser::Message_ToByteArray(message); //pack 
+		to_write.append(k_unpossiblle_2_bytes_sequence_);			//append separator
+
+		this->write(to_write);                                      //need to be unpacked by Parser on the other side
+
+		QString str = "->: " + message;
+		emit SendMessageToUI(str);
+		
+		ClientDAL::ClientDB db;
+		ClientDAL::Message msg;
+		msg.data = message;
+		msg.owner_id = db.GetIDByIpPort(localAddress().toString(), 8989);
+		msg.date = QDate::currentDate();
+		msg.time = QTime::currentTime();
+		db.AddMessage(msg, db.GetIDByIpPort(peerAddress().toString(),8989));
+
+		//receiver_socket_->close(); // calls disconnectFromHost which emits disconnected()
+		//receiver_socket_ = nullptr;
+		//m_sender_socket->disconnectFromHost();
+	}
+	/*else
+	{
+		QString str = QString("cannot coonect to") + receiver_ip_.toString() + ' : ' + QString::number(receiver_port_);
+		emit SendLog(str);
+		emit SendMessageToUI(str);
+	}*/
+}
+
+
+void Connection::TryReadLine()
+{
+	QByteArray temp = this->readAll();
+	int separatorIndex;
+
+	//using such a separator, untill we Design something better
+	while (temp.contains(k_unpossiblle_2_bytes_sequence_))
+	{
+		separatorIndex = temp.indexOf(k_unpossiblle_2_bytes_sequence_);
+
+		received_data_.append(temp.left(separatorIndex));                    //until separator
+		temp = temp.mid(separatorIndex + 2);						   //if there is data after separator we should save it 
+
+		emit SendLog("recieving something from" +
+					  this->peerAddress().toString() + QString::number(this->peerPort()));
+
+		//here we should change behaviour depening on type of message
+		if (Parser::getRequestType(received_data_) == (quint16)ClientRequest::MESSAGE) 
+		{
+			QString str = QString("<%1>: %2").arg(this->peerAddress().toString())
+											 .arg(Parser::ParseAsMessage(received_data_));
+			emit SendMessageToUI(str);
+
+			ClientDAL::ClientDB db;
+			ClientDAL::Message msg;
+			QString  address = peerAddress().toString();
+			address.remove(0, 7);
+
+			msg.data = Parser::ParseAsMessage(received_data_);
+			msg.owner_id = db.GetIDByIpPort(address, 8989); // should fix hardcode port
+			msg.date = QDate::currentDate();
+			msg.time = QTime::currentTime();
+			
+			db.AddMessage(msg, db.GetIDByIpPort(address, 8989));
+		}
+		//no longer needed after using
+		received_data_.clear();
+	}
+
+	//if there is a part of another request, save it
+	received_data_.append(temp);
+}
+
+
+Connection::~Connection()
+{
+}
