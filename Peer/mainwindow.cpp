@@ -26,6 +26,15 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(ui_->pb_start, SIGNAL(clicked()), this, SLOT(OnPbStartClicker()));
 	connect(ui_->combo_box_friends, SIGNAL(currentIndexChanged(QString)), this, SLOT(AppendHistory()));
 	connect(ui_->pb_send, SIGNAL(clicked()), this, SLOT(OnPbSendClicked()));
+
+	/*ui_->l_your_status->setVisible(false);
+	ui_->label->setVisible(false);
+	ui_->le_ip->setVisible(false);
+	ui_->label_2->setVisible(false);
+	ui_->le_port->setVisible(false);
+	ui_->label_logs->setVisible(false);
+	ui_->label_3->setVisible(false);
+	ui_->le_port_my->setVisible(false);*/
 }
 
 void MainWindow::OnPbStartClicker()
