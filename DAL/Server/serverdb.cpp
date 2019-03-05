@@ -293,11 +293,13 @@ QVector<unsigned int> ServerDB::GetFriends(unsigned const int & user_id)
 {
 	query_.prepare("SELECT second_user_id FROM friends WHERE first_user_id = :user_id");
 	query_.bindValue(":user_id", user_id);
+	QVector<unsigned int> id_result;
+
 	if (query_.exec())
 	{
 		while (query_.next())
 		{
-			login = query_.record().value(0).toString();
+             id_result.push_back(query_.record().value(0).toUInt());
 		}
 	}
 	else
@@ -305,6 +307,15 @@ QVector<unsigned int> ServerDB::GetFriends(unsigned const int & user_id)
 		ErrorInfo();
 	}
 
+	unsigned int counter = 0;
+	while (counter < id_result.size())
+	{
+		if (false == IsFriend(user_id, id_result[counter++]))
+		{
+			id_result.remove(counter - 1);
+		}
+	}
+	return id_result;
 }
 
 void ServerDB::AddFriend(const QString& user_login ,const QString& second_user_login)
