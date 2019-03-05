@@ -275,7 +275,7 @@ bool ClientDAL::ClientDB::GetFriendStatus(const int &user_id) {
 int ClientDAL::ClientDB::CountOfFriends()
 {
     int count_of_friends = 0;
-    query_.prepare("SELECT COUNT(user_ID) FROM friend_info");
+    query_.prepare("SELECT COUNT(user_ID) FROM friends");
     if (query_.exec())
     {
         while (query_.next())
@@ -367,6 +367,27 @@ unsigned int ClientDAL::ClientDB::GetIDByLogin(const QString &user_login)
 	return id;
 }
 
+unsigned ClientDAL::ClientDB::GetIDByIpPort(const QString & ip, int port)
+{
+	query_.prepare("select user_id from friends where user_IP = :ip and user_port = :port");
+	query_.bindValue(":ip", ip);
+	query_.bindValue(":port", port);
+
+	unsigned int id = 0;
+	if (query_.exec())
+	{
+		while (query_.next())
+		{
+			id = query_.record().value(0).toInt();
+		}
+	}
+	else
+	{
+		ErrorInfo();
+	}
+	return id;
+}
+
 
 QString ClientDAL::ClientDB::GetLoginById(const int &user_id)
 {
@@ -378,7 +399,7 @@ QString ClientDAL::ClientDB::GetLoginById(const int &user_id)
 	{
 		while (query_.next())
 		{
-			login = query_.record().value(0).toInt();
+			login = query_.record().value(0).toString();
 		}
 	}
 	else

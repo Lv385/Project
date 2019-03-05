@@ -2,9 +2,11 @@
 
 Connection::Connection(QObject *parent)
 	: QTcpSocket(parent),
+	receiver_ip_(QHostAddress::Null),
+	receiver_port_(0),
 	k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()) //the only idea i had, must be fixed
 {
-	                                                         
+                                                    
 
 }
 
@@ -34,6 +36,11 @@ void Connection::SendMessage(QString message)
 
 		QString str = "->: " + message;
 		emit SendMessageToUI(str);
+		
+		/*ClientDAL::ClientDB db;
+		ClientDAL::Message msg;
+		msg.data = message;
+		db.AddMessage(msg, "markiyan");*/
 
 		//receiver_socket_->close(); // calls disconnectFromHost which emits disconnected()
 		//receiver_socket_ = nullptr;
@@ -46,6 +53,7 @@ void Connection::SendMessage(QString message)
 		emit SendMessageToUI(str);
 	}*/
 }
+
 
 void Connection::TryReadLine()
 {

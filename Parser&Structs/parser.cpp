@@ -1,15 +1,15 @@
 #include "parser.h"
 
-QByteArray Parser::LoginInfo_ToByteArray(LoginInfo & login_info)
+QByteArray Parser::LoginOrRegisterInfo_ToByteArray(LoginOrRegisterInfo & login_or_register_info)
 {
 	QByteArray result;
 	QDataStream out(&result, QIODevice::WriteOnly);
 
-	out << quint8(ClientRequest::LOGIN);		//type
-	out << login_info.ip.toIPv4Address();		//ip
-	out << login_info.port;						//port
-	out << login_info.login;					//login
-	out << login_info.password;					//password
+	out << quint8(ClientRequest::LOGIN);					//type
+	out << login_or_register_info.ip.toIPv4Address();		//ip
+	out << login_or_register_info.port;						//port
+	out << login_or_register_info.login;					//login
+	out << login_or_register_info.password;					//password
 
 	return result;
 }
@@ -20,9 +20,9 @@ quint8 Parser::getRequestType(QByteArray & data)
 	return result;
 }
 
-LoginInfo Parser::ParseAsLoginInfo(QByteArray& data)
+LoginOrRegisterInfo Parser::ParseAsLoginOrRegisterInfo(QByteArray& data)
 {
-	LoginInfo result;
+	LoginOrRegisterInfo result;
 
 	QDataStream in(&data, QIODevice::ReadOnly);
 
@@ -86,6 +86,18 @@ QString Parser::ParseAsMessage(QByteArray& data)
 
 	return result;                           
 }
+
+
+QByteArray Parser::yesNoResponseToByteArray(quint8 type)
+{
+	QByteArray result;
+	QDataStream out(&result, QIODevice::WriteOnly);
+
+	out << type;	                                 //response
+
+	return result;
+}
+
 
 QByteArray Parser::GetUnpossibleSequence()
 {

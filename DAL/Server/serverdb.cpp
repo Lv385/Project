@@ -289,6 +289,24 @@ QString ServerDB::GetLoginByID(const unsigned int & user_id)
 	}
 }
 
+QVector<unsigned int> ServerDB::GetFriends(unsigned const int & user_id)
+{
+	query_.prepare("SELECT second_user_id FROM friends WHERE first_user_id = :user_id");
+	query_.bindValue(":user_id", user_id);
+	if (query_.exec())
+	{
+		while (query_.next())
+		{
+			login = query_.record().value(0).toString();
+		}
+	}
+	else
+	{
+		ErrorInfo();
+	}
+
+}
+
 void ServerDB::AddFriend(const QString& user_login ,const QString& second_user_login)
 {
      if (!IsFriend(user_login,second_user_login))

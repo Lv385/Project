@@ -6,6 +6,7 @@
 
 #include <ui_mainwindow.h>
 #include "../Parser&Structs/parser.h"
+#include "../DAL/Client/clientdb.h"
 
 class Connection : public QTcpSocket
 {
@@ -28,6 +29,9 @@ signals:
 
 private:
 	QByteArray received_data_;
+
+	QHostAddress receiver_ip_;
+	quint16 receiver_port_;
 
 	const QByteArray k_unpossiblle_2_bytes_sequence_;
 };

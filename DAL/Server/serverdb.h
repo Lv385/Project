@@ -33,6 +33,8 @@ public:
 
     unsigned int         GetIDByLogin(const QString& user_login);//If login don't exist return id = 0	
 	QString				 GetLoginByID(const unsigned int& user_id);// String will be empty if user id dont exist
+	
+	QVector<unsigned int>         GetFriends(unsigned const int& user_id);
 
 private:
     int           FindMaxID();//Find maximal id in the table, if something go wrong return -1

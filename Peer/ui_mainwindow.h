@@ -31,7 +31,6 @@ public:
     QWidget *centralWidget;
     QPushButton *pb_send;
     QLineEdit *le_message;
-    QPlainTextEdit *plainTextEdit;
     QLabel *l_your_status;
     QWidget *layoutWidget;
     QFormLayout *formLayout;
@@ -41,12 +40,13 @@ public:
     QLabel *label;
     QPlainTextEdit *plainTextEdit_Log;
     QLabel *label_logs;
-    QComboBox *comboBoxFriends;
+    QComboBox *combo_box_friends;
     QPushButton *pb_start;
     QWidget *layoutWidget_2;
     QFormLayout *formLayout_2;
     QLabel *label_3;
     QLineEdit *le_port_my;
+    QPlainTextEdit *plainTextEdit;
     QMenuBar *menuBar;
     QToolBar *mainToolBar;
     QStatusBar *statusBar;
@@ -55,7 +55,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(739, 575);
+        MainWindow->resize(735, 575);
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         pb_send = new QPushButton(centralWidget);
@@ -64,12 +64,9 @@ public:
         le_message = new QLineEdit(centralWidget);
         le_message->setObjectName(QString::fromUtf8("le_message"));
         le_message->setGeometry(QRect(30, 309, 491, 21));
-        plainTextEdit = new QPlainTextEdit(centralWidget);
-        plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
-        plainTextEdit->setGeometry(QRect(30, 10, 491, 281));
         l_your_status = new QLabel(centralWidget);
         l_your_status->setObjectName(QString::fromUtf8("l_your_status"));
-        l_your_status->setGeometry(QRect(550, 50, 111, 91));
+        l_your_status->setGeometry(QRect(550, 60, 141, 81));
         layoutWidget = new QWidget(centralWidget);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
         layoutWidget->setGeometry(QRect(550, 170, 141, 92));
@@ -104,9 +101,9 @@ public:
         label_logs = new QLabel(centralWidget);
         label_logs->setObjectName(QString::fromUtf8("label_logs"));
         label_logs->setGeometry(QRect(560, 350, 101, 16));
-        comboBoxFriends = new QComboBox(centralWidget);
-        comboBoxFriends->setObjectName(QString::fromUtf8("comboBoxFriends"));
-        comboBoxFriends->setGeometry(QRect(550, 30, 141, 22));
+        combo_box_friends = new QComboBox(centralWidget);
+        combo_box_friends->setObjectName(QString::fromUtf8("combo_box_friends"));
+        combo_box_friends->setGeometry(QRect(550, 30, 141, 22));
         pb_start = new QPushButton(centralWidget);
         pb_start->setObjectName(QString::fromUtf8("pb_start"));
         pb_start->setGeometry(QRect(540, 380, 141, 23));
@@ -128,10 +125,13 @@ public:
 
         formLayout_2->setWidget(1, QFormLayout::LabelRole, le_port_my);
 
+        plainTextEdit = new QPlainTextEdit(centralWidget);
+        plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
+        plainTextEdit->setGeometry(QRect(30, 20, 491, 271));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 739, 21));
+        menuBar->setGeometry(QRect(0, 0, 735, 21));
         MainWindow->setMenuBar(menuBar);
         mainToolBar = new QToolBar(MainWindow);
         mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
