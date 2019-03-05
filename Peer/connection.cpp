@@ -104,16 +104,9 @@ void Connection::TryReadLine()
 			
 			db.AddMessage(msg, db.GetIDByIpPort(address, 8989));
 			break;
-		case (quint8)ServerRequests::LOGIN_SUCCEED:
-
-
 
 		}
-		if ( == (quint8)ClientRequest::MESSAGE) 
-		{
 
-		}
-		if ()
 
 		//no longer needed after using
 		received_data_ = nextData;
