@@ -54,7 +54,6 @@ void Connection::SendMessage(QString message)
 	}*/
 }
 
-
 void Connection::TryReadLine()
 {
 	QByteArray temp = this->readAll();
@@ -72,12 +71,13 @@ void Connection::TryReadLine()
 					  this->peerAddress().toString() + QString::number(this->peerPort()));
 
 		//here we should change behaviour depening on type of message
-		if (Parser::getRequestType(received_data_) == (quint16)ClientRequest::MESSAGE) 
+		if (Parser::getRequestType(received_data_) == (quint8)ClientRequest::MESSAGE) 
 		{
 			QString str = QString("<%1>: %2").arg(this->peerAddress().toString())
 											 .arg(Parser::ParseAsMessage(received_data_));
 			emit SendMessageToUI(str);
 		}
+
 		//no longer needed after using
 		received_data_.clear();
 	}
@@ -89,4 +89,5 @@ void Connection::TryReadLine()
 
 Connection::~Connection()
 {
+
 }
