@@ -7,8 +7,7 @@
 #include <ui_mainwindow.h>
 
 #include "../Parser&Structs/parser.h"
-#include "abstractstrategy.h"
-#include "peerchattingstrategy.h"
+#include "../DAL/Client/clientdb.h"
 
 class Connection : public QTcpSocket
 {
@@ -29,13 +28,14 @@ private slots:
 signals:
 	void SendLog(QString);
 	void SendMessageToUI(QString);
-	
+
 
 private:
 	QByteArray received_data_;
 
-	const QByteArray k_unpossiblle_2_bytes_sequence_;
+	QHostAddress receiver_ip_;
+	quint16 receiver_port_;
 
-	//AbstractStrategy strategy_;
+	const QByteArray k_unpossiblle_2_bytes_sequence_;
 };
 #endif

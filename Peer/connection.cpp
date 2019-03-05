@@ -2,9 +2,11 @@
 
 Connection::Connection(QObject *parent)
 	: QTcpSocket(parent),
+	receiver_ip_(QHostAddress::Null),
+	receiver_port_(0),
 	k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()) //the only idea i had, must be fixed
 {
-	                                                         
+                                                    
 
 }
 
@@ -34,6 +36,11 @@ void Connection::SendMessage(QString message)
 
 		QString str = "->: " + message;
 		emit SendMessageToUI(str);
+		
+		/*ClientDAL::ClientDB db;
+		ClientDAL::Message msg;
+		msg.data = message;
+		db.AddMessage(msg, "markiyan");*/
 
 		//receiver_socket_->close(); // calls disconnectFromHost which emits disconnected()
 		//receiver_socket_ = nullptr;
@@ -45,15 +52,6 @@ void Connection::SendMessage(QString message)
 		emit SendLog(str);
 		emit SendMessageToUI(str);
 	}*/
-}
-
-void Connection::SetStrategy(quint8 StrategyType)
-{
-//	switch (StrategyType)
-//	{
-//	case (quint8)ClientRequest::MESSAGE:;
-////		strategy_ = new PeerChattingStrategy(this);
-//	//}
 }
 
 void Connection::TryReadLine()
@@ -73,9 +71,6 @@ void Connection::TryReadLine()
 					  this->peerAddress().toString() + QString::number(this->peerPort()));
 
 		//here we should change behaviour depening on type of message
-		this->SetStrategy(Parser::getRequestType(received_data_));
-
-		
 		if (Parser::getRequestType(received_data_) == (quint8)ClientRequest::MESSAGE) 
 		{
 			QString str = QString("<%1>: %2").arg(this->peerAddress().toString())

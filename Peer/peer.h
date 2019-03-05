@@ -8,13 +8,14 @@
 #include <QTcpSocket>
 #include <QTcpServer>
 #include <QDebug>
+#include <QVector>
+
 #include <../DAL/Client/clientdb.h>
 #include <ui_mainwindow.h>
 
 #include "tcpserver.h"
 #include "connection.h"
 
-#include "../DAL/Client/clientdb.h"
 #include "../Parser&Structs/parser.h"
 
 
@@ -25,7 +26,7 @@ class Peer : public QObject
 public:
     explicit Peer(QObject *parent = nullptr, quint16 listen_port = 0);
 
-	void SendRequest(QString message); //send message if there is connection, if not try to connect first
+	void SendRequest(unsigned id, QString message); //send message if there is connection, if not try to connect first
 
 	quint16		 get_my_port() const { return tcp_server_->serverPort(); }
     QHostAddress get_my_ip()   const { return my_ip_; }
@@ -35,7 +36,7 @@ public:
 
 	bool is_active();
 
-	bool ConnectToPeer(QHostAddress receiver_ip, quint16 port); 
+	bool ConnectToPeer(unsigned id);
 
 signals:
 	void SendLog(QString);
@@ -53,6 +54,7 @@ private:
     TcpServer* tcp_server_; //server for listening
 
 	Connection *connection_; 
+	QHash<unsigned, Connection*> connections_;
     //QNetworkSession *networkSession = nullptr;
 
 	QHostAddress my_ip_;

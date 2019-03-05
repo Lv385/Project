@@ -28,7 +28,8 @@ ServerDB::ServerDB()
 
 ServerDB::~ServerDB()
 {
-    data_base_.close();
+	data_base_.~QSqlDatabase();
+	query_.~QSqlQuery();
 }
 
 
@@ -63,7 +64,7 @@ void ServerDB::AddNewUser(const QString& new_user_login ,const QString& new_user
     }
 }
 
-void ServerDB::UpdateIPPort(const QString& user_login,const QString& new_user_ip, const int& new_user_port)
+void ServerDB::UpdateIPPort(const QString& user_login, const QString& new_user_ip, const int& new_user_port)
 {
     query_.prepare("UPDATE users SET user_IP = :new_user_ip, user_port = :new_user_port WHERE user_login  = :user_login ");
     query_.bindValue(":user_login", user_login);
@@ -75,7 +76,22 @@ void ServerDB::UpdateIPPort(const QString& user_login,const QString& new_user_ip
     }
 }
 
-bool ServerDB::CheckUser(const QString& user_login ,const QString& user_password)
+void ServerDB::UpdateIPPort(const unsigned int & user_id, const QString & new_user_ip, const int & new_user_port)
+{
+	if (user_id < FindMaxID())
+	{
+		query_.prepare("UPDATE users SET user_IP = :new_user_ip, user_port = :new_user_port WHERE user_ID  = :user_id ");
+		query_.bindValue(":user_id", user_id);
+		query_.bindValue(":new_user_ip", new_user_ip);
+		query_.bindValue(":new_user_port", new_user_port);
+		if (!query_.exec())//TODO: exception if bad
+		{
+			ErrorInfo();
+		}
+	}
+}
+
+bool ServerDB::CheckUser(const QString& user_login, const QString& user_password)
 {
     query_.prepare("select user_password from users where user_login = :user_login");
     query_.bindValue(":user_login", user_login);
@@ -107,6 +123,25 @@ void ServerDB::ErrorInfo()
 {
     qDebug() << query_.lastError().databaseText();
     qDebug() << query_.lastError().driverText();
+}
+
+bool ServerDB::IsLoginExist(const QString& user_login)
+{
+	unsigned int id = 0;
+	query_.prepare("select user_ID from users where user_login = :user_login");
+	query_.bindValue(":user_login", user_login);
+	if (query_.exec())
+	{
+		while (query_.next())
+		{
+			id = query_.record().value(0).toUInt();
+		}
+	}
+	else
+	{
+		ErrorInfo();
+	}
+	return 0 == id ? false : true;
 }
 
 QPair<QString, int> ServerDB::GetIPPort(const QString& user_login, const QString& second_user_login="admin")//TODO: Check is friend????
@@ -154,12 +189,10 @@ bool ServerDB::IsFriend(const QString& first_user_login, const QString& second_u
 
         if (result == 2)
         {
-            std::cout << true;
             return true;
         }
         else
         {
-            std::cout << false;
             return false;
         }
     }
@@ -171,26 +204,89 @@ bool ServerDB::IsFriend(const QString& first_user_login, const QString& second_u
 
 }
 
-unsigned int  ServerDB::GetIDByLogin(const QString& user_login)//TODO if user login doesnt exist
+bool ServerDB::IsFriend(const unsigned int & first_user_id, const unsigned int & second_user_id)
 {
+	query_.prepare("SELECT COUNT(*)  FROM friends WHERE (second_user_ID = :id_of_second_user AND first_user_ID = :id_of_first_user) OR (first_user_ID = :id_of_second_user AND second_user_ID = :id_of_first_user)");
+	query_.bindValue(":id_of_first_user", first_user_id);
+	query_.bindValue(":id_of_second_user", second_user_id);
+	int result = 0;
+	if (query_.exec())
+	{
+		while (query_.next())
+		{
+			result = query_.record().value(0).toInt();
+		}
 
-     query_.prepare("select user_ID from users where user_login = :user_login");
-     query_.bindValue(":user_login", user_login);
+		if (result == 2)
+		{
+			return true;
+		}
+		else
+		{
+			return false;
+		}
+	}
+	else
+	{
+		ErrorInfo();
+		return false;
+	}
+}
 
-     unsigned int id = 0;
-     if (query_.exec())
-     {
-         while (query_.next())
-         {
-              id = query_.record().value(0).toUInt();
-         }
-     }
-     else
-     {
-        ErrorInfo();
-     }
-     return id;
+unsigned int  ServerDB::GetIDByLogin(const QString& user_login)
+{
+	if (IsLoginExist(user_login) == true)
+	{
+		query_.prepare("select user_ID from users where user_login = :user_login");
+		query_.bindValue(":user_login", user_login);
 
+		unsigned int id = 0;
+		if (query_.exec())
+		{
+			while (query_.next())
+			{
+				id = query_.record().value(0).toUInt();
+			}
+		}
+		else
+		{
+			ErrorInfo();
+		}
+		return id;
+	}
+	else
+	{
+		qDebug() << "User login dont exist";
+		return 0;
+	}
+}
+
+QString ServerDB::GetLoginByID(const unsigned int & user_id)
+{
+	QString login = "";
+	if (user_id <= FindMaxID())
+	{
+		query_.prepare("select user_login from users where user_ID = :user_id");
+		query_.bindValue(":user_id", user_id);
+
+		if (query_.exec())
+		{
+			while (query_.next())
+			{
+				login = query_.record().value(0).toString();
+			}
+		}
+		else
+		{
+			ErrorInfo();
+		}
+		return login;
+	}
+	else
+	{
+		qDebug() << "User id doesnt exist";
+		return login;
+	}
 }
 
 void ServerDB::AddFriend(const QString& user_login ,const QString& second_user_login)
@@ -211,6 +307,24 @@ void ServerDB::AddFriend(const QString& user_login ,const QString& second_user_l
      {
           qDebug("You are already friends");
      }
+}
+
+void ServerDB::AddFriend(const unsigned int & user_id, const unsigned int & second_user_id)
+{
+	if (!IsFriend(user_id, second_user_id))
+	{
+		query_.prepare("INSERT INTO friends (first_user_ID,second_user_ID) VALUES (:f_id, :s_id)");
+		query_.bindValue(":f_id", user_id);
+		query_.bindValue(":s_id", second_user_id);
+		if (!query_.exec())
+		{
+			ErrorInfo();
+		}
+	}
+	else
+	{
+		qDebug("You are already friends");
+	}
 }
 
 

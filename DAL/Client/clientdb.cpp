@@ -1,5 +1,6 @@
 #include "clientdb.h"
-#include <tuple>
+
+
 ClientDAL::ClientDB::ClientDB()
 {
     data_base_=QSqlDatabase::addDatabase("QSQLITE");
@@ -39,8 +40,6 @@ void ClientDAL::ClientDB::AddNewFriend(const QString &user_login, const int user
 }
 
 QPair<QString, int> ClientDAL::ClientDB::GetIPPort(const QString &user_login)
-//std::tuple<int ,std::string, double> ClientDAL::ClientDB::GetIPPort(const QString &user_login)
-
 {
     query_.prepare("select user_IP,user_port from friends where user_login = :user_login");
     query_.bindValue(":user_login", user_login);
@@ -62,6 +61,11 @@ QPair<QString, int> ClientDAL::ClientDB::GetIPPort(const QString &user_login)
     return result_query;
 }
 
+QPair<QString, int> ClientDAL::ClientDB::GetIPPort(const int &user_id)
+{
+	return GetIPPort(GetLoginById(user_id));
+}
+
 void ClientDAL::ClientDB::UpdateIPPort(const QString &user_login, const QString &new_user_ip, const int &new_user_port)
 {
     query_.prepare("UPDATE friends SET user_IP = :new_user_ip, user_port = :new_user_port WHERE user_login  = :user_login ");
@@ -73,6 +77,11 @@ void ClientDAL::ClientDB::UpdateIPPort(const QString &user_login, const QString 
     {
        ErrorInfo();
     }
+}
+
+void ClientDAL::ClientDB::UpdateIPPort(const int &user_id, const QString &new_user_ip, const int &new_user_port) {
+
+	UpdateIPPort(GetLoginById(user_id), new_user_ip, new_user_port);
 }
 
 void ClientDAL::ClientDB::AddMessage(const Message &message, const QString& user_login)
@@ -93,12 +102,17 @@ void ClientDAL::ClientDB::AddMessage(const Message &message, const QString& user
         }
 }
 
-std::vector<ClientDAL::Message> ClientDAL::ClientDB::GetMessages(const QString &user_login)
+void ClientDAL::ClientDB::AddMessage(const Message &message, const int& user_id) {
+
+	AddMessage(message, GetLoginById(user_id));
+}
+
+QVector<ClientDAL::Message> ClientDAL::ClientDB::GetMessages(const QString &user_login)
 {
     int count_of_messages = CountOfMessages(user_login);
 
     unsigned int user_id = GetIDByLogin(user_login);
-    std::vector<Message> messages(count_of_messages);
+    QVector<Message> messages(count_of_messages);
     query_.prepare("SELECT owner_ID,message_data,message_date,message_tima, message_ID FROM Messages WHERE user_ID = :user_id ");
     query_.bindValue(":user_id", user_id );
     int counter = 0;
@@ -121,6 +135,10 @@ std::vector<ClientDAL::Message> ClientDAL::ClientDB::GetMessages(const QString &
     return messages;
 }
 
+QVector<ClientDAL::Message> ClientDAL::ClientDB::GetMessages(const int &user_id) {
+	return GetMessages(GetLoginById(user_id));
+}
+
 void ClientDAL::ClientDB::UpdateUserProfile(const QString &user_login, const QString &user_name, const QString &user_surname)
 {
     int user_id = GetIDByLogin(user_login);
@@ -134,12 +152,16 @@ void ClientDAL::ClientDB::UpdateUserProfile(const QString &user_login, const QSt
     }
 }
 
-std::vector<ClientDAL::User> ClientDAL::ClientDB::GetFriends()
+void ClientDAL::ClientDB::UpdateUserProfile(const int &user_id, const QString &user_name, const QString &user_surname) {
+	UpdateUserProfile(GetLoginById(user_id), user_name, user_surname);
+}
+
+QVector<ClientDAL::User> ClientDAL::ClientDB::GetFriends()
 {
     unsigned int count_of_friends = CountOfFriends();
 
 
-    std::vector<User>friends(count_of_friends);
+    QVector<User>friends(count_of_friends);
     query_.prepare("SELECT user_ID, user_name, user_surname FROM friend_info");
 
     int counter = 0;
@@ -160,6 +182,32 @@ std::vector<ClientDAL::User> ClientDAL::ClientDB::GetFriends()
     return friends;
 }
 
+QVector<QString> ClientDAL::ClientDB::GetFriendsLogin()
+{
+	unsigned int count_of_friends = CountOfFriends();
+
+
+	QVector<QString>friends(count_of_friends);
+	query_.prepare("SELECT user_login FROM friends");
+
+	int counter = 0;
+	if (query_.exec())
+	{
+		while (query_.next())
+		{
+			friends[counter++] = query_.record().value(0).toString();
+		}
+	}
+	else
+	{
+		ErrorInfo();
+	}
+
+	return friends;
+}
+
+
+
 void ClientDAL::ClientDB::DeleteFriend(const QString &user_login)
 {
     DeleteUserProfile(user_login);
@@ -174,6 +222,10 @@ void ClientDAL::ClientDB::DeleteFriend(const QString &user_login)
 
 }
 
+void ClientDAL::ClientDB::DeleteFriend(const int &user_id) {
+	DeleteFriend(GetLoginById(user_id));
+}
+
 void ClientDAL::ClientDB::SetFriendStatus(const QString &user_login, bool status)
 {
     int user_id = GetIDByLogin(user_login);
@@ -184,6 +236,10 @@ void ClientDAL::ClientDB::SetFriendStatus(const QString &user_login, bool status
     {
        ErrorInfo();
     }
+}
+
+void ClientDAL::ClientDB::SetFriendStatus(const int &user_id, bool status) {
+	SetFriendStatus(GetLoginById(user_id), status);
 }
 
 void ClientDAL::ClientDB::SetMessageStatusRead(const int &message_id)
@@ -215,10 +271,14 @@ bool ClientDAL::ClientDB::GetFriendStatus(const QString &user_login)
         return status;
 }
 
+bool ClientDAL::ClientDB::GetFriendStatus(const int &user_id) {
+	return GetFriendStatus(GetLoginById(user_id));
+}
+
 int ClientDAL::ClientDB::CountOfFriends()
 {
     int count_of_friends = 0;
-    query_.prepare("SELECT COUNT(user_ID) FROM friend_info");
+    query_.prepare("SELECT COUNT(user_ID) FROM friends");
     if (query_.exec())
     {
         while (query_.next())
@@ -252,9 +312,6 @@ int ClientDAL::ClientDB::CountOfMessages(const QString &user_login)
     }
     return count_of_messages;
 }
-
-
-
 
 
 
@@ -295,20 +352,62 @@ void ClientDAL::ClientDB::ErrorInfo()
 
 unsigned int ClientDAL::ClientDB::GetIDByLogin(const QString &user_login)
 {
-         query_.prepare("select user_id from friends where user_login = :user_login");
-         query_.bindValue(":user_login", user_login);
+	query_.prepare("select user_id from friends where user_login = :user_login");
+	query_.bindValue(":user_login", user_login);
 
-         unsigned int id = 0;
-         if (query_.exec())
-         {
-             while (query_.next())
-             {
-                  id = query_.record().value(0).toInt();
-             }
-         }
-         else
-         {
-            ErrorInfo();
-         }
-         return id;
+	unsigned int id = 0;
+	if (query_.exec())
+	{
+		while (query_.next())
+		{
+			id = query_.record().value(0).toInt();
+		}
+	}
+	else
+	{
+		ErrorInfo();
+	}
+	return id;
+}
+
+unsigned ClientDAL::ClientDB::GetIDByIpPort(const QString & ip, int port)
+{
+	query_.prepare("select user_id from friends where user_IP = :ip and user_port = :port");
+	query_.bindValue(":ip", ip);
+	query_.bindValue(":port", port);
+
+	unsigned int id = 0;
+	if (query_.exec())
+	{
+		while (query_.next())
+		{
+			id = query_.record().value(0).toInt();
+		}
+	}
+	else
+	{
+		ErrorInfo();
+	}
+	return id;
+}
+
+
+QString ClientDAL::ClientDB::GetLoginById(const int &user_id)
+{
+	query_.prepare("select user_login from friends where user_id = :user_id");
+	query_.bindValue(":user_id", user_id);
+
+	QString login = "";
+	if (query_.exec())
+	{
+		while (query_.next())
+		{
+			login = query_.record().value(0).toString();
+		}
+	}
+	else
+	{
+		ErrorInfo();
+	}
+	return login;
 }

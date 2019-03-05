@@ -4,7 +4,8 @@
 #include <QMainWindow>
 #include <QRegExpValidator>
 #include <QShortcut>
-
+#include <QVector>
+#include <QComboBox>
 #include "peer.h"
 
 namespace Ui {
@@ -19,10 +20,14 @@ public:
     explicit MainWindow(QWidget *parent = 0);
     ~MainWindow();
 
+	void SetIpValidator();
+
 private slots:
 	void OnPbStartClicker();
 
     void AppendMessage(QString);
+
+	void AppendHistory();
 
     void OnPbSendClicked();
 
@@ -31,6 +36,7 @@ private slots:
 private:
     Ui::MainWindow *ui_;
     Peer* peer_;
+
 };
 
 #endif // MAINWINDOW_H
