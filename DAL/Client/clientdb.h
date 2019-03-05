@@ -14,9 +14,8 @@
 #include <vector>
 #include <QtSql/qsqlresult.h>
 
-namespace ClientDAL {
-
-
+namespace ClientDAL 
+{
 	struct Message
 	{
 		int message_id;
@@ -66,7 +65,7 @@ namespace ClientDAL {
 		unsigned int  GetIDByLogin(const QString& user_login);
 
 		QSqlDatabase data_base_;
-		QSqlQuery    query_;
+		QSqlQuery query_;
 	};
 }
 

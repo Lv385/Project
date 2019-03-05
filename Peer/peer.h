@@ -51,6 +51,7 @@ private slots:
 
 private:
     TcpServer* tcp_server_; //server for listening
+
 	Connection *connection_; 
     //QNetworkSession *networkSession = nullptr;
 

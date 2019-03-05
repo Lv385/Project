@@ -4,10 +4,10 @@
 
 MainWindow::MainWindow(QWidget *parent) :
     QMainWindow(parent),
+	peer_(nullptr),
     ui_(new Ui::MainWindow)
 {
     ui_->setupUi(this);
-
 
     QString ip_range = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
     QRegExp ip_regex ("^" + ip_range
@@ -22,10 +22,7 @@ MainWindow::MainWindow(QWidget *parent) :
     /*connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
 	connect(peer_, SIGNAL(SendLog(QString)),		 this, SLOT(AppendLogMessage(QString)));*/
 	connect(ui_->pb_start, SIGNAL(clicked()), this, SLOT(OnPbStartClicker()));
-
 	connect(ui_->pb_send, SIGNAL(clicked()), this, SLOT(OnPbSendClicked()));
-
-	
 }
 
 void MainWindow::OnPbStartClicker()
@@ -69,7 +66,6 @@ void MainWindow::OnPbSendClicked()
     peer_->SendRequest(ui_->le_message->text());
 
 	ui_->plainTextEdit_Log->appendPlainText("\\\\\\\\\\\\\\\\\\\\\\\\\\\\/");
-
 }
 
 void MainWindow::AppendLogMessage(QString message)

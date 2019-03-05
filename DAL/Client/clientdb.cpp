@@ -1,6 +1,5 @@
 #include "clientdb.h"
-
-
+#include <tuple>
 ClientDAL::ClientDB::ClientDB()
 {
     data_base_=QSqlDatabase::addDatabase("QSQLITE");
@@ -40,6 +39,8 @@ void ClientDAL::ClientDB::AddNewFriend(const QString &user_login, const int user
 }
 
 QPair<QString, int> ClientDAL::ClientDB::GetIPPort(const QString &user_login)
+//std::tuple<int ,std::string, double> ClientDAL::ClientDB::GetIPPort(const QString &user_login)
+
 {
     query_.prepare("select user_IP,user_port from friends where user_login = :user_login");
     query_.bindValue(":user_login", user_login);
@@ -56,6 +57,8 @@ QPair<QString, int> ClientDAL::ClientDB::GetIPPort(const QString &user_login)
     {
        ErrorInfo();
     }
+
+
     return result_query;
 }
 
@@ -65,6 +68,7 @@ void ClientDAL::ClientDB::UpdateIPPort(const QString &user_login, const QString 
     query_.bindValue(":user_login", user_login);
     query_.bindValue(":new_user_ip",new_user_ip);
     query_.bindValue(":new_user_port",new_user_port);
+
     if (!query_.exec())//TODO: exception if bad
     {
        ErrorInfo();

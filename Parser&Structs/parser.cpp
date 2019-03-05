@@ -93,6 +93,7 @@ QByteArray Parser::GetUnpossibleSequence()
 
 	QDataStream out(&result, QIODevice::WriteOnly);
 	quint16 unpossible = 0xFFFE;
+
 	out << unpossible;
 
 	return result;

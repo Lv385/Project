@@ -8,6 +8,7 @@ Peer::Peer(QObject *parent, quint16 listen_port)
 		, my_listen_port_(listen_port)
 {
 	is_active_ = true;
+
 	if (!tcp_server_->listen(QHostAddress::Any, my_listen_port_))
 	{
 		qDebug() << "cannot start on: " + QString::number(my_listen_port_);
@@ -62,7 +63,7 @@ bool Peer::ConnectToPeer(QHostAddress receiver_ip, quint16 port)
 	connection_->connectToHost(receiver_ip_, port);
 	QString logMessage = receiver_ip_.toString() + " : " + QString::number(port);
 	emit SendLog("trying connect to: " + logMessage);
-	if (connection_->waitForConnected(5000))
+	if (connection_->waitForConnected())
 	{
 		emit SendLog("connected to:" + logMessage);
 		//connect(tcp_socket_, SIGNAL(disconnected()), tcp_socket_, SLOT(deleteLater())); //woking with one socket so temporary commnent
