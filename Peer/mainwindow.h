@@ -34,6 +34,9 @@ private slots:
 	void AppendLogMessage(QString);
 
 	void OnPbLoginClicked();
+
+	void OnRbSimpleClicked();
+	void OnRbEngineeringClicked();
 	
 private:
     Ui::MainWindow *ui_;

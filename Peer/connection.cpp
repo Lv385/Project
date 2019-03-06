@@ -69,7 +69,8 @@ bool Connection::LoginRequest(LoginOrRegisterInfo info)
 			read = read.left(read.indexOf(k_unpossiblle_2_bytes_sequence_));
 			quint8 type = Parser::getRequestType(read);
 			if (type == (quint8)ServerRequests::LOGIN_SUCCEED)
-			{			
+			{
+				emit SendLog("Logged in success");
 				return true;
 			}
 
