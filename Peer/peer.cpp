@@ -143,7 +143,7 @@ void Peer::SendUpdateInfo()
 
 	QByteArray to_write = Parser::IdPort_ToByteArray(my_id_port); //pack 
 	to_write.append(Parser::GetUnpossibleSequence());			  //append separator
-
+	QString temp = udp_group_address_.toString();
 	update_sender_.writeDatagram(to_write, udp_group_address_, my_listen_port_);
 	emit SendLog("update sent");
 
@@ -164,8 +164,8 @@ void Peer::UpdateFriendsInfo()
 		QHostAddress peer_address;
 		update_receiver_.readDatagram(datagram.data(), datagram.size(), &peer_address);
 		updated_friend_info = Parser::ParseAsIdPort(datagram);
-		if (updated_friend_info.id == my_id_)  // hardcode your own id
-			return;
+		//if (updated_friend_info.id == my_id_)  // hardcode your own id
+			//continue;
 
 
 		if (check_timers.find(updated_friend_info.id) == check_timers.end()) //zzz
