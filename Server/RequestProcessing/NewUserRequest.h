@@ -5,7 +5,7 @@
 
 class NewUserRequest : public AbstractRequest {
 public:
-	NewUserRequest(QByteArray& , DAL& );
+	NewUserRequest(QByteArray& , DAL* );
 	bool sendResponde(QTcpSocket*);
 protected:
 	void prepareResponse();

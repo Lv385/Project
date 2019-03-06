@@ -41,22 +41,24 @@ void ClientDAL::ClientDB::AddNewFriend(const QString &user_login, const int user
 
 QPair<QString, int> ClientDAL::ClientDB::GetIPPort(const QString &user_login)
 {
-	query_.prepare("select user_IP,user_port from friends where user_login = :user_login");
-	query_.bindValue(":user_login", user_login);
-	QPair<QString, int> result_query;
-	if (query_.exec())
-	{
-		while (query_.next())
-		{
-			result_query.first = query_.record().value(0).toString();
-			result_query.second = query_.record().value(1).toInt();
-		}
-	}
-	else
-	{
-		ErrorInfo();
-	}
-	return result_query;
+    query_.prepare("select user_IP,user_port from friends where user_login = :user_login");
+    query_.bindValue(":user_login", user_login);
+    QPair<QString, int> result_query;
+    if (query_.exec())
+    {
+        while (query_.next())
+        {
+             result_query.first = query_.record().value(0).toString();
+             result_query.second = query_.record().value(1).toInt();
+        }
+    }
+    else
+    {
+       ErrorInfo();
+    }
+
+
+    return result_query;
 }
 
 QPair<QString, int> ClientDAL::ClientDB::GetIPPort(const int &user_id)
@@ -70,6 +72,7 @@ void ClientDAL::ClientDB::UpdateIPPort(const QString &user_login, const QString 
     query_.bindValue(":user_login", user_login);
     query_.bindValue(":new_user_ip",new_user_ip);
     query_.bindValue(":new_user_port",new_user_port);
+
     if (!query_.exec())//TODO: exception if bad
     {
        ErrorInfo();

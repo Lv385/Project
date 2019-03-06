@@ -32,6 +32,8 @@ private slots:
     void OnPbSendClicked();
 
 	void AppendLogMessage(QString);
+
+	void OnPbLoginClicked();
 	
 private:
     Ui::MainWindow *ui_;

@@ -10,9 +10,8 @@
 #include <QUdpSocket>
 #include <QDebug>
 #include <QVector>
-#include <QList> //
 #include <QTimer>
-
+#include <QHostAddress>
 #include <../DAL/Client/clientdb.h>
 #include <ui_mainwindow.h>
 
@@ -40,7 +39,11 @@ public:
 
 	bool is_active();
 
+	bool startListening(quint16 listen_port);
+
 	bool ConnectToPeer(unsigned id);
+
+	bool LogIn(QString login, QString password);
 
 signals:
 	void SendLog(QString);
@@ -48,7 +51,9 @@ signals:
 	
 
 private slots:
-    void SetSocket(Connection *connection);		//setting 
+    void SetSocket(Connection *connection);		// setting 
+	void OnServerConnected(Connection *connection); // 
+
     void ReadMessage();		//doesn't work
     void DisplayError(QAbstractSocket::SocketError socketError);
 
@@ -60,8 +65,12 @@ private slots:
 
 private:
     TcpServer* tcp_server_; //server for listening
-	Connection *connection_; 
-	QHash<unsigned, Connection*> connections_; //supports multiple connections
+
+	QHostAddress server_ip_;
+	quint16 server_port_;
+
+	Connection *server_connection_; 
+	QHash<unsigned, Connection*> connections_;
     //QNetworkSession *networkSession = nullptr;
 
 	QUdpSocket update_sender_;

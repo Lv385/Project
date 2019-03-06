@@ -29,6 +29,28 @@ AsyncServer::AsyncServer(QObject *parent) :QTcpServer ()
 
 		qDebug() << "Server are listening: " << ipAddress << ":" << this->serverPort();
 	}
+	/*
+	Client cl(QString("oleksa"), QString("password"), QHostAddress("192.168.103.120"), 8989);
+	Client c2(QString("markiyan"), QString("password"), QHostAddress("192.168.103.55"), 8989);
+	Client c3(QString("liubomyr"), QString("password"), QHostAddress("192.168.103.88"), 8989);
+	dal_.setClient(cl);
+	dal_.setClient(c2);
+	dal_.setClient(c3);
+
+	//database testing
+	
+	Client cl;
+	cl.setUserName(QString("Oleg"));
+	cl.setUserPassword(QString("Pass"));
+	cl.setUserIp(QHostAddress("192.168.102.103"));
+	cl.setUserPort(23456);
+
+	dal_.setClient(cl);
+
+	Client ret = dal_.getClient(QString("Oleg"));
+
+	qDebug() << ret.getUserName() << ret.getUserIp();
+	*/
 }
 
 
@@ -38,7 +60,7 @@ AsyncServer::~AsyncServer()
 
 void AsyncServer::incomingConnection(qintptr socketDescriptor)
 {	
-	ServerThread * newThread = new ServerThread(socketDescriptor, dal_, this);
+	ServerThread * newThread = new ServerThread(socketDescriptor, this);
 	connect(newThread, SIGNAL(finished()), newThread, SLOT(deleteLater())); // delete ServerThread obj on thread completion
 	newThread->start();
 }

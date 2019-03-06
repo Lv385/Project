@@ -20,7 +20,6 @@
 #include <QtWidgets/QPlainTextEdit>
 #include <QtWidgets/QPushButton>
 #include <QtWidgets/QStatusBar>
-#include <QtWidgets/QToolBar>
 #include <QtWidgets/QWidget>
 
 QT_BEGIN_NAMESPACE
@@ -44,11 +43,15 @@ public:
     QPushButton *pb_start;
     QWidget *layoutWidget_2;
     QFormLayout *formLayout_2;
-    QLabel *label_3;
     QLineEdit *le_port_my;
+    QLabel *label_3;
     QPlainTextEdit *plainTextEdit;
+    QLineEdit *le_login;
+    QLineEdit *le_password;
+    QLabel *label_4;
+    QLabel *label_5;
+    QPushButton *pb_login;
     QMenuBar *menuBar;
-    QToolBar *mainToolBar;
     QStatusBar *statusBar;
 
     void setupUi(QMainWindow *MainWindow)
@@ -56,20 +59,57 @@ public:
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
         MainWindow->resize(735, 575);
+        MainWindow->setFocusPolicy(Qt::TabFocus);
+        MainWindow->setStyleSheet(QString::fromUtf8("QMainWindow{\n"
+"background-color:#1d1d1d\n"
+"}"));
         centralWidget = new QWidget(MainWindow);
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         pb_send = new QPushButton(centralWidget);
         pb_send->setObjectName(QString::fromUtf8("pb_send"));
-        pb_send->setGeometry(QRect(550, 280, 131, 31));
+        pb_send->setGeometry(QRect(540, 300, 71, 31));
+        pb_send->setStyleSheet(QString::fromUtf8("QPushButton\n"
+"{\n"
+"    color: #b1b1b1;\n"
+"    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);\n"
+"    border-width: 1px;\n"
+"    border-color: #1e1e1e;\n"
+"    border-style: solid;\n"
+"    border-radius: 10;\n"
+"    padding: 3px;\n"
+"    font-size: 12px;\n"
+"    padding-left: 5px;\n"
+"    padding-right: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #2d2d2d, stop: 0.1 #2b2b2b, stop: 0.5 #292929, stop: 0.9 #282828, stop: 1 #252525);\n"
+"}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);\n"
+"}\n"
+"\n"
+"QPushButton:focus {\n"
+"    /*background-color: red;*/\n"
+"}"));
         le_message = new QLineEdit(centralWidget);
         le_message->setObjectName(QString::fromUtf8("le_message"));
         le_message->setGeometry(QRect(30, 309, 491, 21));
+        le_message->setStyleSheet(QString::fromUtf8("QLineEdit{\n"
+"color:#ffffff;\n"
+" background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);\n"
+"    border-radius: 10;\n"
+"}\n"
+""));
         l_your_status = new QLabel(centralWidget);
         l_your_status->setObjectName(QString::fromUtf8("l_your_status"));
-        l_your_status->setGeometry(QRect(550, 60, 141, 81));
+        l_your_status->setGeometry(QRect(540, 200, 141, 81));
         layoutWidget = new QWidget(centralWidget);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(550, 170, 141, 92));
+        layoutWidget->setGeometry(QRect(540, 380, 141, 86));
         formLayout = new QFormLayout(layoutWidget);
         formLayout->setSpacing(6);
         formLayout->setContentsMargins(11, 11, 11, 11);
@@ -98,44 +138,140 @@ public:
         plainTextEdit_Log = new QPlainTextEdit(centralWidget);
         plainTextEdit_Log->setObjectName(QString::fromUtf8("plainTextEdit_Log"));
         plainTextEdit_Log->setGeometry(QRect(30, 360, 491, 161));
+        plainTextEdit_Log->setStyleSheet(QString::fromUtf8("QPlainTextEdit{\n"
+"color:#ffffff;\n"
+" background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);\n"
+"    border-radius: 20;\n"
+"}"));
         label_logs = new QLabel(centralWidget);
         label_logs->setObjectName(QString::fromUtf8("label_logs"));
-        label_logs->setGeometry(QRect(560, 350, 101, 16));
+        label_logs->setGeometry(QRect(220, 340, 101, 16));
         combo_box_friends = new QComboBox(centralWidget);
         combo_box_friends->setObjectName(QString::fromUtf8("combo_box_friends"));
-        combo_box_friends->setGeometry(QRect(550, 30, 141, 22));
+        combo_box_friends->setGeometry(QRect(550, 30, 131, 22));
+        combo_box_friends->setStyleSheet(QString::fromUtf8("QComboBox{\n"
+"    color: #b1b1b1;\n"
+"    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);\n"
+"    border-width: 1px;\n"
+"    border-color: #1e1e1e;\n"
+"    border-style: solid;\n"
+"    border-radius: 6;\n"
+"    padding: 3px;\n"
+"    font-size: 12px;\n"
+"    padding-left: 5px;\n"
+"    padding-right: 5px;\n"
+"}\n"
+"QComboBox::item{\n"
+"    color: #b1b1b1;\n"
+"	background-color:#1d1d1d;	\n"
+"}\n"
+"QComboBox::item:selected{\n"
+"    color: #b1b1b1;\n"
+"}\n"
+""));
         pb_start = new QPushButton(centralWidget);
         pb_start->setObjectName(QString::fromUtf8("pb_start"));
-        pb_start->setGeometry(QRect(540, 380, 141, 23));
+        pb_start->setGeometry(QRect(620, 300, 71, 31));
+        pb_start->setStyleSheet(QString::fromUtf8("QPushButton\n"
+"{\n"
+"    color: #b1b1b1;\n"
+"    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);\n"
+"    border-width: 1px;\n"
+"    border-color: #1e1e1e;\n"
+"    border-style: solid;\n"
+"    border-radius: 10;\n"
+"    padding: 3px;\n"
+"    font-size: 12px;\n"
+"    padding-left: 5px;\n"
+"    padding-right: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #2d2d2d, stop: 0.1 #2b2b2b, stop: 0.5 #292929, stop: 0.9 #282828, stop: 1 #252525);\n"
+"}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);\n"
+"}\n"
+"\n"
+"QPushButton:focus {\n"
+"    /*background-color: red;*/\n"
+"}"));
         layoutWidget_2 = new QWidget(centralWidget);
         layoutWidget_2->setObjectName(QString::fromUtf8("layoutWidget_2"));
-        layoutWidget_2->setGeometry(QRect(540, 410, 141, 92));
+        layoutWidget_2->setGeometry(QRect(540, 480, 141, 41));
         formLayout_2 = new QFormLayout(layoutWidget_2);
         formLayout_2->setSpacing(6);
         formLayout_2->setContentsMargins(11, 11, 11, 11);
         formLayout_2->setObjectName(QString::fromUtf8("formLayout_2"));
         formLayout_2->setContentsMargins(0, 0, 0, 0);
-        label_3 = new QLabel(layoutWidget_2);
-        label_3->setObjectName(QString::fromUtf8("label_3"));
-
-        formLayout_2->setWidget(0, QFormLayout::LabelRole, label_3);
-
         le_port_my = new QLineEdit(layoutWidget_2);
         le_port_my->setObjectName(QString::fromUtf8("le_port_my"));
 
         formLayout_2->setWidget(1, QFormLayout::LabelRole, le_port_my);
 
+        label_3 = new QLabel(layoutWidget_2);
+        label_3->setObjectName(QString::fromUtf8("label_3"));
+
+        formLayout_2->setWidget(0, QFormLayout::LabelRole, label_3);
+
         plainTextEdit = new QPlainTextEdit(centralWidget);
         plainTextEdit->setObjectName(QString::fromUtf8("plainTextEdit"));
         plainTextEdit->setGeometry(QRect(30, 20, 491, 271));
+        plainTextEdit->setStyleSheet(QString::fromUtf8("QPlainTextEdit{\n"
+"color:#ffffff;\n"
+" background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);\n"
+"  border-radius: 20;\n"
+"}"));
+        le_login = new QLineEdit(centralWidget);
+        le_login->setObjectName(QString::fromUtf8("le_login"));
+        le_login->setGeometry(QRect(560, 90, 113, 20));
+        le_password = new QLineEdit(centralWidget);
+        le_password->setObjectName(QString::fromUtf8("le_password"));
+        le_password->setGeometry(QRect(560, 130, 113, 20));
+        label_4 = new QLabel(centralWidget);
+        label_4->setObjectName(QString::fromUtf8("label_4"));
+        label_4->setGeometry(QRect(560, 70, 47, 13));
+        label_5 = new QLabel(centralWidget);
+        label_5->setObjectName(QString::fromUtf8("label_5"));
+        label_5->setGeometry(QRect(560, 110, 47, 13));
+        pb_login = new QPushButton(centralWidget);
+        pb_login->setObjectName(QString::fromUtf8("pb_login"));
+        pb_login->setGeometry(QRect(560, 160, 75, 23));
+        pb_login->setStyleSheet(QString::fromUtf8("QPushButton\n"
+"{\n"
+"    color: #b1b1b1;\n"
+"    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);\n"
+"    border-width: 1px;\n"
+"    border-color: #1e1e1e;\n"
+"    border-style: solid;\n"
+"    border-radius: 10;\n"
+"    padding: 3px;\n"
+"    font-size: 12px;\n"
+"    padding-left: 5px;\n"
+"    padding-right: 5px;\n"
+"}\n"
+"\n"
+"QPushButton:pressed\n"
+"{\n"
+"    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #2d2d2d, stop: 0.1 #2b2b2b, stop: 0.5 #292929, stop: 0.9 #282828, stop: 1 #252525);\n"
+"}\n"
+"\n"
+"QPushButton:hover\n"
+"{\n"
+"    border: 2px solid QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #ffa02f, stop: 1 #d7801a);\n"
+"}\n"
+"\n"
+"QPushButton:focus {\n"
+"    /*background-color: red;*/\n"
+"}"));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
         menuBar->setGeometry(QRect(0, 0, 735, 21));
         MainWindow->setMenuBar(menuBar);
-        mainToolBar = new QToolBar(MainWindow);
-        mainToolBar->setObjectName(QString::fromUtf8("mainToolBar"));
-        MainWindow->addToolBar(Qt::TopToolBarArea, mainToolBar);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QString::fromUtf8("statusBar"));
         MainWindow->setStatusBar(statusBar);
@@ -147,17 +283,22 @@ public:
 
     void retranslateUi(QMainWindow *MainWindow)
     {
-        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MainWindow", nullptr));
+        MainWindow->setWindowTitle(QApplication::translate("MainWindow", "MesX", nullptr));
         pb_send->setText(QApplication::translate("MainWindow", "Send", nullptr));
-        l_your_status->setText(QApplication::translate("MainWindow", "TextLabel", nullptr));
+        l_your_status->setText(QString());
         le_ip->setText(QApplication::translate("MainWindow", "127.0.0.1", nullptr));
         label_2->setText(QApplication::translate("MainWindow", "Enter host port", nullptr));
         le_port->setText(QApplication::translate("MainWindow", "8989", nullptr));
         label->setText(QApplication::translate("MainWindow", "Enter host IP", nullptr));
         label_logs->setText(QApplication::translate("MainWindow", "logs and testing", nullptr));
         pb_start->setText(QApplication::translate("MainWindow", "Start", nullptr));
-        label_3->setText(QApplication::translate("MainWindow", "Enter your port to listen", nullptr));
         le_port_my->setText(QApplication::translate("MainWindow", "8989", nullptr));
+        label_3->setText(QApplication::translate("MainWindow", "Enter your port to listen", nullptr));
+        le_login->setText(QApplication::translate("MainWindow", "liubomyr", nullptr));
+        le_password->setText(QApplication::translate("MainWindow", "password", nullptr));
+        label_4->setText(QApplication::translate("MainWindow", "Login", nullptr));
+        label_5->setText(QApplication::translate("MainWindow", "Password", nullptr));
+        pb_login->setText(QApplication::translate("MainWindow", "Log In", nullptr));
     } // retranslateUi
 
 };

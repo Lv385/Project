@@ -5,6 +5,7 @@
 #include <QHostAddress>
 
 #include <ui_mainwindow.h>
+
 #include "../Parser&Structs/parser.h"
 #include "../DAL/Client/clientdb.h"
 
@@ -16,12 +17,14 @@ public:
 	Connection(QObject *parent);
 	Connection(qintptr socketDescriptor, QObject *parent = 0);
 
-	void SendMessage(QString message);
+	void SendMessage(Message message);
+	bool LoginRequest(LoginOrRegisterInfo info);
 
 	~Connection();
 
 private slots:		
 	void TryReadLine();		
+	void ServerWorker();
 
 signals:
 	void SendLog(QString);

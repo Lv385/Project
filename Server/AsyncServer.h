@@ -12,6 +12,7 @@ protected:
 	void incomingConnection(qintptr socket_descriptor) override;
 private:
 	static const short int PORT = 8888;
-	DAL dal_;
+	//DAL dal_;
 };
 
+ 
