@@ -317,7 +317,7 @@ public:
         pb_start->setText(QApplication::translate("MainWindow", "Start", nullptr));
         le_port_my->setText(QApplication::translate("MainWindow", "8989", nullptr));
         label_3->setText(QApplication::translate("MainWindow", "Enter your port to listen", nullptr));
-        le_login->setText(QApplication::translate("MainWindow", "liubomyr", nullptr));
+        le_login->setText(QApplication::translate("MainWindow", "markiyan", nullptr));
         le_password->setText(QApplication::translate("MainWindow", "password", nullptr));
         label_4->setText(QApplication::translate("MainWindow", "Login", nullptr));
         label_5->setText(QApplication::translate("MainWindow", "Password", nullptr));
