@@ -47,7 +47,7 @@ public:
     QLabel *label_3;
     QPlainTextEdit *plainTextEdit;
     QLineEdit *le_login;
-    QLineEdit *lineEdit_2;
+    QLineEdit *le_password;
     QLabel *label_4;
     QLabel *label_5;
     QPushButton *pb_login;
@@ -109,7 +109,7 @@ public:
         l_your_status->setGeometry(QRect(540, 200, 141, 81));
         layoutWidget = new QWidget(centralWidget);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(540, 380, 141, 81));
+        layoutWidget->setGeometry(QRect(540, 380, 141, 86));
         formLayout = new QFormLayout(layoutWidget);
         formLayout->setSpacing(6);
         formLayout->setContentsMargins(11, 11, 11, 11);
@@ -228,9 +228,9 @@ public:
         le_login = new QLineEdit(centralWidget);
         le_login->setObjectName(QString::fromUtf8("le_login"));
         le_login->setGeometry(QRect(560, 90, 113, 20));
-        lineEdit_2 = new QLineEdit(centralWidget);
-        lineEdit_2->setObjectName(QString::fromUtf8("lineEdit_2"));
-        lineEdit_2->setGeometry(QRect(560, 130, 113, 20));
+        le_password = new QLineEdit(centralWidget);
+        le_password->setObjectName(QString::fromUtf8("le_password"));
+        le_password->setGeometry(QRect(560, 130, 113, 20));
         label_4 = new QLabel(centralWidget);
         label_4->setObjectName(QString::fromUtf8("label_4"));
         label_4->setGeometry(QRect(560, 70, 47, 13));
@@ -294,6 +294,8 @@ public:
         pb_start->setText(QApplication::translate("MainWindow", "Start", nullptr));
         le_port_my->setText(QApplication::translate("MainWindow", "8989", nullptr));
         label_3->setText(QApplication::translate("MainWindow", "Enter your port to listen", nullptr));
+        le_login->setText(QApplication::translate("MainWindow", "liubomyr", nullptr));
+        le_password->setText(QApplication::translate("MainWindow", "password", nullptr));
         label_4->setText(QApplication::translate("MainWindow", "Login", nullptr));
         label_5->setText(QApplication::translate("MainWindow", "Password", nullptr));
         pb_login->setText(QApplication::translate("MainWindow", "Log In", nullptr));

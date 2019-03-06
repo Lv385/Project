@@ -119,6 +119,34 @@ bool ServerDB::CheckUser(const QString& user_login, const QString& user_password
     }
 }
 
+QString ServerDB::GetPasswordById(const unsigned int & user_id)
+{
+	QString password = "";
+	if (user_id <= FindMaxID())
+	{
+		query_.prepare("select user_password from users where user_ID = :user_id");
+		query_.bindValue(":user_id", user_id);
+
+		if (query_.exec())
+		{
+			while (query_.next())
+			{
+				password = query_.record().value(0).toString();
+			}
+		}
+		else
+		{
+			ErrorInfo();
+		}
+		return password;
+	}
+	else
+	{
+		qDebug() << "User id doesnt exist";
+		return password;
+	}
+}
+
 void ServerDB::ErrorInfo()
 {
     qDebug() << query_.lastError().databaseText();
@@ -126,8 +154,7 @@ void ServerDB::ErrorInfo()
 }
 
 bool ServerDB::IsLoginExist(const QString& user_login)
-{
-	unsigned int id = 0;
+{	unsigned int id = 0;
 	query_.prepare("select user_ID from users where user_login = :user_login");
 	query_.bindValue(":user_login", user_login);
 	if (query_.exec())
@@ -280,7 +307,7 @@ unsigned int  ServerDB::GetIDByLogin(const QString& user_login)
 QString ServerDB::GetLoginByID(const unsigned int & user_id)
 {
 	QString login = "";
-	if (user_id <= FindMaxID())
+	if (user_id <= FindMaxID()) 
 	{
 		query_.prepare("select user_login from users where user_ID = :user_id");
 		query_.bindValue(":user_id", user_id);

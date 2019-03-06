@@ -101,7 +101,7 @@ color:#ffffff;
       <x>540</x>
       <y>380</y>
       <width>141</width>
-      <height>81</height>
+      <height>86</height>
      </rect>
     </property>
     <layout class="QFormLayout" name="formLayout">
@@ -291,8 +291,11 @@ color:#ffffff;
       <height>20</height>
      </rect>
     </property>
+    <property name="text">
+     <string>liubomyr</string>
+    </property>
    </widget>
-   <widget class="QLineEdit" name="lineEdit_2">
+   <widget class="QLineEdit" name="le_password">
     <property name="geometry">
      <rect>
       <x>560</x>
@@ -300,6 +303,9 @@ color:#ffffff;
       <width>113</width>
       <height>20</height>
      </rect>
+    </property>
+    <property name="text">
+     <string>password</string>
     </property>
    </widget>
    <widget class="QLabel" name="label_4">

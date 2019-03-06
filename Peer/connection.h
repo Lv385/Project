@@ -17,8 +17,8 @@ public:
 	Connection(QObject *parent);
 	Connection(qintptr socketDescriptor, QObject *parent = 0);
 
-	void SendMessage(QString message);
-	void LoginRequest(LoginOrRegisterInfo info);
+	void SendMessage(Message message);
+	bool LoginRequest(LoginOrRegisterInfo info);
 
 	~Connection();
 

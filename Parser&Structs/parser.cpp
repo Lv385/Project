@@ -34,7 +34,7 @@ LoginOrRegisterInfo Parser::ParseAsLoginOrRegisterInfo(QByteArray& data)
 	return result;
 }
 
-QByteArray Parser::FriendUpdateInfo_ToByteArray(FriendUpdateInfo & friend_update_info)
+QByteArray Parser::FriendUpdateInfo_ToByteArray(FriendUpdateInfo& friend_update_info)
 {
 	QByteArray result;
 	QDataStream out(&result, QIODevice::WriteOnly);
@@ -63,26 +63,29 @@ FriendUpdateInfo Parser::ParseAsFriendUpdateInfo(QByteArray& data)
 }
 
 
-QByteArray Parser::Message_ToByteArray(QString & message)
+QByteArray Parser::Message_ToByteArray(Message& message)
 {
 	QByteArray result;
 	QDataStream out(&result, QIODevice::WriteOnly);
 
 	out << quint8(ClientRequest::MESSAGE);				  //type
-	out << message;										  //message
+	out << message.id;									  //id
+	out << message.message;							      //message
 
 	return result;
 }
 
 
-QString Parser::ParseAsMessage(QByteArray& data)
+Message Parser::ParseAsMessage(QByteArray& data)
 {
-	QString result;
+	Message result;
 	QDataStream in(&data, QIODevice::ReadOnly);
 
 	quint8 type;
 
-	in >> type >> result;
+	in >> type
+		>> result.id
+		>> result.message;
 
 	return result;                           
 }

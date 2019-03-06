@@ -37,7 +37,11 @@ public:
 
 	bool is_active();
 
+	bool startListening(quint16 listen_port);
+
 	bool ConnectToPeer(unsigned id);
+
+	bool LogIn(QString login, QString password);
 
 signals:
 	void SendLog(QString);

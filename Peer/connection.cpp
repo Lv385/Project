@@ -16,7 +16,7 @@ Connection::Connection(qintptr socketDescriptor, QObject * parent)
 	setSocketDescriptor(socketDescriptor);
 }
 
-void Connection::SendMessage(QString message)
+void Connection::SendMessage(Message message)
 {
 	if (this->state() == QAbstractSocket::ConnectedState)
 	{
@@ -26,18 +26,18 @@ void Connection::SendMessage(QString message)
 					  "\nPeer: " + this->peerAddress().toString() + ':' + QString::number(this->peerPort()) +
 						"\nsending";
 
-		emit SendLog(mes_log);
+		emit SendLog(mes_log);		
 
 		QByteArray to_write = Parser::Message_ToByteArray(message); //pack 
 		to_write.append(k_unpossiblle_2_bytes_sequence_);			//append separator
 		this->write(to_write);                                      //need to be unpacked by Parser on the other side
 
-		QString str = "->: " + message;
+		QString str = "->: " + message.message;
 		emit SendMessageToUI(str);	
 		
 		ClientDAL::ClientDB db;
 		ClientDAL::Message msg;
-		msg.data = message;
+		msg.data = message.message;
 		msg.owner_id = db.GetIDByIpPort(localAddress().toString(), 8989);
 		msg.date = QDate::currentDate();
 		msg.time = QTime::currentTime();
@@ -55,12 +55,28 @@ void Connection::SendMessage(QString message)
 	}*/
 }
 
-void Connection::LoginRequest(LoginOrRegisterInfo info)
+bool Connection::LoginRequest(LoginOrRegisterInfo info)
 {
 	if (this->state() == QAbstractSocket::ConnectedState)
 	{
 		QByteArray toWrite = Parser::LoginOrRegisterInfo_ToByteArray(info);
+		write(toWrite);
+
+		if (waitForReadyRead(4000))
+		{
+			QByteArray read = readAll();
+			emit SendLog("writing to server");
+			read = read.mid(read.indexOf(k_unpossiblle_2_bytes_sequence_));
+			quint8 type = Parser::getRequestType(read);
+			if (type == (quint8)ServerRequests::LOGIN_SUCCEED)
+			{			
+				return true;
+			}
+
+		}
+
 	}
+	return false;
 }
 
 void Connection::TryReadLine()
@@ -88,35 +104,45 @@ void Connection::TryReadLine()
 
 		switch (requestType)
 		{
-		case (quint8)ClientRequest::MESSAGE:
-			QString str = QString("<%1>: %2").arg(this->peerAddress().toString())
-				.arg(Parser::ParseAsMessage(received_data_));
-			emit SendMessageToUI(str);
-			ClientDAL::ClientDB db;
-			ClientDAL::Message msg;
-			QString  address = peerAddress().toString();
-			address.remove(0, 7);
+			case (quint8)ClientRequest::MESSAGE:
+			{
+				Message mes = Parser::ParseAsMessage(received_data_);
+				ClientDAL::ClientDB db;
+				QString str = QString("<%1>: %2").arg(db.GetLoginById(mes.id))
+												 .arg(mes.message);
 
-			msg.data = Parser::ParseAsMessage(received_data_);
-			msg.owner_id = db.GetIDByIpPort(address, 8989); // should fix hardcode port
-			msg.date = QDate::currentDate();
-			msg.time = QTime::currentTime();
-			
-			db.AddMessage(msg, db.GetIDByIpPort(address, 8989));
-			break;
+				emit SendMessageToUI(str);
+				ClientDAL::Message msg;
+				QString  address = peerAddress().toString();
+				address.remove(0, 7);						    //#fix 
+
+
+				msg.data = mes.message;
+				msg.owner_id = mes.id;							//#fix
+				msg.date = QDate::currentDate();
+				msg.time = QTime::currentTime();
+
+				db.AddMessage(msg, db.GetIDByIpPort(address, 8989));
+				break;
+			}
 
 		}
-
-
 		//no longer needed after using
 		received_data_ = nextData;
 	}
-
 	//if there is a part of another request, save it
 }
 
 void Connection::ServerWorker()
 {
+	if (received_data_.contains(k_unpossiblle_2_bytes_sequence_))
+	{
+		FriendUpdateInfo info = Parser::ParseAsFriendUpdateInfo(received_data_);
+		ClientDAL::ClientDB db;
+		db.UpdateIPPort(info.id, info.ip.toString(), info.port);
+		disconnect();
+		deleteLater();
+	}
 }
 
 

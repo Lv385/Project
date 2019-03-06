@@ -2,6 +2,7 @@
 #include <iostream>
 #include <vector>
 #include <QHostAddress>
+#include <QVector>
 
 class AbstractRequest;//EPIC LINE OF CODE!!!!!
 
@@ -10,6 +11,7 @@ class Client
 	friend std::ostream& operator<<(std::ostream &, const Client &);
 public:
 	Client();
+	Client(QString, QString, QHostAddress, quint16);
 	~Client();
 
 	QString getUserName() const;
@@ -21,11 +23,17 @@ public:
 	quint16 getUserPort() const;
 	void setUserPort(const quint16 value);
 
+	quint32 getUserId() const;
+	void setUserId(const quint32 id);
+
 	QString getUserPassword() const;
 	void setUserPassword(QString &value);
 
-	void addFriend(Client*);
-	void removeFriend(Client*);
+	void addFriend(Client&);
+	void removeFriend(Client&);
+	void setFriends(QVector<unsigned int> );
+	QVector<unsigned int> getFriends();
+
 
 	bool operator==(const Client &);
 
@@ -35,7 +43,7 @@ private:
 	QHostAddress userIp;//#2
 	quint16 userPort;//#3
 	quint32 id;
-	std::vector<Client*> friends;
-	std::vector<AbstractRequest*> pendingRequests;
+	QVector<unsigned int> friends; // holds id of friends
+	//std::vector<AbstractRequest*> pendingRequests;
 
 };

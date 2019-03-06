@@ -28,8 +28,9 @@ public:
     QPair<QString, int>     GetIPPort(const QString& user_login);
 	QPair<QString, int>     GetIPPort(const unsigned int& user_id);
 	
-    bool                    CheckUser(const QString& user_login, const QString& user_password);
-
+    bool                    CheckUser(const QString& user_login, const QString& user_password);	
+	QString					GetPasswordById(const unsigned int& user_id); //??????????????????????????????
+	//UpdatePassword(user_login, old_passwrd, new_password);
     void                    AddFriend(const QString& user_login, const QString& second_user_login);
 	void                    AddFriend(const unsigned int& user_id, const unsigned int& second_user_id);
 

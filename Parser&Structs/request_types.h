@@ -47,13 +47,12 @@ struct LoginOrRegisterInfo
 //	quint id
 //	QString password;
 //};
-//struct RegisterInfo
-//{
-//	QHostAddress ip;    // server should get it from socket // to fix!!
-//	quint16 port;
-//	QString login;
-//	QString password;
-//};
+struct Registation
+{
+	quint16 port;
+	QString login;
+	QString password;
+};
 
 //sending to all friends on peer logined
 struct FriendUpdateInfo
@@ -91,5 +90,11 @@ struct IdPort
 {
 	quint32 id;
 	quint16 port;
+};
+
+struct Message
+{
+	quint32 id;
+	QString message;
 };
 #endif // !REQUEST_TYPES_H

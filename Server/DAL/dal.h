@@ -3,6 +3,7 @@
 #include <map>
 #include <iostream>
 #include <string>
+#include "../DAL/Server/serverdb.h"
 
 #include "client.h"
 //using namespace std;
@@ -15,9 +16,10 @@ public:
 	//interface associated with database access will be placed here
 	void setClient(Client);
 	Client getClient(QString);
-	int getSize();
-	void printDatabase();
+	Client getClient(quint32);
+	//int getSize();
+	//void printDatabase();
 private:
-
-	std::map<QString, Client> database;
+	ServerDB databse_;
+	//std::map<QString, Client> database;
 };

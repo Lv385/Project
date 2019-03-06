@@ -3,7 +3,7 @@
 
 
 
-NewUserRequest::NewUserRequest(QByteArray& request, DAL& d) :AbstractRequest(request, d)
+NewUserRequest::NewUserRequest(QByteArray& request, DAL* d) :AbstractRequest(request, d)
 {
 	income_data_ = Parser::ParseAsLoginOrRegisterInfo(request);
 	prepareResponse();
@@ -22,20 +22,19 @@ bool NewUserRequest::sendResponde(QTcpSocket * initByClient)
 
 void NewUserRequest::prepareResponse()
 {
-	
 	Client newClient;
-	newClient.setUserName(income_data_.login);
+	newClient.setUserId(income_data_.id);
 	newClient.setUserPassword(income_data_.password);
 	newClient.setUserIp(income_data_.ip);
 	newClient.setUserPort(income_data_.port);
-	int sizeBeforeAdding = database.getSize();
-	database.setClient(newClient);
-	if (sizeBeforeAdding != database.getSize()) { //addition success
+	//int sizeBeforeAdding = database->getSize();
+	database->setClient(newClient);
+	//if (sizeBeforeAdding != database->getSize()) { //addition success
 		outcome_data_ = Parser::yesNoResponseToByteArray((quint8)ServerRequests::REGISTER_SUCCEED);
-	}
+	/*}
 	else {
 		//something goes wrong
 		outcome_data_ = Parser::yesNoResponseToByteArray((quint8)ServerRequests::REGISTER_FAILED);
-	}
+	}*/
 
 }

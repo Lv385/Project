@@ -9,7 +9,7 @@ class ServerThread:public QThread
 {
 	Q_OBJECT
 public:
-	ServerThread( int socket_descriptor, DAL& dal, QObject *parent);
+	ServerThread( int socket_descriptor, QObject *parent);
 	void run() override;
 	void ParseString(const std::string & request);
 	AbstractRequest* getRequestProcessor();
@@ -18,7 +18,7 @@ public:
 
 private:
 	int socket_descriptor_;
-	DAL& dal_;
+	DAL* dal_;
 	QByteArray data_;
 	AbstractRequest* request_;
 };

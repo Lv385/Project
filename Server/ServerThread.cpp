@@ -2,10 +2,12 @@
 #include <QTcpSocket>
 #include <sstream>
 #include "RequestProcessing/NewUserRequest.h"
+#include "RequestProcessing/LoginRequest.h"
 
 
-ServerThread::ServerThread(int socket_descriptor, DAL& dal, QObject *parent) : QThread(parent),dal_(dal),socket_descriptor_(socket_descriptor)
+ServerThread::ServerThread(int socket_descriptor, QObject *parent) : QThread(parent),socket_descriptor_(socket_descriptor)
 {
+	dal_ = new DAL();
 	qDebug() << "New server thread created!\n";
 
 }
@@ -13,18 +15,17 @@ ServerThread::ServerThread(int socket_descriptor, DAL& dal, QObject *parent) : Q
 
 void ServerThread::run()
 {
-	
 	QTcpSocket incomming_connection;
 	incomming_connection.setSocketDescriptor(socket_descriptor_);
 	
-	if (incomming_connection.waitForReadyRead(3000)) 
+	if (incomming_connection.waitForReadyRead(10000)) 
 	{
+		qDebug() << "waitForReadyRead";
 		data_ = incomming_connection.readAll();
-		AbstractRequest* request;
 		SetRequest(Parser::getRequestType(data_));
 
 		request_->sendResponde(&incomming_connection);
-		dal_.printDatabase();
+		//dal_.printDatabase();t
 	}
 }
 
@@ -32,8 +33,13 @@ void ServerThread::SetRequest(quint8 type)
 {	
 	switch (type)
 	{
-	case (quint8)ClientRequest::LOGIN: // should be register
-		request_ = new NewUserRequest(data_, dal_);
+	case (quint8)ClientRequest::REGISTER: // should be register
+		request_ = new NewUserRequest(data_, dal_); 
+		break;
+	case (quint8)ClientRequest::LOGIN:
+		qDebug() << "loginrequest";
+		request_ = new LoginRequest(data_, dal_);
+
 	}
 }
 
