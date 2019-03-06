@@ -53,8 +53,8 @@ FriendUpdateInfo Parser::ParseAsFriendUpdateInfo(QByteArray& data)
 
 	QDataStream in(&data, QIODevice::ReadOnly);
 
-	quint8 type;								  
-	quint32 ip;						
+	quint8 type;
+	quint32 ip;
 
 	in >> type >> ip >> result.port >> result.id;
 	result.ip = QHostAddress(ip);
@@ -87,7 +87,7 @@ Message Parser::ParseAsMessage(QByteArray& data)
 		>> result.id
 		>> result.message;
 
-	return result;                           
+	return result;
 }
 
 

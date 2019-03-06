@@ -97,7 +97,7 @@ void Connection::TryReadLine()
 		//temp = temp.mid(separatorIndex + 2);						   //if there is data after separator we should save it 
 
 		emit SendLog("recieving something from" +
-					  this->peerAddress().toString() + QString::number(this->peerPort()));
+					  this->peerAddress().toString() + ":" + QString::number(this->peerPort()));
 
 		//here we should change behaviour depening on type of message
 		quint16 requestType = Parser::getRequestType(received_data_);

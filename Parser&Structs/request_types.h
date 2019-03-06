@@ -17,7 +17,7 @@ enum class ClientRequest : quint8
 	LAST                                        // this should be last to avoid errors
 };
 
-enum class ServerRequests: quint8
+enum class ServerRequests : quint8
 {
 	LOGIN_SUCCEED = (char)ClientRequest::LAST + 1, //not sure if good
 	LOGIN_FAILED,
@@ -67,8 +67,8 @@ struct FriendUpdateInfo
 struct FriendRequestInfo
 {
 	QString other_login; //login of a potentil friend
-	QString login; 
-	QString password; 
+	QString login;
+	QString password;
 };
 
 //This structure should be accepted by client from server. It holds data 
@@ -82,7 +82,7 @@ struct FriendRequestInfo
 //FriendRequestInfo.password = your pass
 struct AddFriend {
 	QString requester_login;
-	QHostAddress requester_ip;  
+	QHostAddress requester_ip;
 	quint16 requester_port;
 };
 

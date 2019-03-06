@@ -7,15 +7,17 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <QTcpServer>
+#include <QUdpSocket>
 #include <QDebug>
 #include <QVector>
+#include <QTimer>
 #include <QHostAddress>
-
 #include <../DAL/Client/clientdb.h>
 #include <ui_mainwindow.h>
 
 #include "tcpserver.h"
 #include "connection.h"
+#include "statustimer.h"
 
 #include "../Parser&Structs/parser.h"
 
@@ -55,6 +57,10 @@ private slots:
     void ReadMessage();		//doesn't work
     void DisplayError(QAbstractSocket::SocketError socketError);
 
+	void UpdateFriendsInfo();
+	void SendUpdateInfo();
+	void SetOfflineStatus(quint32);
+
 	void nullTcpSocket(); 
 
 private:
@@ -67,6 +73,12 @@ private:
 	Connection *server_connection_; 
 	QHash<unsigned, Connection*> connections_;
     //QNetworkSession *networkSession = nullptr;
+
+	QUdpSocket update_sender_;
+	QUdpSocket update_receiver_;
+	QHostAddress udp_group_address_;
+	QTimer update_info_timer_;
+	QHash<unsigned, StatusTimer*> check_timers; //or use QList insted of QHash
 
 	QHostAddress my_ip_;
 	quint16 my_listen_port_;
