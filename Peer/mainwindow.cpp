@@ -45,6 +45,14 @@ MainWindow::MainWindow(QWidget *parent) :
 
 void MainWindow::OnPbStartClicker()
 {
+	ClientDAL::ClientDB cdb;
+	QString login = ui_->le_login->text();
+	quint32 id = cdb.GetIDByLogin(login);
+
+	peer_->set_login(login);
+	peer_->set_id(id);
+
+
 	if (peer_->startListening(ui_->le_port_my->text().toUShort()))
 	{
 		ui_->l_your_status->setText(tr("The server is running on\n\nIP: %1\nport: %2\n")
@@ -117,10 +125,13 @@ void MainWindow::AppendLogMessage(QString message)
 
 void MainWindow::OnPbLoginClicked()
 {
+	ClientDAL::ClientDB cdb;
 	QString login = ui_->le_login->text();
+	quint32 id = cdb.GetIDByLogin(login);
+
 	if (peer_->LogIn(login, ui_->le_password->text()))
 	{		
-		peer_->set_login(login);
+
 		ui_->pb_start->setEnabled(true);
 		ui_->pb_send->setEnabled (true);
 	}

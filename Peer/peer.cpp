@@ -10,10 +10,7 @@ Peer::Peer(QObject *parent, quint16 listen_port)
 		, server_connection_ (nullptr)
 
 {
-		update_sender_.bind(QHostAddress(QHostAddress::AnyIPv4), 0);
-	update_receiver_.bind(QHostAddress::AnyIPv4, my_listen_port_, QUdpSocket::ShareAddress);
-	update_receiver_.joinMulticastGroup(udp_group_address_);
-	update_info_timer_.start(3000);
+	tcp_server_ = new TcpServer(this, server_ip_, server_port_);
 	is_active_ = true;
 
 	qDebug() << "started listening on: " + QString::number(my_listen_port_);
@@ -59,6 +56,11 @@ void Peer::set_login(QString login)
 	my_login_ = login;
 }
 
+void Peer::set_id(quint32 id)
+{
+	my_id_ = id;
+}
+
 bool Peer::is_active()
 {
 	return is_active_;
@@ -76,7 +78,14 @@ bool Peer::startListening(quint16 listen_port)
 			is_active_ = false;
 			return false;
 		}
+		
 	}
+
+	update_sender_.bind(QHostAddress(QHostAddress::AnyIPv4), 0);
+	update_receiver_.bind(QHostAddress::AnyIPv4, my_listen_port_, QUdpSocket::ShareAddress);
+	update_receiver_.joinMulticastGroup(udp_group_address_);
+	update_info_timer_.start(3000);
+
 	return true;
 }
 
@@ -129,7 +138,7 @@ void Peer::SendUpdateInfo()
 {
 	IdPort my_id_port;
 	ClientDAL::ClientDB cdb;
-	my_id_port.id = cdb.GetIDByLogin(QStringLiteral("oleksa")); // hardcode your own login
+	my_id_port.id = my_id_; // hardcode your own login
 	my_id_port.port = my_listen_port_;
 
 	QByteArray to_write = Parser::IdPort_ToByteArray(my_id_port); //pack 
@@ -146,6 +155,7 @@ void Peer::UpdateFriendsInfo()
 {
 	QByteArray datagram;
 	IdPort updated_friend_info;
+	ClientDAL::ClientDB cdb;
 
 	// using QUdpSocket::readDatagram (API since Qt 4)
 	while (update_receiver_.hasPendingDatagrams()) 
@@ -154,13 +164,12 @@ void Peer::UpdateFriendsInfo()
 		QHostAddress peer_address;
 		update_receiver_.readDatagram(datagram.data(), datagram.size(), &peer_address);
 		updated_friend_info = Parser::ParseAsIdPort(datagram);
-		if (updated_friend_info.id == -1)  // hardcode your own id
+		if (updated_friend_info.id == my_id_)  // hardcode your own id
 			return;
 
 
 		if (check_timers.find(updated_friend_info.id) == check_timers.end()) //zzz
 		{
-			ClientDAL::ClientDB cdb;
 			cdb.SetFriendStatus(updated_friend_info.id, true);
 
 			StatusTimer* timer = new StatusTimer();

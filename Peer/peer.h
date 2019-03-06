@@ -37,6 +37,8 @@ public:
 	void set_receiver_ip  (const QHostAddress &receiver_ip)   { receiver_ip_   = receiver_ip; }
 	void set_receiver_port(const quint16	  &receiver_port) { receiver_port_ = receiver_port; }
 	void set_login(QString login);
+	void set_id(quint32 id);
+
 	bool is_active();
 
 	bool startListening(quint16 listen_port);
@@ -67,6 +69,8 @@ private:
     TcpServer* tcp_server_; //server for listening
 
 	QString my_login_;
+	quint32 my_id_;
+
 	QHostAddress server_ip_;
 	quint16 server_port_;
 
