@@ -20,8 +20,8 @@ ServerDB::ServerDB() {
 }
 
 ServerDB::~ServerDB() {
-	data_base_.~QSqlDatabase();
-	query_.~QSqlQuery();
+	data_base_.close();
+	query_.finish();
 }
 
 
@@ -77,9 +77,9 @@ bool ServerDB::CheckUser(const QString& user_login, const QString& user_password
     QString result_of_query= "";
 
     if (query_.exec()) {
-        while (query_.next()) {
-            result_of_query = query_.record().value(0).toString();
-        }
+		while (query_.next()) {
+			result_of_query = query_.record().value(0).toString();
+		}
     } else {
         ErrorInfo();
     }
