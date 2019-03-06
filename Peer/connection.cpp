@@ -36,6 +36,14 @@ void Connection::SendMessage(QString message)
 
 		QString str = "->: " + message;
 		emit SendMessageToUI(str);
+
+		ClientDAL::ClientDB db;
+		ClientDAL::Message msg;
+		msg.data = message;
+		msg.owner_id = db.GetIDByIpPort(localAddress().toString(), 8989);
+		msg.date = QDate::currentDate();
+		msg.time = QTime::currentTime();
+		db.AddMessage(msg, db.GetIDByIpPort(peerAddress().toString(),8989));
 		
 		/*ClientDAL::ClientDB db;
 		ClientDAL::Message msg;
@@ -69,14 +77,27 @@ void Connection::TryReadLine()
 		temp = temp.mid(separatorIndex + 2);						   //if there is data after separator we should save it 
 
 		emit SendLog("recieving something from" +
-					  this->peerAddress().toString() + QString::number(this->peerPort()));
+					  this->peerAddress().toString() + ":" + QString::number(this->peerPort()));
 
 		//here we should change behaviour depening on type of message
 		if (Parser::getRequestType(received_data_) == (quint16)ClientRequest::MESSAGE) 
 		{
+			// check who sent (ip -> login)  zzz 
 			QString str = QString("<%1>: %2").arg(this->peerAddress().toString())
 											 .arg(Parser::ParseAsMessage(received_data_));
 			emit SendMessageToUI(str);
+
+			ClientDAL::ClientDB db;
+			ClientDAL::Message msg;
+			QString  address = peerAddress().toString();
+			address.remove(0, 7);
+
+			msg.data = Parser::ParseAsMessage(received_data_);
+			msg.owner_id = db.GetIDByIpPort(address, 8989); // should fix hardcode port
+			msg.date = QDate::currentDate();
+			msg.time = QTime::currentTime();
+
+			db.AddMessage(msg, db.GetIDByIpPort(address, 8989));
 		}
 		//no longer needed after using
 		received_data_.clear();

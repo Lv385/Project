@@ -6,7 +6,14 @@ Peer::Peer(QObject *parent, quint16 listen_port)
         , tcp_server_(new TcpServer(this))
         , connection_(new Connection(this))
 		, my_listen_port_(listen_port)
+		, udp_group_address_(QStringLiteral("239.255.43.21"))
 {
+	update_sender_.bind(QHostAddress(QHostAddress::AnyIPv4), 0);
+	update_receiver_.bind(QHostAddress::AnyIPv4, my_listen_port_, QUdpSocket::ShareAddress);
+	update_receiver_.joinMulticastGroup(udp_group_address_);
+	update_info_timer_.start(3000);
+
+
 	is_active_ = true;
 	if (!tcp_server_->listen(QHostAddress::Any, my_listen_port_))
 	{
@@ -46,6 +53,9 @@ Peer::Peer(QObject *parent, quint16 listen_port)
 	emit SendLog("My IP: " + my_ip_.toString());
 
     connect(tcp_server_, SIGNAL(NewConnection(Connection*)), this, SLOT(SetSocket(Connection*))); // 
+	connect(&update_info_timer_, &QTimer::timeout, this, &Peer::SendUpdateInfo);
+	connect(&update_receiver_, &QUdpSocket::readyRead, this, &Peer::UpdateFriendsInfo);
+
 	//connect(receiver_socket_, SIGNAL(error()),this, SLOT(DisplayError())); //for future errors
 
     //cannot catch this signal
@@ -99,6 +109,75 @@ bool Peer::ConnectToPeer(unsigned id)
 		return false;
 	}
 }
+
+void Peer::SendUpdateInfo()
+{
+	IdPort my_id_port;
+	ClientDAL::ClientDB cdb;
+	my_id_port.id = cdb.GetIDByLogin(QStringLiteral("oleksa")); // hardcode your own login
+	my_id_port.port = my_listen_port_;
+
+	QByteArray to_write = Parser::IdPort_ToByteArray(my_id_port); //pack 
+	to_write.append(Parser::GetUnpossibleSequence());			  //append separator
+
+	update_sender_.writeDatagram(to_write, udp_group_address_, my_listen_port_);
+	emit SendLog("update sent");
+
+	
+}
+
+
+void Peer::UpdateFriendsInfo()
+{
+	QByteArray datagram;
+	IdPort updated_friend_info;
+
+	// using QUdpSocket::readDatagram (API since Qt 4)
+	while (update_receiver_.hasPendingDatagrams()) 
+	{
+		datagram.resize(int(update_receiver_.pendingDatagramSize()));
+		QHostAddress peer_address;
+		update_receiver_.readDatagram(datagram.data(), datagram.size(), &peer_address);
+		updated_friend_info = Parser::ParseAsIdPort(datagram);
+		if (updated_friend_info.id == -1)  // hardcode your own id
+			return;
+
+
+		if (check_timers.find(updated_friend_info.id) == check_timers.end()) //zzz
+		{
+			ClientDAL::ClientDB cdb;
+			cdb.SetFriendStatus(updated_friend_info.id, true);
+
+			StatusTimer* timer = new StatusTimer();
+			timer->set_id(updated_friend_info.id);
+			timer->start(10000);        //set timer 10sec
+			check_timers[timer->get_id()] = timer;
+			connect(timer, &StatusTimer::TimeoutById, this, &Peer::SetOfflineStatus);
+		}
+		else
+		{
+			check_timers[updated_friend_info.id]->start(10000);  //reset timer
+		}
+
+		ClientDAL::ClientDB cdb;
+		cdb.UpdateIPPort(updated_friend_info.id, peer_address.toString(), updated_friend_info.port); //:ffff change
+		
+		emit SendLog("updated " + cdb.GetLoginById(updated_friend_info.id) + "'s info");
+	}
+}
+
+
+void Peer::SetOfflineStatus(quint32 id)
+{
+	ClientDAL::ClientDB cdb;
+	cdb.SetFriendStatus(id, false);
+	emit SendLog("set " + cdb.GetLoginById(id) + " offline status");
+
+	StatusTimer* to_delete = check_timers[id];
+	check_timers.remove(id);
+	to_delete->deleteLater();
+}
+
 
 void Peer::SetSocket(Connection *connection)
 {
@@ -176,3 +255,5 @@ void Peer::DisplayError(QAbstractSocket::SocketError socketError)
 	}
 	*/
 }
+
+

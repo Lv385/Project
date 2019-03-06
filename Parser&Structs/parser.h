@@ -12,12 +12,13 @@ public:
 	static quint8  getRequestType(QByteArray& data);
 
 	static LoginOrRegisterInfo		ParseAsLoginOrRegisterInfo(QByteArray& data);
-	static FriendUpdateInfo ParseAsFriendUpdateInfo(QByteArray& data);
-	static QString          ParseAsMessage(QByteArray& data);
-
 	static QByteArray		LoginOrRegisterInfo_ToByteArray(LoginOrRegisterInfo& login_info);
+
+	static FriendUpdateInfo ParseAsFriendUpdateInfo(QByteArray& data);
 	static QByteArray		FriendUpdateInfo_ToByteArray(FriendUpdateInfo& friend_update_info);
+
 	static QByteArray       Message_ToByteArray(QString& message);
+	static QString          ParseAsMessage(QByteArray& data);
 
 	static QByteArray       GetUnpossibleSequence();  //hardcode, this shoud be added to the end of any QByteArray that is written by socket
 													  //to awoid erros
@@ -25,6 +26,11 @@ public:
 													  //not appear in any of our messages
 													  //must be fixed
 	static QByteArray       yesNoResponseToByteArray(quint8 type);
+
+
+	static QByteArray IdPort_ToByteArray(IdPort id_port);
+	static IdPort     ParseAsIdPort(QByteArray& data);
+
 };
 
 #endif // PARSER_H

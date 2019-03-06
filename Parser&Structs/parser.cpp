@@ -8,7 +8,7 @@ QByteArray Parser::LoginOrRegisterInfo_ToByteArray(LoginOrRegisterInfo & login_o
 	out << quint8(ClientRequest::LOGIN);					//type
 	out << login_or_register_info.ip.toIPv4Address();		//ip
 	out << login_or_register_info.port;						//port
-	out << login_or_register_info.login;					//login
+	out << login_or_register_info.id;					    //id
 	out << login_or_register_info.password;					//password
 
 	return result;
@@ -28,7 +28,7 @@ LoginOrRegisterInfo Parser::ParseAsLoginOrRegisterInfo(QByteArray& data)
 
 	quint8 type;
 	quint32 ip;
-	in >> type >> ip >> result.port >> result.login >> result.password;
+	in >> type >> ip >> result.port >> result.id >> result.password;
 	result.ip = QHostAddress(ip);
 
 	return result;
@@ -53,8 +53,8 @@ FriendUpdateInfo Parser::ParseAsFriendUpdateInfo(QByteArray& data)
 
 	QDataStream in(&data, QIODevice::ReadOnly);
 
-	quint8 type;								  
-	quint32 ip;						
+	quint8 type;
+	quint32 ip;
 
 	in >> type >> ip >> result.port >> result.id;
 	result.ip = QHostAddress(ip);
@@ -84,7 +84,7 @@ QString Parser::ParseAsMessage(QByteArray& data)
 
 	in >> type >> result;
 
-	return result;                           
+	return result;
 }
 
 
@@ -98,16 +98,40 @@ QByteArray Parser::yesNoResponseToByteArray(quint8 type)
 	return result;
 }
 
-
 QByteArray Parser::GetUnpossibleSequence()
 {
 	QByteArray result;
 
 	QDataStream out(&result, QIODevice::WriteOnly);
 	quint16 unpossible = 0xFFFE;
+
 	out << unpossible;
 
 	return result;
 }
 
+QByteArray Parser::IdPort_ToByteArray(IdPort id_port)
+{
+	QByteArray result;
+	QDataStream out(&result, QIODevice::WriteOnly);
+
+	out << quint8(ClientRequest::ONLINE_UPDATE);	        //type
+	out << id_port.id;										//ip
+	out << id_port.port;									//port
+
+	return result;
+}
+
+IdPort Parser::ParseAsIdPort(QByteArray & data)
+{
+	IdPort result;
+
+	QDataStream in(&data, QIODevice::ReadOnly);
+
+	quint8 type;
+
+	in >> type >> result.id >> result.port;
+
+	return result;
+}
 
