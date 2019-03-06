@@ -3,24 +3,17 @@
 
 Peer::Peer(QObject *parent, quint16 listen_port)
         : QObject(parent)
-        , tcp_server_(new TcpServer(this))
-        , connection_(new Connection(this))
+		, server_ip_(QHostAddress(QString("192.168.103.102")))       //hardcode Olegs pc)
+		, server_port_(8888)
 		, my_listen_port_(listen_port)
+		, server_connection_ (nullptr)
 {
+	tcp_server_ = new TcpServer(this, server_ip_, server_port_);
 	is_active_ = true;
 
-	if (!tcp_server_->listen(QHostAddress::Any, my_listen_port_))
-	{
-		qDebug() << "cannot start on: " + QString::number(my_listen_port_);
-		if (!tcp_server_->listen())
-		{
-			is_active_ = false;
-			return;
-		}
-	}
 	qDebug() << "started listening on: " + QString::number(my_listen_port_);
 
-		ClientDAL::ClientDB db;
+	ClientDAL::ClientDB db;
 	//db.AddNewFriend("admin", 1);
 
     QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
@@ -46,7 +39,10 @@ Peer::Peer(QObject *parent, quint16 listen_port)
 
 	emit SendLog("My IP: " + my_ip_.toString());
 
-    connect(tcp_server_, SIGNAL(NewConnection(Connection*)), this, SLOT(SetSocket(Connection*))); // 
+    connect(tcp_server_, SIGNAL(NewConnection(Connection*)), this, SLOT(SetSocket(Connection*)));
+	connect(tcp_server_, SIGNAL(NewServerConnection(Connection*)), this, SLOT(OnServerConnected(Connection*))); 
+
+
 	//connect(receiver_socket_, SIGNAL(error()),this, SLOT(DisplayError())); //for future errors
 
     //cannot catch this signal
@@ -55,6 +51,22 @@ Peer::Peer(QObject *parent, quint16 listen_port)
 bool Peer::is_active()
 {
 	return is_active_;
+}
+
+bool Peer::startListening(quint16 listen_port)
+{
+	my_listen_port_ = listen_port;
+	tcp_server_->close();
+	if (!tcp_server_->listen(QHostAddress::Any, my_listen_port_))
+	{
+		qDebug() << "cannot start on: " + QString::number(my_listen_port_);
+		if (!tcp_server_->listen())
+		{
+			is_active_ = false;
+			return false;
+		}
+	}
+	return true;
 }
 
 
@@ -68,7 +80,8 @@ void Peer::SendRequest(unsigned id, QString message)
 	
 	if (connections_[id]->state() == QAbstractSocket::ConnectedState)
 	{
-		connections_[id]->SendMessage(message);
+		Message mes = { id, message };
+		connections_[id]->SendMessage(mes);
 	}
 }
 
@@ -101,33 +114,64 @@ bool Peer::ConnectToPeer(unsigned id)
 	}
 }
 
+bool Peer::LogIn(QString login, QString password)
+{
+	ClientDAL::ClientDB cdb;
+
+	server_connection_ = new Connection(this);
+	connect(server_connection_, SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
+	LoginOrRegisterInfo info;
+	info.id = cdb.GetIDByLogin(login);
+	info.password = password;
+	info.ip = get_my_ip();
+	info.port = get_my_port();
+
+	QString test = server_ip_.toString();
+
+	server_connection_->connectToHost(server_ip_, server_port_);
+
+	if (!server_connection_->waitForConnected(4000))
+	{
+			return false;
+	}
+	if (!server_connection_->LoginRequest(info))
+	{
+		return false;
+	}
+	return true;
+}
+
 void Peer::SetSocket(Connection *connection)
 {
 	ClientDAL::ClientDB cdb;
 	unsigned id = cdb.GetIDByIpPort(connection->peerAddress().toString(), connection->peerPort());
-	if (id == 0)	
-	{
-		connections_[id] = connection;
 
-		connect(connection, SIGNAL(readyRead()), connection, SLOT(TryReadLine())); // try to read line to \n when recieving data
-		connect(connection, SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
-		connect(connection, SIGNAL(SendMessageToUI(QString)), this, SIGNAL(SendMessageToUI(QString)));
-	}
+
+	connections_[id] = connection;
+
+	connect(connection, SIGNAL(readyRead()), connection, SLOT(TryReadLine())); // try to read line to \n when recieving data
+	connect(connection, SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
+	connect(connection, SIGNAL(SendMessageToUI(QString)), this, SIGNAL(SendMessageToUI(QString)));
+	
 
 //	emit SendLog("setting socket: ");
 		//don`t need old socket if having new connection
 
-	emit SendLog("setting socket: " + QString::number(connection_->localPort()));
+	emit SendLog("setting socket: " + QString::number(connection->localPort()));
 	//connect(connection_, SIGNAL(readyRead()), connection_, SLOT(TryReadLine())); // try to read line to \n when recieving data
 	//connect(connection_, SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
 	//connect(connection_, SIGNAL(SendMessageToUI(QString)), this, SIGNAL(SendMessageToUI(QString))); to  return 
-
-	
 }
 
 void Peer::nullTcpSocket()
 {
-	connection_ = nullptr;
+}
+
+void Peer::OnServerConnected(Connection * connection)
+{
+	server_connection_ = connection;
+	connect(connection, SIGNAL(readyRead()), connection, SLOT(ServerWorker())); // try to read line to \n when recieving data
+	connect(connection, SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
 }
 
 void Peer::ReadMessage() //not working should, look at TryReadLine()

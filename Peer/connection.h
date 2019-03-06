@@ -17,18 +17,18 @@ public:
 	Connection(QObject *parent);
 	Connection(qintptr socketDescriptor, QObject *parent = 0);
 
-	void SendMessage(QString message);
-	void SetStrategy(quint8  StrategyType);
+	void SendMessage(Message message);
+	bool LoginRequest(LoginOrRegisterInfo info);
 
 	~Connection();
 
 private slots:		
 	void TryReadLine();		
+	void ServerWorker();
 
 signals:
 	void SendLog(QString);
 	void SendMessageToUI(QString);
-
 
 private:
 	QByteArray received_data_;

@@ -11,6 +11,7 @@ MainWindow::MainWindow(QWidget *parent) :
 
 	SetIpValidator();
 
+	//ui_->pb_start->setEnabled(false);
 	ui_->pb_send->setEnabled(false);
 
 	ClientDAL::ClientDB cdb;
@@ -20,35 +21,38 @@ MainWindow::MainWindow(QWidget *parent) :
 		ui_->combo_box_friends->addItem(login);
 	}
 
+	peer_ = new Peer(this, ui_->le_port_my->text().toUShort());
+
+	connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
+	connect(peer_, SIGNAL(SendLog(QString)), this, SLOT(AppendLogMessage(QString)));
+
     
     /*connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
 	connect(peer_, SIGNAL(SendLog(QString)),		 this, SLOT(AppendLogMessage(QString)));*/
 	connect(ui_->pb_start, SIGNAL(clicked()), this, SLOT(OnPbStartClicker()));
 	connect(ui_->combo_box_friends, SIGNAL(currentIndexChanged(QString)), this, SLOT(AppendHistory()));
 	connect(ui_->pb_send, SIGNAL(clicked()), this, SLOT(OnPbSendClicked()));
+	connect(ui_->pb_login, SIGNAL(clicked()), this, SLOT(OnPbLoginClicked()));
+	/*ui_->l_your_status->setVisible(false);
+	ui_->label->setVisible(false);
+	ui_->le_ip->setVisible(false);
+	ui_->label_2->setVisible(false);
+	ui_->le_port->setVisible(false);
+	ui_->label_logs->setVisible(false);
+	ui_->label_3->setVisible(false);
+	ui_->le_port_my->setVisible(false);*/
 }
 
 void MainWindow::OnPbStartClicker()
 {
-	if (!peer_)
+	if (peer_->startListening(ui_->le_port_my->text().toUShort()))
 	{
-		peer_ = new Peer(this, ui_->le_port_my->text().toUShort());
-
-		connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
-		connect(peer_, SIGNAL(SendLog(QString)), this, SLOT(AppendLogMessage(QString)));
-
 		ui_->l_your_status->setText(tr("The server is running on\n\nIP: %1\nport: %2\n")
 			.arg(peer_->get_my_ip().toString())
 			.arg(peer_->get_my_port()));
-		if (peer_->is_active())
-		{
-			ui_->pb_send->setEnabled(true);
-
-			//sending by ENTER
-			//QShortcut *shortcut = new QShortcut(QKeySequence("Enter"), this);
-			//connect(shortcut, SIGNAL(activated()), this, SLOT(OnPbSendClicked()));
-		}
+		ui_->pb_send->setEnabled(true);
 	}
+
 }
 
 MainWindow::~MainWindow()
@@ -83,11 +87,11 @@ void MainWindow::AppendHistory()
 	{
 		if (login == db.GetLoginById(i.owner_id))
 		{
-			ui_->plainTextEdit->appendPlainText('<' + login + "> : " + i.data);
+			ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + '<' + login + ">: " + i.data);
 		}
 		else
 		{
-			ui_->plainTextEdit->appendPlainText("<Me> : " + i.data);
+			ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + "<Me> : " + i.data);
 			
 		}
 	}
@@ -109,4 +113,13 @@ void MainWindow::OnPbSendClicked()
 void MainWindow::AppendLogMessage(QString message)
 {
 	ui_->plainTextEdit_Log->appendPlainText(message);
+}
+
+void MainWindow::OnPbLoginClicked()
+{
+	if (peer_->LogIn(ui_->le_login->text(), ui_->le_password->text()))
+	{
+		ui_->pb_start->setEnabled(true);
+		ui_->pb_send->setEnabled (true);
+	}
 }

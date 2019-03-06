@@ -13,6 +13,7 @@ enum class ClientRequest : quint8
 	FRIEND_REQUEST,
 	FRIENDSHIP_REJECTED, //client send this to server if AddFriend request declined
 	FRIENDSHIP_ACCEPTED,
+	ONLINE_UPDATE,
 	LAST                                        // this should be last to avoid errors
 };
 
@@ -33,12 +34,27 @@ enum class ServerRequests: quint8
 
 struct LoginOrRegisterInfo
 {
-	QHostAddress ip;
+	QHostAddress ip;    // server should get it from socket // to fix!!
+	quint16 port;
+	quint32 id;
+	QString password;
+};
+
+//struct Login
+//{
+//	QHostAddress ip;    // server should get it from socket // to fix!!
+//	quint16 port;
+//	quint id
+//	QString password;
+//};
+struct Registation
+{
 	quint16 port;
 	QString login;
 	QString password;
 };
 
+//sending to all friends on peer logined
 struct FriendUpdateInfo
 {
 	QHostAddress ip;
@@ -70,4 +86,15 @@ struct AddFriend {
 	quint16 requester_port;
 };
 
+struct IdPort
+{
+	quint32 id;
+	quint16 port;
+};
+
+struct Message
+{
+	quint32 id;
+	QString message;
+};
 #endif // !REQUEST_TYPES_H
