@@ -17,6 +17,7 @@
 **/*.pro
 **/*.pri
 **/*.orig
+**/*.autosave
 
 #test
 
