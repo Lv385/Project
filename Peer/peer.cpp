@@ -10,7 +10,8 @@ Peer::Peer(QObject *parent, quint16 listen_port)
 		, server_connection_ (nullptr)
 
 {
-		update_sender_.bind(QHostAddress(QHostAddress::AnyIPv4), 0);
+	tcp_server_ = new TcpServer(this, server_ip_, server_port_);
+	update_sender_.bind(QHostAddress(QHostAddress::AnyIPv4), 0);
 	update_receiver_.bind(QHostAddress::AnyIPv4, my_listen_port_, QUdpSocket::ShareAddress);
 	update_receiver_.joinMulticastGroup(udp_group_address_);
 	update_info_timer_.start(3000);

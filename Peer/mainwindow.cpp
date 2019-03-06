@@ -26,21 +26,21 @@ MainWindow::MainWindow(QWidget *parent) :
 	connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
 	connect(peer_, SIGNAL(SendLog(QString)), this, SLOT(AppendLogMessage(QString)));
 
-    
+	ui_->rb_simple->setChecked(true);
+	if (ui_->rb_simple->isChecked())
+	{
+		OnRbSimpleClicked();
+	}
     /*connect(peer_, SIGNAL(SendMessageToUI(QString)), this, SLOT(AppendMessage(QString)));
 	connect(peer_, SIGNAL(SendLog(QString)),		 this, SLOT(AppendLogMessage(QString)));*/
 	connect(ui_->pb_start, SIGNAL(clicked()), this, SLOT(OnPbStartClicker()));
 	connect(ui_->combo_box_friends, SIGNAL(currentIndexChanged(QString)), this, SLOT(AppendHistory()));
 	connect(ui_->pb_send, SIGNAL(clicked()), this, SLOT(OnPbSendClicked()));
 	connect(ui_->pb_login, SIGNAL(clicked()), this, SLOT(OnPbLoginClicked()));
-	/*ui_->l_your_status->setVisible(false);
-	ui_->label->setVisible(false);
-	ui_->le_ip->setVisible(false);
-	ui_->label_2->setVisible(false);
-	ui_->le_port->setVisible(false);
-	ui_->label_logs->setVisible(false);
-	ui_->label_3->setVisible(false);
-	ui_->le_port_my->setVisible(false);*/
+
+	connect(ui_->rb_simple, SIGNAL(clicked()), this, SLOT(OnRbSimpleClicked()));
+	connect(ui_->rb_engineering, SIGNAL(clicked()), this, SLOT(OnRbEngineeringClicked()));
+
 }
 
 void MainWindow::OnPbStartClicker()
@@ -91,8 +91,7 @@ void MainWindow::AppendHistory()
 		}
 		else
 		{
-			ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + "<Me> : " + i.data);
-			
+			ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + "<Me> : " + i.data);			
 		}
 	}
 }
@@ -122,4 +121,30 @@ void MainWindow::OnPbLoginClicked()
 		ui_->pb_start->setEnabled(true);
 		ui_->pb_send->setEnabled (true);
 	}
+}
+void MainWindow::OnRbSimpleClicked()
+{
+	ui_->l_your_status->setVisible(false);
+	ui_->label->setVisible(false);
+	ui_->le_ip->setVisible(false);
+	ui_->label_2->setVisible(false);
+	ui_->le_port->setVisible(false);
+	ui_->label_logs->setVisible(false);
+	ui_->label_3->setVisible(false);
+	ui_->le_port_my->setVisible(false);
+	ui_->plainTextEdit_Log->setVisible(false);
+	ui_->pb_start->setVisible(false);
+}
+void MainWindow::OnRbEngineeringClicked()
+{
+	ui_->l_your_status->setVisible(true);
+	ui_->label->setVisible(true);
+	ui_->le_ip->setVisible(true);
+	ui_->label_2->setVisible(true);
+	ui_->le_port->setVisible(true);
+	ui_->label_logs->setVisible(true);
+	ui_->label_3->setVisible(true);
+	ui_->le_port_my->setVisible(true);
+	ui_->plainTextEdit_Log->setVisible(true);
+	ui_->pb_start->setVisible(true);
 }

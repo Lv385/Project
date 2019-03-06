@@ -19,14 +19,26 @@
   <property name="styleSheet">
    <string notr="true">QMainWindow{
 background-color:#1d1d1d
+}
+QLabel{
+color:#fff;
+}
+QRadioButton{
+color:#fff;
+}
+QLineEdit{
+color:#fff;
+ border-radius: 6;
+border:none;
+background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);
 }</string>
   </property>
   <widget class="QWidget" name="centralWidget">
    <widget class="QPushButton" name="pb_send">
     <property name="geometry">
      <rect>
-      <x>540</x>
-      <y>300</y>
+      <x>530</x>
+      <y>330</y>
       <width>71</width>
       <height>31</height>
      </rect>
@@ -68,7 +80,7 @@ QPushButton:focus {
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>309</y>
+      <y>340</y>
       <width>491</width>
       <height>21</height>
      </rect>
@@ -86,7 +98,7 @@ color:#ffffff;
     <property name="geometry">
      <rect>
       <x>540</x>
-      <y>200</y>
+      <y>230</y>
       <width>141</width>
       <height>81</height>
      </rect>
@@ -139,9 +151,9 @@ color:#ffffff;
     <property name="geometry">
      <rect>
       <x>30</x>
-      <y>360</y>
+      <y>380</y>
       <width>491</width>
-      <height>161</height>
+      <height>141</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -155,8 +167,8 @@ color:#ffffff;
    <widget class="QLabel" name="label_logs">
     <property name="geometry">
      <rect>
-      <x>220</x>
-      <y>340</y>
+      <x>230</x>
+      <y>360</y>
       <width>101</width>
       <height>16</height>
      </rect>
@@ -169,14 +181,14 @@ color:#ffffff;
     <property name="geometry">
      <rect>
       <x>550</x>
-      <y>30</y>
+      <y>60</y>
       <width>131</width>
       <height>22</height>
      </rect>
     </property>
     <property name="styleSheet">
      <string notr="true">QComboBox{
-    color: #b1b1b1;
+    color: #fff;
     background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);
     border-width: 1px;
     border-color: #1e1e1e;
@@ -200,8 +212,8 @@ QComboBox::item:selected{
    <widget class="QPushButton" name="pb_start">
     <property name="geometry">
      <rect>
-      <x>620</x>
-      <y>300</y>
+      <x>610</x>
+      <y>330</y>
       <width>71</width>
       <height>31</height>
      </rect>
@@ -271,7 +283,7 @@ QPushButton:focus {
       <x>30</x>
       <y>20</y>
       <width>491</width>
-      <height>271</height>
+      <height>311</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -285,9 +297,9 @@ color:#ffffff;
    <widget class="QLineEdit" name="le_login">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>90</y>
-      <width>113</width>
+      <x>550</x>
+      <y>120</y>
+      <width>131</width>
       <height>20</height>
      </rect>
     </property>
@@ -298,9 +310,9 @@ color:#ffffff;
    <widget class="QLineEdit" name="le_password">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>130</y>
-      <width>113</width>
+      <x>550</x>
+      <y>160</y>
+      <width>131</width>
       <height>20</height>
      </rect>
     </property>
@@ -311,11 +323,14 @@ color:#ffffff;
    <widget class="QLabel" name="label_4">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>70</y>
+      <x>550</x>
+      <y>100</y>
       <width>47</width>
       <height>13</height>
      </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
     </property>
     <property name="text">
      <string>Login</string>
@@ -324,8 +339,8 @@ color:#ffffff;
    <widget class="QLabel" name="label_5">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>110</y>
+      <x>550</x>
+      <y>140</y>
       <width>47</width>
       <height>13</height>
      </rect>
@@ -337,10 +352,10 @@ color:#ffffff;
    <widget class="QPushButton" name="pb_login">
     <property name="geometry">
      <rect>
-      <x>560</x>
-      <y>160</y>
+      <x>550</x>
+      <y>190</y>
       <width>75</width>
-      <height>23</height>
+      <height>31</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -374,6 +389,35 @@ QPushButton:focus {
     </property>
     <property name="text">
      <string>Log In</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="rb_simple">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>10</y>
+      <width>82</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Simple mode</string>
+    </property>
+   </widget>
+   <widget class="QRadioButton" name="rb_engineering">
+    <property name="geometry">
+     <rect>
+      <x>550</x>
+      <y>30</y>
+      <width>111</width>
+      <height>17</height>
+     </rect>
+    </property>
+    <property name="styleSheet">
+     <string notr="true"/>
+    </property>
+    <property name="text">
+     <string>Engineering mode</string>
     </property>
    </widget>
   </widget>
