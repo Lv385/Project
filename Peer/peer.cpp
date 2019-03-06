@@ -48,6 +48,11 @@ Peer::Peer(QObject *parent, quint16 listen_port)
     //cannot catch this signal
 }
 
+void Peer::set_login(QString login)
+{
+	my_login_ = login;
+}
+
 bool Peer::is_active()
 {
 	return is_active_;

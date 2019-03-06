@@ -117,8 +117,10 @@ void MainWindow::AppendLogMessage(QString message)
 
 void MainWindow::OnPbLoginClicked()
 {
-	if (peer_->LogIn(ui_->le_login->text(), ui_->le_password->text()))
-	{
+	QString login = ui_->le_login->text();
+	if (peer_->LogIn(login, ui_->le_password->text()))
+	{		
+		peer_->set_login(login);
 		ui_->pb_start->setEnabled(true);
 		ui_->pb_send->setEnabled (true);
 	}
