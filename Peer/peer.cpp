@@ -82,7 +82,7 @@ bool Peer::startListening(quint16 listen_port)
 	}
 
 	update_sender_.bind(QHostAddress(QHostAddress::AnyIPv4), 0);
-	update_receiver_.bind(QHostAddress::AnyIPv4, my_listen_port_, QUdpSocket::ShareAddress);
+	update_receiver_.bind(QHostAddress::AnyIPv4, my_listen_port_, QUdpSocket::ReuseAddressHint);
 	update_receiver_.joinMulticastGroup(udp_group_address_);
 	update_info_timer_.start(3000);
 
@@ -100,7 +100,7 @@ void Peer::SendRequest(unsigned id, QString message)
 	
 	if (connections_[id]->state() == QAbstractSocket::ConnectedState)
 	{
-		Message mes = { id, message };
+		Message mes = { my_id_, message };
 		connections_[id]->SendMessage(mes);
 	}
 }
@@ -164,8 +164,8 @@ void Peer::UpdateFriendsInfo()
 		QHostAddress peer_address;
 		update_receiver_.readDatagram(datagram.data(), datagram.size(), &peer_address);
 		updated_friend_info = Parser::ParseAsIdPort(datagram);
-		//if (updated_friend_info.id == my_id_)  // hardcode your own id
-			//continue;
+		if (updated_friend_info.id == my_id_)  // hardcode your own id
+			continue;
 
 
 		if (check_timers.find(updated_friend_info.id) == check_timers.end()) //zzz
