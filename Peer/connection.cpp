@@ -66,7 +66,7 @@ bool Connection::LoginRequest(LoginOrRegisterInfo info)
 		{
 			QByteArray read = readAll();
 			emit SendLog("writing to server");
-			read = read.mid(read.indexOf(k_unpossiblle_2_bytes_sequence_));
+			read = read.left(read.indexOf(k_unpossiblle_2_bytes_sequence_));
 			quint8 type = Parser::getRequestType(read);
 			if (type == (quint8)ServerRequests::LOGIN_SUCCEED)
 			{			
@@ -144,7 +144,6 @@ void Connection::ServerWorker()
 		deleteLater();
 	}
 }
-
 
 Connection::~Connection()
 {
