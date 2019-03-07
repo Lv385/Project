@@ -22,64 +22,64 @@ Client::~Client()
 	*/
 }
 
-QString Client::getUserName() const
+QString Client::GetUserName() const
 {
 	return userName;
 }
 
-void Client::setUserName( QString &value)
+void Client::SetUserName( QString &value)
 {
 	userName = value;
 }
 
-QHostAddress Client::getUserIp() const
+QHostAddress Client::GetUserIp() const
 {
 	return userIp;
 }
 
-void Client::setUserIp(const QHostAddress &value)
+void Client::SetUserIp(const QHostAddress &value)
 {
 	userIp = value;
 }
 
-quint16  Client::getUserPort() const
+quint16  Client::GetUserPort() const
 {
 	return userPort;
 }
 
-void Client::setUserPort(const quint16 value)
+void Client::SetUserPort(const quint16 value)
 {
 	userPort = value;
 }
 
-quint32 Client::getUserId() const
+quint32 Client::GetUserId() const
 {
 	return id;
 }
 
-void Client::setUserId(const quint32 i)
+void Client::SetUserId(const quint32 i)
 {
 	id = i;
 }
 
-QString Client::getUserPassword() const
+QString Client::GetUserPassword() const
 {
 	return userPassword;
 }
 
-void Client::setUserPassword( QString &value)
+void Client::SetUserPassword( QString &value)
 {
 	userPassword = value;
 }
 
-void Client::addFriend(Client& cl)
+void Client::AddFriend(Client& cl)
 {
 	/*
 	friends.push_back(cl);
 	*/
 }
 
-void Client::removeFriend(Client & cl)
+void Client::RemoveFriend(Client & cl)
 {
 	/*
 	for (int i = 0; i < friends.size(); i++) {
@@ -90,12 +90,12 @@ void Client::removeFriend(Client & cl)
 	*/
 }
 
-void Client::setFriends(QVector<unsigned int> f)
+void Client::SetFriends(QVector<unsigned int> f)
 {
 	friends = f;
 }
 
-QVector<unsigned int> Client::getFriends()
+QVector<unsigned int> Client::GetFriends()
 {
 	return friends;
 }
@@ -107,6 +107,6 @@ bool Client::operator==(const Client &cl)
 
 std::ostream & operator<<(std::ostream & out, const Client& cl)
 {
-	out << cl.getUserName().toStdString() << " " << cl.getUserIp().toString().toStdString() << " " << cl.getUserPassword().toStdString() << " " << cl.getUserPort();
+	out << cl.GetUserName().toStdString() << " " << cl.GetUserIp().toString().toStdString() << " " << cl.GetUserPassword().toStdString() << " " << cl.GetUserPort();
 	return out;
 }

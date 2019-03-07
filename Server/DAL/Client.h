@@ -14,25 +14,25 @@ public:
 	Client(QString, QString, QHostAddress, quint16);
 	~Client();
 
-	QString getUserName() const;
-	void setUserName(QString &value);
+	QString GetUserName() const;
+	void SetUserName(QString &value);
 
-	QHostAddress getUserIp() const;
-	void setUserIp(const QHostAddress &value);
+	QHostAddress GetUserIp() const;
+	void SetUserIp(const QHostAddress &value);
 
-	quint16 getUserPort() const;
-	void setUserPort(const quint16 value);
+	quint16 GetUserPort() const;
+	void SetUserPort(const quint16 value);
 
-	quint32 getUserId() const;
-	void setUserId(const quint32 id);
+	quint32 GetUserId() const;
+	void SetUserId(const quint32 id);
 
-	QString getUserPassword() const;
-	void setUserPassword(QString &value);
+	QString GetUserPassword() const;
+	void SetUserPassword(QString &value);
 
-	void addFriend(Client&);
-	void removeFriend(Client&);
-	void setFriends(QVector<unsigned int> );
-	QVector<unsigned int> getFriends();
+	void AddFriend(Client&);
+	void RemoveFriend(Client&);
+	void SetFriends(QVector<unsigned int> );
+	QVector<unsigned int> GetFriends();
 
 
 	bool operator==(const Client &);

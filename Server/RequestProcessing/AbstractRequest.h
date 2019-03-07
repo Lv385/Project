@@ -16,7 +16,6 @@ class AbstractRequest : public QObject {
 	Q_OBJECT
 public:
 	AbstractRequest(QByteArray&, DAL* );
-	AbstractRequest(QByteArray&);
 	//Receives socket initalized by client or a socket initialized by server.
 	//Depending from the type of request one of that sockets may be nullptr.
 	//That sockets will be used to send correct responses.
@@ -27,10 +26,8 @@ protected:
 	
         //string fields and will be processed but sendResponde()
 	//ServerDB db;
-        virtual void prepareResponse() = 0;
-	
-	
-	
+    virtual void prepareResponse() = 0;
+
 	DAL* database;
 	//DAL database;
 	QTcpSocket init_by_server;
