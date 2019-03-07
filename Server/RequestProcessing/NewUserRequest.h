@@ -12,4 +12,5 @@ protected:
 private:
 	LoginOrRegisterInfo income_data_;
 	QByteArray outcome_data_;
+	bool user_exist;
 };

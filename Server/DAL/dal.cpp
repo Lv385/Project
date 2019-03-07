@@ -43,6 +43,21 @@ Client DAL::getClient(quint32 i)
 	return this->getClient(databse_.GetLoginByID(i));
 }
 
+bool DAL::Check_If_Client_exists_In_Db(Client cl)
+{
+	if (databse_.GetIDByLogin(cl.GetUserName()) == 0) { // If login don't exist return id = 0
+		return false; // login dont exist
+	} else {
+		return true; //login exist 
+	}
+	
+}
+
+int DAL::GetClientId(Client cl)
+{
+	return databse_.GetIDByLogin(cl.GetUserName());
+}
+
 
 /*
 
