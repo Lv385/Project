@@ -2,7 +2,7 @@
 #include "AbstractRequest.h"
 #include "../Parser&Structs/parser.h"
 
-
+//WOULD NOT WORK WITHOUT NeW Register Structure and Register parser
 class NewUserRequest : public AbstractRequest {
 public:
 	NewUserRequest(QByteArray& , DAL* );
