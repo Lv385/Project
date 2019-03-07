@@ -21,6 +21,7 @@ ServerDB::ServerDB() {
 
 ServerDB::~ServerDB() {
 	data_base_.close();
+	data_base_.removeDatabase("../DAL/Server/Server");
 	query_.finish();
 }
 

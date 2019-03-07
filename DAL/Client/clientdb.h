@@ -16,8 +16,7 @@
 
 namespace ClientDAL 
 {
-	struct Message
-	{
+	struct Message {
 		int message_id;
 		int owner_id;
 		QString data;
@@ -35,12 +34,11 @@ namespace ClientDAL
 	};
 
 
-	class ClientDB
-	{
+	class ClientDB {
 	public:
 
 		ClientDB();
-		// ~ClientDB();
+	   ~ClientDB();
 
 		void                 AddNewFriend(const QString& user_login, const int user_id);
 
