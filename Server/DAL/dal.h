@@ -17,6 +17,8 @@ public:
 	void setClient(Client);
 	Client getClient(QString);
 	Client getClient(quint32);
+	bool Check_If_Client_exists_In_Db(Client);
+	int GetClientId(Client);
 	//int getSize();
 	//void printDatabase();
 private:

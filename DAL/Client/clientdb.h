@@ -14,16 +14,16 @@
 #include <QtSql/QSqlTableModel>
 #include <iostream>
 
-namespace ClientDAL {
-
-struct Message {
-  int message_id;
-  int owner_id;
-  QString data;
-  QDate date;
-  QTime time;
-  bool status;
-};
+namespace ClientDAL 
+{
+	struct Message {
+		int message_id;
+		int owner_id;
+		QString data;
+		QDate date;
+		QTime time;
+		bool status;
+	};
 
 struct User {
   int user_id;

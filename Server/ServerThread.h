@@ -11,8 +11,7 @@ class ServerThread:public QThread
 public:
 	ServerThread( int socket_descriptor, QObject *parent);
 	void run() override;
-	void ParseString(const std::string & request);
-	AbstractRequest* getRequestProcessor();
+	//AbstractRequest* getRequestProcessor();
 	void SetRequest(quint8 type);
 	~ServerThread();
 

@@ -40,16 +40,16 @@ AsyncServer::AsyncServer(QObject *parent) :QTcpServer ()
 	//database testing
 	
 	Client cl;
-	cl.setUserName(QString("Oleg"));
-	cl.setUserPassword(QString("Pass"));
-	cl.setUserIp(QHostAddress("192.168.102.103"));
-	cl.setUserPort(23456);
+	cl.SetUserName(QString("Oleg"));
+	cl.SetUserPassword(QString("Pass"));
+	cl.SetUserIp(QHostAddress("192.168.102.103"));
+	cl.SetUserPort(23456);
 
 	dal_.setClient(cl);
 
 	Client ret = dal_.getClient(QString("Oleg"));
 
-	qDebug() << ret.getUserName() << ret.getUserIp();
+	qDebug() << ret.getUserName() << ret.GetUserIp();
 	*/
 }
 
