@@ -19,10 +19,9 @@
 **/*.orig
 **/*.autosave
 
-#test
+#databases
 
-DAL/Client/*
-!DAL/Client/*.cpp
-!DAL/Client/*.h
+DAL/Client/Client
+Server/DAL/Client
 
 

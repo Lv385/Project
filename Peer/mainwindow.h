@@ -1,47 +1,42 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "peer.h"
+
+#include <QComboBox>
 #include <QMainWindow>
 #include <QRegExpValidator>
 #include <QShortcut>
 #include <QVector>
-#include <QComboBox>
-#include "peer.h"
 
 namespace Ui {
 class MainWindow;
 }
 
-class MainWindow : public QMainWindow
-{
-    Q_OBJECT
+class MainWindow : public QMainWindow {
+  Q_OBJECT
 
-public:
-    explicit MainWindow(QWidget *parent = 0);
-    ~MainWindow();
+ public:
+  explicit MainWindow(QWidget* parent = 0);
 
-	void SetIpValidator();
+  void SetIpValidator();
 
-private slots:
-	void OnPbStartClicker();
+  ~MainWindow();
 
-    void AppendMessage(QString);
+ private slots:
+  void AppendMessage(QString);
+  void AppendHistory();
+  void AppendLogMessage(QString);
 
-	void AppendHistory();
+  void OnPbStartClicker();
+  void OnPbLoginClicked();
+  void OnPbSendClicked();
+  void OnRbSimpleClicked();
+  void OnRbEngineeringClicked();
 
-    void OnPbSendClicked();
-
-	void AppendLogMessage(QString);
-
-	void OnPbLoginClicked();
-
-	void OnRbSimpleClicked();
-	void OnRbEngineeringClicked();
-	
-private:
-    Ui::MainWindow *ui_;
-    Peer* peer_;
-
+ private:
+  Ui::MainWindow* ui_;
+  Peer* peer_;
 };
 
-#endif // MAINWINDOW_H
+#endif  // MAINWINDOW_H

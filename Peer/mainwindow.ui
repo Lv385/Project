@@ -304,7 +304,7 @@ color:#ffffff;
      </rect>
     </property>
     <property name="text">
-     <string>markiyan</string>
+     <string>liubomyr</string>
     </property>
    </widget>
    <widget class="QLineEdit" name="le_password">
