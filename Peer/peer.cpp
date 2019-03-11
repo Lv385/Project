@@ -110,7 +110,7 @@ bool Peer::ConnectToPeer(unsigned id) {
   emit SendLog("trying connect to: " + logMessage);
   if (connections_[id]->waitForConnected(5000)) {
     emit SendLog("connected to:" + logMessage);
-    connect(connections_[id], SIGNAL(readyRead()), connections_[id], SLOT(TryReadLine()));
+    connect(connections_[id], SIGNAL(readyRead()), connections_[id], SLOT(ReceiveRequests()));
     connect(connections_[id], SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
     connect(connections_[id], SIGNAL(SendMessageToUI(QString)), this, SIGNAL(SendMessageToUI(QString)));
     return true;
@@ -180,7 +180,7 @@ void Peer::SetOfflineStatus(quint32 id) {
 
   StatusTimer* to_delete = check_timers_[id];
   check_timers_.remove(id);
-  to_delete->deleteLater();
+  to_delete->deleteLater();  //use deleteLater() instead of delete
 }
 
 bool Peer::LogIn(QString login, QString password) {
@@ -213,7 +213,7 @@ void Peer::SetSocket(Connection* connection) {
 
   connections_[id] = connection;
 
-  connect(connection, SIGNAL(readyRead()), connection, SLOT(TryReadLine())); // try to read line to \n when recieving data
+  connect(connection, SIGNAL(readyRead()), connection, SLOT(ReceiveRequests())); // try to read line to \n when recieving data
   connect(connection, SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
   connect(connection, SIGNAL(SendMessageToUI(QString)), this, SIGNAL(SendMessageToUI(QString)));
 

@@ -36,7 +36,7 @@ struct User {
 class ClientDB {
  public:
   ClientDB();
-  // ~ClientDB();
+  ~ClientDB();
 
   void AddNewFriend(const QString& user_login, const int user_id);
 
