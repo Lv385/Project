@@ -16,7 +16,6 @@
 #include <QVector>
 
 #include "connection.h"
-#include "statustimer.h"
 #include "tcpserver.h"
 
 #include "../Parser&Structs/parser.h"
@@ -54,7 +53,7 @@ class Peer : public QObject {
   void OnServerConnected(Connection* connection);
   void UpdateFriendsInfo();
   void SendUpdateInfo();
-  void SetOfflineStatus(quint32);
+  void SetOfflineStatus();
 
   // to implement
   // void nullTcpSocket();
@@ -76,7 +75,7 @@ class Peer : public QObject {
   QUdpSocket update_receiver_;
   QHostAddress udp_group_address_;
   QTimer update_info_timer_;
-  QHash<unsigned, StatusTimer*> check_timers_;
+  QHash<unsigned, QTimer*> check_timers_;
 
   QHostAddress my_ip_;
   quint16 my_listen_port_;

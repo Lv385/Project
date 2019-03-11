@@ -100,7 +100,6 @@ void Peer::SendRequest(unsigned id, QString message) {
 }
 
 
-//id zzz
 bool Peer::ConnectToPeer(unsigned id) {
   //tcp_socket_ = new QTcpSocket(this);
   ClientDAL::ClientDB cdb;
@@ -158,11 +157,11 @@ void Peer::UpdateFriendsInfo() {
     if (check_timers_.find(updated_friend_info.id) == check_timers_.end()) { 
       cdb.SetFriendStatus(updated_friend_info.id, true);
 
-      StatusTimer* timer = new StatusTimer();
-      timer->set_id(updated_friend_info.id);
-      timer->start(10000);        //set timer 10sec
-      check_timers_[timer->get_id()] = timer;
-      connect(timer, &StatusTimer::TimeoutById, this, &Peer::SetOfflineStatus);
+	  QTimer* timer = new QTimer();
+      timer->start(10000);
+
+      check_timers_[updated_friend_info.id] = timer;
+      connect(timer, &QTimer::timeout, this, &Peer::SetOfflineStatus);
     } else {
       check_timers_[updated_friend_info.id]->start(10000);  //reset timer
     }
@@ -175,15 +174,18 @@ void Peer::UpdateFriendsInfo() {
 }
 
 
-void Peer::SetOfflineStatus(quint32 id) {
+void Peer::SetOfflineStatus() {
+  unsigned id = check_timers_.key((QTimer*)QObject::sender());   //get user id that came offline
+
   ClientDAL::ClientDB cdb;
   cdb.SetFriendStatus(id, false);
   emit SendLog("set " + cdb.GetLoginById(id) + " offline status");
 
-  StatusTimer* to_delete = check_timers_[id];
+  QTimer* to_delete = check_timers_[id];
   check_timers_.remove(id);
   to_delete->deleteLater();  //use deleteLater() instead of delete
 }
+
 
 bool Peer::LogIn(QString login, QString password) {
   ClientDAL::ClientDB cdb;
@@ -208,6 +210,7 @@ bool Peer::LogIn(QString login, QString password) {
   }
   return true;
 }
+
 
 void Peer::SetSocket(Connection* connection) {
   ClientDAL::ClientDB cdb;
