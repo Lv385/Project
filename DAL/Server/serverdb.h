@@ -13,11 +13,14 @@
 #include <iostream>
 
 //Class uses to make connection server-data base
-//It consist all methods needed to work with db
+//It consist all methods needed to work with db.
+//Each server or client thread must hold instance
+//of this class to perform db tasks
 class ServerDB {
 public:
-            ServerDB();
-    virtual~ServerDB();
+	//Following two function must appear in pairs (always call CloseConncetion() after NewConnection() with the same name
+	void					NewConnection(const QString connection_name);
+	void					CloseConncetion(const QString connection_name);
 
     void                    AddNewUser(const QString& new_user_login, const QString& new_user_password);
     void                    UpdateIPPort(const QString& user_login,const QString& new_user_ip, const int& new_user_port);//by login 
@@ -41,8 +44,7 @@ private:
     void          ErrorInfo();
 	bool	      IsLoginExist(const QString& user_login);// Check that user exist
 
-    QSqlDatabase  data_base_;
-    QSqlQuery     query_;
+    QSqlQuery*     query_;// before closing database connection all instances of QSqlQuery should be deleted
 };
 
 #endif // SEVERDB_H
