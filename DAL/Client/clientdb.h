@@ -36,7 +36,7 @@ struct User {
 class ClientDB {
  public:
   ClientDB();
-  // ~ClientDB();
+  ~ClientDB();
 
   void AddNewFriend(const QString& user_login, const int user_id);
 
@@ -60,6 +60,7 @@ class ClientDB {
                          const QString& user_surname);
 
   QVector<User> GetFriends();
+  QVector<QString> GetFriendsIp();
   QVector<QString> GetFriendsLogin();
 
   void DeleteFriend(const QString& user_login);

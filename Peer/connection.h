@@ -22,7 +22,7 @@ class Connection : public QTcpSocket {
   ~Connection();
 
  private slots:
-  void RecieveRequests();
+  void ReceiveRequests();
   void ServerWorker();
 
  signals:

@@ -79,7 +79,7 @@ bool Peer::StartListening(quint16 listen_port) {
   is_active_ = true;
 
   update_sender_.bind(QHostAddress(QHostAddress::AnyIPv4), 0);
-  update_receiver_.bind(QHostAddress::AnyIPv4, my_listen_port_, QUdpSocket::ReuseAddressHint);
+  update_receiver_.bind(QHostAddress::AnyIPv4, my_listen_port_, QUdpSocket::ShareAddress);
   update_receiver_.joinMulticastGroup(udp_group_address_);
   update_info_timer_.start(3000);
 
@@ -110,7 +110,7 @@ bool Peer::ConnectToPeer(unsigned id) {
   emit SendLog("trying connect to: " + logMessage);
   if (connections_[id]->waitForConnected(5000)) {
     emit SendLog("connected to:" + logMessage);
-    connect(connections_[id], SIGNAL(readyRead()), connections_[id], SLOT(TryReadLine()));
+    connect(connections_[id], SIGNAL(readyRead()), connections_[id], SLOT(ReceiveRequests()));
     connect(connections_[id], SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
     connect(connections_[id], SIGNAL(SendMessageToUI(QString)), this, SIGNAL(SendMessageToUI(QString)));
     return true;
@@ -124,17 +124,19 @@ bool Peer::ConnectToPeer(unsigned id) {
 
 void Peer::SendUpdateInfo() {
   IdPort my_id_port;
-  ClientDAL::ClientDB cdb;
-  my_id_port.id = my_id_; // hardcode your own login
+  my_id_port.id = my_id_; 
   my_id_port.port = my_listen_port_;
 
   QByteArray to_write = Parser::IdPort_ToByteArray(my_id_port); //pack
-  to_write.append(Parser::GetUnpossibleSequence());			  //append separator
-  QString temp = udp_group_address_.toString();
-  update_sender_.writeDatagram(to_write, udp_group_address_, my_listen_port_);
+  to_write.append(Parser::GetUnpossibleSequence());			    //append separator
+
+  ClientDAL::ClientDB cdb;
+  QVector<QString> friends_ip = cdb.GetFriendsIp();
+
+  for (const QString& ip_to_send : friends_ip) {
+    update_sender_.writeDatagram(to_write, QHostAddress(ip_to_send), my_listen_port_);
+  }
   emit SendLog("update sent");
-
-
 }
 
 
@@ -149,11 +151,11 @@ void Peer::UpdateFriendsInfo() {
     QHostAddress peer_address;
     update_receiver_.readDatagram(datagram.data(), datagram.size(), &peer_address);
     updated_friend_info = Parser::ParseAsIdPort(datagram);
-    if (updated_friend_info.id == my_id_)  // hardcode your own id
+    if (updated_friend_info.id == my_id_)    //not to process my own requests (temporary solution)
       continue;
 
 
-    if (check_timers_.find(updated_friend_info.id) == check_timers_.end()) { //zzz
+    if (check_timers_.find(updated_friend_info.id) == check_timers_.end()) { 
       cdb.SetFriendStatus(updated_friend_info.id, true);
 
       StatusTimer* timer = new StatusTimer();
@@ -166,7 +168,7 @@ void Peer::UpdateFriendsInfo() {
     }
 
     ClientDAL::ClientDB cdb;
-    cdb.UpdateIPPort(updated_friend_info.id, peer_address.toString(), updated_friend_info.port); //:ffff change
+    cdb.UpdateIPPort(updated_friend_info.id, peer_address.toString(), updated_friend_info.port); 
 
     emit SendLog("updated " + cdb.GetLoginById(updated_friend_info.id) + "'s info");
   }
@@ -180,7 +182,7 @@ void Peer::SetOfflineStatus(quint32 id) {
 
   StatusTimer* to_delete = check_timers_[id];
   check_timers_.remove(id);
-  to_delete->deleteLater();
+  to_delete->deleteLater();  //use deleteLater() instead of delete
 }
 
 bool Peer::LogIn(QString login, QString password) {
@@ -213,7 +215,7 @@ void Peer::SetSocket(Connection* connection) {
 
   connections_[id] = connection;
 
-  connect(connection, SIGNAL(readyRead()), connection, SLOT(TryReadLine())); // try to read line to \n when recieving data
+  connect(connection, SIGNAL(readyRead()), connection, SLOT(ReceiveRequests())); // try to read line to \n when recieving data
   connect(connection, SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
   connect(connection, SIGNAL(SendMessageToUI(QString)), this, SIGNAL(SendMessageToUI(QString)));
 

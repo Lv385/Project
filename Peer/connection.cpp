@@ -65,7 +65,7 @@ bool Connection::LoginRequest(LoginOrRegisterInfo info) {
 }
 
 //reading requests due to separator
-void Connection::RecieveRequests() {
+void Connection::ReceiveRequests() {
   QByteArray nextData;
   int separatorIndex;
 

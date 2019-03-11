@@ -160,6 +160,23 @@ QVector<ClientDAL::User> ClientDAL::ClientDB::GetFriends() {
     return friends;
 }
 
+QVector<QString> ClientDAL::ClientDB::GetFriendsIp() {
+  unsigned int count_of_friends = CountOfFriends();
+
+  QVector<QString> friends(count_of_friends);
+  query_.prepare("SELECT user_IP FROM friends");
+
+  int counter = 0;
+  if (query_.exec()) {
+    while (query_.next()) {
+      friends[counter++] = query_.record().value(0).toString();
+    }
+  } else {
+    ErrorInfo();
+  }
+  return friends;
+}
+
 QVector<QString> ClientDAL::ClientDB::GetFriendsLogin() {
 	unsigned int count_of_friends = CountOfFriends();
 
