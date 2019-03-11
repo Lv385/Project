@@ -60,6 +60,7 @@ class ClientDB {
                          const QString& user_surname);
 
   QVector<User> GetFriends();
+  QVector<QString> GetFriendsIp();
   QVector<QString> GetFriendsLogin();
 
   void DeleteFriend(const QString& user_login);
