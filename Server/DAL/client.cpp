@@ -7,7 +7,7 @@ Client::Client()
 }
 
 Client::Client(QString log, QString pas, QHostAddress i, quint16 p):
-	userName(log), userPassword(pas), userIp(i), userPort(p)
+	user_name(log), user_password(pas), user_ip(i), user_port(p)
 {
 }
 
@@ -24,32 +24,32 @@ Client::~Client()
 
 QString Client::GetUserName() const
 {
-	return userName;
+	return user_name;
 }
 
 void Client::SetUserName( QString &value)
 {
-	userName = value;
+	user_name = value;
 }
 
 QHostAddress Client::GetUserIp() const
 {
-	return userIp;
+	return user_ip;
 }
 
 void Client::SetUserIp(const QHostAddress &value)
 {
-	userIp = value;
+	user_ip = value;
 }
 
 quint16  Client::GetUserPort() const
 {
-	return userPort;
+	return user_port;
 }
 
 void Client::SetUserPort(const quint16 value)
 {
-	userPort = value;
+	user_port = value;
 }
 
 quint32 Client::GetUserId() const
@@ -64,12 +64,12 @@ void Client::SetUserId(const quint32 i)
 
 QString Client::GetUserPassword() const
 {
-	return userPassword;
+	return user_password;
 }
 
 void Client::SetUserPassword( QString &value)
 {
-	userPassword = value;
+	user_password = value;
 }
 
 void Client::AddFriend(Client& cl)
@@ -102,7 +102,7 @@ QVector<unsigned int> Client::GetFriends()
 
 bool Client::operator==(const Client &cl)
 {
-	return this->userName.compare(cl.userName) == 0;
+	return this->user_name.compare(cl.user_name) == 0;
 }
 
 std::ostream & operator<<(std::ostream & out, const Client& cl)

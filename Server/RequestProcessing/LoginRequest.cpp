@@ -14,7 +14,7 @@ void LoginRequest::prepareResponse()
 		requester_.SetUserIp(log_.ip);
 		requester_.SetUserPort(log_.port);
 
-		database->setClient(requester_);
+		database->SetClient(requester_);
 		logcheck = true;
 	} else {
 		logcheck = false;

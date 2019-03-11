@@ -33,9 +33,9 @@ AsyncServer::AsyncServer(QObject *parent) :QTcpServer ()
 	Client cl(QString("oleksa"), QString("password"), QHostAddress("192.168.103.120"), 8989);
 	Client c2(QString("markiyan"), QString("password"), QHostAddress("192.168.103.55"), 8989);
 	Client c3(QString("liubomyr"), QString("password"), QHostAddress("192.168.103.88"), 8989);
-	dal_.setClient(cl);
-	dal_.setClient(c2);
-	dal_.setClient(c3);
+	dal_.SetClient(cl);
+	dal_.SetClient(c2);
+	dal_.SetClient(c3);
 
 	//database testing
 	
@@ -45,7 +45,7 @@ AsyncServer::AsyncServer(QObject *parent) :QTcpServer ()
 	cl.SetUserIp(QHostAddress("192.168.102.103"));
 	cl.SetUserPort(23456);
 
-	dal_.setClient(cl);
+	dal_.SetClient(cl);
 
 	Client ret = dal_.getClient(QString("Oleg"));
 

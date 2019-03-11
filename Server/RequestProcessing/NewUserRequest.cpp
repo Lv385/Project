@@ -19,7 +19,7 @@ void NewUserRequest::prepareResponse()
 	//int sizeBeforeAdding = database->getSize();
 	 // fix fucking sending structure 
 	if (database->Check_If_Client_exists_In_Db(newClient) == false) { // if client not exist
-		database->setClient(newClient);
+		database->SetClient(newClient);
 		outcome_data_ = Parser::yesNoResponseToByteArray((quint8)ServerRequests::REGISTER_SUCCEED);
 		outcome_data_.append(database->GetClientId(newClient)); // id of just registered user
 		outcome_data_.append(Parser::GetUnpossibleSequence());
@@ -56,7 +56,7 @@ bool NewUserRequest::sendResponde(QTcpSocket * initByClient)
 //	newClient.SetUserIp(income_data_.ip);
 //	newClient.SetUserPort(income_data_.port);
 //	//int sizeBeforeAdding = database->getSize();
-//	database->setClient(newClient);
+//	database->SetClient(newClient);
 //	//if (sizeBeforeAdding != database->getSize()) { //addition success
 //		outcome_data_ = Parser::yesNoResponseToByteArray((quint8)ServerRequests::REGISTER_SUCCEED);
 //		outcome_data_.append(Parser::GetUnpossibleSequence());

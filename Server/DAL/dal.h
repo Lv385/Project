@@ -14,7 +14,7 @@ class DAL
 public:
 	DAL();
 	//interface associated with database access will be placed here
-	void setClient(Client);
+	void SetClient(Client);
 	Client getClient(QString);
 	Client getClient(quint32);
 	bool Check_If_Client_exists_In_Db(Client);

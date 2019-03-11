@@ -38,10 +38,10 @@ public:
 	bool operator==(const Client &);
 
 private:
-	QString userName;//#0 indicies in a vector created after raw request parsing
-	QString userPassword;//#1
-	QHostAddress userIp;//#2
-	quint16 userPort;//#3
+	QString user_name;//#0 indicies in a vector created after raw request parsing
+	QString user_password;//#1
+	QHostAddress user_ip;//#2
+	quint16 user_port;//#3
 	quint32 id;
 	QVector<unsigned int> friends; // holds id of friends
 	//std::vector<AbstractRequest*> pendingRequests;

@@ -6,7 +6,7 @@ DAL::DAL()
 
 }
 
-void DAL::setClient(Client cl) {
+void DAL::SetClient(Client cl) {
 	//database[cl.getUserName()] = cl;
 	databse_.AddNewUser(cl.GetUserName(),cl.GetUserPassword());
 	databse_.UpdateIPPort(cl.GetUserName(),cl.GetUserIp().toString(),(int)cl.GetUserPort());
@@ -14,7 +14,7 @@ void DAL::setClient(Client cl) {
 
 }
 Client DAL::getClient(QString login) {
-	//return database->at(userName);
+	//return database->at(user_name);
 	unsigned int id = databse_.GetIDByLogin(login);
 	Client toReturn;
 	if ( id!= 0) {
