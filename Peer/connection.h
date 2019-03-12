@@ -6,7 +6,7 @@
 #include <QTimer>
 
 #include <ui_mainwindow.h>
-
+#include "dalmeneger.h"
 #include "../DAL/Client/clientdb.h"
 #include "../Parser&Structs/parser.h"
 
@@ -41,5 +41,6 @@ class Connection : public QTcpSocket {
   quint16 receiver_port_;
 
   const QByteArray k_unpossiblle_2_bytes_sequence_;
+  DALMeneger dal;
 };
 #endif

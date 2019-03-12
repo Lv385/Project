@@ -26,18 +26,11 @@ void Connection::SendMessage(Message message) {
 
     QString str = "->: " + message.message;
     emit SendMessageToUI(str);
-
-    ClientDAL::ClientDB db;
-    ClientDAL::Message msg;
-    msg.data = message.message;
-    msg.owner_id = db.GetIDByIpPort(localAddress().toString(), 8989);
-    msg.date = QDate::currentDate();
-    msg.time = QTime::currentTime();
-    db.AddMessage(msg, db.GetIDByIpPort(peerAddress().toString(), 8989));
-
+    
 	connection_timer_.start(30000);  //reset timer for new 30 sec
 
-  } else {
+  } 
+  else {
     QString str = QString("cannot coonect to") + receiver_ip_.toString() +
                   ' : ' + QString::number(receiver_port_);
     emit SendLog(str);
@@ -99,16 +92,8 @@ void Connection::ReceiveRequests() {
 
       emit SendMessageToUI(str);
 
-      ClientDAL::Message msg;
-      QString address = peerAddress().toString();
-      address.remove(0, 7);  //#fix
+      dal.AddMessageToDB(mes.message, mes.id, mes.id);
 
-      msg.data = mes.message;
-      msg.owner_id = mes.id;  //#fix
-      msg.date = QDate::currentDate();
-      msg.time = QTime::currentTime();
-
-      db.AddMessage(msg, db.GetIDByIpPort(address, 8989));
       break;
     }
     }
@@ -122,8 +107,7 @@ void Connection::ReceiveRequests() {
 void Connection::ServerWorker() {
   if (received_data_.contains(k_unpossiblle_2_bytes_sequence_)) {
     FriendUpdateInfo info = Parser::ParseAsFriendUpdateInfo(received_data_);
-    ClientDAL::ClientDB db;
-    db.UpdateIPPort(info.id, info.ip.toString(), info.port);
+    dal.UpdateIpPort(info.id, info.ip.toString(), info.port);
     disconnect();
     deleteLater();
   }
