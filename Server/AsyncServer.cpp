@@ -1,13 +1,22 @@
 #include "AsyncServer.h"
 #include "ServerThread.h"
 #include <QNetworkInterface>
+#include <QUuid>
 
-
-
+//QString b = QUuid::createUuid().toString();
+//qDebug() << b << "\n";
+//Registration reg;
+//reg.port = 5896;
+//reg.login = QString("man");
+//reg.password = QString("password");
+//QByteArray ta = Parser::RegisterInfo_ToByteArray(reg);
+//Registration atas = Parser::ParseAsRegisterInfo(ta);
+//qDebug() << QString(atas.login) << atas.password << atas.port << "\n";
 
 AsyncServer::AsyncServer(QObject *parent) :QTcpServer ()
 {
-	
+  
+
 	if (!this->listen(QHostAddress::Any, AsyncServer::PORT)) {
 		qDebug() << "Failed to run server";
 	}

@@ -10,6 +10,9 @@ class Parser {
  public:
   static quint8 getRequestType(QByteArray& data);
 
+  static QByteArray RegisterInfo_ToByteArray(Registration& regis_info);
+  static Registration ParseAsRegisterInfo(QByteArray& data);
+
   static LoginOrRegisterInfo ParseAsLoginOrRegisterInfo(QByteArray& data);
   static QByteArray LoginOrRegisterInfo_ToByteArray(
     LoginOrRegisterInfo& login_info);
