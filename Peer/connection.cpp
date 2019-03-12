@@ -67,7 +67,7 @@ bool Connection::LoginRequest(LoginOrRegisterInfo info) {
 void Connection::StartConnectionTimer(unsigned miliseconds) {
   connection_timer_.start(miliseconds);
   connect(&connection_timer_, SIGNAL(timeout()), 
-						this, SIGNAL(CoonectionTimeout()));
+                        this, SIGNAL(CoonectionTimeout()));
 }
 
 //reading requests due to separator
