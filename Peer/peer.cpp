@@ -3,10 +3,9 @@
 
 Peer::Peer(QObject* parent, quint16 listen_port)
     : QObject(parent),
-      server_ip_(QHostAddress(QString("192.168.103.102"))),  // #tofix
+      server_ip_(QStringLiteral("192.168.103.102")),  // #tofix
       server_port_(8888),
       my_listen_port_(listen_port),
-      udp_group_address_(QStringLiteral("239.255.43.21")),
       server_connection_(nullptr),
       is_active_(false) {
   tcp_server_ = new TcpServer(this, server_ip_, server_port_);
@@ -80,7 +79,6 @@ bool Peer::StartListening(quint16 listen_port) {
 
   update_sender_.bind(QHostAddress(QHostAddress::AnyIPv4), 0);
   update_receiver_.bind(QHostAddress::AnyIPv4, my_listen_port_, QUdpSocket::ShareAddress);
-  update_receiver_.joinMulticastGroup(udp_group_address_);
   update_info_timer_.start(3000);
 
   return true;
@@ -89,8 +87,8 @@ bool Peer::StartListening(quint16 listen_port) {
 
 void Peer::SendRequest(unsigned id, QString message) {
   if (connections_.find(id) == connections_.end()) {
-    connections_[id] = new Connection(this);
-    ConnectToPeer(id);
+    connections_[id] = new Connection(this); 
+    if (!ConnectToPeer(id)) connections_[id]->deleteLater();
   }
 
   if (connections_[id]->state() == QAbstractSocket::ConnectedState) {
@@ -109,6 +107,8 @@ bool Peer::ConnectToPeer(unsigned id) {
   emit SendLog("trying connect to: " + logMessage);
   if (connections_[id]->waitForConnected(5000)) {
     emit SendLog("connected to:" + logMessage);
+    connections_[id]->StartConnectionTimer(30000);  // 30 sec until disconnecting	
+    connect(connections_[id], SIGNAL(CoonectionTimeout()), this, SLOT(DisconncetFromPeer));
     connect(connections_[id], SIGNAL(readyRead()), connections_[id], SLOT(ReceiveRequests()));
     connect(connections_[id], SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
     connect(connections_[id], SIGNAL(SendMessageToUI(QString)), this, SIGNAL(SendMessageToUI(QString)));
@@ -120,6 +120,17 @@ bool Peer::ConnectToPeer(unsigned id) {
     return false;
   }
 }
+
+
+void Peer::DisconncetFromPeer()
+{
+  unsigned id = connections_.key(static_cast<Connection*>(QObject::sender()));
+
+  Connection* to_delete = connections_[id];
+  connections_.remove(id);
+  to_delete->deleteLater();  // use deleteLater() instead of delete
+}
+
 
 void Peer::SendUpdateInfo() {
   IdPort my_id_port;
@@ -159,8 +170,8 @@ void Peer::UpdateFriendsInfo() {
 
 	  QTimer* timer = new QTimer();
       timer->start(10000);
-
       check_timers_[updated_friend_info.id] = timer;
+
       connect(timer, &QTimer::timeout, this, &Peer::SetOfflineStatus);
     } else {
       check_timers_[updated_friend_info.id]->start(10000);  //reset timer
@@ -175,7 +186,7 @@ void Peer::UpdateFriendsInfo() {
 
 
 void Peer::SetOfflineStatus() {
-  unsigned id = check_timers_.key((QTimer*)QObject::sender());   //get user id that came offline
+  unsigned id = check_timers_.key(static_cast<QTimer*>(QObject::sender()));   //get user id that came offline
 
   ClientDAL::ClientDB cdb;
   cdb.SetFriendStatus(id, false);
