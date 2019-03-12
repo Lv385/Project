@@ -48,7 +48,7 @@ class Peer : public QObject {
   void SendMessageToUI(QString);
 
  private slots:
-
+  void DisconncetFromPeer();
   void SetSocket(Connection* connection);
   void OnServerConnected(Connection* connection);
   void UpdateFriendsInfo();

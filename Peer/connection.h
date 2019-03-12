@@ -3,6 +3,7 @@
 
 #include <QHostAddress>
 #include <QTcpSocket>
+#include <QTimer>
 
 #include <ui_mainwindow.h>
 
@@ -18,6 +19,7 @@ class Connection : public QTcpSocket {
 
   void SendMessage(Message message);
   bool LoginRequest(LoginOrRegisterInfo info);
+  void StartConnectionTimer(unsigned miliseconds);
 
   ~Connection();
 
@@ -28,9 +30,12 @@ class Connection : public QTcpSocket {
  signals:
   void SendLog(QString);
   void SendMessageToUI(QString);
+  void CoonectionTimeout();
 
  private:
   QByteArray received_data_;
+
+  QTimer connection_timer_;
 
   QHostAddress receiver_ip_;
   quint16 receiver_port_;

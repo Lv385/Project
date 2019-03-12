@@ -3,9 +3,7 @@ Connection::Connection(QObject* parent)
     : QTcpSocket(parent),
       receiver_ip_(QHostAddress::Null),
       receiver_port_(0),
-      k_unpossiblle_2_bytes_sequence_(
-          Parser::GetUnpossibleSequence()) {  // the only idea i had,
-                                              // must be fixed
+      k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()) {  // the only idea i had, must be fixed
 }
 
 Connection::Connection(qintptr socketDescriptor, QObject* parent)
@@ -37,6 +35,8 @@ void Connection::SendMessage(Message message) {
     msg.time = QTime::currentTime();
     db.AddMessage(msg, db.GetIDByIpPort(peerAddress().toString(), 8989));
 
+	connection_timer_.start(30000);  //reset timer for new 30 sec
+
   } else {
     QString str = QString("cannot coonect to") + receiver_ip_.toString() +
                   ' : ' + QString::number(receiver_port_);
@@ -62,6 +62,11 @@ bool Connection::LoginRequest(LoginOrRegisterInfo info) {
     }
   }
   return false;
+}
+
+void Connection::StartConnectionTimer(unsigned miliseconds) {
+  connection_timer_.start(miliseconds);
+  connect(&connection_timer_, SIGNAL(timeout()), this, SIGNAL(CoonectionTimeout()));
 }
 
 //reading requests due to separator
