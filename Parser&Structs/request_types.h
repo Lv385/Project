@@ -53,7 +53,7 @@ struct Login {
 };
 
 //#tofix instead of LoginOrRegisterInfo
-struct Registation {
+struct Registration {
   quint16 port;
   QString login;
   QString password;

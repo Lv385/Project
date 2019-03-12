@@ -1,7 +1,7 @@
 #include "parser.h"
 
 QByteArray Parser::LoginOrRegisterInfo_ToByteArray(
-    LoginOrRegisterInfo& login_or_register_info) {
+   LoginOrRegisterInfo& login_or_register_info) {
   QByteArray result;
   QDataStream out(&result, QIODevice::WriteOnly);
 
@@ -16,6 +16,29 @@ QByteArray Parser::LoginOrRegisterInfo_ToByteArray(
 
 quint8 Parser::getRequestType(QByteArray& data) {
   quint8 result = data.data()[0];
+  return result;
+}
+
+QByteArray Parser::RegisterInfo_ToByteArray(Registration& regis_info) {
+	  
+  QByteArray result;
+  QDataStream out(&result, QIODevice::WriteOnly);
+
+  out << quint8(ClientRequest::REGISTER);               // type
+  out << regis_info.port;                      // port
+  out << regis_info.login;                // login
+  out << regis_info.password;               // password   
+  return result;
+}
+
+Registration Parser::ParseAsRegisterInfo(QByteArray& data) {
+  Registration result;
+
+  QDataStream in(&data, QIODevice::ReadOnly);
+
+  quint8 type;
+  quint32 ip;  // port login password
+  in >> type >> result.port >> result.login >> result.password;
   return result;
 }
 
