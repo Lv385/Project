@@ -25,25 +25,24 @@ MainWindow::MainWindow(QWidget* parent)
   if (ui_->rb_simple->isChecked()) {
     OnRbSimpleClicked();
   }
-  connect(peer_, SIGNAL(SendMessageToUI(QString)), this,
-          SLOT(AppendMessage(QString)));
 
+  connect(peer_, SIGNAL(SendMessageToUI(QString)), 
+		   this, SLOT(AppendMessage(QString)));
   connect(peer_, SIGNAL(SendLog(QString)), this,
-          SLOT(AppendLogMessage(QString)));
+				 SLOT(AppendLogMessage(QString)));
 
-  connect(ui_->pb_start, SIGNAL(clicked()), this, SLOT(OnPbStartClicker()));
-
-  connect(ui_->combo_box_friends, SIGNAL(currentIndexChanged(QString)), this,
-          SLOT(AppendHistory()));
-
-  connect(ui_->pb_send, SIGNAL(clicked()), this, SLOT(OnPbSendClicked()));
-
-  connect(ui_->pb_login, SIGNAL(clicked()), this, SLOT(OnPbLoginClicked()));
-
-  connect(ui_->rb_simple, SIGNAL(clicked()), this, SLOT(OnRbSimpleClicked()));
-
-  connect(ui_->rb_engineering, SIGNAL(clicked()), this,
-          SLOT(OnRbEngineeringClicked()));
+  connect(ui_->pb_start, SIGNAL(clicked()), 
+				   this, SLOT(OnPbStartClicker()));
+  connect(ui_->combo_box_friends, SIGNAL(currentIndexChanged(QString)), 
+							this, SLOT(AppendHistory()));
+  connect(ui_->pb_send, SIGNAL(clicked()), 
+				  this, SLOT(OnPbSendClicked()));
+  connect(ui_->pb_login, SIGNAL(clicked()), 
+				   this, SLOT(OnPbLoginClicked()));
+  connect(ui_->rb_simple, SIGNAL(clicked()), 
+					this, SLOT(OnRbSimpleClicked()));
+  connect(ui_->rb_engineering, SIGNAL(clicked()), 
+						 this, SLOT(OnRbEngineeringClicked()));
 }
 
 void MainWindow::OnPbStartClicker() {}

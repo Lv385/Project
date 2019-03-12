@@ -28,10 +28,14 @@ Peer::Peer(QObject* parent, quint16 listen_port)
 
   emit SendLog("My IP: " + my_ip_.toString());
 
-  connect(tcp_server_, SIGNAL(NewConnection(Connection*)), this, SLOT(SetSocket(Connection*)));
-  connect(tcp_server_, SIGNAL(NewServerConnection(Connection*)), this, SLOT(OnServerConnected(Connection*)));
-  connect(&update_info_timer_, &QTimer::timeout, this, &Peer::SendUpdateInfo);
-  connect(&update_receiver_, &QUdpSocket::readyRead, this, &Peer::UpdateFriendsInfo);
+  connect(tcp_server_, SIGNAL(NewConnection(Connection*)), 
+				 this, SLOT(SetSocket(Connection*)));
+  connect(tcp_server_, SIGNAL(NewServerConnection(Connection*)), 
+				 this, SLOT(OnServerConnected(Connection*)));
+  connect(&update_info_timer_, SIGNAL(timeout()), 
+						 this, SLOT(SendUpdateInfo()));
+  connect(&update_receiver_,  SIGNAL(readyRead()), 
+						this, SLOT(UpdateFriendsInfo()));
 }
 
 QHostAddress Peer::get_my_ip() const {
@@ -108,10 +112,14 @@ bool Peer::ConnectToPeer(unsigned id) {
   if (connections_[id]->waitForConnected(5000)) {
     emit SendLog("connected to:" + logMessage);
     connections_[id]->StartConnectionTimer(30000);  // 30 sec until disconnecting	
-    connect(connections_[id], SIGNAL(CoonectionTimeout()), this, SLOT(DisconncetFromPeer));
-    connect(connections_[id], SIGNAL(readyRead()), connections_[id], SLOT(ReceiveRequests()));
-    connect(connections_[id], SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
-    connect(connections_[id], SIGNAL(SendMessageToUI(QString)), this, SIGNAL(SendMessageToUI(QString)));
+    connect(connections_[id], SIGNAL(CoonectionTimeout()), 
+						this, SLOT(DisconncetFromPeer()));
+    connect(connections_[id], SIGNAL(readyRead()), 
+			connections_[id], SLOT(ReceiveRequests()));
+    connect(connections_[id], SIGNAL(SendLog(QString)), 
+						this, SIGNAL(SendLog(QString)));
+    connect(connections_[id], SIGNAL(SendMessageToUI(QString)), 
+						this, SIGNAL(SendMessageToUI(QString)));
     return true;
   } else {
     emit SendLog("cannot connect to " + logMessage);
@@ -124,11 +132,13 @@ bool Peer::ConnectToPeer(unsigned id) {
 
 void Peer::DisconncetFromPeer()
 {
-  unsigned id = connections_.key(static_cast<Connection*>(QObject::sender()));
-
-  Connection* to_delete = connections_[id];
+  Connection* to_delete = static_cast<Connection*>(QObject::sender());
+  unsigned id = connections_.key(to_delete);
+  to_delete->disconnectFromHost();
+  connect(to_delete, SIGNAL(disconnected()), 
+		  to_delete, SLOT(deleteLater()));
   connections_.remove(id);
-  to_delete->deleteLater();  // use deleteLater() instead of delete
+  
 }
 
 
@@ -172,7 +182,8 @@ void Peer::UpdateFriendsInfo() {
       timer->start(10000);
       check_timers_[updated_friend_info.id] = timer;
 
-      connect(timer, &QTimer::timeout, this, &Peer::SetOfflineStatus);
+      connect(timer, SIGNAL(timeout()), 
+			   this, SLOT(SetOfflineStatus()));
     } else {
       check_timers_[updated_friend_info.id]->start(10000);  //reset timer
     }
@@ -186,15 +197,15 @@ void Peer::UpdateFriendsInfo() {
 
 
 void Peer::SetOfflineStatus() {
-  unsigned id = check_timers_.key(static_cast<QTimer*>(QObject::sender()));   //get user id that came offline
+  QTimer* to_delete = static_cast<QTimer*>(QObject::sender());   //get user id that came offline
+  unsigned id = check_timers_.key(to_delete);
 
   ClientDAL::ClientDB cdb;
   cdb.SetFriendStatus(id, false);
   emit SendLog("set " + cdb.GetLoginById(id) + " offline status");
 
-  QTimer* to_delete = check_timers_[id];
   check_timers_.remove(id);
-  to_delete->deleteLater();  //use deleteLater() instead of delete
+  to_delete->deleteLater();  // use deleteLater() instead of delete
 }
 
 
@@ -202,7 +213,8 @@ bool Peer::LogIn(QString login, QString password) {
   ClientDAL::ClientDB cdb;
 
   server_connection_ = new Connection(this);
-  connect(server_connection_, SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
+  connect(server_connection_, SIGNAL(SendLog(QString)), 
+						this, SIGNAL(SendLog(QString)));
   LoginOrRegisterInfo info;
   info.id = cdb.GetIDByLogin(login);
   info.password = password;
@@ -229,9 +241,12 @@ void Peer::SetSocket(Connection* connection) {
 
   connections_[id] = connection;
 
-  connect(connection, SIGNAL(readyRead()), connection, SLOT(ReceiveRequests())); // try to read line to \n when recieving data
-  connect(connection, SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
-  connect(connection, SIGNAL(SendMessageToUI(QString)), this, SIGNAL(SendMessageToUI(QString)));
+  connect(connection, SIGNAL(readyRead()), 
+		  connection, SLOT(ReceiveRequests())); // try to read line to \n when recieving data
+  connect(connection, SIGNAL(SendLog(QString)), 
+				this, SIGNAL(SendLog(QString)));
+  connect(connection, SIGNAL(SendMessageToUI(QString)),
+				this, SIGNAL(SendMessageToUI(QString)));
 
   emit SendLog("setting socket: " + QString::number(connection->localPort()));
 }
@@ -240,6 +255,8 @@ void Peer::SetSocket(Connection* connection) {
 void Peer::OnServerConnected(Connection* connection) {
   server_connection_ = connection;
 
-  connect(connection, SIGNAL(readyRead()), connection, SLOT(ServerWorker())); // try to read line to \n when recieving data
-  connect(connection, SIGNAL(SendLog(QString)), this, SIGNAL(SendLog(QString)));
+  connect(connection, SIGNAL(readyRead()), 
+		  connection, SLOT(ServerWorker())); // try to read line to \n when recieving data
+  connect(connection, SIGNAL(SendLog(QString)), 
+				this, SIGNAL(SendLog(QString)));
 }
