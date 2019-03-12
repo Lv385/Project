@@ -1,6 +1,6 @@
 #include "dal.h"
 
-
+//need to write another method that registering client
 DAL::DAL() {
 
   str = QUuid::createUuid().toString();
@@ -8,13 +8,13 @@ DAL::DAL() {
 }
 
 void DAL::SetClient(Client cl) {
-  // database[cl.getUserName()] = cl;
-  databse_.AddNewUser(cl.GetUserName(), cl.GetUserPassword());
+  // working just with login
+ // databse_.AddNewUser(cl.GetUserName(), cl.GetUserPassword()); // unique constraint is here because of inserting instead of updating 
   databse_.UpdateIPPort(cl.GetUserName(), cl.GetUserIp().toString(),
                         (int)cl.GetUserPort());
 }
 Client DAL::getClient(QString login) {
-  // return database->at(user_name);
+  
   unsigned int id = databse_.GetIDByLogin(login);
   Client toReturn;
   if (id != 0) {

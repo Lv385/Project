@@ -44,11 +44,11 @@ bool LoginRequest::sendResponde(QTcpSocket * initByClient)
 		QVector<unsigned int> currentFriends = updatedClient.GetFriends();
 		QTcpSocket output_socket;
 		for (unsigned i = 0; i < currentFriends.size(); i++) {
-			Client tempClient = database->getClient(currentFriends[i]);
+			Client tempClient = database->getClient(currentFriends[i]); // extracting all friends of current user is working great
 			output_socket.connectToHost(tempClient.GetUserIp(), tempClient.GetUserPort());
 			if (output_socket.waitForConnected(5000)) {
-				output_socket.write(raw_data);
-				output_socket.waitForBytesWritten(1000);
+				output_socket.write(raw_data);  
+				output_socket.waitForBytesWritten(1000);// need to test sending to another friends of current users
 				output_socket.disconnectFromHost();
 			}
 		}
