@@ -3,7 +3,7 @@
 
 Peer::Peer(QObject* parent, quint16 listen_port)
     : QObject(parent),
-      server_ip_(QStringLiteral("192.168.103.102")),  // #tofix
+      server_ip_(QStringLiteral("192.168.103.121")),  // #tofix
       server_port_(8888),
       my_listen_port_(listen_port),
       server_connection_(nullptr),

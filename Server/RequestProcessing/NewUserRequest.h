@@ -10,7 +10,7 @@ public:
 protected:
 	void prepareResponse();
 private:
-	LoginOrRegisterInfo income_data_;
+    Registration income_data_;
 	QByteArray outcome_data_;
 	bool user_exist;
 };

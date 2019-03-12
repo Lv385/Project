@@ -5,19 +5,18 @@
 
 NewUserRequest::NewUserRequest(QByteArray& request, DAL* d) :AbstractRequest(request, d)
 {
-	income_data_ = Parser::ParseAsLoginOrRegisterInfo(request);
+    income_data_ = Parser ::ParseAsRegisterInfo(request);
 	prepareResponse();
-}
+} //port login password  // ip
 
 void NewUserRequest::prepareResponse()
 {
 	Client newClient;
-	newClient.SetUserId(income_data_.id);
+    newClient.SetUserPort(income_data_.port);
+    newClient.SetUserName(income_data_.login);
 	newClient.SetUserPassword(income_data_.password);
-	newClient.SetUserIp(income_data_.ip);
-	newClient.SetUserPort(income_data_.port);
-	//int sizeBeforeAdding = database->getSize();
-	 // fix fucking sending structure 
+	//newClient.SetUserIp(income_data_.ip); must be added!!!
+	
 	if (database->Check_If_Client_exists_In_Db(newClient) == false) { // if client not exist
 		database->SetClient(newClient);
 		outcome_data_ = Parser::yesNoResponseToByteArray((quint8)ServerRequests::REGISTER_SUCCEED);

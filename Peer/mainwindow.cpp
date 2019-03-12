@@ -45,7 +45,26 @@ MainWindow::MainWindow(QWidget* parent)
 						 this, SLOT(OnRbEngineeringClicked()));
 }
 
-void MainWindow::OnPbStartClicker() {}
+void MainWindow::OnPbStartClicker() {
+
+  if (peer_->StartListening(ui_->le_port_my->text().toUShort())) {
+    ui_->l_your_status->setText(
+        tr("The server is running on\n\nIP: %1\nport: %2\n")
+            .arg(peer_->get_my_ip().toString())
+            .arg(peer_->get_my_port()));
+    ui_->pb_send->setEnabled(true);
+  }
+  ClientDAL::ClientDB cdb;
+  QString login = ui_->le_login->text();
+  quint32 id = cdb.GetIDByLogin(login);
+
+  peer_->set_login(login);
+  peer_->set_id(id);
+  /*if (peer_->LogIn(login, ui_->le_password->text()))
+ {
+       ui_->l_your_status->setText(tr("The server is running on\n\nIP:%1\nport:%2\n").arg(peer_->get_my_ip().toString()) .arg(peer_->get_my_port()));
+ }*/
+}
 
 MainWindow::~MainWindow() {
   delete ui_;
@@ -111,12 +130,11 @@ void MainWindow::OnPbLoginClicked() {
 
   peer_->set_login(login);
   peer_->set_id(id);
-  // if (peer_->LogIn(login, ui_->le_password->text()))
-  //{
-  //	ui_->l_your_status->setText(tr("The server is running on\n\nIP:
-  //%1\nport: %2\n") 		.arg(peer_->get_my_ip().toString())
-  //		.arg(peer_->get_my_port()));
-  //}
+   if (peer_->LogIn(login, ui_->le_password->text()))
+  {
+  	ui_->l_your_status->setText(tr("The server is running on\n\nIP:%1\nport: %2\n").arg(peer_->get_my_ip().toString())
+  		.arg(peer_->get_my_port()));
+  }
 }
 void MainWindow::OnRbSimpleClicked() {
   ui_->l_your_status->setVisible(false);
