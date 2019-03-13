@@ -14,7 +14,9 @@ DAL::~DAL() {
 
 void DAL::SetClient(Client cl) {
 	//database[cl.getUserName()] = cl;
-	//database_.AddNewUser(cl.GetUserName(),cl.GetUserPassword());
+  //line below must be uncomented in order for NewUserRequest to work
+  //but must be commented for LoginRequest to be happy! LOL :)) Fix this. 
+	database_.AddNewUser(cl.GetUserName(),cl.GetUserPassword());
 	database_.UpdateIPPort(cl.GetUserName(),cl.GetUserIp().toString(),(int)cl.GetUserPort());
 	
 

@@ -8,7 +8,7 @@
 ServerThread::ServerThread(int socket_descriptor, QObject *parent) : QThread(parent),socket_descriptor_(socket_descriptor)
 {
 	
-	qDebug() << "New server thread created!\n";
+	qDebug() << "New threaded connection!\a\n";
 
 }
 
@@ -22,7 +22,7 @@ void ServerThread::run()
 	
 	if (incomming_connection.waitForReadyRead(10000)) 
 	{
-		qDebug() << "waitForReadyRead";
+		
           data_ = incomming_connection.readAll();
           SetRequest(Parser::getRequestType(data_), &incomming_connection);
     
@@ -41,7 +41,7 @@ void ServerThread::SetRequest(quint8 type, QTcpSocket* connection)
 		request_ = new NewUserRequest(data_, &dal_, connection); 
 		break;
 	case (quint8)ClientRequest::LOGIN:
-		qDebug() << "loginrequest";
+		
           request_ = new LoginRequest(data_, &dal_, connection);
 
 	}
