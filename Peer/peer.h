@@ -17,6 +17,7 @@
 
 #include "connection.h"
 #include "tcpserver.h"
+#include "dalmanager.h"
 
 #include "../Parser&Structs/parser.h"
 
@@ -84,6 +85,7 @@ class Peer : public QObject {
   quint16 receiver_port_;
 
   bool is_active_;
+  DALManager client_dal_;
 };
 
 #endif  // TEST_H

@@ -12,10 +12,9 @@ DAL::~DAL() {
   database_.CloseConncetion(connection_name_); 
 }
 
-
 void DAL::SetClient(Client cl) {
 	//database[cl.getUserName()] = cl;
-	database_.AddNewUser(cl.GetUserName(),cl.GetUserPassword());
+	//database_.AddNewUser(cl.GetUserName(),cl.GetUserPassword());
 	database_.UpdateIPPort(cl.GetUserName(),cl.GetUserIp().toString(),(int)cl.GetUserPort());
 	
 
@@ -45,19 +44,18 @@ Client DAL::getClient(QString login) {
 		*/
 }
 
-Client DAL::getClient(quint32 i)
-{
-	return this->getClient(database_.GetLoginByID(i));
+Client DAL::getClient(quint32 i) {
+  /*return this-> getClient(databse_.GetLoginByID(i));*/
+  return getClient(database_.GetLoginByID(i));
 }
 
-bool DAL::Check_If_Client_exists_In_Db(Client cl)
-{
-	if (database_.GetIDByLogin(cl.GetUserName()) == 0) { // If login don't exist return id = 0
-		return false; // login dont exist
-	} else {
-		return true; //login exist 
-	}
-	
+bool DAL::Check_If_Client_exists_In_Db(Client cl) {
+  if (database_.GetIDByLogin(cl.GetUserName()) ==
+      0) {         // If login don't exist return id = 0
+    return false;  // login dont exist
+  } else {
+    return true;  // login exist
+  }
 }
 
 int DAL::GetClientId(Client cl)
@@ -66,18 +64,3 @@ int DAL::GetClientId(Client cl)
 }
 
 
-/*
-
-int DAL::getSize()
-{
-	return database->size();
-}
-
-void DAL::printDatabase()
-{
-	for (auto& s : database)
-	{
-		std::cout << s.first.toStdString() << " " << s.second << std::endl;
-	}
-}
-*/

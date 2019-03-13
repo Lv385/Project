@@ -25,6 +25,7 @@ void NewUserRequest::PrepareResponse()
     register_success_info.id = database_->GetClientId(newClient);
     outcome_data_ = Parser::RegisterSuccessInfo_ToByteArray(register_success_info);		
 		outcome_data_.append(Parser::GetUnpossibleSequence());
+
 	}
 	else {
 		outcome_data_ = Parser::Empty_ToByteArray((quint8)ServerRequests::REGISTER_FAILED);

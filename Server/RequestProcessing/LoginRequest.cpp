@@ -47,8 +47,8 @@ bool LoginRequest::SendResponde()
 			Client tempClient = database_->getClient(currentFriends[i]);
 			output_socket.connectToHost(tempClient.GetUserIp(), tempClient.GetUserPort());
 			if (output_socket.waitForConnected(5000)) {
-				output_socket.write(raw_data);
-				output_socket.waitForBytesWritten(1000);
+				output_socket.write(raw_data);  
+				output_socket.waitForBytesWritten(1000);// need to test sending to another friends of current users
 				output_socket.disconnectFromHost();
 			}
 		}

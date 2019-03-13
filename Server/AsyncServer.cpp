@@ -3,8 +3,6 @@
 #include <QNetworkInterface>
 #include <QUuid>
 
-//QString b = QUuid::createUuid().toString();
-//qDebug() << b << "\n";
 //Registration reg;
 //reg.port = 5896;
 //reg.login = QString("man");
@@ -16,7 +14,6 @@
 AsyncServer::AsyncServer(QObject *parent) :QTcpServer ()
 {
   
-
 	if (!this->listen(QHostAddress::Any, AsyncServer::PORT)) {
 		qDebug() << "Failed to run server";
 	}
@@ -38,6 +35,7 @@ AsyncServer::AsyncServer(QObject *parent) :QTcpServer ()
 
 		qDebug() << "Server are listening: " << ipAddress << ":" << this->serverPort();
 	}
+
 	/*
 	Client cl(QString("oleksa"), QString("password"), QHostAddress("192.168.103.120"), 8989);
 	Client c2(QString("markiyan"), QString("password"), QHostAddress("192.168.103.55"), 8989);
