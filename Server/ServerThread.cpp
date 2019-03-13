@@ -16,7 +16,6 @@ ServerThread::ServerThread(int socket_descriptor, QObject *parent) : QThread(par
 void ServerThread::run()
 
 {
-	
 	QTcpSocket incomming_connection;
   incomming_connection.setSocketDescriptor(socket_descriptor_);
 	
