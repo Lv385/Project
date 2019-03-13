@@ -29,6 +29,7 @@ bool LoginRequest::SendResponde()
 
 		QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequests::LOGIN_SUCCEED);
 		b.append(Parser::GetUnpossibleSequence());
+    Logger::log(b);
 		client_socket_->write(b);
         client_socket_->waitForBytesWritten(3000);
         client_socket_->disconnectFromHost();
@@ -48,6 +49,7 @@ bool LoginRequest::SendResponde()
 			Client tempClient = database_->getClient(currentFriends[i]);
 			output_socket.connectToHost(tempClient.GetUserIp(), tempClient.GetUserPort());
 			if (output_socket.waitForConnected(5000)) {
+        Logger::log(raw_data);
 				output_socket.write(raw_data);  
 				output_socket.waitForBytesWritten(1000);// need to test sending to another friends of current users
 				output_socket.disconnectFromHost();
@@ -58,6 +60,7 @@ bool LoginRequest::SendResponde()
 
 		QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequests::LOGIN_FAILED);
 		b.append(Parser::GetUnpossibleSequence());
+    Logger::log(b);
 		client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
     client_socket_->disconnectFromHost();

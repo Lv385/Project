@@ -34,6 +34,7 @@ void NewUserRequest::PrepareResponse()
 }
 bool NewUserRequest::SendResponde()
 {
+  Logger::log(outcome_data_);
 	client_socket_->write(outcome_data_);
   client_socket_->waitForBytesWritten(3000);
   client_socket_->disconnectFromHost();
