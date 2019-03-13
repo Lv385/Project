@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "dalmeneger.h"
+#include "dalmanager.h"
 #include "peer.h"
 
 #include <QComboBox>

@@ -17,7 +17,7 @@
 
 #include "connection.h"
 #include "tcpserver.h"
-#include "dalmeneger.h"
+#include "dalmanager.h"
 
 #include "../Parser&Structs/parser.h"
 

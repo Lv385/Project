@@ -1,4 +1,4 @@
-#include "dalmeneger.h"
+#include "dalmanager.h"
 DALManager::DALManager()  {
 
 }

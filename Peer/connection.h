@@ -6,7 +6,7 @@
 #include <QTimer>
 
 #include <ui_mainwindow.h>
-#include "dalmeneger.h"
+#include "dalmanager.h"
 #include "../DAL/Client/clientdb.h"
 #include "../Parser&Structs/parser.h"
 
