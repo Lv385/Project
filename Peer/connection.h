@@ -41,6 +41,6 @@ class Connection : public QTcpSocket {
   quint16 receiver_port_;
 
   const QByteArray k_unpossiblle_2_bytes_sequence_;
-  DALMeneger dal;
+  DALManager client_dal_;
 };
 #endif

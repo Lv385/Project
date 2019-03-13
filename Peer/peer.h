@@ -85,7 +85,7 @@ class Peer : public QObject {
   quint16 receiver_port_;
 
   bool is_active_;
-  DALMeneger dal;
+  DALManager client_dal_;
 };
 
 #endif  // TEST_H

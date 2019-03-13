@@ -87,13 +87,12 @@ void Connection::ReceiveRequests() {
     switch (requestType) {
     case (quint8)ClientRequest::MESSAGE: {
       Message mes = Parser::ParseAsMessage(received_data_);
-      ClientDAL::ClientDB db;
-      QString str = QString("<%1>: %2").arg(db.GetLoginById(mes.id))
+      QString str = QString("<%1>: %2").arg(client_dal_.GetLoginById(mes.id))
                     .arg(mes.message);
 
       emit SendMessageToUI(str);
 
-      dal.AddMessageToDB(mes.message, mes.id, mes.id);
+      client_dal_.AddMessageToDB(mes.message, mes.id, mes.id);
 
       break;
     }
@@ -108,7 +107,7 @@ void Connection::ReceiveRequests() {
 void Connection::ServerWorker() {
   if (received_data_.contains(k_unpossiblle_2_bytes_sequence_)) {
     FriendUpdateInfo info = Parser::ParseAsFriendUpdateInfo(received_data_);
-    dal.UpdateIpPort(info.id, info.ip.toString(), info.port);
+    client_dal_.UpdateIPPort(info.id, info.ip.toString(), info.port);
     disconnect();
     deleteLater();
   }

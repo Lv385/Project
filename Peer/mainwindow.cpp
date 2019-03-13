@@ -11,8 +11,7 @@ MainWindow::MainWindow(QWidget* parent)
   // ui_->pb_start->setEnabled(false);
   ui_->pb_send->setEnabled(false);
 
-  ClientDAL::ClientDB cdb;
-  QVector<QString> friend_logins = cdb.GetFriendsLogin();
+  QVector<QString> friend_logins = client_dal_.GetFriendsLogin();
   for (const QString& login : friend_logins) {
     ui_->combo_box_friends->addItem(login);
   }
@@ -54,9 +53,9 @@ void MainWindow::OnPbStartClicker() {
             .arg(peer_->get_my_port()));
     ui_->pb_send->setEnabled(true);
   }
-  ClientDAL::ClientDB cdb;
+
   QString login = ui_->le_login->text();
-  quint32 id = cdb.GetIDByLogin(login);
+  quint32 id = client_dal_.GetIDByLogin(login);
 
   peer_->set_login(login);
   peer_->set_id(id);
@@ -84,12 +83,11 @@ void MainWindow::AppendMessage(QString message) {
 
 void MainWindow::AppendHistory() {
   ui_->plainTextEdit->clear();
-  ClientDAL::ClientDB db;
   QString login = ui_->combo_box_friends->currentText();
 
-  QVector<ClientDAL::Message> history = db.GetMessages(login);
+  QVector<ClientDAL::Message> history = client_dal_.GetMessages(login);
   for (auto i : history) {
-    if (login == db.GetLoginById(i.owner_id)) {
+    if (login == client_dal_.GetLoginById(i.owner_id)) {
       ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + '<' +
                                           login + ">: " + i.data);
     } else {
@@ -104,9 +102,8 @@ void MainWindow::OnPbSendClicked() {
   peer_->set_receiver_ip(QHostAddress(ui_->le_ip->text()));
   peer_->set_receiver_port(ui_->le_port->text().toUShort());
 
-  ClientDAL::ClientDB cdb;
   QString selected_login = ui_->combo_box_friends->currentText();
-  peer_->SendRequest(cdb.GetIDByLogin(selected_login),
+  peer_->SendRequest(client_dal_.GetIDByLogin(selected_login),
                      ui_->le_message->text());  // id + mes  zzz
 
   ui_->plainTextEdit_Log->appendPlainText("\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
@@ -124,9 +121,9 @@ void MainWindow::OnPbLoginClicked() {
       .arg(peer_->get_my_port()));
     ui_->pb_send->setEnabled(true);
   }
-  ClientDAL::ClientDB cdb;
+
   QString login = ui_->le_login->text();
-  quint32 id = cdb.GetIDByLogin(login);
+  quint32 id = client_dal_.GetIDByLogin(login);
 
   peer_->set_login(login);
   peer_->set_id(id);

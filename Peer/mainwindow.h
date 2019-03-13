@@ -1,6 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
+#include "dalmeneger.h"
 #include "peer.h"
 
 #include <QComboBox>
@@ -37,6 +38,7 @@ class MainWindow : public QMainWindow {
  private:
   Ui::MainWindow* ui_;
   Peer* peer_;
+  DALManager client_dal_;
 };
 
 #endif  // MAINWINDOW_H

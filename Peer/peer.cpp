@@ -10,7 +10,6 @@ Peer::Peer(QObject* parent, quint16 listen_port)
       is_active_(false) {
   tcp_server_ = new TcpServer(this, server_ip_, server_port_);
 
-  ClientDAL::ClientDB db;
 
   QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
 
@@ -99,15 +98,14 @@ void Peer::SendRequest(unsigned id, QString message) {
   if (connections_[id]->state() == QAbstractSocket::ConnectedState) {
     Message mes = { my_id_, message };
     connections_[id]->SendMessage(mes);
-    dal.AddMessageToDB(message,id, my_id_);
+    client_dal_.AddMessageToDB(message,id, my_id_);
   }
 }
 
 
 bool Peer::ConnectToPeer(unsigned id) {
   //tcp_socket_ = new QTcpSocket(this);
-  ClientDAL::ClientDB cdb;
-  QPair<QString, int> ip_port = cdb.GetIPPort(id); // marko - change to QPair<QString, quint16>  GetIPPort(const unsigned& user_id);
+  QPair<QString, int> ip_port = client_dal_.GetIPPort(id); // marko - change to QPair<QString, quint16>  GetIPPort(const unsigned& user_id);
   connections_[id]->connectToHost(ip_port.first, ip_port.second);
   QString logMessage = receiver_ip_.toString() + " : " + QString::number(ip_port.second);
   emit SendLog("trying connect to: " + logMessage);
@@ -153,8 +151,7 @@ void Peer::SendUpdateInfo() {
   QByteArray to_write = Parser::IdPort_ToByteArray(my_id_port); //pack
   to_write.append(Parser::GetUnpossibleSequence());			    //append separator
 
-  ClientDAL::ClientDB cdb;
-  QVector<QString> friends_ip = cdb.GetFriendsIp();
+  QVector<QString> friends_ip = client_dal_.GetFriendsIP();
 
   for (const QString& ip_to_send : friends_ip) {
     update_sender_.writeDatagram(to_write, QHostAddress(ip_to_send), my_listen_port_);
@@ -166,7 +163,6 @@ void Peer::SendUpdateInfo() {
 void Peer::UpdateFriendsInfo() {
   QByteArray datagram;
   IdPort updated_friend_info;
-  ClientDAL::ClientDB cdb;
 
   // using QUdpSocket::readDatagram (API since Qt 4)
   while (update_receiver_.hasPendingDatagrams()) {
@@ -179,7 +175,7 @@ void Peer::UpdateFriendsInfo() {
 
 
     if (check_timers_.find(updated_friend_info.id) == check_timers_.end()) { 
-      cdb.SetFriendStatus(updated_friend_info.id, true);
+      client_dal_.SetFriendStatus(updated_friend_info.id, true);
 
 	  QTimer* timer = new QTimer();
       timer->start(10000);
@@ -190,36 +186,30 @@ void Peer::UpdateFriendsInfo() {
     } else {
       check_timers_[updated_friend_info.id]->start(10000);  //reset timer
     }
+    client_dal_.UpdateIPPort(updated_friend_info.id, peer_address.toString(), updated_friend_info.port); 
 
-    ClientDAL::ClientDB cdb;
-    cdb.UpdateIPPort(updated_friend_info.id, peer_address.toString(), updated_friend_info.port); 
-
-    emit SendLog("updated " + cdb.GetLoginById(updated_friend_info.id) + "'s info");
+    emit SendLog("updated " + client_dal_.GetLoginById(updated_friend_info.id) + "'s info");
   }
 }
-
 
 void Peer::SetOfflineStatus() {
   QTimer* to_delete = static_cast<QTimer*>(QObject::sender());   //get user id that came offline
   unsigned id = check_timers_.key(to_delete);
 
-  ClientDAL::ClientDB cdb;
-  cdb.SetFriendStatus(id, false);
-  emit SendLog("set " + cdb.GetLoginById(id) + " offline status");
+  client_dal_.SetFriendStatus(id, false);
+  emit SendLog("set " + client_dal_.GetLoginById(id) + " offline status");
 
   check_timers_.remove(id);
   to_delete->deleteLater();  // use deleteLater() instead of delete
 }
 
-
 bool Peer::LogIn(QString login, QString password) {
-  ClientDAL::ClientDB cdb;
 
   server_connection_ = new Connection(this);
   connect(server_connection_, SIGNAL(SendLog(QString)), 
                         this, SIGNAL(SendLog(QString)));
   LoginOrRegisterInfo info;
-  info.id = cdb.GetIDByLogin(login);
+  info.id = client_dal_.GetIDByLogin(login);
   info.password = password;
   info.ip = get_my_ip();
   info.port = get_my_port();
@@ -239,8 +229,8 @@ bool Peer::LogIn(QString login, QString password) {
 
 
 void Peer::SetSocket(Connection* connection) {
-  ClientDAL::ClientDB cdb;
-  unsigned id = cdb.GetIDByIpPort(connection->peerAddress().toString(), connection->peerPort());
+
+  unsigned id = client_dal_.GetIDByIPPort(connection->peerAddress().toString(), connection->peerPort());
 
   connections_[id] = connection;
 
