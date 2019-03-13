@@ -1,15 +1,26 @@
 #include "parser.h"
 
-QByteArray Parser::LoginOrRegisterInfo_ToByteArray(
-   LoginOrRegisterInfo& login_or_register_info) {
+QByteArray Parser::LoginInfo_ToByteArray(
+   LoginInfo& login_or_register_info) {
   QByteArray result;
   QDataStream out(&result, QIODevice::WriteOnly);
 
-  out << quint8(ClientRequest::LOGIN);               // type
-  out << login_or_register_info.ip.toIPv4Address();  // ip
+  out << quint8(ClientRequest::LOGIN);               // type 
   out << login_or_register_info.port;                // port
   out << login_or_register_info.id;                  // id
   out << login_or_register_info.password;            // password
+
+  return result;
+}
+
+LoginInfo Parser::ParseAsLoginInfo(QByteArray& data) {
+  LoginInfo result;
+
+  QDataStream in(&data, QIODevice::ReadOnly);
+
+  quint8 type;
+ 
+  in >> type >> result.port >> result.id >> result.password; 
 
   return result;
 }
@@ -19,7 +30,7 @@ quint8 Parser::getRequestType(QByteArray& data) {
   return result;
 }
 
-QByteArray Parser::RegisterInfo_ToByteArray(Registration& regis_info) {
+QByteArray Parser::RegisterInfo_ToByteArray(RegisterInfo& regis_info) {
 	  
   QByteArray result;
   QDataStream out(&result, QIODevice::WriteOnly);
@@ -31,8 +42,8 @@ QByteArray Parser::RegisterInfo_ToByteArray(Registration& regis_info) {
   return result;
 }
 
-Registration Parser::ParseAsRegisterInfo(QByteArray& data) {
-  Registration result;
+RegisterInfo Parser::ParseAsRegisterInfo(QByteArray& data) {
+  RegisterInfo result;
 
   QDataStream in(&data, QIODevice::ReadOnly);
 
@@ -42,18 +53,26 @@ Registration Parser::ParseAsRegisterInfo(QByteArray& data) {
   return result;
 }
 
-LoginOrRegisterInfo Parser::ParseAsLoginOrRegisterInfo(QByteArray& data) {
-  LoginOrRegisterInfo result;
+QByteArray Parser::RegisterSuccessInfo_ToByteArray(RegisterSuccessInfo& regis_info) {
+  QByteArray result;
+  QDataStream out(&result, QIODevice::WriteOnly);
 
-  QDataStream in(&data, QIODevice::ReadOnly);
-
-  quint8 type;
-  quint32 ip;
-  in >> type >> ip >> result.port >> result.id >> result.password;
-  result.ip = QHostAddress(ip);
+  out << quint8(ServerRequests::REGISTER_SUCCEED);
+  out << regis_info.id;  
 
   return result;
+  
 }
+
+RegisterSuccessInfo Parser::ParseAsRegisterSuccessInfo(QByteArray& data) {
+  RegisterSuccessInfo result;
+  QDataStream in(&data, QIODevice::ReadOnly);
+  quint8 type;
+  in >> type >>result.id;
+  return result;
+}
+
+
 
 QByteArray Parser::FriendUpdateInfo_ToByteArray(
     FriendUpdateInfo& friend_update_info) {
@@ -104,7 +123,7 @@ Message Parser::ParseAsMessage(QByteArray& data) {
   return result;
 }
 
-QByteArray Parser::yesNoResponseToByteArray(quint8 type) {
+QByteArray Parser::Empty_ToByteArray(quint8 type) {
   QByteArray result;
   QDataStream out(&result, QIODevice::WriteOnly);
 

@@ -4,7 +4,8 @@
 #include <iostream>
 #include <string>
 #include "../DAL/Server/serverdb.h"
-
+#include <QUuid>
+#include <QString>
 #include "client.h"
 //using namespace std;
 
@@ -13,6 +14,7 @@ class DAL
 {
 public:
 	DAL();
+ ~DAL();
 	//interface associated with database access will be placed here
 	void SetClient(Client);
 	Client getClient(QString);
@@ -22,6 +24,7 @@ public:
 	//int getSize();
 	//void printDatabase();
 private:
-	ServerDB databse_;
+	ServerDB database_;
+  QString connection_name_;
 	//std::map<QString, Client> database;
 };

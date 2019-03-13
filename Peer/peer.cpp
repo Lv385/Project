@@ -217,10 +217,9 @@ bool Peer::LogIn(QString login, QString password) {
   server_connection_ = new Connection(this);
   connect(server_connection_, SIGNAL(SendLog(QString)), 
                         this, SIGNAL(SendLog(QString)));
-  LoginOrRegisterInfo info;
+  LoginInfo info;
   info.id = cdb.GetIDByLogin(login);
-  info.password = password;
-  info.ip = get_my_ip();
+  info.password = password;  
   info.port = get_my_port();
 
   QString test = server_ip_.toString();

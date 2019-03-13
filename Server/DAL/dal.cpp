@@ -2,29 +2,36 @@
 
 
 DAL::DAL()
-{
-
+{ 
+  QUuid uuid;
+  connection_name_ = uuid.createUuid().toString();
+  database_.NewConnection(connection_name_);
 }
+
+DAL::~DAL() { 
+  database_.CloseConncetion(connection_name_); 
+}
+
 
 void DAL::SetClient(Client cl) {
 	//database[cl.getUserName()] = cl;
-	databse_.AddNewUser(cl.GetUserName(),cl.GetUserPassword());
-	databse_.UpdateIPPort(cl.GetUserName(),cl.GetUserIp().toString(),(int)cl.GetUserPort());
+	database_.AddNewUser(cl.GetUserName(),cl.GetUserPassword());
+	database_.UpdateIPPort(cl.GetUserName(),cl.GetUserIp().toString(),(int)cl.GetUserPort());
 	
 
 }
 Client DAL::getClient(QString login) {
 	//return database->at(user_name);
-	unsigned int id = databse_.GetIDByLogin(login);
+	unsigned int id = database_.GetIDByLogin(login);
 	Client toReturn;
 	if ( id!= 0) {
 		
 		toReturn.SetUserId(id);
-		toReturn.SetUserIp(QHostAddress(databse_.GetIPPort(id).first));
-		toReturn.SetUserPort((quint16)databse_.GetIPPort(id).second);
-		toReturn.SetUserName(databse_.GetLoginByID(id));
-		toReturn.SetUserPassword(databse_.GetPasswordById(id));
-		toReturn.SetFriends(databse_.GetFriends(id));
+		toReturn.SetUserIp(QHostAddress(database_.GetIPPort(id).first));
+		toReturn.SetUserPort((quint16)database_.GetIPPort(id).second);
+		toReturn.SetUserName(database_.GetLoginByID(id));
+		toReturn.SetUserPassword(database_.GetPasswordById(id));
+		toReturn.SetFriends(database_.GetFriends(id));
 	}
 	return toReturn;
 	
@@ -40,12 +47,12 @@ Client DAL::getClient(QString login) {
 
 Client DAL::getClient(quint32 i)
 {
-	return this->getClient(databse_.GetLoginByID(i));
+	return this->getClient(database_.GetLoginByID(i));
 }
 
 bool DAL::Check_If_Client_exists_In_Db(Client cl)
 {
-	if (databse_.GetIDByLogin(cl.GetUserName()) == 0) { // If login don't exist return id = 0
+	if (database_.GetIDByLogin(cl.GetUserName()) == 0) { // If login don't exist return id = 0
 		return false; // login dont exist
 	} else {
 		return true; //login exist 
@@ -55,7 +62,7 @@ bool DAL::Check_If_Client_exists_In_Db(Client cl)
 
 int DAL::GetClientId(Client cl)
 {
-	return databse_.GetIDByLogin(cl.GetUserName());
+	return database_.GetIDByLogin(cl.GetUserName());
 }
 
 

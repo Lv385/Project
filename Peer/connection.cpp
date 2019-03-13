@@ -45,9 +45,9 @@ void Connection::SendMessage(Message message) {
   }
 }
 
-bool Connection::LoginRequest(LoginOrRegisterInfo info) {
+bool Connection::LoginRequest(LoginInfo info) {
   if (this->state() == QAbstractSocket::ConnectedState) {
-    QByteArray toWrite = Parser::LoginOrRegisterInfo_ToByteArray(info);
+    QByteArray toWrite = Parser::LoginInfo_ToByteArray(info);
     write(toWrite);
 
     if (waitForReadyRead(4000)) {
