@@ -11,7 +11,7 @@ class TcpServer : public QTcpServer {
  public:
   TcpServer(QObject* parent);
   ~TcpServer();
-  void setRemoteServerIpPort(QHostAddress& remote_server_ip,
+  void set_remote_server_ip_port(QHostAddress& remote_server_ip,
                              quint16& remote_server_port);
  signals:
   void NewConnection(Connection* connection);

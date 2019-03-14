@@ -15,16 +15,12 @@ MainWindow::MainWindow(QWidget* parent)
   for (const QString& login : friend_logins) {
     ui_->combo_box_friends->addItem(login);
   }
-
   
   peer_ = new Peer(this, ui_->le_port_my->text().toUShort());
 
-
-
-
-  ui_->rb_simple->setChecked(true);
-  if (ui_->rb_simple->isChecked()) {
-    OnRbSimpleClicked();
+  //ui_->rb_engineering->setChecked(true);
+  if (ui_->rb_engineering->isChecked()) {
+    OnRbEngineeringClicked();
   }
 
   connect(peer_, SIGNAL(SendMessageToUI(QString)), 
@@ -47,10 +43,10 @@ MainWindow::MainWindow(QWidget* parent)
 }
 
 void MainWindow::OnPbStartClicker() {
+  peer_->set_server_ip_port((QHostAddress(ui_->le_server_ip->text())),
+                            ui_->le_server_port->text().toShort());
 
-  if (peer_->StartListening(ui_->le_port_my->text().toUShort(),
-    (QHostAddress(ui_->le_server_ip->text())),
-    ui_->le_server_port->text().toShort())) {
+  if (peer_->StartListening(ui_->le_port_my->text().toUShort())) {
 
     ui_->l_your_status->setText(
         tr("The server is running on\n\nIP: %1\nport: %2\n")
@@ -119,19 +115,12 @@ void MainWindow::AppendLogMessage(QString message) {
 }
 
 void MainWindow::OnPbLoginClicked() {
-  if (peer_->StartListening(ui_->le_port_my->text().toUShort(),
-                            (QHostAddress(ui_->le_server_ip->text())),
-                            ui_->le_server_port->text().toShort())) {
-    ui_->l_your_status->setText(
-      tr("The server is running on\n\nIP: %1\nport: %2\n")
-      .arg(peer_->get_my_ip().toString())
-      .arg(peer_->get_my_port()));
-    ui_->pb_send->setEnabled(true);
-  }
+  peer_->set_server_ip_port((QHostAddress(ui_->le_server_ip->text())),
+    ui_->le_server_port->text().toShort());
 
   QString login = ui_->le_login->text();
   quint32 id = client_dal_.GetIDByLogin(login);
-
+ 
   peer_->set_login(login);
   peer_->set_id(id);
    if (peer_->LogIn(login, ui_->le_password->text()))
@@ -151,6 +140,11 @@ void MainWindow::OnRbSimpleClicked() {
   ui_->le_port_my->setVisible(false);
   ui_->plainTextEdit_Log->setVisible(false);
   ui_->pb_start->setVisible(false);
+  ui_->le_server_ip->setVisible(false);
+  ui_->le_server_port->setVisible(false);
+  ui_->label_6->setVisible(false);
+  ui_->label_7->setVisible(false);
+  ui_->pb_login->setGeometry(610,330, 70, 30);
 }
 void MainWindow::OnRbEngineeringClicked() {
   ui_->l_your_status->setVisible(true);
@@ -163,4 +157,9 @@ void MainWindow::OnRbEngineeringClicked() {
   ui_->le_port_my->setVisible(true);
   ui_->plainTextEdit_Log->setVisible(true);
   ui_->pb_start->setVisible(true);
+  ui_->le_server_ip->setVisible(true);
+  ui_->le_server_port->setVisible(true);
+  ui_->label_6->setVisible(true);
+  ui_->label_7->setVisible(true);
+  ui_->pb_login->setGeometry(630, 470, 70, 30);
 }

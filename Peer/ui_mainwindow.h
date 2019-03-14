@@ -86,7 +86,7 @@ public:
         centralWidget->setObjectName(QString::fromUtf8("centralWidget"));
         pb_send = new QPushButton(centralWidget);
         pb_send->setObjectName(QString::fromUtf8("pb_send"));
-        pb_send->setGeometry(QRect(530, 330, 71, 31));
+        pb_send->setGeometry(QRect(530, 330, 70, 30));
         pb_send->setStyleSheet(QString::fromUtf8("QPushButton\n"
 "{\n"
 "    color: #b1b1b1;\n"
@@ -190,7 +190,7 @@ public:
 ""));
         pb_start = new QPushButton(centralWidget);
         pb_start->setObjectName(QString::fromUtf8("pb_start"));
-        pb_start->setGeometry(QRect(610, 330, 71, 31));
+        pb_start->setGeometry(QRect(610, 330, 70, 30));
         pb_start->setStyleSheet(QString::fromUtf8("QPushButton\n"
 "{\n"
 "    color: #b1b1b1;\n"
@@ -259,7 +259,7 @@ public:
         label_5->setGeometry(QRect(550, 140, 47, 13));
         pb_login = new QPushButton(centralWidget);
         pb_login->setObjectName(QString::fromUtf8("pb_login"));
-        pb_login->setGeometry(QRect(550, 190, 75, 31));
+        pb_login->setGeometry(QRect(630, 470, 70, 30));
         pb_login->setStyleSheet(QString::fromUtf8("QPushButton\n"
 "{\n"
 "    color: #b1b1b1;\n"
@@ -294,6 +294,7 @@ public:
         rb_engineering->setObjectName(QString::fromUtf8("rb_engineering"));
         rb_engineering->setGeometry(QRect(550, 30, 111, 17));
         rb_engineering->setStyleSheet(QString::fromUtf8(""));
+        rb_engineering->setChecked(true);
         le_server_ip = new QLineEdit(centralWidget);
         le_server_ip->setObjectName(QString::fromUtf8("le_server_ip"));
         le_server_ip->setGeometry(QRect(610, 400, 106, 16));
@@ -340,8 +341,8 @@ public:
         pb_login->setText(QApplication::translate("MainWindow", "Log In", nullptr));
         rb_simple->setText(QApplication::translate("MainWindow", "Simple mode", nullptr));
         rb_engineering->setText(QApplication::translate("MainWindow", "Engineering mode", nullptr));
-        le_server_ip->setText(QApplication::translate("MainWindow", "127.0.0.1", nullptr));
-        le_server_port->setText(QApplication::translate("MainWindow", "8989", nullptr));
+        le_server_ip->setText(QApplication::translate("MainWindow", "192.168.103.121", nullptr));
+        le_server_port->setText(QApplication::translate("MainWindow", "8888", nullptr));
         label_6->setText(QApplication::translate("MainWindow", "Enter server IP", nullptr));
         label_7->setText(QApplication::translate("MainWindow", "Enter server port", nullptr));
     } // retranslateUi

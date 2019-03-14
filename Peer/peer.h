@@ -37,10 +37,12 @@ class Peer : public QObject {
   void set_receiver_port(const quint16& receiver_port);
   void set_login(const QString login);
   void set_id(const quint32 id);
+  void set_server_ip_port(QHostAddress remote_server_ip,
+                                 quint16 remote_server_port);
 
   bool is_active();
 
-  bool StartListening(quint16 listen_port, QHostAddress server_ip, quint16 server_port);
+  bool StartListening(quint16 listen_port);
   bool ConnectToPeer(unsigned id);
   bool LogIn(QString login, QString password);
 

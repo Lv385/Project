@@ -57,18 +57,20 @@ void Peer::set_login(const QString login) {
   my_login_ = login;
 }
 
-void Peer::set_id(const quint32 id) {
-  my_id_ = id; }
+void Peer::set_id(const quint32 id) { my_id_ = id; }
+
+void Peer::set_server_ip_port(QHostAddress server_ip,
+                                     quint16 server_port) {
+  server_ip_ = server_ip;
+  server_port_ = server_port;
+}
 
 bool Peer::is_active() {
   return is_active_;
 }
 
-bool Peer::StartListening(quint16 listen_port, QHostAddress server_ip,
-                          quint16 server_port) {
-  server_ip_ = server_ip;
-  server_port_ = server_port;
-  tcp_server_->setRemoteServerIpPort(server_ip_, server_port_);
+bool Peer::StartListening(quint16 listen_port) {
+  tcp_server_->set_remote_server_ip_port(server_ip_, server_port_);
   my_listen_port_ = listen_port;
   tcp_server_->close();
   if (!tcp_server_->listen(QHostAddress::Any, my_listen_port_)) {
