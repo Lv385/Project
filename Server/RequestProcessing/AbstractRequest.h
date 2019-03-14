@@ -1,41 +1,40 @@
 #pragma once
-#include <string>
 #include <QObject>
 #include <QTcpSocket>
+#include <string>
 
-#include "../DAL/dal.h"
-#include <QTcpSocket>
 #include <QByteArray>
+#include <QTcpSocket>
+#include "../DAL/Server/serverdb.h"
+#include "../DAL/dal.h"
 #include "../Parser&Structs/parser.h"
 #include "../Parser&Structs/request_types.h"
-#include"../DAL/Server/serverdb.h"
+#include "../Logger/logger.h"
 
-//using namespace std;
+// using namespace std;
 
 class AbstractRequest : public QObject {
-	Q_OBJECT
-public:
-	AbstractRequest(QByteArray&, DAL* );
-	//Receives socket initalized by client or a socket initialized by server.
-	//Depending from the type of request one of that sockets may be nullptr.
-	//That sockets will be used to send correct responses.
-	virtual bool sendResponde(QTcpSocket*) = 0;
-protected:
-	//every derived class will override this function in order to return
-	//appropriate response according to incoming request. That response will be stored in 
-	
-        //string fields and will be processed but sendResponde()
-	//ServerDB db;
-    virtual void prepareResponse() = 0;
+  Q_OBJECT
+ public:
+  AbstractRequest(DAL*, QTcpSocket*);
+  // Receives socket initalized by client.
+  // That sockets will be used to send correct responses.
+  // Also that function may initialize outcome connection
+  virtual bool SendResponde() = 0;
 
-	DAL* database;
-	//DAL database;
-	QTcpSocket init_by_server;
-	//QByteArray bytarr;
-signals:
+ protected:
+  // every derived class will override this function in order to return
+  // appropriate response according to incoming request. That response will be
+  // stored in
+  // string fields and will be processed but sendResponde()
+  virtual void PrepareResponse() = 0;
 
-public slots:
-	virtual void connected();
+  DAL* database_;
+  QTcpSocket* client_socket_;
+ signals:
 
-	//void readyRead();
+ public slots:
+  virtual void connected();
+
+  // void readyRead();
 };

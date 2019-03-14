@@ -232,7 +232,7 @@ unsigned int  ServerDB::GetIDByLogin(const QString& user_login) {
 		}
 		return id;
 	} else {
-		qDebug() << "User login dont exist";
+		//qDebug() << "User login dont exist";
 		return 0;
 	}
 }

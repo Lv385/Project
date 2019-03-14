@@ -10,12 +10,17 @@ class Parser {
  public:
   static quint8 getRequestType(QByteArray& data);
 
-  static QByteArray RegisterInfo_ToByteArray(Registration& regis_info);
-  static Registration ParseAsRegisterInfo(QByteArray& data);
+  static QByteArray RegisterInfo_ToByteArray(RegisterInfo& regis_info);
+  static RegisterInfo ParseAsRegisterInfo(QByteArray& data);
 
-  static LoginOrRegisterInfo ParseAsLoginOrRegisterInfo(QByteArray& data);
-  static QByteArray LoginOrRegisterInfo_ToByteArray(
-    LoginOrRegisterInfo& login_info);
+  static QByteArray RegisterSuccessInfo_ToByteArray(RegisterSuccessInfo& regis_info);
+  static RegisterSuccessInfo ParseAsRegisterSuccessInfo(QByteArray& data);
+
+  static QByteArray LoginInfo_ToByteArray(LoginInfo& login_info);
+  static LoginInfo ParseAsLoginInfo(QByteArray& data);
+
+  static QByteArray AddFriendInfo_ToByteArray(AddFriendInfo& login_info);
+  static AddFriendInfo ParseAsAddFriendInfo(QByteArray& data);  
 
   static FriendUpdateInfo ParseAsFriendUpdateInfo(QByteArray& data);
   static QByteArray FriendUpdateInfo_ToByteArray(
@@ -29,7 +34,7 @@ class Parser {
   // QByteArray that is written by socket to awoid
   // erros hoping that this sequence will not appear
   // in any of our messages must be fixed
-  static QByteArray yesNoResponseToByteArray(quint8 type);
+  static QByteArray Empty_ToByteArray(quint8 type);
 
   static QByteArray IdPort_ToByteArray(IdPort id_port);
   static IdPort ParseAsIdPort(QByteArray& data);

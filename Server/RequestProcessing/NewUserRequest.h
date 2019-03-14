@@ -1,16 +1,20 @@
 #pragma once
 #include "AbstractRequest.h"
 #include "../Parser&Structs/parser.h"
-
-//WOULD NOT WORK WITHOUT NeW Register Structure and Register parser
-class NewUserRequest : public AbstractRequest {
+//In one session:
+//receives: REGISTER,//+RegisterInfo(c->s)I
+//respond:  (1)REGISTER_SUCCEED,//+RegisterSuccessInfo(s->c)REGISTER
+//          (2)REGISTER_FAILED,  // empty(s->c)REGISTER
+//work: try to write RegisterInfo to DB; if fail, respond - (1); 
+//      if ok, respond (2)
+    class NewUserRequest : public AbstractRequest {
 public:
-	NewUserRequest(QByteArray& , DAL* );
-	bool sendResponde(QTcpSocket*);
+	NewUserRequest(QByteArray& , DAL*, QTcpSocket* );
+	bool SendResponde();
 protected:
-	void prepareResponse();
+	void PrepareResponse();
 private:
-    Registration income_data_;
+	RegisterInfo income_data_;
 	QByteArray outcome_data_;
 	bool user_exist;
 };

@@ -18,7 +18,7 @@ class Connection : public QTcpSocket {
   Connection(qintptr socketDescriptor, QObject* parent = 0);
 
   void SendMessage(Message message);
-  bool LoginRequest(LoginOrRegisterInfo info);
+  bool LoginRequest(LoginInfo info);
   void StartConnectionTimer(unsigned miliseconds);
 
   ~Connection();

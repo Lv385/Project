@@ -5,6 +5,19 @@
 #include <QString>
 #include <QtGlobal>
 
+//NOTATION: 
+//
+//  HEADER,//+accompanying_structure(c->s) Initiator^,-src 
+//
+//  (c->s)||(s->c)- direction of data flow: client to server or server to client
+//  Initiator - who initizlize sending this data. Communication works
+//            ass request-response pairs. If some request initialize conection
+//            it is denoted by 'I'(for example, as a result of user interaction). 
+//            If data is response to some I request that I become it's 'Initiator'.
+//            Sign '^' means that response don't come in the same session.
+//  -src   - initial source of a response
+//            
+//            
 enum RequestOwnerType : quint8 {
   ClientRequest = 0x0,
   ServerRequests = 0x80
@@ -12,54 +25,47 @@ enum RequestOwnerType : quint8 {
 //no more than 128 types
 enum class ClientRequest : quint8 {
   MESSAGE = ClientRequest,
-  LOGIN,
-  REGISTER,
-  FRIEND_REQUEST,
-  FRIENDSHIP_REJECTED,  // client send this to server if AddFriend request declined
-  FRIENDSHIP_ACCEPTED,
+  LOGIN,//+LoginInfo(c->s)I,-user
+  REGISTER,//+RegisterInfo(c->s)I,-user
+  FRIEND_REQUEST,//+FriendRequestInfo(c->s)I,-user
+  FRIENDSHIP_REJECTED,//+empty(c->s)ADD_FRIEND_REQUEST^; 
+  FRIENDSHIP_ACCEPTED,//+FriendRequestInfo(c->s)ADD_FRIEND_REQUEST^;  
   ONLINE_UPDATE,
 };
 
 // no more than 128 types
 enum class ServerRequests : quint8 {
-  LOGIN_SUCCEED = ServerRequests,
-  LOGIN_FAILED,
+  LOGIN_SUCCEED = ServerRequests,//empty(s->c)LOGIN
+  LOGIN_FAILED,//empty(s->c)LOGIN
 
-  REGISTER_SUCCEED,
-  REGISTER_FAILED,
+  REGISTER_SUCCEED,//+RegisterSuccessInfo(s->c)REGISTER
+  REGISTER_FAILED,//empty(s->c)REGISTER
 
-  FRIEND_REQUST_FAILED,    // will be returned by server if
-  // FriendRequestInfo.other_login is not contained in db
-  FRIEND_REQUEST_SUCCEED,  // will signal out that server will try to send
-  // friend request to FriendRequestInfo.other_login
+  //requested login - not found
+  FRIEND_REQUEST_FAILED,//empty(s->c)FRIEND_REQUEST;   
+  FRIEND_REQUEST_SUCCEED,//empty(s->c)FRIEND_REQUEST;
+  ADD_FRIEND_REQUEST,//+AddFriendInfo(s->c)I,-FRIEND_REQUEST ; 
 
-  FRIEND_UPDATE_INFO
+  //sending to all friends on peer logined
+  FRIEND_UPDATE_INFO//+FriendUpdateInfo(s->c)I,-LOGIN ; 
 };
 
-// #tofix
-struct LoginOrRegisterInfo {
-  QHostAddress ip;
+
+//comes after LOGIN header (c->s)
+struct LoginInfo {
   quint16 port;
   quint32 id;
   QString password;
 };
 
-//#tofix instead of LoginOrRegisterInfo
-struct Login {
-  QHostAddress ip;
-  quint16 port;
-  quint32 id;
-  QString password;
-};
-
-//#tofix instead of LoginOrRegisterInfo
-struct Registration {
+// comes after REGISTER header (c->s)
+struct RegisterInfo {
   quint16 port;
   QString login;
   QString password;
 };
 
-// sending to all friends on peer logined
+//comes after  FRIEND_UPDATE_INFO header (c->s)
 struct FriendUpdateInfo {
   QHostAddress ip;
   quint16 port;
@@ -70,6 +76,8 @@ struct FriendUpdateInfo {
 // server with FRIEND_REQUEST header Also this structure will be emmited by
 // client to server in a case of frienship acceptance with FRIENDSHIP_ACCEPTED
 // header;
+
+// comes after  FRIEND_REQUEST || FRIENDSHIP_ACCEPTED header (c->s)
 struct FriendRequestInfo {
   QString other_login;  // login of a potentil friend
   QString login;
@@ -80,16 +88,23 @@ struct FriendRequestInfo {
 // of a person that are interested in friendship with this
 // structure receiver. After receiving this, user get options:
 // accept or reject friendship. In a case of rejection
-// user send empty request FRIENDSHIP_REJECTED. If friendship accepted -
+// user send empty request FRIENDSHIP_REJECTED (c->s). If friendship accepted -
 // FriendRequestInfo should be sended to server (with FRIENDSHIP_ACCEPTED
 // header), where: FriendRequestInfo.other_login = AddFriend.requester_login;
 // FriendRequestInfo.login = your login
 // FriendRequestInfo.password = your pass
-struct AddFriend {
+
+//comes after ADD_FRIEND_REQUEST header (s->c)
+struct AddFriendInfo {
   QString requester_login;
   QHostAddress requester_ip;
   quint16 requester_port;
 };
+// comes after REGISTER_SUCCEED header (s->c)
+struct RegisterSuccessInfo {
+  quint32 id;
+};
+
 
 struct IdPort {
   quint32 id;

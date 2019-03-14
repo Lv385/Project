@@ -1,39 +1,41 @@
 #include "LoginRequest.h"
 
-LoginRequest::LoginRequest(QByteArray & A, DAL * d):AbstractRequest(A, d)
-{
-	log_ = Parser::ParseAsLoginOrRegisterInfo(A);
-	prepareResponse();
+LoginRequest::LoginRequest(QByteArray& A, DAL* d, QTcpSocket* s)
+    : AbstractRequest(d,s) {
+	incoming_structure_ = Parser::ParseAsLoginInfo(A);
+	PrepareResponse();
 }
 
-void LoginRequest::prepareResponse()
+void LoginRequest::PrepareResponse()
 {
 	//check user in db  and set t or f
-	requester_ = database->getClient(log_.id);
+	requester_ = database_->getClient(incoming_structure_.id);
 	if (requester_.GetUserName().length() > 1) {
-		requester_.SetUserIp(log_.ip);
-		requester_.SetUserPort(log_.port);
 
-		database->SetClient(requester_);
+		requester_.SetUserIp(client_socket_->peerAddress());
+		requester_.SetUserPort(incoming_structure_.port);
+
+		database_->SetClient(requester_);
 		logcheck = true;
 	} else {
 		logcheck = false;
 	}
 
 }
-bool LoginRequest::sendResponde(QTcpSocket * initByClient)
+bool LoginRequest::SendResponde()
 {
 	//send enum answer to client
 	if (logcheck == true) {
 
-		QByteArray b = Parser::yesNoResponseToByteArray((quint8)ServerRequests::LOGIN_SUCCEED);
+		QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequests::LOGIN_SUCCEED);
 		b.append(Parser::GetUnpossibleSequence());
-		initByClient->write(b);
-		initByClient->waitForBytesWritten(3000);
-		initByClient->disconnectFromHost();
+    Logger::log(b);
+		client_socket_->write(b);
+        client_socket_->waitForBytesWritten(3000);
+        client_socket_->disconnectFromHost();
 
 		
-		Client updatedClient = database->getClient(requester_.GetUserName());
+		Client updatedClient = database_->getClient(requester_.GetUserName());
 		toSend_.id = updatedClient.GetUserId();
 		toSend_.ip = updatedClient.GetUserIp();
 		toSend_.port = updatedClient.GetUserPort();
@@ -44,9 +46,10 @@ bool LoginRequest::sendResponde(QTcpSocket * initByClient)
 		QVector<unsigned int> currentFriends = updatedClient.GetFriends();
 		QTcpSocket output_socket;
 		for (unsigned i = 0; i < currentFriends.size(); i++) {
-			Client tempClient = database->getClient(currentFriends[i]); // extracting all friends of current user is working great
+			Client tempClient = database_->getClient(currentFriends[i]);
 			output_socket.connectToHost(tempClient.GetUserIp(), tempClient.GetUserPort());
 			if (output_socket.waitForConnected(5000)) {
+        Logger::log(raw_data);
 				output_socket.write(raw_data);  
 				output_socket.waitForBytesWritten(1000);// need to test sending to another friends of current users
 				output_socket.disconnectFromHost();
@@ -55,11 +58,12 @@ bool LoginRequest::sendResponde(QTcpSocket * initByClient)
 		output_socket.close();
 	}else {
 
-		QByteArray b = Parser::yesNoResponseToByteArray((quint8)ServerRequests::LOGIN_FAILED);
+		QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequests::LOGIN_FAILED);
 		b.append(Parser::GetUnpossibleSequence());
-		initByClient->write(b);
-		initByClient->waitForBytesWritten(3000);
-		initByClient->disconnectFromHost();
+    Logger::log(b);
+		client_socket_->write(b);
+    client_socket_->waitForBytesWritten(3000);
+    client_socket_->disconnectFromHost();
 	}
 	return true;
 }

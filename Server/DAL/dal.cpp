@@ -1,49 +1,58 @@
 #include "dal.h"
 
-//need to write another method that registering client
-DAL::DAL() {
 
-  str = QUuid::createUuid().toString();
-  databse_.NewConnection(str);
+DAL::DAL()
+{ 
+  QUuid uuid;
+  connection_name_ = uuid.createUuid().toString();
+  database_.NewConnection(connection_name_);
+}
+
+DAL::~DAL() { 
+  database_.CloseConncetion(connection_name_); 
 }
 
 void DAL::SetClient(Client cl) {
-  // working just with login
- // databse_.AddNewUser(cl.GetUserName(), cl.GetUserPassword()); // unique constraint is here because of inserting instead of updating 
-  databse_.UpdateIPPort(cl.GetUserName(), cl.GetUserIp().toString(),
-                        (int)cl.GetUserPort());
+	//database[cl.getUserName()] = cl;
+  //line below must be uncomented in order for NewUserRequest to work
+  //but must be commented for LoginRequest to be happy! LOL :)) Fix this. 
+	database_.AddNewUser(cl.GetUserName(),cl.GetUserPassword());
+	database_.UpdateIPPort(cl.GetUserName(),cl.GetUserIp().toString(),(int)cl.GetUserPort());
+	
+
 }
 Client DAL::getClient(QString login) {
-  
-  unsigned int id = databse_.GetIDByLogin(login);
-  Client toReturn;
-  if (id != 0) {
-    toReturn.SetUserId(id);
-    toReturn.SetUserIp(QHostAddress(databse_.GetIPPort(id).first));
-    toReturn.SetUserPort((quint16)databse_.GetIPPort(id).second);
-    toReturn.SetUserName(databse_.GetLoginByID(id));
-    toReturn.SetUserPassword(databse_.GetPasswordById(id));
-    toReturn.SetFriends(databse_.GetFriends(id));
-  }
-  return toReturn;
-
-  // databse_.
-  /*
-  toReturn.SetUserId(databse_.GetIDByLogin(login));
-  QPair<QString, int> ip_port = databse_.GetIPPort(login, 0);
-  toReturn.SetUserIp(ip_port.first);
-  if (databse_.isFriend(0, 0)) {
-          printdatabase->
-          */
+	//return database->at(user_name);
+	unsigned int id = database_.GetIDByLogin(login);
+	Client toReturn;
+	if ( id!= 0) {
+		
+		toReturn.SetUserId(id);
+		toReturn.SetUserIp(QHostAddress(database_.GetIPPort(id).first));
+		toReturn.SetUserPort((quint16)database_.GetIPPort(id).second);
+		toReturn.SetUserName(database_.GetLoginByID(id));
+		toReturn.SetUserPassword(database_.GetPasswordById(id));
+		toReturn.SetFriends(database_.GetFriends(id));
+	}
+	return toReturn;
+	
+	//databse_.
+	/*
+	toReturn.SetUserId(databse_.GetIDByLogin(login));
+	QPair<QString, int> ip_port = databse_.GetIPPort(login, 0);
+	toReturn.SetUserIp(ip_port.first);
+	if (databse_.isFriend(0, 0)) {
+		printdatabase->
+		*/
 }
 
 Client DAL::getClient(quint32 i) {
   /*return this-> getClient(databse_.GetLoginByID(i));*/
-  return getClient(databse_.GetLoginByID(i));
+  return getClient(database_.GetLoginByID(i));
 }
 
 bool DAL::Check_If_Client_exists_In_Db(Client cl) {
-  if (databse_.GetIDByLogin(cl.GetUserName()) ==
+  if (database_.GetIDByLogin(cl.GetUserName()) ==
       0) {         // If login don't exist return id = 0
     return false;  // login dont exist
   } else {
@@ -51,12 +60,9 @@ bool DAL::Check_If_Client_exists_In_Db(Client cl) {
   }
 }
 
-int DAL::GetClientId(Client cl) {
-  return databse_.GetIDByLogin(cl.GetUserName());
+int DAL::GetClientId(Client cl)
+{
+	return database_.GetIDByLogin(cl.GetUserName());
 }
 
-DAL::~DAL() 
-{ 
-  databse_.CloseConncetion(str);
 
-}
