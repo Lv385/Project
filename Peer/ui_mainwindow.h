@@ -36,8 +36,8 @@ public:
     QFormLayout *formLayout;
     QLineEdit *le_ip;
     QLabel *label_2;
-    QLineEdit *le_port;
     QLabel *label;
+    QLineEdit *le_port;
     QPlainTextEdit *plainTextEdit_Log;
     QLabel *label_logs;
     QComboBox *combo_box_friends;
@@ -54,6 +54,10 @@ public:
     QPushButton *pb_login;
     QRadioButton *rb_simple;
     QRadioButton *rb_engineering;
+    QLineEdit *le_server_ip;
+    QLineEdit *le_server_port;
+    QLabel *label_6;
+    QLabel *label_7;
     QMenuBar *menuBar;
     QStatusBar *statusBar;
 
@@ -124,7 +128,7 @@ public:
         l_your_status->setGeometry(QRect(540, 230, 141, 81));
         layoutWidget = new QWidget(centralWidget);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(540, 380, 141, 86));
+        layoutWidget->setGeometry(QRect(460, 380, 141, 86));
         formLayout = new QFormLayout(layoutWidget);
         formLayout->setSpacing(6);
         formLayout->setContentsMargins(11, 11, 11, 11);
@@ -140,19 +144,19 @@ public:
 
         formLayout->setWidget(2, QFormLayout::LabelRole, label_2);
 
-        le_port = new QLineEdit(layoutWidget);
-        le_port->setObjectName(QString::fromUtf8("le_port"));
-
-        formLayout->setWidget(3, QFormLayout::LabelRole, le_port);
-
         label = new QLabel(layoutWidget);
         label->setObjectName(QString::fromUtf8("label"));
 
         formLayout->setWidget(0, QFormLayout::LabelRole, label);
 
+        le_port = new QLineEdit(layoutWidget);
+        le_port->setObjectName(QString::fromUtf8("le_port"));
+
+        formLayout->setWidget(3, QFormLayout::LabelRole, le_port);
+
         plainTextEdit_Log = new QPlainTextEdit(centralWidget);
         plainTextEdit_Log->setObjectName(QString::fromUtf8("plainTextEdit_Log"));
-        plainTextEdit_Log->setGeometry(QRect(30, 380, 491, 141));
+        plainTextEdit_Log->setGeometry(QRect(30, 380, 411, 141));
         plainTextEdit_Log->setStyleSheet(QString::fromUtf8("QPlainTextEdit{\n"
 "color:#ffffff;\n"
 " background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);\n"
@@ -216,7 +220,7 @@ public:
 "}"));
         layoutWidget_2 = new QWidget(centralWidget);
         layoutWidget_2->setObjectName(QString::fromUtf8("layoutWidget_2"));
-        layoutWidget_2->setGeometry(QRect(540, 480, 141, 41));
+        layoutWidget_2->setGeometry(QRect(460, 480, 141, 41));
         formLayout_2 = new QFormLayout(layoutWidget_2);
         formLayout_2->setSpacing(6);
         formLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -290,6 +294,18 @@ public:
         rb_engineering->setObjectName(QString::fromUtf8("rb_engineering"));
         rb_engineering->setGeometry(QRect(550, 30, 111, 17));
         rb_engineering->setStyleSheet(QString::fromUtf8(""));
+        le_server_ip = new QLineEdit(centralWidget);
+        le_server_ip->setObjectName(QString::fromUtf8("le_server_ip"));
+        le_server_ip->setGeometry(QRect(610, 400, 106, 16));
+        le_server_port = new QLineEdit(centralWidget);
+        le_server_port->setObjectName(QString::fromUtf8("le_server_port"));
+        le_server_port->setGeometry(QRect(610, 440, 106, 16));
+        label_6 = new QLabel(centralWidget);
+        label_6->setObjectName(QString::fromUtf8("label_6"));
+        label_6->setGeometry(QRect(610, 380, 81, 16));
+        label_7 = new QLabel(centralWidget);
+        label_7->setObjectName(QString::fromUtf8("label_7"));
+        label_7->setGeometry(QRect(610, 420, 91, 16));
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
@@ -311,8 +327,8 @@ public:
         l_your_status->setText(QString());
         le_ip->setText(QApplication::translate("MainWindow", "127.0.0.1", nullptr));
         label_2->setText(QApplication::translate("MainWindow", "Enter host port", nullptr));
-        le_port->setText(QApplication::translate("MainWindow", "8989", nullptr));
         label->setText(QApplication::translate("MainWindow", "Enter host IP", nullptr));
+        le_port->setText(QApplication::translate("MainWindow", "8989", nullptr));
         label_logs->setText(QApplication::translate("MainWindow", "logs and testing", nullptr));
         pb_start->setText(QApplication::translate("MainWindow", "Start", nullptr));
         le_port_my->setText(QApplication::translate("MainWindow", "8989", nullptr));
@@ -324,6 +340,10 @@ public:
         pb_login->setText(QApplication::translate("MainWindow", "Log In", nullptr));
         rb_simple->setText(QApplication::translate("MainWindow", "Simple mode", nullptr));
         rb_engineering->setText(QApplication::translate("MainWindow", "Engineering mode", nullptr));
+        le_server_ip->setText(QApplication::translate("MainWindow", "127.0.0.1", nullptr));
+        le_server_port->setText(QApplication::translate("MainWindow", "8989", nullptr));
+        label_6->setText(QApplication::translate("MainWindow", "Enter server IP", nullptr));
+        label_7->setText(QApplication::translate("MainWindow", "Enter server port", nullptr));
     } // retranslateUi
 
 };

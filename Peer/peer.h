@@ -40,7 +40,7 @@ class Peer : public QObject {
 
   bool is_active();
 
-  bool StartListening(quint16 listen_port);
+  bool StartListening(quint16 listen_port, QHostAddress server_ip, quint16 server_port);
   bool ConnectToPeer(unsigned id);
   bool LogIn(QString login, QString password);
 

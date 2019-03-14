@@ -16,7 +16,9 @@ MainWindow::MainWindow(QWidget* parent)
     ui_->combo_box_friends->addItem(login);
   }
 
+  
   peer_ = new Peer(this, ui_->le_port_my->text().toUShort());
+
 
 
 
@@ -46,7 +48,10 @@ MainWindow::MainWindow(QWidget* parent)
 
 void MainWindow::OnPbStartClicker() {
 
-  if (peer_->StartListening(ui_->le_port_my->text().toUShort())) {
+  if (peer_->StartListening(ui_->le_port_my->text().toUShort(),
+    (QHostAddress(ui_->le_server_ip->text())),
+    ui_->le_server_port->text().toShort())) {
+
     ui_->l_your_status->setText(
         tr("The server is running on\n\nIP: %1\nport: %2\n")
             .arg(peer_->get_my_ip().toString())
@@ -87,7 +92,7 @@ void MainWindow::AppendHistory() {
 
   QVector<ClientDAL::Message> history = client_dal_.GetMessages(login);
   for (auto i : history) {
-    if (login == client_dal_.GetLoginById(i.owner_id)) {
+    if (login != client_dal_.GetLoginById(i.owner_id)) {
       ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + '<' +
                                           login + ">: " + i.data);
     } else {
@@ -114,7 +119,9 @@ void MainWindow::AppendLogMessage(QString message) {
 }
 
 void MainWindow::OnPbLoginClicked() {
-  if (peer_->StartListening(ui_->le_port_my->text().toUShort())) {
+  if (peer_->StartListening(ui_->le_port_my->text().toUShort(),
+                            (QHostAddress(ui_->le_server_ip->text())),
+                            ui_->le_server_port->text().toShort())) {
     ui_->l_your_status->setText(
       tr("The server is running on\n\nIP: %1\nport: %2\n")
       .arg(peer_->get_my_ip().toString())

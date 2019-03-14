@@ -9,13 +9,13 @@ class DALManager {
   DALManager();
   ~DALManager();
 
-  QString GetLoginById(const unsigned user_id);
-  QVector<QString> GetFriendsLogin();
-  QPair<QString, int> GetIPPort(const unsigned user_id);
-  QVector<QString> GetFriendsIP();
-  unsigned GetIDByLogin(const QString user_login);
-  unsigned GetIDByIPPort(const QString ip, const unsigned port);
-  QVector<ClientDAL::Message> GetMessages(const QString user_login);
+  QString GetLoginById(const unsigned user_id) const;
+  QVector<QString> GetFriendsLogin() const;
+  QPair<QString, int> GetIPPort(const unsigned user_id) const;
+  QVector<QString> GetFriendsIP() const;
+  unsigned GetIDByLogin(const QString user_login) const;
+  unsigned GetIDByIPPort(const QString ip, const unsigned port) const;
+  QVector<ClientDAL::Message> GetMessages(const QString user_login) const;
 
 
   void SetFriendStatus(const unsigned user_id, const bool status);

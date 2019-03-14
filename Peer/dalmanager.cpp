@@ -6,37 +6,37 @@ DALManager::DALManager()  {
 DALManager::~DALManager()
 {}
 
-QString DALManager::GetLoginById(const unsigned user_id) { 
+QString DALManager::GetLoginById(const unsigned user_id) const { 
   ClientDAL::ClientDB cdb;
   return cdb.GetLoginById(user_id); 
 }
 
-QVector<QString> DALManager::GetFriendsLogin() { 
+QVector<QString> DALManager::GetFriendsLogin() const { 
   ClientDAL::ClientDB cdb;
   return cdb.GetFriendsLogin(); 
 }
 
-QPair<QString, int> DALManager::GetIPPort(const unsigned user_id) {
+QPair<QString, int> DALManager::GetIPPort(const unsigned user_id) const {
   ClientDAL::ClientDB cdb;
   return cdb.GetIPPort(user_id);
 }
 
-QVector<QString> DALManager::GetFriendsIP() { 
+QVector<QString> DALManager::GetFriendsIP() const { 
   ClientDAL::ClientDB cdb;
   return cdb.GetFriendsIp(); 
 }
 
-unsigned DALManager::GetIDByLogin(const QString user_login) { 
+unsigned DALManager::GetIDByLogin(const QString user_login) const { 
   ClientDAL::ClientDB cdb;
   return cdb.GetIDByLogin(user_login); 
 }
 
-unsigned DALManager::GetIDByIPPort(const QString ip, const unsigned port) { 
+unsigned DALManager::GetIDByIPPort(const QString ip, const unsigned port) const { 
   ClientDAL::ClientDB cdb;
   return cdb.GetIDByIpPort(ip,port);
 }
 
-QVector<ClientDAL::Message> DALManager::GetMessages(const QString user_login) {
+QVector<ClientDAL::Message> DALManager::GetMessages(const QString user_login) const {
   ClientDAL::ClientDB cdb;
   return cdb.GetMessages(user_login);
 }

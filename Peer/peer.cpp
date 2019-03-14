@@ -3,12 +3,12 @@
 
 Peer::Peer(QObject* parent, quint16 listen_port)
     : QObject(parent),
-      server_ip_(QStringLiteral("192.168.103.121")),  // #tofix
-      server_port_(8888),
+      //server_ip_(QStringLiteral("192.168.103.121")),  // #tofix
+     // server_port_(8888),
       my_listen_port_(listen_port),
       server_connection_(nullptr),
       is_active_(false) {
-  tcp_server_ = new TcpServer(this, server_ip_, server_port_);
+  tcp_server_ = new TcpServer(this);
 
 
   QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
@@ -58,14 +58,17 @@ void Peer::set_login(const QString login) {
 }
 
 void Peer::set_id(const quint32 id) {
-  my_id_ = id;
-}
+  my_id_ = id; }
 
 bool Peer::is_active() {
   return is_active_;
 }
 
-bool Peer::StartListening(quint16 listen_port) {
+bool Peer::StartListening(quint16 listen_port, QHostAddress server_ip,
+                          quint16 server_port) {
+  server_ip_ = server_ip;
+  server_port_ = server_port;
+  tcp_server_->setRemoteServerIpPort(server_ip_, server_port_);
   my_listen_port_ = listen_port;
   tcp_server_->close();
   if (!tcp_server_->listen(QHostAddress::Any, my_listen_port_)) {
