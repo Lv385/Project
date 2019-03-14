@@ -93,13 +93,16 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClCompile Include="clientdal.cpp" />
     <ClCompile Include="connection.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="message.cpp" />
     <ClCompile Include="serverdal.cpp" />
     <ClCompile Include="statement.cpp" />
     <ClCompile Include="user.cpp" />
   </ItemGroup>
   <ItemGroup>
+    <ClInclude Include="clientdal.h" />
     <ClInclude Include="connection.h" />
     <ClInclude Include="friend.h" />
     <ClInclude Include="message.h" />

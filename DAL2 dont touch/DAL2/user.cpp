@@ -30,7 +30,7 @@ void User::DeleteUser() {
 
   ExectuteQuery(CreateQueryDelete());
   query_.finish();
-  query_.clear();
+  //query_.clear();
 }
 
 QString User::CreateQuerySelect() {
