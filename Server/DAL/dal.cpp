@@ -12,17 +12,18 @@ DAL::~DAL() {
   database_.CloseConncetion(connection_name_); 
 }
 
-void DAL::SetClient(Client cl) {
-	//database[cl.getUserName()] = cl;
-  //line below must be uncomented in order for NewUserRequest to work
-  //but must be commented for LoginRequest to be happy! LOL :)) Fix this. 
-	database_.AddNewUser(cl.GetUserName(),cl.GetUserPassword());
-	database_.UpdateIPPort(cl.GetUserName(),cl.GetUserIp().toString(),(int)cl.GetUserPort());
-	
+void DAL::CreateNew(Client cl) {
+   // this function is only for new user request (register)
+  database_.AddNewUser(cl.GetUserName(), cl.GetUserPassword());
+  database_.UpdateIPPort(cl.GetUserName(), cl.GetUserIp().toString(), (int)cl.GetUserPort());
+}
 
+void DAL::SetClientIpPort(Client cl) {
+   //  this is used when login   and MAYBE  when adding to friend 
+	database_.UpdateIPPort(cl.GetUserName(),cl.GetUserIp().toString(),(int)cl.GetUserPort());
 }
 Client DAL::getClient(QString login) {
-	//return database->at(user_name);
+	
 	unsigned int id = database_.GetIDByLogin(login);
 	Client toReturn;
 	if ( id!= 0) {
@@ -36,26 +37,19 @@ Client DAL::getClient(QString login) {
 	}
 	return toReturn;
 	
-	//databse_.
-	/*
-	toReturn.SetUserId(databse_.GetIDByLogin(login));
-	QPair<QString, int> ip_port = databse_.GetIPPort(login, 0);
-	toReturn.SetUserIp(ip_port.first);
-	if (databse_.isFriend(0, 0)) {
-		printdatabase->
-		*/
 }
 
 Client DAL::getClient(quint32 i) {
-  /*return this-> getClient(databse_.GetLoginByID(i));*/
   return getClient(database_.GetLoginByID(i));
 }
 
 bool DAL::Check_If_Client_exists_In_Db(Client cl) {
-  if (database_.GetIDByLogin(cl.GetUserName()) ==
-      0) {         // If login don't exist return id = 0
-    return false;  // login dont exist
+  if (database_.GetIDByLogin(cl.GetUserName()) == 0) {         // If login don't exist return id = 0
+    
+	return false;// login dont exist
+	
   } else {
+
     return true;  // login exist
   }
 }

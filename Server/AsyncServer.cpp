@@ -13,7 +13,6 @@
 
 AsyncServer::AsyncServer(QObject *parent) :QTcpServer ()
 {
-  
 	if (!this->listen(QHostAddress::Any, AsyncServer::PORT)) {
 		qDebug() << "Failed to run server";
 	}
@@ -40,9 +39,9 @@ AsyncServer::AsyncServer(QObject *parent) :QTcpServer ()
 	Client cl(QString("oleksa"), QString("password"), QHostAddress("192.168.103.120"), 8989);
 	Client c2(QString("markiyan"), QString("password"), QHostAddress("192.168.103.55"), 8989);
 	Client c3(QString("liubomyr"), QString("password"), QHostAddress("192.168.103.88"), 8989);
-	dal_.SetClient(cl);
-	dal_.SetClient(c2);
-	dal_.SetClient(c3);
+	dal_.SetClientIpPort(cl);
+	dal_.SetClientIpPort(c2);
+	dal_.SetClientIpPort(c3);
 
 	//database testing
 	
@@ -52,7 +51,7 @@ AsyncServer::AsyncServer(QObject *parent) :QTcpServer ()
 	cl.SetUserIp(QHostAddress("192.168.102.103"));
 	cl.SetUserPort(23456);
 
-	dal_.SetClient(cl);
+	dal_.SetClientIpPort(cl);
 
 	Client ret = dal_.getClient(QString("Oleg"));
 
