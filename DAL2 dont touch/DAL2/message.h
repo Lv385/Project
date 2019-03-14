@@ -3,9 +3,16 @@
 #include <QDate>
 #include <QString>
 #include <QTime>
+#include <qvector.h>
+#include<qsqlrecord.h>
+#include "clientdal.h"
 
-struct Message {
+class Message : public ClientDAL{
  public:
+	 Message(const QString &connection_name);
+	 Message();
+
+
   unsigned int id;
   unsigned int chat_id;
   unsigned int owner_id;
@@ -13,6 +20,22 @@ struct Message {
   QDate date;
   QTime time;
   bool status;
+
+
+  QVector<Message> GetMessages();//SelectAllInfoAboutOneChat
+  void UpdateMessage();//Update
+  void AddNewMessage();//Insert
+  void DeleteMessage();//Delete
+
+//private:
+
+  QString CreateQuerySelectAll();
+  QString CreateQueryInsert();
+  QString CreateQueryUpdate();
+  QString CreateQueryDelete();
+  QString CreateQueryCountOfMessages();
+
+
 };
 
 #endif  // MESSAGE_H#pragma once

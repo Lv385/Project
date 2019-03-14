@@ -22,6 +22,7 @@ class  User : public ServerDAL{
   void AddNewUser();//Insert
   void DeleteUser();//Delete
 
+
 //private:
 
 
