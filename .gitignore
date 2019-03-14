@@ -23,5 +23,5 @@
 
 DAL/Client/Client
 Server/DAL/Client
-
+**/*.txt
 

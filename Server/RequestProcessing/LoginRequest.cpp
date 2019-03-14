@@ -15,7 +15,7 @@ void LoginRequest::PrepareResponse()
 		requester_.SetUserIp(client_socket_->peerAddress());
 		requester_.SetUserPort(incoming_structure_.port);
 
-		database_->SetClient(requester_);
+		database_->SetClientIpPort(requester_); //updating only ip and port when login
 		logcheck = true;
 	} else {
 		logcheck = false;

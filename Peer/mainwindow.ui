@@ -39,8 +39,8 @@ background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, 
      <rect>
       <x>530</x>
       <y>330</y>
-      <width>71</width>
-      <height>31</height>
+      <width>70</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -110,7 +110,7 @@ color:#ffffff;
    <widget class="QWidget" name="layoutWidget">
     <property name="geometry">
      <rect>
-      <x>540</x>
+      <x>460</x>
       <y>380</y>
       <width>141</width>
       <height>86</height>
@@ -131,17 +131,17 @@ color:#ffffff;
        </property>
       </widget>
      </item>
-     <item row="3" column="0">
-      <widget class="QLineEdit" name="le_port">
-       <property name="text">
-        <string>8989</string>
-       </property>
-      </widget>
-     </item>
      <item row="0" column="0">
       <widget class="QLabel" name="label">
        <property name="text">
         <string>Enter host IP</string>
+       </property>
+      </widget>
+     </item>
+     <item row="3" column="0">
+      <widget class="QLineEdit" name="le_port">
+       <property name="text">
+        <string>8989</string>
        </property>
       </widget>
      </item>
@@ -152,7 +152,7 @@ color:#ffffff;
      <rect>
       <x>30</x>
       <y>380</y>
-      <width>491</width>
+      <width>411</width>
       <height>141</height>
      </rect>
     </property>
@@ -214,8 +214,8 @@ QComboBox::item:selected{
      <rect>
       <x>610</x>
       <y>330</y>
-      <width>71</width>
-      <height>31</height>
+      <width>70</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -254,7 +254,7 @@ QPushButton:focus {
    <widget class="QWidget" name="layoutWidget_2">
     <property name="geometry">
      <rect>
-      <x>540</x>
+      <x>460</x>
       <y>480</y>
       <width>141</width>
       <height>41</height>
@@ -352,10 +352,10 @@ color:#ffffff;
    <widget class="QPushButton" name="pb_login">
     <property name="geometry">
      <rect>
-      <x>550</x>
-      <y>190</y>
-      <width>75</width>
-      <height>31</height>
+      <x>630</x>
+      <y>470</y>
+      <width>70</width>
+      <height>30</height>
      </rect>
     </property>
     <property name="styleSheet">
@@ -418,6 +418,61 @@ QPushButton:focus {
     </property>
     <property name="text">
      <string>Engineering mode</string>
+    </property>
+    <property name="checked">
+     <bool>true</bool>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="le_server_ip">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>400</y>
+      <width>106</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>192.168.103.121</string>
+    </property>
+   </widget>
+   <widget class="QLineEdit" name="le_server_port">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>440</y>
+      <width>106</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>8888</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_6">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>380</y>
+      <width>81</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Enter server IP</string>
+    </property>
+   </widget>
+   <widget class="QLabel" name="label_7">
+    <property name="geometry">
+     <rect>
+      <x>610</x>
+      <y>420</y>
+      <width>91</width>
+      <height>16</height>
+     </rect>
+    </property>
+    <property name="text">
+     <string>Enter server port</string>
     </property>
    </widget>
   </widget>
