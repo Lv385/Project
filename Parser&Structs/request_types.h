@@ -80,7 +80,7 @@ struct FriendUpdateInfo {
 // comes after  FRIEND_REQUEST || FRIENDSHIP_ACCEPTED header (c->s)
 struct FriendRequestInfo {
   QString other_login;  // login of a potentil friend
-  QString login;
+  quint32 id;
   QString password;
 };
 

@@ -6,8 +6,9 @@
 #include "../Parser&Structs/parser.h"
 
 class Logger {
+ static bool const ifLogingEnable = true;
  public:
    static void WriteLogToFile(QString&,QString&);
-   static void log(QByteArray&);
+   static void log(QByteArray&);   
    
 };

@@ -7,9 +7,9 @@
 #include <QTcpSocket>
 #include "../DAL/Server/serverdb.h"
 #include "../DAL/dal.h"
+#include "../Logger/logger.h"
 #include "../Parser&Structs/parser.h"
 #include "../Parser&Structs/request_types.h"
-#include "../Logger/logger.h"
 
 // using namespace std;
 

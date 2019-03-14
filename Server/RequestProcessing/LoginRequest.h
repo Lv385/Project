@@ -21,5 +21,5 @@ private:
 	LoginInfo incoming_structure_;	
 	FriendUpdateInfo toSend_;
 	Client requester_; 
-	bool logcheck;
+	quint8 response_to_requester_;
 };
