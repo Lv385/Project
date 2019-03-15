@@ -106,6 +106,7 @@
     <ClCompile Include="Logger\logger.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RequestProcessing\AbstractRequest.cpp" />
+    <ClCompile Include="RequestProcessing\add_friend_request.cpp" />
     <ClCompile Include="RequestProcessing\LoginRequest.cpp" />
     <ClCompile Include="RequestProcessing\NewUserRequest.cpp" />
     <ClCompile Include="ServerThread.cpp" />
@@ -125,6 +126,7 @@
     <QtMoc Include="RequestProcessing\AbstractRequest.h" />
     <ClInclude Include="Exceptions\user_not_found.h" />
     <ClInclude Include="Logger\logger.h" />
+    <ClInclude Include="RequestProcessing\add_friend_request.h" />
     <ClInclude Include="RequestProcessing\LoginRequest.h" />
     <ClInclude Include="RequestProcessing\NewUserRequest.h" />
   </ItemGroup>

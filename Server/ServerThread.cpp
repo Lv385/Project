@@ -42,6 +42,9 @@ void ServerThread::SetRequest(quint8 type, QTcpSocket* connection)
 	case (quint8)ClientRequest::LOGIN:
          request_ = new LoginRequest(data_, &dal_, connection);
          break;
+  case (quint8)ClientRequest::FRIEND_REQUEST:
+    break;
+
 	}
 }
 
