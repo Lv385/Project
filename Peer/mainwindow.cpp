@@ -28,7 +28,7 @@ MainWindow::MainWindow(QWidget* parent)
            this, SLOT(AppendMessage(QString)));
   /*connect(peer_, SIGNAL(SendLog(QString)), this,
                  SLOT(AppendLogMessage(QString)));*/
-  connect(logger, SIGNAL(WriteLog(LogType,QString)), this, SLOT(AppendLogMessage(QString)));
+  connect(logger, SIGNAL(WriteLog(LogType,QString)), this, SLOT(AppendLogMessage(LogType,QString)));
 
 
   connect(ui_->pb_start, SIGNAL(clicked()), 
