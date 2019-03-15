@@ -105,8 +105,10 @@ void Connection::ReceiveRequests() {
 
 //#tofix should be refactored
 void Connection::ServerWorker() {
+  received_data_ = readAll();
   if (received_data_.contains(k_unpossiblle_2_bytes_sequence_)) {
     FriendUpdateInfo info = Parser::ParseAsFriendUpdateInfo(received_data_);
+    QString str = info.ip.toString();
     client_dal_.UpdateIPPort(info.id, info.ip.toString(), info.port);
     disconnect();
     deleteLater();
