@@ -25,16 +25,17 @@ void DAL::SetClientIpPort(Client cl) {
 Client DAL::getClient(QString login) {
 	
 	unsigned int id = database_.GetIDByLogin(login);
-	Client toReturn;
-	if ( id!= 0) {
-		
+  if (id == 0) {
+          throw UserNotFound();
+  }
+	  Client toReturn;		
 		toReturn.SetUserId(id);
 		toReturn.SetUserIp(QHostAddress(database_.GetIPPort(id).first));
 		toReturn.SetUserPort((quint16)database_.GetIPPort(id).second);
 		toReturn.SetUserName(database_.GetLoginByID(id));
 		toReturn.SetUserPassword(database_.GetPasswordById(id));
 		toReturn.SetFriends(database_.GetFriends(id));
-	}
+	
 	return toReturn;
 	
 }

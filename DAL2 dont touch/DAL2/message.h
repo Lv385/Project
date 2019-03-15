@@ -7,7 +7,7 @@
 #include<qsqlrecord.h>
 #include "clientdal.h"
 
-class Message : public ClientDAL{
+class Message : public ClientDAL {
  public:
 	 Message(const QString &connection_name);
 	 Message();

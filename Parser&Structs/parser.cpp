@@ -22,6 +22,28 @@ LoginInfo Parser::ParseAsLoginInfo(QByteArray& data) {
   return result;
 }
 
+QByteArray Parser::FriendRequestInfo_ToByteArray(FriendRequestInfo& friend_info, quint8 type) {
+  QByteArray result;
+  QDataStream out(&result, QIODevice::WriteOnly);
+  out << quint8(type);  
+  out << friend_info.id;                 
+  out << friend_info.other_login;                    
+  out << friend_info.password;                   
+  return result;  
+  
+}
+
+FriendRequestInfo Parser::ParseAsFriendRequestInfo(QByteArray& data) {
+  FriendRequestInfo result;
+  QDataStream in(&data, QIODevice::ReadOnly);
+  quint8 type;
+  in >> type;
+  in >> result.id;
+  in >> result.other_login;
+  in >> result.password;
+  return result;
+}
+
 QByteArray Parser::AddFriendInfo_ToByteArray(AddFriendInfo& add_friend_info) {
   QByteArray result;
   QDataStream out(&result, QIODevice::WriteOnly);

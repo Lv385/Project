@@ -123,6 +123,7 @@
     <ClInclude Include="DAL\Client.h" />
     <ClInclude Include="DAL\dal.h" />
     <QtMoc Include="RequestProcessing\AbstractRequest.h" />
+    <ClInclude Include="Exceptions\user_not_found.h" />
     <ClInclude Include="Logger\logger.h" />
     <ClInclude Include="RequestProcessing\LoginRequest.h" />
     <ClInclude Include="RequestProcessing\NewUserRequest.h" />

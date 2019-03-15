@@ -2,6 +2,12 @@
 
 Message::Message(const QString & connection_name) : ClientDAL(connection_name)
 {
+	id = 0;
+	data = "";
+	owner_id = 0;
+	date = QDate::currentDate();
+	time=QTime::currentTime();
+	status = false;
 }
 
 Message::Message()
@@ -42,12 +48,12 @@ QString Message::CreateQuerySelectAll()
 
 QString Message::CreateQueryInsert()
 {
-	return QString("insert into Messages (user_ID, owner_ID, message_data, message_date, message_tima, message_status) values (" + QString::number(chat_id) + ", " + QString::number(owner_id) + ", '" + data + "', '" + date.toString() + "', '" + time.toString() + "', " + status + ")");
+	return QString("insert into Messages (user_ID, owner_ID, message_data, message_date, message_tima, message_status) values (" + QString::number(chat_id) + ", " + QString::number(owner_id) + ", '" + data + "', '" + date.toString() + "', '" + time.toString() + "', " + QString::number(status) + ")");
 }
 
 QString Message::CreateQueryUpdate()
 {
-	return QString("update message set ...");//..........is it necessary??
+	return QString("update Messages set ... where ...");//..........is it necessary??
 }
 
 QString Message::CreateQueryDelete()
