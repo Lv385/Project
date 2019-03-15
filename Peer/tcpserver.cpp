@@ -10,7 +10,8 @@ TcpServer::TcpServer(QObject* parent)
 
 void TcpServer::incomingConnection(qintptr socketDescriptor) {
   Connection* connection = new Connection(socketDescriptor, this);
-  if (connection->peerAddress() == remote_server_ip_) {
+ 
+  if (connection->peerAddress().isEqual(remote_server_ip_, QHostAddress::TolerantConversion)) {
     emit NewServerConnection(connection);
   } else {
     emit NewConnection(connection);
