@@ -88,7 +88,7 @@ void MainWindow::AppendHistory() {
 
   QVector<ClientDAL::Message> history = client_dal_.GetMessages(login);
   for (auto i : history) {
-    if (login != client_dal_.GetLoginById(i.owner_id)) {
+    if (login == client_dal_.GetLoginById(i.owner_id)) {
       ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + '<' +
                                           login + ">: " + i.data);
     } else {
