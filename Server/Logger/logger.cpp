@@ -16,7 +16,7 @@ QString Logger::ConvertQuint8ToString(quint8 & num)
   return tmp.setNum(num);
 }
 
-void Logger::log(QByteArray raw_data) {
+void Logger::LogOut(QByteArray raw_data) {
   if (ifLogingEnable) {
     
     QString outingString;  // date (d/m/y) time (h/m/s)

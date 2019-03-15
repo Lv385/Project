@@ -31,7 +31,7 @@ bool LoginRequest::SendResponde() {
     QByteArray b =
         Parser::Empty_ToByteArray((quint8)ServerRequests::LOGIN_SUCCEED);
     b.append(Parser::GetUnpossibleSequence());
-    Logger::log(b);
+    Logger::LogOut(b);
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
     client_socket_->disconnectFromHost();
@@ -51,7 +51,7 @@ bool LoginRequest::SendResponde() {
       output_socket.connectToHost(tempClient.GetUserIp(),
                                   tempClient.GetUserPort());
       if (output_socket.waitForConnected(5000)) {
-        Logger::log(raw_data);
+        Logger::LogOut(raw_data);
         output_socket.write(raw_data);
         output_socket.waitForBytesWritten(1000);  
         output_socket.disconnectFromHost();
@@ -62,7 +62,7 @@ bool LoginRequest::SendResponde() {
     //sending ServerRequests::LOGIN_FAILED
     QByteArray b = Parser::Empty_ToByteArray(response_to_requester_);
     b.append(Parser::GetUnpossibleSequence());
-    Logger::log(b);
+    Logger::LogOut(b);
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
     client_socket_->disconnectFromHost();
