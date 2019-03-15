@@ -1,0 +1,27 @@
+#vs files 
+
+**/.vs/
+
+#binary
+
+**/debug/
+**/release/
+**/x64/ 
+**/enc_temp_folder/
+
+#dont need files with next extensions:
+
+**/*.stash
+**/*.user
+**/*.filters
+**/*.pro
+**/*.pri
+**/*.orig
+**/*.autosave
+
+#databases
+
+DAL/Client/Client
+Server/DAL/Client
+**/*.txt
+
