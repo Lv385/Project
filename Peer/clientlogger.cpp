@@ -1,21 +1,26 @@
 #include "clientlogger.h"
 
-void ClientLogger::WriteLogToFile(QString file_name, const QString& msg) {
+ClientLogger* ClientLogger::Instance() {
+  static ClientLogger logger_; 
+    return &logger_;
+}
+const char* ErrorValueNames[] = {stringify(ERROR), stringify(SUCCESS),
+                                 stringify(INFO), stringify(WARNING)};
 
-  if (!file_name.isEmpty()) {
-    file = new QFile;
-    file->setFileName(file_name);
-    file->open(QIODevice::Append | QIODevice::Text);
+void ClientLogger::WriteLog(LogType type, const QString& msg) { 
+  if(!file_) {
+    file_ = new QFile("Log.txt");
+    file_->open(QIODevice::Append | QIODevice::Text);
   }
-  QString text = msg;
-    text = QDateTime::currentDateTime().toString("\ndd.MM.yyyy hh:mm:ss ") + text;
 
-  QTextStream out(file);
-  if (file != 0) {
+  QString text = msg;
+    text = tr("[%1] %2 |")
+                .arg(ErrorValueNames[type])
+          .arg(QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss ")) + text + '\n';
+
+  QTextStream out(file_);
+  if (file_) {
     out << text;
   }
-}
-
-void ClientLogger::WriteLogToUi(LogType type,const QString& msg) { 
-  emit WriteLog(type, msg);
+  emit DisplayLog(ErrorValueNames[type], msg);
 }
