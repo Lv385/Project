@@ -28,7 +28,7 @@ class MainWindow : public QMainWindow {
  private slots:
   void AppendMessage(QString);
   void AppendHistory();
-  void AppendLogMessage(LogType,QString);
+  void AppendLogMessage(const char*,QString);
 
   void OnPbStartClicker();
   void OnPbLoginClicked();

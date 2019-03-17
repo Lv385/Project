@@ -48,7 +48,7 @@ class Peer : public QObject {
   bool LogIn(QString login, QString password);
 
  signals:
-  void SendLog(QString);
+  //void SendLog(QString);
   void SendMessageToUI(QString);
 
  private slots:

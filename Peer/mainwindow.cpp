@@ -18,17 +18,14 @@ MainWindow::MainWindow(QWidget* parent)
   
   peer_ = new Peer(this, ui_->le_port_my->text().toUShort());
   
-
-  //ui_->rb_engineering->setChecked(true);
   if (ui_->rb_engineering->isChecked()) {
     OnRbEngineeringClicked();
   }
 
   connect(peer_, SIGNAL(SendMessageToUI(QString)), 
            this, SLOT(AppendMessage(QString)));
-  /*connect(peer_, SIGNAL(SendLog(QString)), this,
-                 SLOT(AppendLogMessage(QString)));*/
-  connect(logger, SIGNAL(WriteLog(LogType,QString)), this, SLOT(AppendLogMessage(LogType,QString)));
+
+  connect(logger, SIGNAL(DisplayLog(const char*,QString)), this, SLOT(AppendLogMessage(const char*,QString)));
 
 
   connect(ui_->pb_start, SIGNAL(clicked()), 
@@ -113,9 +110,9 @@ void MainWindow::OnPbSendClicked() {
   ui_->plainTextEdit_Log->appendPlainText("\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
 }
 
-void MainWindow::AppendLogMessage(LogType type,QString message) {
+void MainWindow::AppendLogMessage(const char* value, QString message) {
 
-  ui_->plainTextEdit_Log->appendPlainText(message);
+  ui_->plainTextEdit_Log->appendPlainText(value + message);
 }
 
 void MainWindow::OnPbLoginClicked() {

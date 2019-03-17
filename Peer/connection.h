@@ -7,6 +7,7 @@
 
 #include <ui_mainwindow.h>
 #include "dalmanager.h"
+#include "clientlogger.h"
 #include "../DAL/Client/clientdb.h"
 #include "../Parser&Structs/parser.h"
 
@@ -30,7 +31,7 @@ class Connection : public QTcpSocket {
  signals:
   void SendLog(QString);
   void SendMessageToUI(QString);
-  void CoonectionTimeout();
+  void ConnectionTimeout();
 
  private:
   QByteArray received_data_;
@@ -42,5 +43,7 @@ class Connection : public QTcpSocket {
 
   const QByteArray k_unpossiblle_2_bytes_sequence_;
   DALManager client_dal_;
+  ClientLogger* logger;
+
 };
 #endif
