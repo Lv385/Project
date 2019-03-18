@@ -18,6 +18,8 @@
 #include "connection.h"
 #include "tcpserver.h"
 #include "dalmanager.h"
+#include "clientlogger.h"
+
 
 #include "../Parser&Structs/parser.h"
 
@@ -47,7 +49,6 @@ class Peer : public QObject {
   bool LogIn(QString login, QString password);
 
  signals:
-  void SendLog(QString);
   void SendMessageToUI(QString);
 
  private slots:

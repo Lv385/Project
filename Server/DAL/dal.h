@@ -21,6 +21,7 @@ class DAL {
   Client getClient(quint32);
   bool Check_If_Client_exists_In_Db(Client);
   bool Check_If_Client_exists_In_Db(QString);
+
   int GetClientId(Client);
 
  private:

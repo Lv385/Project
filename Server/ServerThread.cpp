@@ -45,6 +45,7 @@ void ServerThread::SetRequest(quint8 type, QTcpSocket* connection)
   case (quint8)ClientRequest::FRIEND_REQUEST:
     break;
 
+
 	}
 }
 

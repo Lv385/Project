@@ -55,6 +55,7 @@ bool DAL::Check_If_Client_exists_In_Db(Client cl) {
   }
 }
 
+
 bool DAL::Check_If_Client_exists_In_Db(QString login)
 {
   if (database_.GetIDByLogin(login) == 0) {         // If login don't exist return id = 0
@@ -68,6 +69,7 @@ bool DAL::Check_If_Client_exists_In_Db(QString login)
   }
   return false;
 }
+
 
 int DAL::GetClientId(Client cl)
 {
