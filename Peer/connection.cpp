@@ -4,7 +4,6 @@ Connection::Connection(QObject* parent)
       receiver_ip_(QHostAddress::Null),
       receiver_port_(0),
       k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()) {  // the only idea i had, must be fixed
-  logger = ClientLogger::Instance();
 }
 
 Connection::Connection(qintptr socketDescriptor, QObject* parent)
@@ -14,7 +13,7 @@ Connection::Connection(qintptr socketDescriptor, QObject* parent)
 
 void Connection::SendMessage(Message message) {
   if (this->state() == QAbstractSocket::ConnectedState) {
-    logger->WriteLog(LogType::SUCCESS,
+    ClientLogger::Instance()->WriteLog(LogType::SUCCESS,
                      " Me: " + this->localAddress().toString() + ':' +
                          QString::number(this->localPort()) +
                          "\nPeer: " + this->peerAddress().toString() + ':' +
@@ -33,7 +32,7 @@ void Connection::SendMessage(Message message) {
   else {
     QString str = QString(" cannot coonect to") + receiver_ip_.toString() +
                   ' : ' + QString::number(receiver_port_);
-    logger->WriteLog(LogType::ERROR, str);
+    ClientLogger::Instance()->WriteLog(LogType::ERROR, str);
     emit SendMessageToUI(str);
   }
 }
@@ -45,11 +44,12 @@ bool Connection::LoginRequest(LoginInfo info) {
 
     if (waitForReadyRead(4000)) {
       QByteArray read = readAll();
-      logger->WriteLog(LogType::INFO," writing to server");
+      ClientLogger::Instance()->WriteLog(LogType::INFO, " writing to server");
       read = read.left(read.indexOf(k_unpossiblle_2_bytes_sequence_));
       quint8 type = Parser::getRequestType(read);
       if (type == (quint8)ServerRequests::LOGIN_SUCCEED) {
-        logger->WriteLog(LogType::SUCCESS, " Logged in success");
+        ClientLogger::Instance()->WriteLog(LogType::SUCCESS,
+                                           " Logged in success");
         return true;
       }
     }
@@ -78,7 +78,8 @@ void Connection::ReceiveRequests() {
     nextData = received_data_.mid(separatorIndex + 2);
     received_data_ = received_data_.left(separatorIndex);
 
-    logger->WriteLog(LogType::INFO, " recieving something from" +
+    ClientLogger::Instance()->WriteLog(
+        LogType::INFO, " recieving something from" +
                                            this->peerAddress().toString() +
                  ":" + QString::number(this->peerPort()));
 

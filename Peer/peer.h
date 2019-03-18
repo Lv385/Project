@@ -48,7 +48,6 @@ class Peer : public QObject {
   bool LogIn(QString login, QString password);
 
  signals:
-  //void SendLog(QString);
   void SendMessageToUI(QString);
 
  private slots:
@@ -89,7 +88,6 @@ class Peer : public QObject {
 
   bool is_active_;
   DALManager client_dal_;
-  ClientLogger *logger;
 };
 
 #endif  // TEST_H

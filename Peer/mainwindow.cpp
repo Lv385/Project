@@ -7,8 +7,6 @@ MainWindow::MainWindow(QWidget* parent)
   ui_->setupUi(this);
 
   SetIpValidator();
-  logger = ClientLogger::Instance();
-  // ui_->pb_start->setEnabled(false);
   ui_->pb_send->setEnabled(false);
 
   QVector<QString> friend_logins = client_dal_.GetFriendsLogin();
@@ -25,7 +23,8 @@ MainWindow::MainWindow(QWidget* parent)
   connect(peer_, SIGNAL(SendMessageToUI(QString)), 
            this, SLOT(AppendMessage(QString)));
 
-  connect(logger, SIGNAL(DisplayLog(const char*,QString)), this, SLOT(AppendLogMessage(const char*,QString)));
+  connect(ClientLogger::Instance(), SIGNAL(DisplayLog(const char*, QString)), this,
+          SLOT(AppendLogMessage(const char*, QString)));
 
 
   connect(ui_->pb_start, SIGNAL(clicked()), 

@@ -4,8 +4,8 @@ ClientLogger* ClientLogger::Instance() {
   static ClientLogger logger_; 
     return &logger_;
 }
-const char* ErrorValueNames[] = {stringify(ERROR), stringify(SUCCESS),
-                                 stringify(INFO), stringify(WARNING)};
+const char* ErrorValueNames[] = {GET_NAME(ERROR), GET_NAME(SUCCESS),
+                                 GET_NAME(INFO), GET_NAME(WARNING)};
 
 void ClientLogger::WriteLog(LogType type, const QString& msg) { 
   if(!file_) {

@@ -29,7 +29,6 @@ class Connection : public QTcpSocket {
   void ServerWorker();
 
  signals:
-  void SendLog(QString);
   void SendMessageToUI(QString);
   void ConnectionTimeout();
 
@@ -43,7 +42,6 @@ class Connection : public QTcpSocket {
 
   const QByteArray k_unpossiblle_2_bytes_sequence_;
   DALManager client_dal_;
-  ClientLogger* logger;
 
 };
 #endif
