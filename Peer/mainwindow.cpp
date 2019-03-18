@@ -5,6 +5,10 @@
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent), peer_(nullptr), ui_(new Ui::MainWindow) {
   ui_->setupUi(this);
+  logger_ = ClientLogger::Instance();
+
+  connect(logger_, SIGNAL(DisplayLog(const char*, QString)), this,
+          SLOT(AppendLogMessage(const char*, QString)));
 
   SetIpValidator();
   ui_->pb_send->setEnabled(false);
@@ -22,9 +26,6 @@ MainWindow::MainWindow(QWidget* parent)
 
   connect(peer_, SIGNAL(SendMessageToUI(QString)), 
            this, SLOT(AppendMessage(QString)));
-
-  connect(ClientLogger::Instance(), SIGNAL(DisplayLog(const char*, QString)), this,
-          SLOT(AppendLogMessage(const char*, QString)));
 
   connect(ui_->pb_start, SIGNAL(clicked()), 
                    this, SLOT(OnPbStartClicker()));

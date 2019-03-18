@@ -6,13 +6,14 @@ ClientLogger* ClientLogger::Instance() {
 }
 const char* ErrorValueNames[] = {GET_NAME(ERROR), GET_NAME(SUCCESS),
                                  GET_NAME(INFO), GET_NAME(WARNING)};
-
-void ClientLogger::WriteLog(LogType type, const QString& msg) { 
-  if(!file_) {
+ClientLogger::ClientLogger(){
+  if (!file_) {
     file_ = new QFile("Log.txt");
     file_->open(QIODevice::Append | QIODevice::Text);
   }
-
+}
+void ClientLogger::WriteLog(LogType type, const QString& msg) { 
+ 
   QString text = msg;
     text = tr("[%1] %2 |")
                 .arg(ErrorValueNames[type])

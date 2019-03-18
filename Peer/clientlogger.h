@@ -22,7 +22,7 @@ class ClientLogger : public QObject {
   void DisplayLog(const char*, QString msg);
 
  private:
-  ClientLogger(){};
+  ClientLogger();
   ~ClientLogger() {};
   ClientLogger(ClientLogger const&) = delete;
   void operator=(ClientLogger const&) = delete;
