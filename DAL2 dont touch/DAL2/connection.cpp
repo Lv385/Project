@@ -1,7 +1,7 @@
 #include "connection.h"
 
-Connection::Connection(const QString& connection_name,
-                       const QString& driver_name) {
+Connection::Connection(const QString& connection_name) {
+  const QString driver_name = "QSQLITE";
   data_base_ = QSqlDatabase::addDatabase(driver_name, connection_name);
   connection_name_ = connection_name;
 }

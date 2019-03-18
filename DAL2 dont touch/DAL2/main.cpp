@@ -1,47 +1,46 @@
 #include <QtCore/QCoreApplication>
+#include <iostream>
 #include "connection.h"
-#include "statement.h"
-#include "user.h"
-#include "message.h"
 #include "friend.h"
-#include<iostream>
-
-
+#include "message.h"
+#include "statement.h"
+#include "unitofwork.h"
+#include "user.h"
 
 int main(int argc, char *argv[]) {
   QCoreApplication a(argc, argv);
-  
-  //User u("marko");
-  //u.id = 7;
- // u.ip = "123.123.12.12";
-  //u.login = "marko";
-  //u.password = "marko";
-  //u.port = 1111;
 
-  //u.GetUser();
- // Message m("marko");
-  //m.chat_id = 1;
-  //m.owner_id = 1;
-  //m.data = "marko";
-  //m.date = QDate::currentDate();
-  //m.time = QTime::currentTime();
-  //m.status = false;
-  //m.AddNewMessage();
-  //QVector<Message> result = m.GetMessages();
-  Friend f("marko");
-  QVector<Friend> ff = f.GetFriends();
-  for (auto i : ff) {
-	  std::cout << i.id<<" ";
-	  std::cout << i.name.toStdString() << " ";
-	  std::cout << i.surname.toStdString() << " ";
-	  std::cout << i.ip.toStdString() << " ";
-	  std::cout << i.port << " ";
-	  std::cout << i.login.toStdString() << " ";
-	  std::cout << i.status << std::endl;
+  UnitOfWork object{};
 
-  }
-  
- // std::cout << result[0].data.toStdString();
 
+  auto user = object.GetEntity<User>();
+  user->id = 1;
+  user->DeleteUser();
+ // std::cout
+  //auto mes = object.GetEntity<Message>();
+  //mes->id = 78;
+  //mes->chat_id = 1;
+  //mes->data = "loxqewqewqewqewqewqqw";
+  //mes->UpdateMessage();
+  //mes->owner_id = 2;
+  //mes->date = QDate::currentDate();
+  //mes->time = QTime::currentTime();
+  //QVector <Message> m = mes->GetMessages();
+  //std::cout << m[0].data.toStdString();
+
+
+  //auto friends = object.GetEntity<Friend>();
+  //friends->id = 4;
+  //friends->login = "Yulik";
+  //friends->port = 9999;
+  //friends->ip = "123.123.123.1";
+  //friends->name = "Mddaewy";
+  //friends->surname = "Mdasdasy";
+  //friends->status = false;
+  //std::cout << friends->UpdateQuery().toStdString();
+  //friends->AddNewFriend();
+  //friends->UpdateFriend();
+  //QVector<Friend> f = friends->GetFriends();
+  //std::cout << f[0].login.toStdString();
   return a.exec();
 }

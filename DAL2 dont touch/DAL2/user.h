@@ -2,35 +2,32 @@
 #define USER_H
 #include <QString>
 #include "connection.h"
-#include "serverdal.h"
+#include "statement.h"
 
-class  User : public ServerDAL{
+class User : public Statement {
  public:
+  User(std::shared_ptr<Connection> connection);
+  ~User();
 
-	 User(const QString &connection_name);
-	// ~User();
+  unsigned int	id;
+  QString		login;
+  QString		password;
+  QString		ip;
+  unsigned int	port;
 
-  unsigned int id;
-  QString login;
-  QString password;
-  QString ip;
-  unsigned int port;
+  QVector<int>	GetFriends();  // SelectAllFriendsAboutOneUser
+  void			GetUser();             // Select
+  void			UpdateUser();          // Update
+  void			AddNewUser();          // Insert
+  void			DeleteUser();          // Delete
 
-
-  void GetUser();//Select
-  void UpdateUser();//Update
-  void AddNewUser();//Insert
-  void DeleteUser();//Delete
-
-
-//private:
-
-
-	QString CreateQuerySelect();
-	QString CreateQueryInsert();
-	QString CreateQueryUpdate();
-	QString CreateQueryDelete();
-
+ private:
+  QString SelectFriendsQuery();
+  QString UpdateQuery();
+  QString SelectQuery();
+  QString InsertQuery();
+  QString DeleteQuery();
+  QString CountOfFriends();
 };
 
 #endif  // !USER_H

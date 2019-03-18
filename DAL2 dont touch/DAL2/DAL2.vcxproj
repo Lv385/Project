@@ -93,22 +93,20 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="clientdal.cpp" />
     <ClCompile Include="connection.cpp" />
     <ClCompile Include="friend.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message.cpp" />
-    <ClCompile Include="serverdal.cpp" />
     <ClCompile Include="statement.cpp" />
+    <ClCompile Include="unitofwork.cpp" />
     <ClCompile Include="user.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="clientdal.h" />
     <ClInclude Include="connection.h" />
     <ClInclude Include="friend.h" />
     <ClInclude Include="message.h" />
-    <ClInclude Include="serverdal.h" />
     <ClInclude Include="statement.h" />
+    <ClInclude Include="unitofwork.h" />
     <ClInclude Include="user.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
