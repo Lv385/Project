@@ -22,7 +22,7 @@ class DAL {
   bool Check_If_Client_exists_In_Db(Client);
   bool Check_If_Client_exists_In_Db(QString);
   int GetClientId(Client);
-
+  void SetDataInQueueTable(Client,Client);
  private:
   ServerDB database_;
   QString connection_name_;

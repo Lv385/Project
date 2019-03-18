@@ -14,7 +14,7 @@ void AddFriendRequest::PrepareResponse()
   //id
   //password
   try {
-    Client sender_guy = database_->getClient(income_data_.id); // he actually loginned so uptodated data is in db
+    sender_guy = database_->getClient(income_data_.id); // he actually loginned so uptodated data is in db
     
     if (QString::compare(sender_guy.GetUserPassword(), income_data_.password) == 0) {
          
@@ -40,7 +40,6 @@ void AddFriendRequest::PrepareResponse()
 }
 bool AddFriendRequest::SendResponde()
 {
-  
   if (response_to_requester_ == (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED) {
      QByteArray b =
        Parser::Empty_ToByteArray((quint8)ServerRequests::FRIEND_REQUEST_SUCCEED);
@@ -60,7 +59,8 @@ bool AddFriendRequest::SendResponde()
        output_socket.waitForBytesWritten(1000);
        output_socket.disconnectFromHost();
      } else {
-       //go and write  info about this request into db
+       //write info about this request into db
+       database_->SetDataInQueueTable(sender_guy, requested_guy); //actually dont realised
      }
      output_socket.close();
        //IMPORTANT!!!!   Dopilit login with checking  if user had any issues to him
@@ -73,9 +73,6 @@ bool AddFriendRequest::SendResponde()
      client_socket_->waitForBytesWritten(3000);
      client_socket_->disconnectFromHost();
   }
-  
-  
-  
     return false;
 }
 
