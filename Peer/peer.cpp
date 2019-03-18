@@ -3,10 +3,12 @@
 
 Peer::Peer(QObject* parent, quint16 listen_port)
     : QObject(parent),
+
       my_listen_port_(listen_port),
       server_connection_(nullptr),
       is_active_(false) {
   tcp_server_ = new TcpServer(this);
+
   QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
 
   // use the first non-localhost IPv4 address
@@ -22,7 +24,7 @@ Peer::Peer(QObject* parent, quint16 listen_port)
     my_ip_ = QHostAddress(QHostAddress::LocalHost);
 
   ClientLogger::Instance()->WriteLog(LogType::INFO, " My IP: " + my_ip_.toString());
-
+        
   connect(tcp_server_, SIGNAL(NewConnection(Connection*)), 
                  this, SLOT(SetSocket(Connection*)));
   connect(tcp_server_, SIGNAL(NewServerConnection(Connection*)), 
@@ -74,6 +76,7 @@ bool Peer::StartListening(quint16 listen_port) {
         LogType::ERROR,
         " cannot start on: " + QString::number(my_listen_port_));
 
+
     if (!tcp_server_->listen()) {
       is_active_ = false;
       return false;
@@ -113,6 +116,7 @@ bool Peer::ConnectToPeer(unsigned id) {
   QPair<QString, int> ip_port = client_dal_.GetIPPort(id); // marko - change to QPair<QString, quint16>  GetIPPort(const unsigned& user_id);
   connections_[id]->connectToHost(ip_port.first, ip_port.second);
   QString logMessage = receiver_ip_.toString() + " : " + QString::number(ip_port.second);
+
   ClientLogger::Instance()->WriteLog(LogType::INFO,
                                      " trying connect to: " + logMessage);
 
@@ -124,6 +128,7 @@ bool Peer::ConnectToPeer(unsigned id) {
                         this, SLOT(DisconncetFromPeer()));
     connect(connections_[id], SIGNAL(readyRead()), 
             connections_[id], SLOT(ReceiveRequests()));
+
 
     connect(connections_[id], SIGNAL(SendMessageToUI(QString)), 
                         this, SIGNAL(SendMessageToUI(QString)));
@@ -164,6 +169,7 @@ void Peer::SendUpdateInfo() {
   for (const QString& ip_to_send : friends_ip) {
     update_sender_.writeDatagram(to_write, QHostAddress(ip_to_send), my_listen_port_);
   }
+
   ClientLogger::Instance()->WriteLog(LogType::INFO, " update sent");
 }
 
@@ -220,6 +226,7 @@ void Peer::SetOfflineStatus() {
 bool Peer::LogIn(QString login, QString password) {
 
   server_connection_ = new Connection(this);
+  
   LoginInfo info;
   info.id = client_dal_.GetIDByLogin(login);
   info.password = password;
@@ -247,6 +254,7 @@ void Peer::SetSocket(Connection* connection) {
 
   connect(connection, SIGNAL(readyRead()), 
           connection, SLOT(ReceiveRequests())); // try to read line to \n when recieving data
+
   connect(connection, SIGNAL(SendMessageToUI(QString)),
                 this, SIGNAL(SendMessageToUI(QString)));
   ClientLogger::Instance()->WriteLog(
@@ -261,5 +269,5 @@ void Peer::OnServerConnected(Connection* connection) {
 
   connect(connection, SIGNAL(readyRead()), 
           connection, SLOT(ServerWorker())); // try to read line to \n when recieving data
-  
+
 }

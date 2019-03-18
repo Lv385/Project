@@ -3,6 +3,7 @@
 
 #include "dalmanager.h"
 #include "peer.h"
+
 #include "clientlogger.h"
 
 #include <QComboBox>

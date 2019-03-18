@@ -13,6 +13,7 @@ Connection::Connection(qintptr socketDescriptor, QObject* parent)
 
 void Connection::SendMessage(Message message) {
   if (this->state() == QAbstractSocket::ConnectedState) {
+
     ClientLogger::Instance()->WriteLog(LogType::SUCCESS,
                      " Me: " + this->localAddress().toString() + ':' +
                          QString::number(this->localPort()) +
@@ -30,6 +31,7 @@ void Connection::SendMessage(Message message) {
 
   } 
   else {
+
     QString str = QString(" cannot coonect to") + receiver_ip_.toString() +
                   ' : ' + QString::number(receiver_port_);
     ClientLogger::Instance()->WriteLog(LogType::ERROR, str);
@@ -44,6 +46,7 @@ bool Connection::LoginRequest(LoginInfo info) {
 
     if (waitForReadyRead(4000)) {
       QByteArray read = readAll();
+
       ClientLogger::Instance()->WriteLog(LogType::INFO, " writing to server");
       read = read.left(read.indexOf(k_unpossiblle_2_bytes_sequence_));
       quint8 type = Parser::getRequestType(read);
@@ -77,6 +80,7 @@ void Connection::ReceiveRequests() {
 
     nextData = received_data_.mid(separatorIndex + 2);
     received_data_ = received_data_.left(separatorIndex);
+
 
     ClientLogger::Instance()->WriteLog(
         LogType::INFO, " recieving something from" +
