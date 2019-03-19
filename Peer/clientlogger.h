@@ -17,7 +17,7 @@ class ClientLogger : public QObject {
   static ClientLogger* Instance();
 
   void WriteLog(LogType type, const QString& msg);
-
+  void SetSpecificLog(LogType specific_type);
  signals:
   void DisplayLog(const char*, QString msg);
 
@@ -28,5 +28,8 @@ class ClientLogger : public QObject {
 
  private:
   QFile* file_;
+  bool specific_log_;
+  LogType specific_type_;
+
 };
 #endif
