@@ -129,3 +129,9 @@ QString Logger::Log_FriendRequestInfo(FriendRequestInfo & out)
   return "Friend_Request_Info{ \nOther_Login: " + out.other_login + ", \nID: " +
     QString(out.id) + ", \ Password: " + QString(out.password) + " }" + txt + '\n';
 }
+
+QString Logger::Log_User(Client & cl)
+{
+  QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
+  return "User Login" + cl.GetUserName() + "\n ID:"+cl.GetUserId() + "\n IP:"+cl.GetUserIp().toString()+"\n Port:" + cl.GetUserPort()+"\n";
+}

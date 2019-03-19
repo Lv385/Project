@@ -5,7 +5,7 @@
 #include <QTextStream>
 #include <QIODevice>
 #include "../Parser&Structs/parser.h"
-
+#include "DAL/Client.h"
 class Logger {
  static bool const ifLogingEnable = true;
  public:
@@ -18,4 +18,5 @@ class Logger {
    static QString Log_LoginInfo(LoginInfo &out);
    static QString Log_RegisterInfo(RegisterInfo&out);
    static QString Log_FriendRequestInfo(FriendRequestInfo &out);
+   static QString Log_User(Client&cl);
 };
