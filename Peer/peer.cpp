@@ -3,10 +3,12 @@
 
 Peer::Peer(QObject* parent, quint16 listen_port)
     : QObject(parent),
+
       my_listen_port_(listen_port),
       server_connection_(nullptr),
       is_active_(false) {
   tcp_server_ = new TcpServer(this);
+
   QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
 
   logger_ = ClientLogger::Instance();
@@ -75,6 +77,7 @@ bool Peer::StartListening(quint16 listen_port) {
     logger_->WriteLog(LogType::ERROR,
                       " cannot start on: " + QString::number(my_listen_port_));
 
+
     if (!tcp_server_->listen()) {
       is_active_ = false;
       return false;
@@ -123,6 +126,7 @@ bool Peer::ConnectToPeer(unsigned id) {
                         this, SLOT(DisconncetFromPeer()));
     connect(connections_[id], SIGNAL(readyRead()), 
             connections_[id], SLOT(ReceiveRequests()));
+
 
     connect(connections_[id], SIGNAL(SendMessageToUI(QString)), 
                         this, SIGNAL(SendMessageToUI(QString)));
@@ -218,6 +222,7 @@ void Peer::SetOfflineStatus() {
 bool Peer::LogIn(QString login, QString password) {
 
   server_connection_ = new Connection(this);
+  
   LoginInfo info;
   info.id = client_dal_.GetIDByLogin(login);
   info.password = password;
@@ -245,6 +250,7 @@ void Peer::SetSocket(Connection* connection) {
 
   connect(connection, SIGNAL(readyRead()), 
           connection, SLOT(ReceiveRequests())); // try to read line to \n when recieving data
+
   connect(connection, SIGNAL(SendMessageToUI(QString)),
                 this, SIGNAL(SendMessageToUI(QString)));
   logger_->WriteLog(
@@ -259,5 +265,5 @@ void Peer::OnServerConnected(Connection* connection) {
 
   connect(connection, SIGNAL(readyRead()), 
           connection, SLOT(ServerWorker())); // try to read line to \n when recieving data
-  
+
 }

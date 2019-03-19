@@ -34,29 +34,17 @@ AsyncServer::AsyncServer(QObject *parent) :QTcpServer ()
 
 		qDebug() << "Server are listening: " << ipAddress << ":" << this->serverPort();
 	}
-
-	/*
-	Client cl(QString("oleksa"), QString("password"), QHostAddress("192.168.103.120"), 8989);
-	Client c2(QString("markiyan"), QString("password"), QHostAddress("192.168.103.55"), 8989);
-	Client c3(QString("liubomyr"), QString("password"), QHostAddress("192.168.103.88"), 8989);
-	dal_.SetClientIpPort(cl);
-	dal_.SetClientIpPort(c2);
-	dal_.SetClientIpPort(c3);
-
-	//database testing
+        /*
+	DAL dal_;
+	//database testing        
+	Client cl = dal_.getClient(4);
+	Client cl2 = dal_.getClient(8);       
+  cl.AddPendingFriendRequest(cl2);
+  dal_.UpdateClient(cl);
+  Client cl3 = dal_.getClient(4);
 	
-	Client cl;
-	cl.SetUserName(QString("Oleg"));
-	cl.SetUserPassword(QString("Pass"));
-	cl.SetUserIp(QHostAddress("192.168.102.103"));
-	cl.SetUserPort(23456);
-
-	dal_.SetClientIpPort(cl);
-
-	Client ret = dal_.getClient(QString("Oleg"));
-
-	qDebug() << ret.getUserName() << ret.GetUserIp();
-	*/
+  */
+	
 }
 
 

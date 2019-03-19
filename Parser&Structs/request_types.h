@@ -44,7 +44,7 @@ enum class ServerRequests : quint8 {
   //requested login - not found
   FRIEND_REQUEST_FAILED,//empty(s->c)FRIEND_REQUEST;   
   FRIEND_REQUEST_SUCCEED,//empty(s->c)FRIEND_REQUEST;
-  ADD_FRIEND_REQUEST,//+AddFriendInfo(s->c)I,-FRIEND_REQUEST ; 
+  ADD_FRIEND_REQUEST,//+AddFriendInfo(s->c)I,-FRIEND_REQUEST; 
 
   //sending to all friends on peer logined
   FRIEND_UPDATE_INFO//+FriendUpdateInfo(s->c)I,-LOGIN ; 

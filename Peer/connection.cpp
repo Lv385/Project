@@ -32,6 +32,7 @@ void Connection::SendMessage(Message message) {
 
   } 
   else {
+
     QString str = QString(" cannot coonect to") + receiver_ip_.toString() +
                   ' : ' + QString::number(receiver_port_);
     logger_->WriteLog(LogType::ERROR, str);

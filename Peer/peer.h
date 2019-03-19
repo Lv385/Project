@@ -20,6 +20,7 @@
 #include "dalmanager.h"
 #include "clientlogger.h"
 
+
 #include "../Parser&Structs/parser.h"
 
 class Peer : public QObject {

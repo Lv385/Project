@@ -78,6 +78,12 @@ void Client::AddFriend(Client& cl)
 	friends.push_back(cl);
 	*/
 }
+/*Populate internal pending_requests_ vector.
+* Receives instance of a client that want to be a friend of this user
+*/
+void Client::AddPendingFriendRequest(Client &cl) {
+  pending_requests_.push_back(cl.GetUserId());
+}
 
 void Client::RemoveFriend(Client & cl)
 {
@@ -92,12 +98,19 @@ void Client::RemoveFriend(Client & cl)
 
 void Client::SetFriends(QVector<unsigned int> f)
 {
-	friends = f;
+	friends = f; 
+}
+
+void Client::Set_Pending_Request(QVector<unsigned int> r) {
+  pending_requests_ = r;
 }
 
 QVector<unsigned int> Client::GetFriends()
 {
-	return friends;
+	return friends; }
+
+QVector<unsigned int>* Client::Get_Pending_Requests() {
+  return &pending_requests_;
 }
 
 bool Client::operator==(const Client &cl)

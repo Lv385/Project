@@ -17,7 +17,7 @@ MainWindow::MainWindow(QWidget* parent)
   }
   
   peer_ = new Peer(this, ui_->le_port_my->text().toUShort());
-  
+
   if (ui_->rb_engineering->isChecked()) {
     OnRbEngineeringClicked();
   }
@@ -110,9 +110,10 @@ void MainWindow::OnPbSendClicked() {
   ui_->plainTextEdit_Log->appendPlainText("\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
 }
 
-void MainWindow::AppendLogMessage(const char* value, QString message) {
 
+void MainWindow::AppendLogMessage(const char* value, QString message) {
   ui_->plainTextEdit_Log->appendPlainText(value + message);
+
 }
 
 void MainWindow::OnPbLoginClicked() {
