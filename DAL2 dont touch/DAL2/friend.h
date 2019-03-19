@@ -1,39 +1,36 @@
 #ifndef FRIEND_H
 #define FRIEND_H
 #include <QString>
-#include<qsqlrecord.h>
-#include "clientdal.h"
+#include <qsqlrecord.h>
+#include "statement.h"
 
-class Friend: public ClientDAL {
+class Friend : public Statement {
  public:
-	 Friend(const QString &connection_name);
-	 Friend();
+  Friend(std::shared_ptr<Connection> connection);
+  Friend();
 
+  unsigned int	  id;
+  QString		  ip;
+  unsigned int	  port;
+  QString		  login;
+  QString		  name;
+  QString		  surname;
+  bool			  status;
+  // IMAGE photo;
 
-  unsigned int id;
-  QString ip;
-  unsigned int port;
-  QString login;
-  QString name;
-  QString surname;
-  bool status;
-  //IMAGE photo;
+  QVector<Friend> GetFriends();  // SelectAllInfoAboutOneChat
+  void			  GetFriend();
+  void			  UpdateFriend();
+  void			  AddNewFriend();
+  void			  DeleteFriend();
 
-  QVector<Friend> GetFriends();//SelectAllInfoAboutOneChat
-  void GetFriend();//Select
-  //T GetListOfStatments<T>();//Select
-  void UpdateFriendInfo();//Update
-  void AddNewFriend();//Insert
-  void DeleteFriend();//Delete
-
-//private:
-	QString CreateQuerySelectAll();
-	QString CreateQuerySelect();
-	QString CreateQueryInsert();
-	QString CreateQueryUpdate();
-	QString CreateQueryDelete();
-	QString CreateQueryCountOfFriends();
-
+  private:
+  QString CreateQuerySelectAll();
+  QString UpdateQuery();
+  QString SelectQuery();
+  QString InsertQuery();
+  QString DeleteQuery();
+  QString CreateQueryCountOfFriends();
 };
 
 #endif  // FRIEND_H

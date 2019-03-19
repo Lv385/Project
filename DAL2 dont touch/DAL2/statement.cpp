@@ -1,11 +1,9 @@
 #include "statement.h"
 
-/*Statement::Statement(const QString &connection_name)
-    : Connection(connection_name) {
-  Open("das");
-}*/
-
-Statement::Statement() {}
+Statement::Statement(std::shared_ptr<Connection> connection) {
+  connection_ = connection;
+  SetQuery(connection_->GetDB());
+}
 
 Statement::~Statement() {}
 
@@ -14,7 +12,6 @@ void Statement::SetQuery(QSqlDatabase database) {
 }
 
 void Statement::ExectuteQuery(QString query) {
-  //query_ = QSqlQuery(data_base_);
   query_.prepare(query);
   if (!query_.exec()) {
     ErrorInfo();
