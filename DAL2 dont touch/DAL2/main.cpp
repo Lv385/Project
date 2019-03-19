@@ -10,12 +10,77 @@
 int main(int argc, char *argv[]) {
   QCoreApplication a(argc, argv);
 
-  UnitOfWork object{};
+  //UnitOfWork object{};
+
+  //auto f = object.GetEntity<User>();
+  //f->id = 1;
+  //f->AddNewFriend(2);
 
 
-  auto user = object.GetEntity<User>();
-  user->id = 1;
-  user->DeleteUser();
+  
+
+  UnitOfWork obj{};
+
+  UnitOfWork obvj2{};
+  
+ 
+
+  auto user = obj.GetEntity<User>();
+  //user->id = 5;
+ // user->login = "Sviatoslav";
+  //user->password = "password";
+  //user->ip = "444.444.4.4";
+  //user->port = 1111;
+  //user->AddNewUser();											//видалення з friend and friend_request
+
+  //user->GetUser();
+
+
+
+  //user->GetUser();
+
+  //user->port = 9000;
+  //user->UpdateUser();
+
+  //QVector <int>f = user->GetFriendsRequest();
+  //std::cout << f[0];
+
+
+//  QVector <int> ff = user->get
+  //user->login = "marko";
+  //user->GetUser();
+
+  //user->AddNewFriend(2);
+
+  //std::cout << user->id;
+
+
+
+
+
+
+
+
+
+
+
+  //QVector<int> f1 = f->GetFriends();
+  //f->id = 2;
+  //QVector<int> f2 = f->GetFriendsRequest();
+
+
+
+
+
+
+
+
+
+  
+
+  //auto user = object.GetEntity<User>();
+  //user->id = 1;
+  //user->DeleteUser();
  // std::cout
   //auto mes = object.GetEntity<Message>();
   //mes->id = 78;
