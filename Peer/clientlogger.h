@@ -2,7 +2,7 @@
 #define CLIENTLOGGER_H
 
 #define GET_NAME(name) #name
-#include <iomanip>
+
 #include <QDateTime>
 #include <QObject>
 #include <QPlainTextEdit>
