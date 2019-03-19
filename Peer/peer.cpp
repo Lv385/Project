@@ -9,6 +9,8 @@ Peer::Peer(QObject* parent, quint16 listen_port)
   tcp_server_ = new TcpServer(this);
   QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
 
+  logger_ = ClientLogger::Instance();
+
   // use the first non-localhost IPv4 address
   for (int i = 0; i < ipAddressesList.size(); ++i) {
     if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
@@ -21,7 +23,7 @@ Peer::Peer(QObject* parent, quint16 listen_port)
   if (my_ip_.toString().isEmpty())
     my_ip_ = QHostAddress(QHostAddress::LocalHost);
 
-  ClientLogger::Instance()->WriteLog(LogType::INFO, " My IP: " + my_ip_.toString());
+  logger_->WriteLog(LogType::INFO, " My IP: " + my_ip_.toString());
 
   connect(tcp_server_, SIGNAL(NewConnection(Connection*)), 
                  this, SLOT(SetSocket(Connection*)));
@@ -70,9 +72,8 @@ bool Peer::StartListening(quint16 listen_port) {
   my_listen_port_ = listen_port;
   tcp_server_->close();
   if (!tcp_server_->listen(QHostAddress::Any, my_listen_port_)) {
-    ClientLogger::Instance()->WriteLog(
-        LogType::ERROR,
-        " cannot start on: " + QString::number(my_listen_port_));
+    logger_->WriteLog(LogType::ERROR,
+                      " cannot start on: " + QString::number(my_listen_port_));
 
     if (!tcp_server_->listen()) {
       is_active_ = false;
@@ -81,8 +82,8 @@ bool Peer::StartListening(quint16 listen_port) {
 
   }
 
-  ClientLogger::Instance()->WriteLog(LogType::SUCCESS,
-    " Started listening on " + QString::number(get_my_port()));
+  logger_->WriteLog(LogType::SUCCESS,
+                    " Started listening on " + QString::number(get_my_port()));
 
   is_active_ = true;
 
@@ -113,12 +114,10 @@ bool Peer::ConnectToPeer(unsigned id) {
   QPair<QString, int> ip_port = client_dal_.GetIPPort(id); // marko - change to QPair<QString, quint16>  GetIPPort(const unsigned& user_id);
   connections_[id]->connectToHost(ip_port.first, ip_port.second);
   QString logMessage = receiver_ip_.toString() + " : " + QString::number(ip_port.second);
-  ClientLogger::Instance()->WriteLog(LogType::INFO,
-                                     " trying connect to: " + logMessage);
+  logger_->WriteLog(LogType::INFO, " trying connect to: " + logMessage);
 
   if (connections_[id]->waitForConnected(5000)) {
-    ClientLogger::Instance()->WriteLog(LogType::SUCCESS,
-                                       " connected to:" + logMessage);
+    logger_->WriteLog(LogType::SUCCESS, " connected to:" + logMessage);
     connections_[id]->StartConnectionTimer(30000);  // 30 sec until disconnecting	
     connect(connections_[id], SIGNAL(ConnectionTimeout()), 
                         this, SLOT(DisconncetFromPeer()));
@@ -130,8 +129,7 @@ bool Peer::ConnectToPeer(unsigned id) {
     return true;
   } 
   else {
-    ClientLogger::Instance()->WriteLog(LogType::ERROR,
-                                       " cannot connect to " + logMessage);
+    logger_->WriteLog(LogType::ERROR, " cannot connect to " + logMessage);
     //tcp_socket_->deleteLater();
     //tcp_socket_ = nullptr;
     return false;
@@ -164,7 +162,7 @@ void Peer::SendUpdateInfo() {
   for (const QString& ip_to_send : friends_ip) {
     update_sender_.writeDatagram(to_write, QHostAddress(ip_to_send), my_listen_port_);
   }
-  ClientLogger::Instance()->WriteLog(LogType::INFO, " update sent");
+  logger_->WriteLog(LogType::INFO, " update sent");
 }
 
 
@@ -196,8 +194,8 @@ void Peer::UpdateFriendsInfo() {
     }
     client_dal_.UpdateIPPort(updated_friend_info.id, peer_address.toString(), updated_friend_info.port); 
 
-    ClientLogger::Instance()->WriteLog(
-        LogType::INFO, " updated " +
+   logger_->WriteLog(LogType::INFO,
+                      " updated " +
                            client_dal_.GetLoginById(updated_friend_info.id) +
                            "'s info");
   }
@@ -209,9 +207,9 @@ void Peer::SetOfflineStatus() {
 
   client_dal_.SetFriendStatus(id, false);
 
-  ClientLogger::Instance()->WriteLog(
-      LogType::INFO,
-      " set " + client_dal_.GetLoginById(id) + " offline status");
+  logger_->WriteLog(LogType::INFO,
+                    " set " + 
+    client_dal_.GetLoginById(id) + " offline status");
 
   check_timers_.remove(id);
   to_delete->deleteLater();  // use deleteLater() instead of delete
@@ -249,7 +247,7 @@ void Peer::SetSocket(Connection* connection) {
           connection, SLOT(ReceiveRequests())); // try to read line to \n when recieving data
   connect(connection, SIGNAL(SendMessageToUI(QString)),
                 this, SIGNAL(SendMessageToUI(QString)));
-  ClientLogger::Instance()->WriteLog(
+  logger_->WriteLog(
       LogType::INFO,
       " setting socket: " +
                                       QString::number(connection->localPort()));

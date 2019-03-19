@@ -42,6 +42,7 @@ class Connection : public QTcpSocket {
 
   const QByteArray k_unpossiblle_2_bytes_sequence_;
   DALManager client_dal_;
+  ClientLogger* logger_;
 
 };
 #endif

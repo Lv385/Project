@@ -4,20 +4,22 @@ Connection::Connection(QObject* parent)
       receiver_ip_(QHostAddress::Null),
       receiver_port_(0),
       k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()) {  // the only idea i had, must be fixed
+  logger_ = ClientLogger::Instance();
 }
 
 Connection::Connection(qintptr socketDescriptor, QObject* parent)
     : k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()) {
   setSocketDescriptor(socketDescriptor);
+  logger_ = ClientLogger::Instance();
 }
 
 void Connection::SendMessage(Message message) {
   if (this->state() == QAbstractSocket::ConnectedState) {
-    ClientLogger::Instance()->WriteLog(LogType::SUCCESS,
+    logger_->WriteLog(LogType::SUCCESS,
                      " Me: " + this->localAddress().toString() + ':' +
                          QString::number(this->localPort()) +
-                         "\nPeer: " + this->peerAddress().toString() + ':' +
-                         QString::number(this->peerPort()) + "\nsending");
+                         " Peer: " + this->peerAddress().toString() + ':' +
+                         QString::number(this->peerPort()) + " sending");
 
     QByteArray to_write = Parser::Message_ToByteArray(message);       // pack
     to_write.append(k_unpossiblle_2_bytes_sequence_);                 // append separator
@@ -32,7 +34,7 @@ void Connection::SendMessage(Message message) {
   else {
     QString str = QString(" cannot coonect to") + receiver_ip_.toString() +
                   ' : ' + QString::number(receiver_port_);
-    ClientLogger::Instance()->WriteLog(LogType::ERROR, str);
+    logger_->WriteLog(LogType::ERROR, str);
     emit SendMessageToUI(str);
   }
 }
@@ -44,11 +46,11 @@ bool Connection::LoginRequest(LoginInfo info) {
 
     if (waitForReadyRead(4000)) {
       QByteArray read = readAll();
-      ClientLogger::Instance()->WriteLog(LogType::INFO, " writing to server");
+      logger_->WriteLog(LogType::INFO, " writing to server");
       read = read.left(read.indexOf(k_unpossiblle_2_bytes_sequence_));
       quint8 type = Parser::getRequestType(read);
       if (type == (quint8)ServerRequests::LOGIN_SUCCEED) {
-        ClientLogger::Instance()->WriteLog(LogType::SUCCESS,
+        logger_->WriteLog(LogType::SUCCESS,
                                            " Logged in success");
         return true;
       }
@@ -78,7 +80,7 @@ void Connection::ReceiveRequests() {
     nextData = received_data_.mid(separatorIndex + 2);
     received_data_ = received_data_.left(separatorIndex);
 
-    ClientLogger::Instance()->WriteLog(
+    logger_->WriteLog(
         LogType::INFO, " recieving something from" +
                                            this->peerAddress().toString() +
                  ":" + QString::number(this->peerPort()));

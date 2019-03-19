@@ -2,13 +2,13 @@
 #define CLIENTLOGGER_H
 
 #define GET_NAME(name) #name
-
+#include <iomanip>
 #include <QDateTime>
 #include <QObject>
 #include <QPlainTextEdit>
 #include <QTextStream>
 
-enum LogType { ERROR = 0, SUCCESS, INFO, WARNING };
+enum LogType { ERROR = 0, SUCCESS, INFO, WARNING, DEBUG };
 
 class ClientLogger : public QObject {
   Q_OBJECT
@@ -22,8 +22,7 @@ class ClientLogger : public QObject {
   void DisplayLog(const char*, QString msg);
 
  private:
-  ClientLogger(){};
-  ~ClientLogger() {};
+  ClientLogger();
   ClientLogger(ClientLogger const&) = delete;
   void operator=(ClientLogger const&) = delete;
 

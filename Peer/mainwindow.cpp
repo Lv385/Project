@@ -9,6 +9,8 @@ MainWindow::MainWindow(QWidget* parent)
   SetIpValidator();
   ui_->pb_send->setEnabled(false);
 
+  logger_ = ClientLogger::Instance();
+
   QVector<QString> friend_logins = client_dal_.GetFriendsLogin();
   for (const QString& login : friend_logins) {
     ui_->combo_box_friends->addItem(login);
@@ -23,9 +25,8 @@ MainWindow::MainWindow(QWidget* parent)
   connect(peer_, SIGNAL(SendMessageToUI(QString)), 
            this, SLOT(AppendMessage(QString)));
 
-  connect(ClientLogger::Instance(), SIGNAL(DisplayLog(const char*, QString)), this,
+  connect(logger_, SIGNAL(DisplayLog(const char*, QString)), this,
           SLOT(AppendLogMessage(const char*, QString)));
-
 
   connect(ui_->pb_start, SIGNAL(clicked()), 
                    this, SLOT(OnPbStartClicker()));

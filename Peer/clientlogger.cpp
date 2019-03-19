@@ -5,14 +5,15 @@ ClientLogger* ClientLogger::Instance() {
     return &logger_;
 }
 const char* ErrorValueNames[] = {GET_NAME(ERROR), GET_NAME(SUCCESS),
-                                 GET_NAME(INFO), GET_NAME(WARNING)};
+                                 GET_NAME(INFO), GET_NAME(WARNING), GET_NAME(DEBUG)};
 
-void ClientLogger::WriteLog(LogType type, const QString& msg) { 
-  if(!file_) {
+ClientLogger::ClientLogger() {
+  if (!file_) {
     file_ = new QFile("Log.txt");
     file_->open(QIODevice::Append | QIODevice::Text);
   }
-
+}
+void ClientLogger::WriteLog(LogType type, const QString& msg) { 
   QString text = msg;
     text = tr("[%1] %2 |")
                 .arg(ErrorValueNames[type])
@@ -24,3 +25,4 @@ void ClientLogger::WriteLog(LogType type, const QString& msg) {
   }
   emit DisplayLog(ErrorValueNames[type], msg);
 }
+
