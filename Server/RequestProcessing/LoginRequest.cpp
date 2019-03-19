@@ -1,5 +1,5 @@
 #include "LoginRequest.h"
-
+//need to add  notifiying loginned user 
 LoginRequest::LoginRequest(QByteArray& A, DAL* d, QTcpSocket* s)
     : AbstractRequest(d, s) {
   incoming_structure_ = Parser::ParseAsLoginInfo(A);

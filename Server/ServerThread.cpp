@@ -3,7 +3,7 @@
 #include <sstream>
 #include "RequestProcessing/NewUserRequest.h"
 #include "RequestProcessing/LoginRequest.h"
-
+#include "RequestProcessing/add_friend_request.h"
 
 ServerThread::ServerThread(int socket_descriptor, QObject *parent) : QThread(parent),socket_descriptor_(socket_descriptor)
 {
@@ -40,9 +40,10 @@ void ServerThread::SetRequest(quint8 type, QTcpSocket* connection)
 		 request_ = new NewUserRequest(data_, &dal_, connection); 
 		 break;
 	case (quint8)ClientRequest::LOGIN:
-         request_ = new LoginRequest(data_, &dal_, connection);
-         break;
+     request_ = new LoginRequest(data_, &dal_, connection);
+     break;
   case (quint8)ClientRequest::FRIEND_REQUEST:
+    request_ = new AddFriendRequest(data_, &dal_, connection);
     break;
 
 

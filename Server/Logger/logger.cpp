@@ -49,13 +49,13 @@ void Logger::LogOut(QByteArray raw_data) {
 		WriteLogToFile(QString("LOG.txt"), outingString);
 		break;
 	  }
-      case (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED: {
+    case (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED: {
 		outingString = "Server output: FRIEND_REQUEST_SUCCEED( " + for_empty;
         qDebug() << outingString << "\n";
         WriteLogToFile(QString("LOG.txt"), outingString);
         break;
       }
-      case (quint8)ServerRequests::REGISTER_SUCCEED: {
+    case (quint8)ServerRequests::REGISTER_SUCCEED: {
         RegisterSuccessInfo out;
         out = Parser::ParseAsRegisterSuccessInfo(raw_data);
 		outingString = "Server  output: REGISTER_SUCCEED(" + ConvertQuint8ToString(type) +
@@ -65,7 +65,7 @@ void Logger::LogOut(QByteArray raw_data) {
         WriteLogToFile(QString("LOG.txt"), outingString);
         break;
       }
-      case (quint8)ServerRequests::ADD_FRIEND_REQUEST: {
+    case (quint8)ServerRequests::ADD_FRIEND_REQUEST: {
         AddFriendInfo out;
         out = Parser::ParseAsAddFriendInfo(raw_data);
 		outingString = "Server  output: ADD_FRIEND_REQUEST(" + ConvertQuint8ToString(type) +
@@ -74,7 +74,7 @@ void Logger::LogOut(QByteArray raw_data) {
         WriteLogToFile(QString("LOG.txt"), outingString);
         break;
       }
-      case (quint8)ServerRequests::FRIEND_UPDATE_INFO: {
+    case (quint8)ServerRequests::FRIEND_UPDATE_INFO: {
         FriendUpdateInfo out;
         out = Parser::ParseAsFriendUpdateInfo(raw_data);
         outingString = "Server  output: FRIEND_UPDATE_INFO(" + ConvertQuint8ToString(type) +
@@ -104,5 +104,28 @@ QString Logger::Log_ADD_FRIEND_REQUEST(AddFriendInfo & out)
 QString Logger::Log_FRIEND_UPDATE_INFO(FriendUpdateInfo & out)
 {
   QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
+  return "Friend_Update_Info{ \n ip: " + out.ip.toString() + ", \nPort: " +
+    QString(out.port) + ", \n ID: " + QString(out.id) + " }" + txt + '\n';
   return txt;
+}
+
+QString Logger::Log_LoginInfo(LoginInfo & out)
+{
+  QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
+  return "LoginInfo{ \nLoginner_ip: " + QString("  ")+ ", \nPort: " +
+    QString(out.port) + ", \loginnner ID: " + QString(out.id) + "Loginner_Password:" + out.password + " }" + txt + '\n';
+}
+
+QString Logger::Log_RegisterInfo(RegisterInfo & out)
+{
+  QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
+  return "RegisterInfo{ \nRegisterer_ip: " + QString("  ") + ", \nPort: " +
+    QString(out.port) + ", \Registerer Login: " + QString(out.login) + "Registerer_Password:"+out.password+"}" + txt + '\n';
+}
+
+QString Logger::Log_FriendRequestInfo(FriendRequestInfo & out)
+{
+  QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
+  return "Friend_Request_Info{ \nOther_Login: " + out.other_login + ", \nID: " +
+    QString(out.id) + ", \ Password: " + QString(out.password) + " }" + txt + '\n';
 }
