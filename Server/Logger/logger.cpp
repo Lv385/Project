@@ -97,8 +97,8 @@ QString Logger::Log_REGISTER_SUCCEED(RegisterSuccessInfo & out)
 QString Logger::Log_ADD_FRIEND_REQUEST(AddFriendInfo & out)
 {
   QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
-  return "AddFriendInfo{ \nRequester_ip: " + out.requester_ip.toString() + ", \nPort: " +
-					   QString(out.requester_port) + ", \nRequester Login: " + out.requester_login + " }" + txt + '\n';
+  return "AddFriendInfo{ \nRequester Login: " + out.requester_login +
+    ", \nRequester Login: " + out.requester_login + " }" + txt + '\n';
 }
 
 QString Logger::Log_FRIEND_UPDATE_INFO(FriendUpdateInfo & out)

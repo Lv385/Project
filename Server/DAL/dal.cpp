@@ -15,7 +15,7 @@ void DAL::CreateNew(Client cl) {
                          (int)cl.GetUserPort());
 }
 
-// call this each time some changes to client are performed
+
 void DAL::UpdateClient(Client cl) {
   //  this is used when login   and MAYBE  when adding to friend
   database_.UpdateIPPort(cl.GetUserName(), cl.GetUserIp().toString(),(int)cl.GetUserPort());  
@@ -26,6 +26,16 @@ void DAL::UpdateClient(Client cl) {
     database_.DeleteAllPendingRequest(cl.GetUserId());
     for (int i = 0; i < curr_pend_cl->size(); i++) {
       database_.addPendingFriendRequest(cl.GetUserId(), curr_pend_cl->at(i));
+    }
+  }
+  QVector<unsigned int> *curr_notif_cl = cl.Get_Pending_Notifications();
+  QVector<unsigned int> db_notif_cl = database_.GetPendingNotification(cl.GetUserId());
+  if (curr_notif_cl->size() != db_notif_cl.size() ||
+      ((!curr_notif_cl->isEmpty()) &&
+       db_notif_cl.last() != curr_notif_cl->last())) {
+    database_.DeleteAllPendingNotifications(cl.GetUserId());
+    for (int i = 0; i < curr_notif_cl->size(); i++) {
+      database_.addPendingNotification(cl.GetUserId(), curr_notif_cl->at(i));
     }
   }
   
@@ -43,6 +53,7 @@ Client DAL::getClient(QString login) {
   toReturn.SetUserPassword(database_.GetPasswordById(id));
   toReturn.SetFriends(database_.GetFriends(id));
   toReturn.Set_Pending_Request(database_.GetPendingFriendRequests(id));
+  toReturn.Set_Pending_Noification(database_.GetPendingNotification(id));
   return toReturn;
 }
 
