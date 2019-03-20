@@ -1,24 +1,32 @@
-import QtQuick 2.4
-import QtQuick.Controls 2.3
+import QtQuick 2.12
+import QtQuick.Controls 2.5
+import QtQml.Models 2.12
 
-Page {
-    id: rect
+import Friends 1.0
 
-    property string userName: ""
-
-    Button {
-        onClicked: stackView.pop()
-    }
+MainPageForm {
 
     background: Rectangle {
         color: backGroundColor
     }
 
-    Text {
-        id: welcomeText
-        text: "Hi " + userName
-        anchors.centerIn: parent
-        font.pointSize: 22
-        color: mainTextCOlor
+    FriendListDelegateModel {
+        id: delegateModelId
+        visualModel.model: guiManager.friendModel
+        listView: parent.listView
+        //deleteFriendButton.onClicked: guiManager.deleteFriend(object)
+    }
+
+    friendList.model: delegateModelId.visualModel
+    friendList.spacing: 5
+
+
+    addButton.onClicked: {
+        guiManager.newFriend()
     }
 }
+
+/*##^## Designer {
+    D{i:0;autoSize:true;height:480;width:640}
+}
+ ##^##*/

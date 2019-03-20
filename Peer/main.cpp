@@ -7,14 +7,20 @@
 
 #include "mainwindow.h"
 #include "GUI/guimanager.h"
+#include "GUI/friendmodel.h"
+#include "GUI/frienditem.h"
 
-static const bool kSetQML = 0;
+static const bool kSetQML = 1;
 
 int main(int argc, char* argv[]) {
   if(kSetQML) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
+
+    qRegisterMetaType<FriendItem*>("FriendItem*");
+    qRegisterMetaType<GUIManager*>("GUIManager*");
+    qmlRegisterType<FriendModel>("Friends", 1, 0, "FriendsModel");
 
     GUIManager guiManager;
 

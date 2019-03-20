@@ -6,5 +6,6 @@
         <file>main.qml</file>
         <file>MainPage.qml</file>
         <file>MainPageForm.ui.qml</file>
+        <file>FriendListDelegateModel.qml</file>
     </qresource>
 </RCC>

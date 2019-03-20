@@ -46,6 +46,12 @@ void DALManager::SetFriendStatus(const unsigned user_id, const bool status) {
   cdb.SetFriendStatus(user_id, status);
 }
 
+bool DALManager::GetFriendStatus(const unsigned user_id)
+{
+  ClientDAL::ClientDB cdb;
+  return cdb.GetFriendStatus(user_id);
+}
+
 void DALManager::AddMessageToDB(const QString message, const unsigned user_id,
                                 const unsigned owner_id) {
   ClientDAL::ClientDB cdb;
