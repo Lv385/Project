@@ -25,3 +25,6 @@ DAL/Client/Client
 Server/DAL/Client
 **/*.txt
 
+#other files
+
+**/GeneratedFiles

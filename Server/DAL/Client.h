@@ -30,10 +30,12 @@ public:
 	void SetUserPassword(QString &value);
 
 	void AddFriend(Client&);
+  void AddPendingFriendRequest(Client &);
 	void RemoveFriend(Client&);
 	void SetFriends(QVector<unsigned int> );
+	void Set_Pending_Request(QVector<unsigned int> );
 	QVector<unsigned int> GetFriends();
-
+	QVector<unsigned int>* Get_Pending_Requests();
 
 	bool operator==(const Client &);
 
@@ -43,7 +45,8 @@ private:
 	QHostAddress user_ip;//#2
 	quint16 user_port;//#3
 	quint32 id;
-	QVector<unsigned int> friends; // holds id of friends
-	//std::vector<AbstractRequest*> pendingRequests;
+	QVector<unsigned int> friends; // holds id of current friends
+	QVector<unsigned int> pending_requests_; //holds id of potential friends
+	
 
 };

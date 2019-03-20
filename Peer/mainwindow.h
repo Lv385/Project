@@ -4,6 +4,8 @@
 #include "dalmanager.h"
 #include "peer.h"
 
+#include "clientlogger.h"
+
 #include <QComboBox>
 #include <QMainWindow>
 #include <QRegExpValidator>
@@ -27,7 +29,7 @@ class MainWindow : public QMainWindow {
  private slots:
   void AppendMessage(QString);
   void AppendHistory();
-  void AppendLogMessage(QString);
+  void AppendLogMessage(const char*,QString);
 
   void OnPbStartClicker();
   void OnPbLoginClicked();
