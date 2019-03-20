@@ -17,9 +17,6 @@ void AddFriendRequest::PrepareResponse() {
     //TODO: check if parties are not friends allready!!!!!
     if (QString::compare(sender_guy.GetUserPassword(), income_data_.password) == 0) {
       requested_guy = database_->getClient(income_data_.other_login);
-      info_to_send.requester_ip = sender_guy.GetUserIp();
-      info_to_send.requester_login = sender_guy.GetUserName();
-      info_to_send.requester_port = sender_guy.GetUserPort();
       send_addfriend_info_bytearr = Parser::AddFriendInfo_ToByteArray(info_to_send);
       response_to_requester_ = (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED;
     } else {

@@ -18,6 +18,8 @@ public:
 protected:
 	void PrepareResponse();
 private:
+  void DoAdditionalTasks();
+
 	LoginInfo incoming_structure_;	
 	FriendUpdateInfo toSend_;
 	Client requester_; 

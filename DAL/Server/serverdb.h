@@ -41,6 +41,7 @@ class ServerDB {
   void AddFriend(const unsigned int& user_id, const unsigned int& second_user_id);
 
   void DeleteAllPendingRequest(const unsigned int& user);
+  void DeleteAllPendingNotifications(const unsigned int& user);
 
   // If login don't exist return id = 0
   unsigned int GetIDByLogin( const QString& user_login); 
@@ -49,8 +50,12 @@ class ServerDB {
   QString GetLoginByID(const unsigned int& user_id);  
 
   QVector<unsigned int> GetFriends(unsigned const int& user_id);
+
   void addPendingFriendRequest(const unsigned int& user_id, const unsigned int& pending_user);
   QVector<unsigned int> GetPendingFriendRequests(unsigned const int& user_id);
+
+  void addPendingNotification(const unsigned int& user_id, const unsigned int& pending_user);
+  QVector<unsigned int> GetPendingNotification(unsigned const int& user_id);
 
   bool IsFriend(const QString& first_user_login, const QString& second_user_login);
   bool IsFriend(const unsigned int& first_user_id, const unsigned int& second_user_id);
