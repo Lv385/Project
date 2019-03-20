@@ -1,5 +1,5 @@
 #include "LoginRequest.h"
-
+//need to add  notifiying loginned user 
 LoginRequest::LoginRequest(QByteArray& A, DAL* d, QTcpSocket* s)
     : AbstractRequest(d, s) {
   incoming_structure_ = Parser::ParseAsLoginInfo(A);
@@ -15,7 +15,7 @@ void LoginRequest::PrepareResponse() {
       // pasword are correct
       requester_.SetUserIp(client_socket_->peerAddress());
       requester_.SetUserPort(incoming_structure_.port);
-      database_->SetClientIpPort( requester_);  // updating ip::port
+      database_->UpdateClient( requester_);  // updating ip::port
       response_to_requester_ = (quint8)ServerRequests::LOGIN_SUCCEED;
     } else {
       //incorrect password

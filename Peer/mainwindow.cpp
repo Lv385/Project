@@ -7,8 +7,6 @@ MainWindow::MainWindow(QWidget* parent)
   ui_->setupUi(this);
 
   SetIpValidator();
-
-  // ui_->pb_start->setEnabled(false);
   ui_->pb_send->setEnabled(false);
 
   QVector<QString> friend_logins = client_dal_.GetFriendsLogin();
@@ -18,15 +16,15 @@ MainWindow::MainWindow(QWidget* parent)
   
   peer_ = new Peer(this, ui_->le_port_my->text().toUShort());
 
-  //ui_->rb_engineering->setChecked(true);
   if (ui_->rb_engineering->isChecked()) {
     OnRbEngineeringClicked();
   }
 
   connect(peer_, SIGNAL(SendMessageToUI(QString)), 
            this, SLOT(AppendMessage(QString)));
-  connect(peer_, SIGNAL(SendLog(QString)), this,
-                 SLOT(AppendLogMessage(QString)));
+
+  connect(ClientLogger::Instance(), SIGNAL(DisplayLog(const char*, QString)), this,
+          SLOT(AppendLogMessage(const char*, QString)));
 
   connect(ui_->pb_start, SIGNAL(clicked()), 
                    this, SLOT(OnPbStartClicker()));
@@ -110,8 +108,10 @@ void MainWindow::OnPbSendClicked() {
   ui_->plainTextEdit_Log->appendPlainText("\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
 }
 
-void MainWindow::AppendLogMessage(QString message) {
-  ui_->plainTextEdit_Log->appendPlainText(message);
+
+void MainWindow::AppendLogMessage(const char* value, QString message) {
+  ui_->plainTextEdit_Log->appendPlainText(value + message);
+
 }
 
 void MainWindow::OnPbLoginClicked() {

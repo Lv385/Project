@@ -281,6 +281,36 @@ QVector<unsigned int> ServerDB::GetFriends(unsigned const int & user_id) {
 	return id_result;
 }
 
+void ServerDB::addPendingFriendRequest(const unsigned int& user_id, const unsigned int& pending_user) {
+  
+    query_->prepare(
+        "INSERT INTO pending_friend_request (user, pending_users) VALUES (:f_id, "
+        ":s_id)");
+    query_->bindValue(":f_id", user_id);
+    query_->bindValue(":s_id", pending_user);
+    if (!query_->exec()) {
+      ErrorInfo();
+    }
+  
+}
+
+QVector<unsigned int> ServerDB::GetPendingFriendRequests(unsigned const int& user_id) {
+  query_->prepare(
+      "SELECT pending_users FROM pending_friend_request WHERE user = :user_id");
+  query_->bindValue(":user_id", user_id);
+  QVector<unsigned int> id_result;
+
+  if (query_->exec()) {
+    while (query_->next()) {
+      id_result.push_back(query_->record().value(0).toUInt());
+    }
+  } else {
+    ErrorInfo();
+  }
+
+  return id_result;
+}
+
 void ServerDB::AddFriend(const QString& user_login ,const QString& second_user_login) {
      if (!IsFriend(user_login,second_user_login)) {
          unsigned int f_id = GetIDByLogin(user_login);
@@ -307,6 +337,15 @@ void ServerDB::AddFriend(const unsigned int & user_id, const unsigned int & seco
 	} else {
 		qDebug("You are already friends");
 	}
+}
+
+void ServerDB::DeleteAllPendingRequest(const unsigned int& user_id) {
+  query_->prepare(
+      "DELETE FROM pending_friend_request WHERE user = :user_to_delete");
+  query_->bindValue(":user_to_delete", user_id);  
+  if (!query_->exec()) {
+    ErrorInfo();
+  }
 }
 
 
