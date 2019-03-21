@@ -16,6 +16,7 @@ class DAL {
   ~DAL();
   // interface associated with database access will be placed here
   void CreateNew(Client);
+  // call this each time some changes to client are performed
   void UpdateClient(Client);
   Client getClient(QString);
   Client getClient(quint32);

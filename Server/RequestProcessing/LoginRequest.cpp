@@ -1,5 +1,5 @@
 #include "LoginRequest.h"
-
+//need to add  notifiying loginned user 
 LoginRequest::LoginRequest(QByteArray& A, DAL* d, QTcpSocket* s)
     : AbstractRequest(d, s) {
   incoming_structure_ = Parser::ParseAsLoginInfo(A);
@@ -26,6 +26,9 @@ void LoginRequest::PrepareResponse() {
     qDebug() << e.what();
   }
 }
+void LoginRequest::DoAdditionalTasks() {
+
+}
 bool LoginRequest::SendResponde() {  
   if (response_to_requester_ == (quint8)ServerRequests::LOGIN_SUCCEED) {
     QByteArray b =
@@ -49,7 +52,7 @@ bool LoginRequest::SendResponde() {
     for (unsigned i = 0; i < currentFriends.size(); i++) {
       Client tempClient = database_->getClient(currentFriends[i]);
       output_socket.connectToHost(tempClient.GetUserIp(),
-                                  tempClient.GetUserPort());
+                                  tempClient.GetUserPort());      
       if (output_socket.waitForConnected(5000)) {
         Logger::LogOut(raw_data);
         output_socket.write(raw_data);
@@ -58,6 +61,21 @@ bool LoginRequest::SendResponde() {
       }
     }
     output_socket.close();
+
+    // Consider situation when one user(A) has pending friend notification from
+    // other user(B) and thay will login simultaneously. In such case A will
+    // receive FriendUpdateInfo (FUI)
+    // from B because they are friends already. But than server will send FUI
+    // removed from pending friend notification vector (wich belongs to A) AGAIN
+    // during A login processing as  DoAdditionalTasks() will define. So we need
+    // to remove FUI from pending friend notification vector (wich belongs to A)
+    // during main statements execution releted to B. So check
+    // tempClient.pending_friend_notifications_ for requester_.id and remove it
+    // on coincidence 
+
+
+    //should be the last call. Perform all pending queues check there!!!
+    DoAdditionalTasks();
   } else {
     //sending ServerRequests::LOGIN_FAILED
     QByteArray b = Parser::Empty_ToByteArray(response_to_requester_);
