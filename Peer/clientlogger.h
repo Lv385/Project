@@ -9,6 +9,7 @@
 #include <QTextStream>
 
 enum LogType { ERROR = 0, SUCCESS, INFO, WARNING, DEBUG };
+enum LogLevel {NOLOG= 0, LOW, HIGH};
 
 class ClientLogger : public QObject {
   Q_OBJECT
@@ -18,6 +19,7 @@ class ClientLogger : public QObject {
 
   void WriteLog(LogType type, const QString& msg);
   void SetSpecificLog(LogType specific_type);
+  void SetLogLevel(LogLevel log_level);
  signals:
   void DisplayLog(const char*, QString msg);
 
@@ -30,6 +32,6 @@ class ClientLogger : public QObject {
   QFile* file_;
   bool specific_log_;
   LogType specific_type_;
-
+  LogLevel log_level_;
 };
 #endif

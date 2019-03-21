@@ -10,7 +10,8 @@ MainWindow::MainWindow(QWidget* parent)
   ui_->pb_send->setEnabled(false);
 
   logger_ = ClientLogger::Instance();
-  logger_->SetSpecificLog(LogType::SUCCESS);
+  //logger_->SetSpecificLog(LogType::SUCCESS); // u can write specific log type
+  logger_->SetLogLevel(LogLevel::HIGH); // u can switch levels of logging(NOLOG, LOW, HIGH)
 
   QVector<QString> friend_logins = client_dal_.GetFriendsLogin();
   for (const QString& login : friend_logins) {
@@ -100,7 +101,7 @@ void MainWindow::AppendHistory() {
 }
 
 void MainWindow::OnPbSendClicked() {
-  qDebug() << "clicked";
+  logger_->WriteLog(LogType::DEBUG," clicked");
   peer_->set_receiver_ip(QHostAddress(ui_->le_ip->text()));
   peer_->set_receiver_port(ui_->le_port->text().toUShort());
 

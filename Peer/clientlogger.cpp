@@ -9,6 +9,7 @@ const char* ErrorValueNames[] = {GET_NAME(ERROR), GET_NAME(SUCCESS),
 
 ClientLogger::ClientLogger() {
   specific_log_ = false;
+  log_level_ = LogLevel::NOLOG;
   if (!file_) {
     file_ = new QFile("Log.txt");
     file_->open(QIODevice::Append | QIODevice::Text);
@@ -16,15 +17,22 @@ ClientLogger::ClientLogger() {
 }
 void ClientLogger::WriteLog(LogType type, const QString& msg) { 
   QString text;
+  QString log = '\t' + QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss ") + msg + '\n'; 
+  if (!log_level_) return;
+
   if(specific_log_ && type == specific_type_){
-    text = tr("[%1] %2 |")
+    text = tr("[%1] %2 ")
       .arg(ErrorValueNames[type])
-      .arg(QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss ")) + msg + '\n';
+      .arg(log);
   }
-  if(!specific_log_){
-    text = tr("[%1] %2 |")
-      .arg(ErrorValueNames[type])
-      .arg(QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss ")) + msg + '\n';
+  if(!specific_log_ && log_level_ == LogLevel::LOW){           // low level of logs
+    if (type == LogType::ERROR || type == LogType::WARNING)
+      return;
+  }
+    else{
+      text = tr("[%1] %2 ")
+        .arg(ErrorValueNames[type])
+        .arg(log);
   }
   QTextStream out(file_);
   if (file_) {
@@ -37,5 +45,9 @@ void ClientLogger::SetSpecificLog(LogType specific_type) {
   specific_log_ = true;
   specific_type_ = specific_type;
 
+}
+
+void ClientLogger::SetLogLevel(LogLevel log_level) { 
+  log_level_ = log_level; 
 }
 

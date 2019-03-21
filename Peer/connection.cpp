@@ -81,10 +81,8 @@ void Connection::ReceiveRequests() {
     nextData = received_data_.mid(separatorIndex + 2);
     received_data_ = received_data_.left(separatorIndex);
 
-    logger_->WriteLog(
-        LogType::INFO, " recieving something from" +
-                                           this->peerAddress().toString() +
-                 ":" + QString::number(this->peerPort()));
+    logger_->WriteLog(LogType::INFO, " recieving something from" +
+      this->peerAddress().toString() + ":" + QString::number(this->peerPort()));
 
     // here we should change behaviour depening on type of message
     quint16 requestType = Parser::getRequestType(received_data_);

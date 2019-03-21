@@ -253,10 +253,7 @@ void Peer::SetSocket(Connection* connection) {
 
   connect(connection, SIGNAL(SendMessageToUI(QString)),
                 this, SIGNAL(SendMessageToUI(QString)));
-  logger_->WriteLog(
-      LogType::INFO,
-      " setting socket: " +
-                                      QString::number(connection->localPort()));
+  logger_->WriteLog(LogType::INFO," setting socket: " + QString::number(connection->localPort()));
 }
 
 
