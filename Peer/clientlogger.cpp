@@ -18,21 +18,21 @@ ClientLogger::ClientLogger() {
 void ClientLogger::WriteLog(LogType type, const QString& msg) { 
   QString text;
   QString log = '\t' + QDateTime::currentDateTime().toString("dd.MM.yyyy hh:mm:ss ") + msg + '\n'; 
+
   if (!log_level_) return;
 
   if(specific_log_ && type == specific_type_){
-    text = tr("[%1] %2 ")
-      .arg(ErrorValueNames[type])
-      .arg(log);
+    text = tr("[%1] %2 ").arg(ErrorValueNames[type]).arg(log);
   }
   if(!specific_log_ && log_level_ == LogLevel::LOW){           // low level of logs
     if (type == LogType::ERROR || type == LogType::WARNING)
       return;
+    else {
+      text = tr("[%1] %2 ").arg(ErrorValueNames[type]).arg(log);
+    }
   }
     else{
-      text = tr("[%1] %2 ")
-        .arg(ErrorValueNames[type])
-        .arg(log);
+    text = tr("[%1] %2 ").arg(ErrorValueNames[type]).arg(log);
   }
   QTextStream out(file_);
   if (file_) {
@@ -44,7 +44,6 @@ void ClientLogger::WriteLog(LogType type, const QString& msg) {
 void ClientLogger::SetSpecificLog(LogType specific_type) {
   specific_log_ = true;
   specific_type_ = specific_type;
-
 }
 
 void ClientLogger::SetLogLevel(LogLevel log_level) { 
