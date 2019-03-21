@@ -19,23 +19,23 @@ void DAL::CreateNew(Client cl) {
 void DAL::UpdateClient(Client cl) {
   //  this is used when login   and MAYBE  when adding to friend
   database_.UpdateIPPort(cl.GetUserName(), cl.GetUserIp().toString(),(int)cl.GetUserPort());  
-  QVector<unsigned int> *curr_pend_cl = cl.Get_Pending_Requests();
+  QVector<unsigned int> curr_pend_cl = cl.Get_Pending_Requests();
   QVector<unsigned int> db_pend_cl = database_.GetPendingFriendRequests(cl.GetUserId());
-  if (curr_pend_cl->size() != db_pend_cl.size() ||
-      ((!curr_pend_cl->isEmpty()) && db_pend_cl.last() != curr_pend_cl->last())) {
+  if (curr_pend_cl.size() != db_pend_cl.size() ||
+      ((!curr_pend_cl.isEmpty()) && db_pend_cl.last() != curr_pend_cl.last())) {
     database_.DeleteAllPendingRequest(cl.GetUserId());
-    for (int i = 0; i < curr_pend_cl->size(); i++) {
-      database_.addPendingFriendRequest(cl.GetUserId(), curr_pend_cl->at(i));
+    for (int i = 0; i < curr_pend_cl.size(); i++) {
+      database_.addPendingFriendRequest(cl.GetUserId(), curr_pend_cl.at(i));
     }
   }
-  QVector<unsigned int> *curr_notif_cl = cl.Get_Pending_Notifications();
+  QVector<unsigned int> curr_notif_cl = cl.Get_Pending_Notifications();
   QVector<unsigned int> db_notif_cl = database_.GetPendingNotification(cl.GetUserId());
-  if (curr_notif_cl->size() != db_notif_cl.size() ||
-      ((!curr_notif_cl->isEmpty()) &&
-       db_notif_cl.last() != curr_notif_cl->last())) {
+  if (curr_notif_cl.size() != db_notif_cl.size() ||
+      ((!curr_notif_cl.isEmpty()) &&
+       db_notif_cl.last() != curr_notif_cl.last())) {
     database_.DeleteAllPendingNotifications(cl.GetUserId());
-    for (int i = 0; i < curr_notif_cl->size(); i++) {
-      database_.addPendingNotification(cl.GetUserId(), curr_notif_cl->at(i));
+    for (int i = 0; i < curr_notif_cl.size(); i++) {
+      database_.addPendingNotification(cl.GetUserId(), curr_notif_cl.at(i));
     }
   }
   

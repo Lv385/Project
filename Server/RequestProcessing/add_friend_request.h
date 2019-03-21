@@ -29,5 +29,4 @@ private:
   Client sender_guy;
   quint8 response_to_requester_;
   Client requested_guy;
-  Client sender_guy;
 };

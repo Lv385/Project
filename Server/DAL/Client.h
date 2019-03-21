@@ -37,12 +37,12 @@ public:
   void AddPendingFriendRequest(Client &);
   void RemovePendingFriendRequest(Client &);
 	void Set_Pending_Request(QVector<unsigned int> );
-  QVector<unsigned int> *Get_Pending_Requests();
+  QVector<unsigned int> Get_Pending_Requests();
 
   void AddPendingNotifiacation(Client &);
   void RemovePendingNotification(Client &);
   void Set_Pending_Noification(QVector<unsigned int>);
-  QVector<unsigned int> *Get_Pending_Notifications();
+  QVector<unsigned int> Get_Pending_Notifications();
 
 	
 	

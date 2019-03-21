@@ -12,7 +12,8 @@ class Logger {
    static void LogOut(QByteArray);
    static QString Log_User(Client &cl);
  private:
-   static void WriteLogToFile(QString&,QString&);
+   //static void WriteLogToFile(QString&,QString&);
+   static void WriteLogToFile(QString&);
    static QString ConvertQuint8ToString(quint8& num);   
    static QString Log_REGISTER_SUCCEED(RegisterSuccessInfo &out);
    static QString Log_ADD_FRIEND_REQUEST(AddFriendInfo &out);

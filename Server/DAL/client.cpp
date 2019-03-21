@@ -118,16 +118,16 @@ void Client::Set_Pending_Noification(QVector<unsigned int>r) {
   pending_requests_ = r;
 }
 
-QVector<unsigned int> *Client::Get_Pending_Notifications() { 
-  return &pending_friend_notifications_;
+QVector<unsigned int> Client::Get_Pending_Notifications() { 
+  return pending_friend_notifications_;
  }
 
-QVector<unsigned int> Client::GetFriends()
-{
-	return friends; }
+QVector<unsigned int> Client::GetFriends() {
+	return friends; 
+}
 
-QVector<unsigned int>* Client::Get_Pending_Requests() {
-  return &pending_requests_;
+QVector<unsigned int> Client::Get_Pending_Requests() {
+  return pending_requests_;
 }
 
 bool Client::operator==(const Client &cl)
