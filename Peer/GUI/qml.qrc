@@ -1,0 +1,11 @@
+<RCC>
+    <qresource prefix="/">
+        <file>fontawesome-webfont.ttf</file>
+        <file>LoginPage.qml</file>
+        <file>LoginPageForm.ui.qml</file>
+        <file>main.qml</file>
+        <file>MainPage.qml</file>
+        <file>MainPageForm.ui.qml</file>
+        <file>FriendListDelegateModel.qml</file>
+    </qresource>
+</RCC>

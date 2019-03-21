@@ -1,41 +1,36 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
+#include <qsqlrecord.h>
+#include <qvector.h>
 #include <QDate>
 #include <QString>
 #include <QTime>
-#include <qvector.h>
-#include<qsqlrecord.h>
-#include "clientdal.h"
+#include "statement.h"
 
-class Message : public ClientDAL {
+class Message : public Statement {
  public:
-	 Message(const QString &connection_name);
-	 Message();
+  Message(std::shared_ptr<Connection> connection);
+  Message();
 
+  unsigned int		id;
+  unsigned int		chat_id;
+  unsigned int		owner_id;
+  QString			data;
+  QDate				date;
+  QTime				time;
+  bool				status;
 
-  unsigned int id;
-  unsigned int chat_id;
-  unsigned int owner_id;
-  QString data;
-  QDate date;
-  QTime time;
-  bool status;
+  QVector<Message>	GetMessages();  // SelectAllInfoAboutOneChat
+  void			    AddNewMessage();
+  void              DeleteMessage();
+  void			    UpdateMessage();
 
-
-  QVector<Message> GetMessages();//SelectAllInfoAboutOneChat
-  void UpdateMessage();//Update
-  void AddNewMessage();//Insert
-  void DeleteMessage();//Delete
-
-//private:
-
-  QString CreateQuerySelectAll();
-  QString CreateQueryInsert();
-  QString CreateQueryUpdate();
-  QString CreateQueryDelete();
+ private:
+  QString UpdateQuery();
+  QString SelectQuery();
+  QString InsertQuery();
+  QString DeleteQuery();
   QString CreateQueryCountOfMessages();
-
-
 };
 
-#endif  // MESSAGE_H#pragma once
+#endif  // MESSAGE_H
