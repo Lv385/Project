@@ -59,7 +59,7 @@ bool LoginRequest::SendResponde() {
     // receive FriendUpdateInfo (FUI)
     // from B because they are friends already. But than server will send FUI
     // removed from pending friend notification vector (wich belongs to A) AGAIN
-    // during A login processing as  DoAdditionalTasks() will define. So we need
+    // during A login processing as  SendingPendingRequests() will define. So we need
     // to remove FUI from pending friend notification vector (wich belongs to A)
     // during main statements execution releted to B. So check
     // tempClient.pending_friend_notifications_ for requester_.id and remove it
@@ -67,7 +67,7 @@ bool LoginRequest::SendResponde() {
 
 
     //should be the last call. Perform all pending queues check there!!!
-    DoAdditionalTasks(output_socket); // should add pending notifiying
+    SendingPendingRequests(output_socket); // should add pending notifiying
 
   } else {
     //sending ServerRequests::LOGIN_FAILED
@@ -95,7 +95,7 @@ bool LoginRequest::SendToFriend(QTcpSocket &output_socket,QByteArray raw_data,un
   return false;
 }
 
-void LoginRequest::DoAdditionalTasks(QTcpSocket &notifiying_requester) {
+void LoginRequest::SendingPendingRequests(QTcpSocket &notifiying_requester) {
   
   // this function should send to requester pending requests and pending notifications 
  // QTcpSocket notifiying_requester;
@@ -119,4 +119,9 @@ void LoginRequest::DoAdditionalTasks(QTcpSocket &notifiying_requester) {
  }
   notifiying_requester.disconnectFromHost();
  
+}
+
+void LoginRequest::SendingPendingNotifications(QTcpSocket & notifiying_requester)
+{
+  // this function is for notification of client that he has some news about his friend requests
 }

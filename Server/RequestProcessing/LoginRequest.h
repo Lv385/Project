@@ -19,7 +19,9 @@ public:
 protected:
 	void PrepareResponse();
 private:
-  void DoAdditionalTasks(QTcpSocket&notifiying_requester);
+
+  void SendingPendingRequests(QTcpSocket&notifiying_requester);
+  void SendingPendingNotifications(QTcpSocket&notifiying_requester);
 
 	LoginInfo incoming_structure_;	
 	FriendUpdateInfo toSend_;
