@@ -4,6 +4,7 @@
 #include "RequestProcessing/NewUserRequest.h"
 #include "RequestProcessing/LoginRequest.h"
 #include "RequestProcessing/add_friend_request.h"
+#include "RequestProcessing/friendship_request.h"
 
 ServerThread::ServerThread(int socket_descriptor, QObject *parent) : QThread(parent),socket_descriptor_(socket_descriptor)
 {
@@ -42,7 +43,10 @@ void ServerThread::SetRequest(quint8 type, QTcpSocket* connection)
   case (quint8)ClientRequest::FRIEND_REQUEST:
     request_ = new AddFriendRequest(data_, &dal_, connection);
     break;
-
+  case (quint8)ClientRequest::FRIENDSHIP_ACCEPTED:
+  case (quint8)ClientRequest::FRIENDSHIP_REJECTED:
+    request_ = new FriendshipRequest(data_, &dal_, connection);
+    break;
 
 	}
 }

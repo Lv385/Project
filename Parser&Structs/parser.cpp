@@ -111,8 +111,8 @@ RegisterSuccessInfo Parser::ParseAsRegisterSuccessInfo(QByteArray& data) {
 
 
 
-QByteArray Parser::FriendUpdateInfo_ToByteArray(
-    FriendUpdateInfo& friend_update_info) {
+QByteArray Parser::NewFriendInfo_ToByteArray(
+    NewFriendInfo& friend_update_info) {
   QByteArray result;
   QDataStream out(&result, QIODevice::WriteOnly);
   out << quint8(ServerRequests::FRIEND_UPDATE_INFO);  // type
@@ -126,6 +126,31 @@ QByteArray Parser::FriendUpdateInfo_ToByteArray(
 
 FriendUpdateInfo Parser::ParseAsFriendUpdateInfo(QByteArray& data) {
   FriendUpdateInfo result;
+  QDataStream in(&data, QIODevice::ReadOnly);
+  quint8 type;
+  quint32 ip;
+  in >> type;
+  in >> ip;
+  in >> result.port;
+  in >> result.id;  
+  result.ip = QHostAddress(ip);
+
+  return result;
+}
+
+QByteArray Parser::FriendUpdateInfo_ToByteArray(
+    FriendUpdateInfo& friend_update_info) {
+  QByteArray result;
+  QDataStream out(&result, QIODevice::WriteOnly);
+  out << quint8(ServerRequests::FRIEND_UPDATE_INFO);  // type
+  out << friend_update_info.ip.toIPv4Address();       // ip
+  out << friend_update_info.port;                     // port
+  out << friend_update_info.id;                       // id
+  return result;
+}
+
+NewFriendInfo Parser::ParseAsNewFriendInfo(QByteArray& data) {
+  NewFriendInfo result;
   QDataStream in(&data, QIODevice::ReadOnly);
   quint8 type;
   quint32 ip;
