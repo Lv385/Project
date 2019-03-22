@@ -3,11 +3,11 @@
 #include <map>
 #include <string>
 #include "../DAL/Server/serverdb.h"
-#include"../Server/Exceptions/user_not_found.h"
+#include "../Server/Exceptions/user_not_found.h"
 
 #include <QUuid>
 #include "client.h"
-         
+
 // using namespace std;
 
 class DAL {
@@ -20,12 +20,13 @@ class DAL {
   void UpdateClient(Client);
   Client getClient(QString);
   Client getClient(quint32);
-  
+
   bool Check_If_Client_exists_In_Db(Client);
   bool Check_If_Client_exists_In_Db(QString);
 
   int GetClientId(Client);
-  void SetDataInQueueTable(Client,Client);
+  
+
  private:
   ServerDB database_;
   QString connection_name_;

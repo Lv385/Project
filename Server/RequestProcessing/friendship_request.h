@@ -5,7 +5,7 @@
 // In one session:
 // receives:  (1) FRIENDSHIP_ACCEPTED,//+FriendRequestInfo(c->s)ADD_FRIEND_REQUEST^, -prc friendship_request
 //            (2) FRIENDSHIP_REJECTED,//+FriendRequestInfo_(c->s)ADD_FRIEND_REQUEST^, -prc friendship_request
-// respond:   (3) FRIEND_UPDATE_INFO//+FriendUpdateInfo(s->c)I,-LOGIN ; 
+// respond:   (3) NEW_FRIEND_INFO//+NewFriendInfo(s->c)I,-FRIENDSHIP_ACCEPTED||-FRIENDSHIP_REJECTED 
 //           
 // work: -deterrmine what kind of request we are receiving (1 or 2);
 //       -if (1)||(2) fetch FriendRequestInfo.other_login (that login is the copy of
@@ -28,8 +28,8 @@ class FriendshipRequest : public AbstractRequest {
   void PrepareResponse();
  private:
   FriendRequestInfo income_data_;
-  FriendUpdateInfo outcome_for_requester_;
-  FriendUpdateInfo outcome_for_new_friend_;
+  NewFriendInfo outcome_for_requester_;
+  NewFriendInfo outcome_for_new_friend_;
   QByteArray outcome_data_;
   Client requester_;
   Client new_friend_;
