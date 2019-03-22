@@ -62,6 +62,8 @@ bool AddFriendRequest::SendResponde() {
     client_socket_->waitForBytesWritten(3000);
     client_socket_->disconnectFromHost();
   }
-
-  return false;
+  
+  
+  
+    return false;
 }
