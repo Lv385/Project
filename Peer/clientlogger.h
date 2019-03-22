@@ -5,11 +5,11 @@
 
 #include <QDateTime>
 #include <QObject>
-#include <QPlainTextEdit>
+#include <QFile>
 #include <QTextStream>
 
 enum LogType { ERROR = 0, SUCCESS, INFO, WARNING, DEBUG };
-enum LogLevel {NOLOG= 0, LOW, HIGH};
+enum LogLevel { NOLOG = 0, LOW, HIGH };
 
 class ClientLogger : public QObject {
   Q_OBJECT
