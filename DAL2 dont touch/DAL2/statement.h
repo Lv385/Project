@@ -7,8 +7,8 @@
 #include "connection.h"
 #include "unitofwork.h"
 
-#define CLIENT_DB "Client"
-#define SERVER_DB "Server"
+#define CLIENT_DB "../DAL2 dont touch/DAL2/Client"
+#define SERVER_DB "../DAL2 dont touch/DAL2/Server"
 
 class Statement {
  public:
@@ -17,10 +17,7 @@ class Statement {
   ~Statement();
 
   protected:
-  virtual QString UpdateQuery() = 0;
-  virtual QString SelectQuery() = 0;
-  virtual QString InsertQuery() = 0;
-  virtual QString DeleteQuery() = 0;
+
 
   void SetQuery(QSqlDatabase database);
   void ExectuteQuery(QString query);
