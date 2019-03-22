@@ -15,10 +15,13 @@ public:
 	LoginRequest(QByteArray& A, DAL*, QTcpSocket*);
 
 	bool SendResponde();
+  bool SendToFriend(QTcpSocket &output_socket, QByteArray raw_data, unsigned int id);
 protected:
 	void PrepareResponse();
 private:
-  void DoAdditionalTasks();
+
+  void SendingPendingRequests(QTcpSocket&notifiying_requester);
+  void SendingPendingNotifications(QTcpSocket&notifiying_requester);
 
 	LoginInfo incoming_structure_;	
 	FriendUpdateInfo toSend_;

@@ -7,14 +7,11 @@
 
 ServerThread::ServerThread(int socket_descriptor, QObject *parent) : QThread(parent),socket_descriptor_(socket_descriptor)
 {
-	
 	qDebug() << "New threaded connection!\a\n";
-
 }
 
 
 void ServerThread::run()
-
 {
 	QTcpSocket incomming_connection;
   incomming_connection.setSocketDescriptor(socket_descriptor_);
@@ -28,7 +25,7 @@ void ServerThread::run()
     
 		request_->SendResponde();
     // Watch out!!! This thread should be alive till incomming_connection is in use
-    //Consider palcing while(signal) here
+    //Consider parcing while(signal) here
 	}
 }
 
