@@ -22,6 +22,7 @@ class DALManager {
   void AddMessageToDB(const QString message, const unsigned user_id, const unsigned owner_id);
   void UpdateIPPort(const unsigned id, const QString new_ip, const unsigned new_port);
 
-  SQLDAL::UnitOfWork db;
+ private:
+  SQLDAL::UnitOfWork db_;
 };
 #endif
