@@ -11,12 +11,15 @@ ApplicationWindow {
     height: 600
     title: qsTr("MesX")
 
-    property color backGroundColor : "#585953"
-    property color mainAppColor: "#acf716"
+    property color backGroundColor : "#3E2723"
+    property color mainAppColor: "#D7CCC8"
     property color mainTextCOlor: "#f0f0f0"
-    property color popupBackGroundColor: "#b44"
-    property color popupTextCOlor: "#ffffff"
-
+    property color friendListColor: "#A1887F"
+    property color friendMouseAreaColor: "#8D6E63"
+    property color choosenFriendColor: "#5D4037"
+    property color  onlineFriendColor: "#AED581"
+    property color  offlineFriendColor: "#FFAB91"
+    property color borderColor: "#4E342E"
 
     FontLoader {
         id: fontAwesome

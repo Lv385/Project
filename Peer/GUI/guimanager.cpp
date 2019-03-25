@@ -29,9 +29,6 @@ void GUIManager::deleteFriend(FriendItem* friend_to_delete) {
 }
 
 
-
-
-
 void GUIManager::logIn() {
   std::this_thread::sleep_for(std::chrono::seconds(10));
   qDebug() << "Hello from c++";

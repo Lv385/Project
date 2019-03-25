@@ -5,21 +5,75 @@ Page {
     property alias friendList: friendList
     property alias addButton: addButton
 
+    Rectangle
+    {
+        x: 0
+        y: 36
+        width: friendList.width
+        height: friendList.height
+        color: friendListColor
+    }
+
     ListView {
+
         id: friendList
-        x: 24
-        y: 85
-        width: 130
-        height: 324
+        x: 0
+        y: 36
+        width: 269
+        height: 600
+        highlightRangeMode: ListView.ApplyRange
+        flickableDirection: Flickable.VerticalFlick
+        //color: "lightgrey";
+        boundsBehavior: Flickable.StopAtBounds
+        orientation: ListView.Vertical
+
     }
 
     Button {
         id: addButton
-        x: 160
-        y: 323
+        x: 270
+        y: 560
         text: qsTr("Add")
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 
