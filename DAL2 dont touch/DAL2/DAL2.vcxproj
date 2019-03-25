@@ -93,7 +93,7 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="connection.cpp" />
+    <ClCompile Include="Connection\connect.cpp" />
     <ClCompile Include="friend.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message.cpp" />
@@ -102,7 +102,7 @@
     <ClCompile Include="user.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="connection.h" />
+    <ClInclude Include="Connection\connect.h" />
     <ClInclude Include="friend.h" />
     <ClInclude Include="message.h" />
     <ClInclude Include="sqldal.h" />
