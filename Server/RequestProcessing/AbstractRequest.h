@@ -2,7 +2,7 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <string>
-
+#include  <time.h>
 #include <QByteArray>
 #include <QTcpSocket>
 #include "../DAL/Server/serverdb.h"

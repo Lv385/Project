@@ -142,6 +142,14 @@ QString Logger::Log_FriendRequestInfo(FriendRequestInfo & out)
     ConvertQuint32ToString(out.id) + ", \n Password: " + QString(out.password) + " }" + txt + '\n';
 }
 
+QString Logger::Log_NEW_FRIEND_INFO(NewFriendInfo & out)
+{
+  
+  QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
+  return "NEW_FRIEND_INFO{ \nIP: " + out.ip.toString() + ", \nPort: " + ConvertQuint16ToString(out.port) +", \nID: " +
+    ConvertQuint32ToString(out.id) + ", \n Login: " + QString(out.login) + " }" + txt + '\n';
+}
+
 QString Logger::Log_User(Client & cl)
 {
   QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
