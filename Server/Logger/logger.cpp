@@ -1,6 +1,6 @@
 #pragma once
 #include "logger.h" 
-// use conversion of quint to string
+
 //void Logger::WriteLogToFile(QString& filename, QString& text)
 void Logger::WriteLogToFile(QString& text) {
   //QFile file(filename);
@@ -90,8 +90,16 @@ void Logger::LogOut(QByteArray raw_data) {
         FriendUpdateInfo out;
         out = Parser::ParseAsFriendUpdateInfo(raw_data);
         outingString = "Server  output: FRIEND_UPDATE_INFO(" + ConvertQuint8ToString(type) +
-                       ") + FriendUpdateInfo{ " +"\nID:" + ConvertQuint32ToString(out.id) + ",\nIP: " +
-                       out.ip.toString() + ",\n PORT: " + ConvertQuint16ToString(out.port) + " }" + txt + '\n';
+          ") " + Log_FRIEND_UPDATE_INFO(out);
+        qDebug() << outingString << "\n";
+        WriteLogToFile(outingString);
+        break;
+      }
+    case (quint8)ServerRequests::NEW_FRIEND_INFO: {
+      NewFriendInfo out;
+      out = Parser::ParseAsNewFriendInfo(raw_data);
+      outingString = "Server  output:NEW_FRIEND_INFO (" + ConvertQuint8ToString(type) +
+        ") " + Log_NEW_FRIEND_INFO(out);
         qDebug() << outingString << "\n";
         WriteLogToFile(outingString);
         break;
