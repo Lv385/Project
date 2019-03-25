@@ -25,13 +25,12 @@ void ClientLogger::WriteLog(LogType type, const QString& msg) {
     text = tr("[%1] %2 ").arg(ErrorValueNames[type]).arg(log);
   }
   if(!specific_log_ && log_level_ == LogLevel::LOW){           // low level of logs
-    if (type == LogType::ERROR || type == LogType::WARNING)
+    if (type == LogType::ERROR || type == LogType::WARNING){
       return;
-    else {
+    }else {
       text = tr("[%1] %2 ").arg(ErrorValueNames[type]).arg(log);
     }
-  }
-    else{
+  }else{
     text = tr("[%1] %2 ").arg(ErrorValueNames[type]).arg(log);
   }
   QTextStream out(file_);
