@@ -32,33 +32,39 @@ void FriendshipRequest::PrepareResponse() {
     }
 
   } else if (request_type_ == (quint8)ClientRequest::FRIENDSHIP_REJECTED) {
+    doNothing_ = true;
   }
 }
 
 bool FriendshipRequest::SendResponde() {
-  outcome_data_ = Parser::FriendUpdateInfo_ToByteArray(outcome_for_requester_);
-  Logger::LogOut(outcome_data_);
-  client_socket_->write(outcome_data_);
-  client_socket_->waitForBytesWritten(3000);
-  client_socket_->disconnectFromHost();
-
-  outcome_data_ = Parser::FriendUpdateInfo_ToByteArray(outcome_for_new_friend_);
-
-  // sending FRIEND_UPDATE_INFO//+FriendUpdateInfo(s->c)I,-LOGIN ;
-  QTcpSocket output_socket;
-  output_socket.connectToHost(new_friend_.GetUserIp(),
-                              new_friend_.GetUserPort());
-
-  if (output_socket.waitForConnected(5000)) {  // check if can connect if yes -> send friend_update
+  if (!doNothing_) {
+    outcome_data_ =
+        Parser::NewFriendInfo_ToByteArray(outcome_for_requester_);
     Logger::LogOut(outcome_data_);
-    output_socket.write(outcome_data_);
-    output_socket.waitForBytesWritten(1000);
-    output_socket.disconnectFromHost();
-  } else {
-    // go and write  info about this request into db
-    new_friend_.AddPendingNotifiacation(requester_);
-    database_->UpdateClient(new_friend_);
+    client_socket_->write(outcome_data_);
+    client_socket_->waitForBytesWritten(3000);
+    client_socket_->disconnectFromHost();
+
+    outcome_data_ = Parser::NewFriendInfo_ToByteArray(outcome_for_new_friend_);
+
+    // sending FRIEND_UPDATE_INFO//+FriendUpdateInfo(s->c)I,-LOGIN ;
+    QTcpSocket output_socket;
+    output_socket.connectToHost(new_friend_.GetUserIp(),
+                                new_friend_.GetUserPort());
+
+    if (output_socket.waitForConnected(
+            5000)) {  // check if can connect if yes -> send friend_update
+      Logger::LogOut(outcome_data_);
+      output_socket.write(outcome_data_);
+      output_socket.waitForBytesWritten(1000);
+      output_socket.disconnectFromHost();
+    } else {
+      // go and write  info about this request into db
+      new_friend_.AddPendingNotifiacation(requester_);
+      database_->UpdateClient(new_friend_);
+    }
+    output_socket.close();
+    return true;
   }
-  output_socket.close();
-  return false; 
+  return false;
 }

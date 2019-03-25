@@ -47,8 +47,10 @@ enum class ServerRequests : quint8 {
   FRIEND_REQUEST_SUCCEED,//empty(s->c)FRIEND_REQUEST;
   ADD_FRIEND_REQUEST,//+AddFriendInfo(s->c)I,-FRIEND_REQUEST; 
 
-  //sending to all friends on peer logined or after friendship is accepted
-  FRIEND_UPDATE_INFO//+FriendUpdateInfo(s->c)I,-LOGIN ; 
+  //sending to all friends on peer logined 
+  FRIEND_UPDATE_INFO,//+FriendUpdateInfo(s->c)I,-LOGIN ; 
+
+  NEW_FRIEND_INFO//+NewFriendInfo(s->c)I,-FRIENDSHIP_ACCEPTED||-FRIENDSHIP_REJECTED
 };
 
 
@@ -68,6 +70,13 @@ struct RegisterInfo {
 
 //comes after  FRIEND_UPDATE_INFO header (c->s)
 struct FriendUpdateInfo {
+  QHostAddress ip;
+  quint16 port;
+  quint32 id;
+};
+
+//comes after NEW_FRIEND_INFO geader(c->s)
+struct NewFriendInfo {
   QHostAddress ip;
   quint16 port;
   quint32 id;
