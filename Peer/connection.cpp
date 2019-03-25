@@ -87,10 +87,11 @@ void Connection::ReceiveRequests() {
     // here we should change behaviour depening on type of message
     quint16 requestType = Parser::getRequestType(received_data_);
 
+
     switch (requestType) {
     case (quint8)ClientRequest::MESSAGE: {
       Message mes = Parser::ParseAsMessage(received_data_);
-      QString str = QString("<%1>: %2").arg(client_dal_.GetLoginById(mes.id))
+      QString str = QString("<%1>: %2").arg(client_dal_.GetLoginById(client_dal_.GetIDByIPPort(this->peerAddress().toString(), this->peerPort())))
                     .arg(mes.message);
 
       emit SendMessageToUI(str);
