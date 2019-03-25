@@ -77,6 +77,15 @@ void Logger::LogOut(QByteArray raw_data) {
         WriteLogToFile(outingString);
         break;
       }
+    case (quint8)ClientRequest::REGISTER: {
+      RegisterInfo out; // port login password
+       out = Parser::ParseAsRegisterInfo(raw_data);
+       outingString = "Client request:REGISTER(" + ConvertQuint8ToString(type) +
+         +")" + Log_RegisterInfo(out);
+       qDebug() << outingString << "\n";
+       WriteLogToFile(outingString);
+       break;
+    }
     case (quint8)ServerRequests::ADD_FRIEND_REQUEST: {
         AddFriendInfo out;
         out = Parser::ParseAsAddFriendInfo(raw_data);
@@ -118,7 +127,7 @@ QString Logger::Log_ADD_FRIEND_REQUEST(AddFriendInfo & out)
 {
   QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
   return "AddFriendInfo{ \nRequester Login: " + out.requester_login +
-    ", \nRequester Login: " + out.requester_login + " }" + txt + '\n';
+    ", \nRequester Id: " + ConvertQuint32ToString(out.requester_id) + " }" + txt + '\n';
 }
 
 QString Logger::Log_FRIEND_UPDATE_INFO(FriendUpdateInfo & out)

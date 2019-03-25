@@ -19,7 +19,7 @@ class Parser {
   static QByteArray LoginInfo_ToByteArray(LoginInfo& login_info);
   static LoginInfo ParseAsLoginInfo(QByteArray& data);
 
-  static QByteArray FriendRequestInfo_ToByteArray(FriendRequestInfo& login_info, quint8 type);
+  static QByteArray FriendRequestInfo_ToByteArray(FriendRequestInfo& login_info);
   static FriendRequestInfo ParseAsFriendRequestInfo(QByteArray& data);  
 
   static QByteArray AddFriendInfo_ToByteArray(AddFriendInfo& login_info);

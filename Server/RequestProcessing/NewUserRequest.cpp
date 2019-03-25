@@ -7,6 +7,7 @@ NewUserRequest::NewUserRequest(QByteArray& request, DAL* d, QTcpSocket* s)
     : AbstractRequest(d,s) {
 
 	income_data_ = Parser::ParseAsRegisterInfo(request);
+  Logger::LogOut(request);
 	PrepareResponse();
 }
 

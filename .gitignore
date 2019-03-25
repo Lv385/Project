@@ -28,3 +28,4 @@ Server/DAL/Client
 #other files
 
 **/GeneratedFiles
+DAL/Server/Server-journal
