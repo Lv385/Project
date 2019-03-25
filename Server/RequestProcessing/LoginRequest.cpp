@@ -1,9 +1,17 @@
 #include "LoginRequest.h"
+
 // need to add  notifiying loginned user
 LoginRequest::LoginRequest(QByteArray& A, DAL* d, QTcpSocket* s)
     : AbstractRequest(d, s) {
   incoming_structure_ = Parser::ParseAsLoginInfo(A);
   PrepareResponse();
+}
+
+LoginRequest::~LoginRequest()
+{
+  clock_t end = clock();
+  double seconds = (double)(end - start) / CLOCKS_PER_SEC;
+  qDebug() << "Login request time execution is : "<<seconds << "\n";
 }
 
 void LoginRequest::PrepareResponse() {
@@ -69,8 +77,8 @@ bool LoginRequest::SendToFriend(QTcpSocket& output_socket, QByteArray raw_data,
                                 unsigned int id) {
   Client tempClient = database_->getClient(id);
   output_socket.connectToHost(tempClient.GetUserIp(), tempClient.GetUserPort());
-  if (output_socket.waitForConnected(5000)) {
-    Logger::LogOut(raw_data);
+  if (output_socket.waitForConnected(5000)) { // default is 5000 but this thing is makes bigger time of login req execution 
+    Logger::LogOut(raw_data);                       // if 5000 exec time is around 5 sec // if 3 000 exec time is 3 sec
     output_socket.write(raw_data);
     output_socket.waitForBytesWritten(1000);
     output_socket.disconnectFromHost();
@@ -102,7 +110,7 @@ void LoginRequest::SendingPendingFriendRequests() {
 
 void LoginRequest::SendingPendingNotifications() {
   // fetch data about that users, construct
-  // FRIEND_UPDATE_INFO//+FriendUpdateInfo out of them annd send it to currently
+  // FRIEND_UPDATE_INFO//+FriendUpdateInfo out of them and send it to currently
   // connected client
   QVector<uint> pend_notif = requester_.Get_Pending_Notifications();
   QByteArray raw_data;

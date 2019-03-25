@@ -52,8 +52,7 @@ bool FriendshipRequest::SendResponde() {
     output_socket.connectToHost(new_friend_.GetUserIp(),
                                 new_friend_.GetUserPort());
 
-    if (output_socket.waitForConnected(
-            5000)) {  // check if can connect if yes -> send friend_update
+    if (output_socket.waitForConnected(5000)) {  // check if can connect if yes -> send friend_update
       Logger::LogOut(outcome_data_);
       output_socket.write(outcome_data_);
       output_socket.waitForBytesWritten(1000);

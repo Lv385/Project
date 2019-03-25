@@ -62,9 +62,7 @@ Client DAL::getClient(quint32 i) {
 }
 
 bool DAL::Check_If_Client_exists_In_Db(Client cl) {
-  if (database_.GetIDByLogin(cl.GetUserName()) ==
-      0) {  // If login don't exist return id = 0
-
+  if (database_.GetIDByLogin(cl.GetUserName()) == 0) {  // If login don't exist return id = 0
     return false;  // login dont exist
 
   } else {
@@ -73,14 +71,7 @@ bool DAL::Check_If_Client_exists_In_Db(Client cl) {
 }
 
 bool DAL::Check_If_Client_exists_In_Db(QString login) {
-  if (database_.GetIDByLogin(login) == 0) {  // If login don't exist return id = 0
-
-    return false;  // login dont exist
-
-  } else {
-    return true;  // login exist
-  }
-  return false;
+  return !(database_.GetIDByLogin(login) == 0); // according to mentor recomendations
 }
 
 int DAL::GetClientId(Client cl) {

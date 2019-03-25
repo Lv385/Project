@@ -23,4 +23,5 @@ class Logger {
    static QString Log_LoginInfo(LoginInfo &out);
    static QString Log_RegisterInfo(RegisterInfo&out);
    static QString Log_FriendRequestInfo(FriendRequestInfo &out);   
+   static QString Log_NEW_FRIEND_INFO(NewFriendInfo &out);
 };
