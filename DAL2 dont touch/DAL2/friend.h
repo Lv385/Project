@@ -6,7 +6,7 @@
 namespace SQLDAL {
 	class Friend : public Statement {
 	public:
-		Friend(std::shared_ptr<Connection> connection);
+		Friend(std::shared_ptr<Connect> Connect);
 		Friend();
 
 		unsigned int	  id;

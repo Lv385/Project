@@ -1,7 +1,7 @@
 #include "user.h"
 namespace SQLDAL {
-	User::User(std::shared_ptr<Connection> connection) : Statement(connection) {
-		connection_->Open(SERVER_DB);  // Path
+	User::User(std::shared_ptr<Connect> Connect) : Statement(Connect) {
+		Connect_->Open(SERVER_DB);  // Path
 	}
 
 	User::~User() {}

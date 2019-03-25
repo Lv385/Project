@@ -1,5 +1,5 @@
-#ifndef CONNECTION_H
-#define CONNECTION_H
+#ifndef Connect_H
+#define Connect_H
 
 #include <QDebug>
 #include <QString>
@@ -9,16 +9,16 @@
 #include <QtSql/QSqlTableModel>
 
 namespace SQLDAL {
-	class Connection {
+	class Connect {
 	public:
-		explicit		Connection(const QString &connection_name);
+		explicit		Connect(const QString &Connect_name);
 		void			Open(const QString &database_path);
 		void			Close();
 		QSqlDatabase  GetDB();
 
 	private:
 		QSqlDatabase	data_base_;
-		QString		connection_name_;
+		QString		Connect_name_;
 	};
 }
-#endif  // !CONNECTION_H
+#endif  // !Connect_H

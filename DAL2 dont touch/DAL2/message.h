@@ -9,7 +9,7 @@
 namespace SQLDAL {
 	class Message : public Statement {
 	public:
-		Message(std::shared_ptr<Connection> connection);
+		Message(std::shared_ptr<Connect> Connect);
 		Message();
 
 		unsigned int		id;

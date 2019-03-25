@@ -1,8 +1,8 @@
 #include "message.h"
 namespace SQLDAL {
-	Message::Message(std::shared_ptr<Connection> connection)
-		: Statement(connection) {
-		connection_->Open(CLIENT_DB);
+	Message::Message(std::shared_ptr<Connect> Connect)
+		: Statement(Connect) {
+		Connect_->Open(CLIENT_DB);
 		id = 0;
 		data = "";
 		owner_id = 0;
@@ -10,6 +10,7 @@ namespace SQLDAL {
 		time = QTime::currentTime();
 		status = false;
 	}
+
 
 	Message::Message() : Statement() {}
 

@@ -1,12 +1,12 @@
 #include "connect.h"
 namespace SQLDAL {
-	Connection::Connection(const QString& connection_name) {
+	Connect::Connect(const QString& Connect_name) {
 		const QString driver_name = "QSQLITE";
-		data_base_ = QSqlDatabase::addDatabase(driver_name, connection_name);
-		connection_name_ = connection_name;
+		data_base_ = QSqlDatabase::addDatabase(driver_name, Connect_name);
+		Connect_name_ = Connect_name;
 	}
 
-	void Connection::Open(const QString& database_path) {
+	void Connect::Open(const QString& database_path) {
 		data_base_.setDatabaseName(database_path);
 
 		if (!data_base_.open()) {
@@ -17,10 +17,10 @@ namespace SQLDAL {
 		}
 	}
 
-	void Connection::Close() {
+	void Connect::Close() {
 		data_base_.close();
-		data_base_.removeDatabase(connection_name_);
+		data_base_.removeDatabase(Connect_name_);
 	}
 
-	QSqlDatabase Connection::GetDB() { return data_base_; }
+	QSqlDatabase Connect::GetDB() { return data_base_; }
 }

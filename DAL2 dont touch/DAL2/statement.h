@@ -5,14 +5,14 @@
 #include <QString>
 #include <memory>
 #include "Connection/connect.h"
-#include "unitofwork.h"
 
 #define CLIENT_DB "../DAL2 dont touch/DAL2/Client"
 #define SERVER_DB "../DAL2 dont touch/DAL2/Server"
+
 namespace SQLDAL {
 	class Statement {
 	public:
-		Statement(std::shared_ptr<Connection> connection);
+		Statement(std::shared_ptr<Connect> Connect);
 		Statement() = default;
 		~Statement();
 
@@ -23,7 +23,7 @@ namespace SQLDAL {
 		void ExectuteQuery(QString query);
 		void ErrorInfo();
 
-		std::shared_ptr<Connection> connection_;
+		std::shared_ptr<Connect> Connect_;
 		QSqlQuery query_;
 	};
 }

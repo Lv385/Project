@@ -1,5 +1,3 @@
-#include"statement.h"
-#include"Connection/connect.h"
 #include"unitofwork.h"
 #include"user.h"
 #include"friend.h"
