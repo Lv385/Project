@@ -41,6 +41,7 @@ class MainWindow : public QMainWindow {
   Ui::MainWindow* ui_;
   Peer* peer_;
   DALManager client_dal_;
+  ClientLogger* logger_;
 };
 
 #endif  // MAINWINDOW_H
