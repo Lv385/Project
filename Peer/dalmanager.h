@@ -11,7 +11,7 @@ class DALManager {
   QString GetLoginById(const unsigned user_id);
   QVector<QString> GetFriendsLogin();
   QPair<QString, int> GetIPPort(const unsigned user_id);
-  QVector<QString> GetFriendsIP();
+  QVector<SQLDAL::Friend> GetFriendsIP();
   unsigned GetIDByLogin(const QString user_login);
   unsigned GetIDByIPPort(const QString ip, const unsigned port);
   QVector<SQLDAL::Message> GetMessages(const QString user_login);

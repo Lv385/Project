@@ -31,14 +31,10 @@ QPair<QString, int> DALManager::GetIPPort(const unsigned user_id){
   return ip_port;
 }
 
-QVector<QString> DALManager::GetFriendsIP(){ 
+QVector<SQLDAL::Friend> DALManager::GetFriendsIP() { 
   auto user = db_.GetEntity<SQLDAL::Friend>();
   QVector<SQLDAL::Friend> friends = user->GetFriends();
-  QVector<QString> friends_ip(friends.length());
-  for (int i = 0; i < friends.length(); i++) {
-    friends_ip[i] = friends[i].ip;
-  }
-  return friends_ip;
+  return friends;
 }
 
 unsigned DALManager::GetIDByLogin(const QString user_login){ 
