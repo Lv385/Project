@@ -25,7 +25,7 @@ void FriendshipRequest::PrepareResponse() {
       outcome_for_new_friend_.ip = requester_.GetUserIp();
       outcome_for_new_friend_.login = requester_.GetUserName();
       outcome_for_new_friend_.port = requester_.GetUserPort();
-
+      doNothing_ = false;
     } catch (UserNotFound &e) {
       doNothing_ = true;
       qDebug() << e.what();
