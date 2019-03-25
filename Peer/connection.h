@@ -8,7 +8,6 @@
 #include <ui_mainwindow.h>
 #include "dalmanager.h"
 #include "clientlogger.h"
-#include "../DAL/Client/clientdb.h"
 #include "../Parser&Structs/parser.h"
 
 class Connection : public QTcpSocket {

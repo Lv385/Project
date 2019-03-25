@@ -1,7 +1,6 @@
 #ifndef TEST_H
 #define TEST_H
 
-#include <../DAL/Client/clientdb.h>
 #include <ui_mainwindow.h>
 #include <QDebug>
 #include <QHostAddress>

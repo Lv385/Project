@@ -87,7 +87,7 @@ void MainWindow::AppendHistory() {
   ui_->plainTextEdit->clear();
   QString login = ui_->combo_box_friends->currentText();
 
-  QVector<ClientDAL::Message> history = client_dal_.GetMessages(login);
+  QVector<SQLDAL::Message> history = client_dal_.GetMessages(login);
   for (auto i : history) {
     if (login == client_dal_.GetLoginById(i.owner_id)) {
       ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + '<' +
