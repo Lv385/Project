@@ -20,8 +20,6 @@ namespace SQLDAL {
 		QString GenerateNewConnection();
 	};
 
-
-
 	template <typename T>
 	std::shared_ptr<T> UnitOfWork::GetEntity() {
 		return std::make_shared<T>(Connect_);

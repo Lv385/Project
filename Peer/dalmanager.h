@@ -1,8 +1,6 @@
 #ifndef DALLMENEGER_H
 #define DALLMENEGER_H
 
-#include "../DAL/Client/clientdb.h"
-#include "../Parser&Structs/request_types.h"
 #include "sqldal.h"
 
 class DALManager {
@@ -10,14 +8,13 @@ class DALManager {
   DALManager();
   ~DALManager();
 
-  QString GetLoginById(const unsigned user_id) const;
-  QVector<QString> GetFriendsLogin() const;
-  QPair<QString, int> GetIPPort(const unsigned user_id) const;
-  QVector<QString> GetFriendsIP() const;
-  unsigned GetIDByLogin(const QString user_login) const;
-  unsigned GetIDByIPPort(const QString ip, const unsigned port) const;
-  QVector<ClientDAL::Message> GetMessages(const QString user_login) const;
-
+  QString GetLoginById(const unsigned user_id);
+  QVector<QString> GetFriendsLogin();
+  QPair<QString, int> GetIPPort(const unsigned user_id);
+  QVector<QString> GetFriendsIP();
+  unsigned GetIDByLogin(const QString user_login);
+  unsigned GetIDByIPPort(const QString ip, const unsigned port);
+  QVector<SQLDAL::Message> GetMessages(const QString user_login);
 
   void SetFriendStatus(const unsigned user_id, const bool status);
   bool GetFriendStatus(const unsigned user_id);
@@ -25,6 +22,6 @@ class DALManager {
   void AddMessageToDB(const QString message, const unsigned user_id, const unsigned owner_id);
   void UpdateIPPort(const unsigned id, const QString new_ip, const unsigned new_port);
 
-  
+  SQLDAL::UnitOfWork db;
 };
 #endif
