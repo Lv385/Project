@@ -9,15 +9,10 @@ namespace SQLDAL {
 		~User();
 
 		unsigned int	id;
-		QString		login;
-		QString		password;
-		QString		ip;
+		QString			login;
+		QString			password;
+		QString			ip;
 		unsigned int	port;
-
-
-		void			AddNewFriend(const unsigned int& friend_id);
-		QVector<int>	GetFriends();// SelectAllFriendsAboutOneUser
-		void			DeleteFriend(const unsigned int& friend_id);
 
 		void			AddNewFriendRequest(const unsigned int& friend_id);
 		QVector<int>	GetFriendsRequest();  // SelectAllFriendsRequestAboutOneUser
@@ -29,10 +24,6 @@ namespace SQLDAL {
 		void			DeleteUser();          // Delete
 
 	private:
-		QString InsertFriendQuery(unsigned int friend_id);
-		QString SelectFriendsQuery();
-		QString DeleteFriendQuery(const unsigned int& friend_id);
-
 		QString InsertFriendRequestQuery(unsigned int friend_id);
 		QString SelectFriendsRequestQuery();
 		QString DeleteFriendRequestQuery(const unsigned int& friend_id);
