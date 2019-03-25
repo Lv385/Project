@@ -56,7 +56,9 @@ private:
 	quint16 user_port;//#3
 	quint32 id;
 	QVector<unsigned int> friends; // holds id of current friends
+  //OnLogin compose ADD_FRIEND_REQUEST,//+AddFriendInfo from that etries 
 	QVector<unsigned int> pending_requests_; //holds id of potential friends
+  //OnLogin send FRIEND_UPDATE_INFO//+FriendUpdateInfo created from entries of that vector 
 	QVector<unsigned int> pending_friend_notifications_; //holds id of accepted friend but not yet notified
 	
 

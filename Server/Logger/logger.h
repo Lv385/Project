@@ -16,8 +16,7 @@ class Logger {
    static void WriteLogToFile(QString&);
    static QString ConvertQuint8ToString(quint8& num);
    static QString ConvertQuint16ToString(quint16 & num);
-   static QString ConvertQuint32ToString(quint32 & num);
-  
+   static QString ConvertQuint32ToString(quint32 & num);  
    static QString Log_REGISTER_SUCCEED(RegisterSuccessInfo &out);
    static QString Log_ADD_FRIEND_REQUEST(AddFriendInfo &out);
    static QString Log_FRIEND_UPDATE_INFO(FriendUpdateInfo &out);
