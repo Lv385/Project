@@ -31,7 +31,7 @@ QPair<QString, int> DALManager::GetIPPort(const unsigned user_id){
   return ip_port;
 }
 
-QVector<SQLDAL::Friend> DALManager::GetFriendsIP() { 
+QVector<SQLDAL::Friend> DALManager::GetFriends() { 
   auto user = db_.GetEntity<SQLDAL::Friend>();
   QVector<SQLDAL::Friend> friends = user->GetFriends();
   return friends;

@@ -161,7 +161,7 @@ void Peer::SendUpdateInfo() {
   QByteArray to_write = Parser::IdPort_ToByteArray(my_id_port); //pack
   to_write.append(Parser::GetUnpossibleSequence());			    //append separator
 
-  QVector<SQLDAL::Friend> friends_ip = client_dal_.GetFriendsIP();
+  QVector<SQLDAL::Friend> friends_ip = client_dal_.GetFriends();
 
   for (int i = 0; i < friends_ip.length(); i++) {
     update_sender_.writeDatagram(to_write, QHostAddress(friends_ip[i].ip), my_listen_port_);
