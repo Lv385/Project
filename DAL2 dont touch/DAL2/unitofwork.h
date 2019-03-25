@@ -3,29 +3,28 @@
 
 #include <QString>
 #include <atomic>
-#include "connection.h"
 #include "statement.h"
 
+namespace SQLDAL {
+	class UnitOfWork {
+	public:
+		UnitOfWork();
+		~UnitOfWork();
 
-class UnitOfWork {
- public:
-  UnitOfWork();
-  ~UnitOfWork();
+		template <typename T>
+		std::shared_ptr<T> GetEntity();
 
-  template <typename T>
-  std::shared_ptr<T> GetEntity();
-
- private:
-  std::shared_ptr<Connection> connection_;
-  static std::atomic<unsigned int> connection_number_;
-  QString GenerateNewConnection();
-};
+	private:
+		std::shared_ptr<Connection> connection_;
+		static std::atomic<unsigned int> connection_number_;
+		QString GenerateNewConnection();
+	};
 
 
 
-template <typename T>
-std::shared_ptr<T> UnitOfWork::GetEntity() {
-  return std::make_shared<T>(connection_);
+	template <typename T>
+	std::shared_ptr<T> UnitOfWork::GetEntity() {
+		return std::make_shared<T>(connection_);
+	}
 }
-
 #endif  // !UNITOFWORK_H

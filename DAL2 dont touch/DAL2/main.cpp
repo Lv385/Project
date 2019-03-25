@@ -6,14 +6,14 @@ int main(int argc, char *argv[]) {
 
   QCoreApplication a(argc, argv);
 
-  UnitOfWork db{};
+  //UnitOfWork db{};
 
-  auto user = db.GetEntity<User>();
+  //auto user = db.GetEntity<User>();
 
-  user->id = 4;
-  user->login = "marko";
-  user->GetUser();
-  std::cout << user->login.toStdString();
+  //user->id = 4;
+  //user->login = "marko";
+  //user->GetUser();
+  //std::cout << user->login.toStdString();
 
   return a.exec();
 }
