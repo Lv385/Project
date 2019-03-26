@@ -11,17 +11,6 @@ Client::Client(QString log, QString pas, QHostAddress i, quint16 p):
 {
 }
 
-Client::~Client()
-{
-	/*
-	for (int i = 0; i < friends.size(); i++) {
-		if (friends[i] != NULL) {
-			delete friends[i];
-		}
-	}
-	*/
-}
-
 QString Client::GetUserName() const
 {
 	return user_name;
@@ -73,10 +62,9 @@ void Client::SetUserPassword( QString &value)
 }
 
 void Client::AddFriend(Client& cl)
-{
-	/*
-	friends.push_back(cl);
-	*/
+{	
+	friends.push_back(cl.GetUserId());
+
 }
 /*Populate internal pending_requests_ vector.
 * Receives instance of a client that want to be a friend of this user
@@ -85,15 +73,21 @@ void Client::AddPendingFriendRequest(Client &cl) {
   pending_requests_.push_back(cl.GetUserId());
 }
 
+void Client::RemovePendingFriendRequest(Client &cl ) {
+  for (int i = 0; i < pending_requests_.size(); i++) {
+    if (pending_requests_[i] == cl.GetUserId()) {
+      pending_requests_.remove(i);
+    }
+  }
+}
+
 void Client::RemoveFriend(Client & cl)
-{
-	/*
+{	
 	for (int i = 0; i < friends.size(); i++) {
-		if (friends[i] != NULL && friends[i] == cl) {
-			delete friends[i];
+		if (friends[i] == cl.GetUserId()) {
+            friends.remove(i);
 		}
-	}
-	*/
+	}	
 }
 
 void Client::SetFriends(QVector<unsigned int> f)
@@ -105,12 +99,32 @@ void Client::Set_Pending_Request(QVector<unsigned int> r) {
   pending_requests_ = r;
 }
 
-QVector<unsigned int> Client::GetFriends()
-{
-	return friends; }
+void Client::AddPendingNotifiacation(Client &cl) {
+  pending_friend_notifications_.push_back(cl.GetUserId());
+}
 
-QVector<unsigned int>* Client::Get_Pending_Requests() {
-  return &pending_requests_;
+void Client::RemovePendingNotification(Client &cl) {
+  for (int i = 0; i < pending_friend_notifications_.size(); i++) {
+    if (pending_friend_notifications_[i] == cl.GetUserId()) {
+      pending_friend_notifications_.remove(i);
+    }
+  }
+}
+
+void Client::Set_Pending_Noification(QVector<unsigned int>r) {
+  pending_friend_notifications_ = r;
+}
+
+QVector<unsigned int> Client::Get_Pending_Notifications() { 
+  return pending_friend_notifications_;
+ }
+
+QVector<unsigned int> Client::GetFriends() {
+	return friends; 
+}
+
+QVector<unsigned int> Client::Get_Pending_Requests() {
+  return pending_requests_;
 }
 
 bool Client::operator==(const Client &cl)

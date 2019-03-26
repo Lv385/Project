@@ -3,6 +3,7 @@
 
 #include "../DAL/Client/clientdb.h"
 #include "../Parser&Structs/request_types.h"
+#include "sqldal.h"
 
 class DALManager {
  public:

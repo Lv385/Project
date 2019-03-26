@@ -31,7 +31,6 @@ void ServerDB::CloseConncetion(const QString connection_name)
 }
 
 
-
 int ServerDB::FindMaxID() {
 
     if (!query_->exec("select MAX(user_ID) from users")) {
@@ -231,8 +230,7 @@ unsigned int  ServerDB::GetIDByLogin(const QString& user_login) {
 			ErrorInfo();
 		}
 		return id;
-	} else {
-		//qDebug() << "User login dont exist";
+	} else {		
 		return 0;
 	}
 }
@@ -311,6 +309,36 @@ QVector<unsigned int> ServerDB::GetPendingFriendRequests(unsigned const int& use
   return id_result;
 }
 
+void ServerDB::addPendingNotification(const unsigned int& user_id,
+                                      const unsigned int& pending_user) {
+  query_->prepare(
+      "INSERT INTO pending_friend_notification (user_dst, user_src) VALUES (:f_id, "
+      ":s_id)");
+  query_->bindValue(":f_id", user_id);
+  query_->bindValue(":s_id", pending_user);
+  if (!query_->exec()) {
+    ErrorInfo();
+  }
+}
+
+QVector<unsigned int> ServerDB::GetPendingNotification(
+    unsigned const int& user_id) {
+  query_->prepare(
+      "SELECT user_src FROM pending_friend_notification WHERE user_dst = :user_id");
+  query_->bindValue(":user_id", user_id);
+  QVector<unsigned int> id_result;
+
+  if (query_->exec()) {
+    while (query_->next()) {
+      id_result.push_back(query_->record().value(0).toUInt());
+    }
+  } else {
+    ErrorInfo();
+  }
+
+  return id_result;
+}
+
 void ServerDB::AddFriend(const QString& user_login ,const QString& second_user_login) {
      if (!IsFriend(user_login,second_user_login)) {
          unsigned int f_id = GetIDByLogin(user_login);
@@ -339,10 +367,29 @@ void ServerDB::AddFriend(const unsigned int & user_id, const unsigned int & seco
 	}
 }
 
+void ServerDB::DeleteAllFriends(const unsigned int& user) {
+  query_->prepare(
+      "DELETE FROM friends WHERE first_user_ID = :user_to_delete");
+  query_->bindValue(":user_to_delete", user);
+  if (!query_->exec()) {
+    ErrorInfo();
+  }
+
+}
+
 void ServerDB::DeleteAllPendingRequest(const unsigned int& user_id) {
   query_->prepare(
       "DELETE FROM pending_friend_request WHERE user = :user_to_delete");
   query_->bindValue(":user_to_delete", user_id);  
+  if (!query_->exec()) {
+    ErrorInfo();
+  }
+}
+
+void ServerDB::DeleteAllPendingNotifications(const unsigned int& user_id) {
+  query_->prepare(
+      "DELETE FROM pending_friend_notification WHERE user_dst = :user_to_delete");
+  query_->bindValue(":user_to_delete", user_id);
   if (!query_->exec()) {
     ErrorInfo();
   }

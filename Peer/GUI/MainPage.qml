@@ -7,6 +7,16 @@ MainPageForm {
 
     background: Rectangle {
         color: backGroundColor
+        Text
+        {
+            padding: 10
+            text: qsTr("Contacts")
+            color: friendListColor
+            font.pixelSize: 23
+            horizontalAlignment: Text.AlignJustify
+            verticalAlignment: Text.AlignVCenter
+            font.family: "fontawesome"
+        }
     }
 
     FriendListDelegateModel {
@@ -20,7 +30,6 @@ MainPageForm {
     }
 
     friendList.model: friendModel.visualModel
-    friendList.spacing: 5
 
     messageList.model: messageModel.visualModel
     messageList.spacing: 10

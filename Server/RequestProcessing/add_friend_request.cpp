@@ -17,9 +17,8 @@ void AddFriendRequest::PrepareResponse() {
     //TODO: check if parties are not friends allready!!!!!
     if (QString::compare(sender_guy.GetUserPassword(), income_data_.password) == 0) {
       requested_guy = database_->getClient(income_data_.other_login);
-      info_to_send.requester_ip = sender_guy.GetUserIp();
+      info_to_send.requester_id = sender_guy.GetUserId();
       info_to_send.requester_login = sender_guy.GetUserName();
-      info_to_send.requester_port = sender_guy.GetUserPort();
       send_addfriend_info_bytearr = Parser::AddFriendInfo_ToByteArray(info_to_send);
       response_to_requester_ = (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED;
     } else {
@@ -43,9 +42,8 @@ bool AddFriendRequest::SendResponde() {
     //sending ADD_FRIEND_REQUEST,//+AddFriendInfo(s->c)I,-FRIEND_REQUEST;    
     QTcpSocket output_socket;
     output_socket.connectToHost(requested_guy.GetUserIp(), requested_guy.GetUserPort());
-
-    if (output_socket.waitForConnected(5000)) {  // check if can connect if yes -> send add friend
-      Logger::LogOut(send_addfriend_info_bytearr);
+    Logger::LogOut(send_addfriend_info_bytearr);
+    if (output_socket.waitForConnected(5000)) {  // check if can connect if yes -> send add friend     
       output_socket.write(send_addfriend_info_bytearr);
       output_socket.waitForBytesWritten(1000);
       output_socket.disconnectFromHost();
@@ -65,6 +63,5 @@ bool AddFriendRequest::SendResponde() {
     client_socket_->waitForBytesWritten(3000);
     client_socket_->disconnectFromHost();
   }
-
-  return false;
+    return false;
 }

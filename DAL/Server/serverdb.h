@@ -12,8 +12,7 @@
 #include <QtSql/QSqlTableModel>
 #include <iostream>
 
-// Class uses to make connection server-data base
-// It consist all methods needed to work with db.
+// Class contains all methods needed to work with db.
 // Each server or client thread must hold instance
 // of this class to perform db tasks
 class ServerDB {
@@ -27,9 +26,9 @@ class ServerDB {
                   const QString& new_user_password);
 
   void UpdateIPPort(const QString& user_login, const QString& new_user_ip,
-                    const int& new_user_port);  // by login
+                    const int& new_user_port); 
   void UpdateIPPort(const unsigned int& user_id, const QString& new_user_ip,
-                    const int& new_user_port);  // by id
+                    const int& new_user_port);  
 
   QPair<QString, int> GetIPPort(const QString& user_login);
   QPair<QString, int> GetIPPort(const unsigned int& user_id);
@@ -40,7 +39,10 @@ class ServerDB {
   void AddFriend(const QString& user_login, const QString& second_user_login);
   void AddFriend(const unsigned int& user_id, const unsigned int& second_user_id);
 
+  void DeleteAllFriends(const unsigned int& user);
+
   void DeleteAllPendingRequest(const unsigned int& user);
+  void DeleteAllPendingNotifications(const unsigned int& user);
 
   // If login don't exist return id = 0
   unsigned int GetIDByLogin( const QString& user_login); 
@@ -49,8 +51,12 @@ class ServerDB {
   QString GetLoginByID(const unsigned int& user_id);  
 
   QVector<unsigned int> GetFriends(unsigned const int& user_id);
+
   void addPendingFriendRequest(const unsigned int& user_id, const unsigned int& pending_user);
   QVector<unsigned int> GetPendingFriendRequests(unsigned const int& user_id);
+
+  void addPendingNotification(const unsigned int& user_id, const unsigned int& pending_user);
+  QVector<unsigned int> GetPendingNotification(unsigned const int& user_id);
 
   bool IsFriend(const QString& first_user_login, const QString& second_user_login);
   bool IsFriend(const unsigned int& first_user_id, const unsigned int& second_user_id);

@@ -17,7 +17,7 @@
   </PropertyGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
-    <ConfigurationType>Application</ConfigurationType>
+    <ConfigurationType>StaticLibrary</ConfigurationType>
     <PlatformToolset>v141</PlatformToolset>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
@@ -93,18 +93,26 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="connection.cpp" />
+    <ClCompile Include="Connection\connect.cpp" />
     <ClCompile Include="friend.cpp" />
+    <ClCompile Include="friendinfo.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message.cpp" />
+    <ClCompile Include="notificationinfo.cpp" />
+    <ClCompile Include="requestinfo.cpp" />
     <ClCompile Include="statement.cpp" />
     <ClCompile Include="unitofwork.cpp" />
     <ClCompile Include="user.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="connection.h" />
+    <ClInclude Include="Connection\connect.h" />
     <ClInclude Include="friend.h" />
+    <ClInclude Include="friendinfo.h" />
+    <ClInclude Include="info.h" />
     <ClInclude Include="message.h" />
+    <ClInclude Include="notificationinfo.h" />
+    <ClInclude Include="requestinfo.h" />
+    <ClInclude Include="sqldal.h" />
     <ClInclude Include="statement.h" />
     <ClInclude Include="unitofwork.h" />
     <ClInclude Include="user.h" />

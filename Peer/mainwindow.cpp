@@ -9,6 +9,9 @@ MainWindow::MainWindow(QWidget* parent)
   SetIpValidator();
   ui_->pb_send->setEnabled(false);
 
+  logger_ = ClientLogger::Instance();
+  logger_->SetLogLevel(LogLevel::HIGH); // u can switch levels of logging(NOLOG, LOW, HIGH)
+
   QVector<QString> friend_logins = client_dal_.GetFriendsLogin();
   for (const QString& login : friend_logins) {
     ui_->combo_box_friends->addItem(login);
@@ -23,7 +26,7 @@ MainWindow::MainWindow(QWidget* parent)
   connect(peer_, SIGNAL(SendMessageToUI(QString)), 
            this, SLOT(AppendMessage(QString)));
 
-  connect(ClientLogger::Instance(), SIGNAL(DisplayLog(const char*, QString)), this,
+  connect(logger_, SIGNAL(DisplayLog(const char*, QString)), this,
           SLOT(AppendLogMessage(const char*, QString)));
 
   connect(ui_->pb_start, SIGNAL(clicked()), 
@@ -97,7 +100,7 @@ void MainWindow::AppendHistory() {
 }
 
 void MainWindow::OnPbSendClicked() {
-  qDebug() << "clicked";
+  logger_->WriteLog(LogType::DEBUG," clicked");
   peer_->set_receiver_ip(QHostAddress(ui_->le_ip->text()));
   peer_->set_receiver_port(ui_->le_port->text().toUShort());
 
