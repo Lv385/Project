@@ -5,7 +5,8 @@ import QtQuick.Controls 2.5
 
 Item {
     property alias visualModel: visualModelId
-    property ListView listView
+    property ListView listView1
+
     //property alias deleteFriendButton: deleteFriendButtonId
 
     DelegateModel {
@@ -27,7 +28,17 @@ Item {
                 Layout.fillWidth: true
                 border.color: borderColor
                 border.width: 1
+
                 color:friendFieldMouseArea.containsMouse? friendMouseAreaColor : friendListColor
+                MouseArea {
+                   id: friendFieldMouseArea
+                   hoverEnabled: true
+                   anchors.fill: friendField
+
+                   onClicked: {
+                    console.log("On " + friendName.text + " clicked")
+                   }
+               }
 
                 Text {
                     id: friendName
@@ -37,26 +48,7 @@ Item {
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.left: parent.left
                     anchors.margins: 20
-
                 }
-                MouseArea {
-                    id: friendFieldMouseArea
-                    hoverEnabled: true
-                    anchors.fill: friendField
-
-                    onPressed: {
-                        friendField.color = choosenFriendColor
-                        friendName.color = mainTextCOlor
-                        when (MouseArea.onClicked===true)
-                        MouseArea.onExited===false
-                        when
-                    }
-                   onReleased:  {
-                   friendField.color=friendListColor
-                   friendName.color=borderColor
-                   }
-                }
-
 
                 Rectangle {
                     width: 20
@@ -68,8 +60,6 @@ Item {
                     radius: 15
                 }
 
-
-
                 Button {
                     id: deleteFriendButtonId
                     anchors { top: parent.top; right: parent.right }
@@ -77,22 +67,17 @@ Item {
                     background:
                         Rectangle  {
                         color: "transparent"
-
                     }
 
                     Text {
                         text: "X"
-                        font: control.font
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
                     width: height
                     onClicked: guiManager.deleteFriend(object)
-
-
                 }
             }
-
         }
     }
 }

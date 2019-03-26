@@ -2,11 +2,10 @@ import QtQuick 2.4
 import QtQuick.Controls 2.3
 
 Page {
-    property alias friendList: friendList
     property alias addButton: addButton
+    property alias friendList: friendList
 
-    Rectangle
-    {
+    Rectangle {
         x: 0
         y: 36
         width: friendList.width
@@ -27,6 +26,11 @@ Page {
         boundsBehavior: Flickable.StopAtBounds
         orientation: ListView.Vertical
 
+        focus: true
+        highlight: Rectangle {
+            color: "lightsteelblue"
+            radius: 5
+        }
     }
 
     Button {
@@ -36,46 +40,6 @@ Page {
         text: qsTr("Add")
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 /*##^## Designer {

@@ -23,13 +23,11 @@ MainPageForm {
     FriendListDelegateModel {
         id: delegateModelId
         visualModel.model: guiManager.friendModel
-        listView: parent.listView
+        listView1: parent.friendList
         //deleteFriendButton.onClicked: guiManager.deleteFriend(object)
     }
 
     friendList.model: delegateModelId.visualModel
-
-
 
     addButton.onClicked: {
         guiManager.newFriend()

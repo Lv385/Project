@@ -17,8 +17,8 @@ ApplicationWindow {
     property color friendListColor: "#A1887F"
     property color friendMouseAreaColor: "#8D6E63"
     property color choosenFriendColor: "#5D4037"
-    property color  onlineFriendColor: "#AED581"
-    property color  offlineFriendColor: "#FFAB91"
+    property color onlineFriendColor: "#AED581"
+    property color offlineFriendColor: "#FFAB91"
     property color borderColor: "#4E342E"
 
     FontLoader {
@@ -28,7 +28,7 @@ ApplicationWindow {
     }
 
     // Main stackview
-    StackView{
+    StackView {
         id: stackView
         focus: true
         anchors.fill: parent
@@ -36,5 +36,4 @@ ApplicationWindow {
 
     // Replace this with some other action that changes the source.
     Component.onCompleted: stackView.push("LoginPage.qml")
-
 }
