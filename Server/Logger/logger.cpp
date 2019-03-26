@@ -3,7 +3,7 @@
 
 QString Logger::Log_Empty(quint8 type)
 {
-  return  "Server output: "+QString(stringify(type));
+  return  "  Server output: "+QString(stringify(type))+" ";
 }
 
 // void Logger::WriteLogToFile(QString& filename, QString& text)
@@ -17,116 +17,118 @@ void Logger::WriteLogToFile(QString& text) {
   }
 }
 
-QString Logger::ConvertQuint8ToString(quint8& num) {
+QString Logger::ConvertQuint8ToString(quint8 num) {
   QString tmp;
   return tmp.setNum(num);
 }
-QString Logger::ConvertQuint16ToString(quint16& num) {
+QString Logger::ConvertQuint16ToString(quint16 num) {
   QString tmp;
   return tmp.setNum(num);
 }
-QString Logger::ConvertQuint32ToString(quint32& num) {
+QString Logger::ConvertQuint32ToString(quint32 num) {
   QString tmp;
   return tmp.setNum(num);
 }
 
-void Logger::LogOut(int socketDescriptor,QByteArray raw_data) {
+void Logger::LogOut(QString &IpAndPort, QByteArray raw_data) {
+  RemoveShit(IpAndPort);
   if (ifLogingEnable) {
     QString outingString;  // date (d/m/y) time (h/m/s)
     QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
     quint8 type = Parser::getRequestType(raw_data);
-    QString for_empty = ConvertQuint8ToString(type) + ")" + txt + "+ empty{}";
-    QTcpSocket socketforread;
-    socketforread.setSocketDescriptor(socketDescriptor);
-    QString IP = socketforread.peerAddress().toIPv4Address();
+    QString for_empty = "("+ConvertQuint8ToString(type) + ")" + txt + "+ empty{}";
     QString for_struct;
     switch (type) {
-      case (quint8)ServerRequests::LOGIN_SUCCEED: {
-        outingString =  IP+Log_Empty(type) + for_empty;
-        qDebug().noquote() << outingString << "\n";
-        WriteLogToFile(outingString);
-        break;
-      }
-      case (quint8)ServerRequests::LOGIN_FAILED: {
-        outingString =IP + "Server output: LOGIN_FAILED( " + for_empty;
-        qDebug().noquote() << outingString << "\n";
-        WriteLogToFile(outingString);
-        break;
-      }
-      case (quint8)ServerRequests::REGISTER_FAILED: {
-        outingString = "Server output: REGISTER_FAILED( " + for_empty;
-        qDebug().noquote() << outingString << "\n";
-        WriteLogToFile(outingString);
-        break;
-      }
-      case (quint8)ServerRequests::FRIEND_REQUEST_FAILED: {
-        outingString = "Server output: FRIEND_REQUEST_FAILED( " + for_empty;
-        qDebug().noquote() << outingString << '\n';
-        WriteLogToFile(outingString);
-        break;
-      }
-      case (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED: {
-        outingString = "Server output: FRIEND_REQUEST_SUCCEED( " + for_empty;
-        qDebug().noquote() << outingString << "\n";
-        WriteLogToFile(outingString);
-        break;
-      }
-      
-      case (quint8)ClientRequest::REGISTER: {
-        RegisterInfo out;
-        out = Parser::ParseAsRegisterInfo(raw_data);
-        outingString = "Server output: REGISTER( " +Log_RegisterInfo(out);
-        qDebug().noquote() << outingString << "\n";
-        WriteLogToFile(outingString);
-        break;
-      }
-      case (quint8)ServerRequests::REGISTER_SUCCEED: {
-        RegisterSuccessInfo out;
-        out = Parser::ParseAsRegisterSuccessInfo(raw_data);
-        outingString = "Server  output: REGISTER_SUCCEED(" +
-                       ConvertQuint8ToString(type) + ")" +
-                       Log_REGISTER_SUCCEED(out);
+    case (quint8)ServerRequests::LOGIN_SUCCEED: {
+      outingString = IpAndPort + Log_Empty(type) + for_empty;
+      qDebug().noquote() << outingString << "\n";
+      WriteLogToFile(outingString);
+      break;
+    }
+    case (quint8)ServerRequests::LOGIN_FAILED: {
+      outingString = IpAndPort + Log_Empty(type) + for_empty;
+      qDebug().noquote() << outingString << "\n";
+      WriteLogToFile(outingString);
+      break;
+    }
+    case (quint8)ServerRequests::REGISTER_FAILED: {
+      outingString = " Server output: REGISTER_FAILED( " + for_empty;
+      qDebug().noquote() << outingString << "\n";
+      WriteLogToFile(outingString);
+      break;
+    }
+    case (quint8)ServerRequests::FRIEND_REQUEST_FAILED: {
+      outingString = " Server output: FRIEND_REQUEST_FAILED( " + for_empty;
+      qDebug().noquote() << outingString << '\n';
+      WriteLogToFile(outingString);
+      break;
+    }
+    case (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED: {
+      outingString = " Server output: FRIEND_REQUEST_SUCCEED( " + for_empty;
+      qDebug().noquote() << outingString << "\n";
+      WriteLogToFile(outingString);
+      break;
+    }
+    case (quint8)ClientRequest::LOGIN: {
+      LoginInfo out;
+      out = Parser::ParseAsLoginInfo(raw_data);
+      outingString =IpAndPort+ " Server output: LOGIN( " + Log_LoginInfo(out);
+      qDebug().noquote() << outingString << "\n";
+      WriteLogToFile(outingString);
+      break;
+    }
+    case (quint8)ClientRequest::REGISTER: {
+      RegisterInfo out;
+      out = Parser::ParseAsRegisterInfo(raw_data);
+      outingString = " Server output: REGISTER( " + Log_RegisterInfo(out);
+      qDebug().noquote() << outingString << "\n";
+      WriteLogToFile(outingString);
+      break;
+    }
+    case (quint8)ServerRequests::REGISTER_SUCCEED: {
+      RegisterSuccessInfo out;
+      out = Parser::ParseAsRegisterSuccessInfo(raw_data);
+      outingString = " Server  output: REGISTER_SUCCEED(" +
+        ConvertQuint8ToString(type) + ")" +
+        Log_REGISTER_SUCCEED(out);
 
-        qDebug().noquote() << outingString << "\n";
-        WriteLogToFile(outingString);
-        break;
-      }
-      case (quint8)ServerRequests::ADD_FRIEND_REQUEST: {
-        AddFriendInfo out;
-        out = Parser::ParseAsAddFriendInfo(raw_data);
-        outingString = "Server  output: ADD_FRIEND_REQUEST(" +
-                       ConvertQuint8ToString(type)  +")" +
-                       Log_ADD_FRIEND_REQUEST(out);
-        qDebug().noquote() << outingString << "\n";
-        WriteLogToFile(outingString);
-        break;
-      }
-      case (quint8)ServerRequests::FRIEND_UPDATE_INFO: {
-        FriendUpdateInfo out;
-        out = Parser::ParseAsFriendUpdateInfo(raw_data);
-        outingString = "Server  output: FRIEND_UPDATE_INFO(" +
-                       ConvertQuint8ToString(type) + ") " +
-                       Log_FRIEND_UPDATE_INFO(out);
-        qDebug().noquote() << outingString << "\n";
-        WriteLogToFile(outingString);
-        break;
-      }
-      case (quint8)ServerRequests::NEW_FRIEND_INFO: {
-        NewFriendInfo out;
-        out = Parser::ParseAsNewFriendInfo(raw_data);
-        outingString = "Server  output:NEW_FRIEND_INFO (" +
-                       ConvertQuint8ToString(type) + ") " +
-                       Log_NEW_FRIEND_INFO(out);
-        qDebug().noquote() << outingString << "\n";
-        WriteLogToFile(outingString);
-        break;
-      }
+      qDebug().noquote() << outingString << "\n";
+      WriteLogToFile(outingString);
+      break;
+    }
+    case (quint8)ServerRequests::ADD_FRIEND_REQUEST: {
+      AddFriendInfo out;
+      out = Parser::ParseAsAddFriendInfo(raw_data);
+      outingString = " Server  output: ADD_FRIEND_REQUEST(" +
+        ConvertQuint8ToString(type) + ")" +
+        Log_ADD_FRIEND_REQUEST(out);
+      qDebug().noquote() << outingString << "\n";
+      WriteLogToFile(outingString);
+      break;
+    }
+    case (quint8)ServerRequests::FRIEND_UPDATE_INFO: {
+      FriendUpdateInfo out;
+      out = Parser::ParseAsFriendUpdateInfo(raw_data);
+      outingString = " Server  output: FRIEND_UPDATE_INFO(" +
+        ConvertQuint8ToString(type) + ") " +
+        Log_FRIEND_UPDATE_INFO(out);
+      qDebug().noquote() << outingString << "\n";
+      WriteLogToFile(outingString);
+      break;
+    }
+    case (quint8)ServerRequests::NEW_FRIEND_INFO: {
+      NewFriendInfo out;
+      out = Parser::ParseAsNewFriendInfo(raw_data);
+      outingString = " Server  output:NEW_FRIEND_INFO (" +
+        ConvertQuint8ToString(type) + ") " +
+        Log_NEW_FRIEND_INFO(out);
+      qDebug().noquote() << outingString << "\n";
+      WriteLogToFile(outingString);
+      break;
+    }
     }
   }
 }
-
-
-
 QString Logger::Log_REGISTER_SUCCEED(RegisterSuccessInfo& out) {
   QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
   return "RegisterSuccessInfo{ ID:" + ConvertQuint32ToString(out.id) +
@@ -149,10 +151,10 @@ QString Logger::Log_FRIEND_UPDATE_INFO(FriendUpdateInfo& out) {
 
 QString Logger::Log_LoginInfo(LoginInfo& out) {
   QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
-  return "LoginInfo{ Loginner_ip: " + QString("  ") +
-         ", Port: " + ConvertQuint16ToString(out.port) +
-         ", loginnner ID: " + ConvertQuint32ToString(out.id) +
-         "Loginner_Password:" + out.password + " }" + txt + '\n';
+  return "LoginInfo{ Loginner_ip:" + QString("") +
+         " , Port: " + ConvertQuint16ToString(out.port) +
+         " , Loginnner ID: " + ConvertQuint32ToString(out.id) +
+         " , Loginner_Password:" + out.password + " }" + txt + '\n';
 }
 
 QString Logger::Log_RegisterInfo(RegisterInfo& out) {
@@ -160,14 +162,14 @@ QString Logger::Log_RegisterInfo(RegisterInfo& out) {
   return "RegisterInfo{ Registerer_ip: " + QString("  ") +
          ", Port: " + ConvertQuint16ToString(out.port) +
          ", Registerer Login: " + QString(out.login) +
-         "Registerer_Password:" + out.password + "}" + txt + '\n';
+         ", Registerer_Password:" + out.password + "}" + txt + '\n';
 }
 
 QString Logger::Log_FriendRequestInfo(FriendRequestInfo& out) {
   QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
   return "Friend_Request_Info{ Other_Login: " + out.other_login +
          ", ID: " + ConvertQuint32ToString(out.id) +
-         ",  Password: " + QString(out.password) + " }" + txt + '\n';
+         ", Password: " + QString(out.password) + " }" + txt + '\n';
 }
 
 QString Logger::Log_NEW_FRIEND_INFO(NewFriendInfo& out) {
@@ -176,6 +178,21 @@ QString Logger::Log_NEW_FRIEND_INFO(NewFriendInfo& out) {
          ", Port: " + ConvertQuint16ToString(out.port) +
          ", ID: " + ConvertQuint32ToString(out.id) +
          ", Login: " + QString(out.login) + " }" + txt + '\n';
+}
+
+void Logger::RemoveShit(QString &stringd)
+{
+    std::vector<std::string>msg;
+    std::string myText = stringd.toStdString();
+    std::istringstream iss(myText);
+    std::string token;
+    while (std::getline(iss, token, ':'))
+    {
+      //
+      msg.push_back(token);
+    }
+    QString Ip = QString::fromUtf8(msg[3].c_str());//only ip without ffff
+    stringd = Ip + " :: "+ QString::fromUtf8(msg[5].c_str());
 }
 
 QString Logger::Log_User(Client& cl) {

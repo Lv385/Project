@@ -7,7 +7,9 @@ NewUserRequest::NewUserRequest(QByteArray& request, DAL* d, QTcpSocket* s)
     : AbstractRequest(d,s) {
 
 	income_data_ = Parser::ParseAsRegisterInfo(request);
-  Logger::LogOut(client_socket_->socketDescriptor(),request);
+  QString IP = client_socket_->peerAddress().toString();
+  QString logstring = IP + "::" + Logger::ConvertQuint16ToString(income_data_.port);
+  Logger::LogOut(logstring, outcome_data_);
 	PrepareResponse();
 }
 
@@ -35,7 +37,10 @@ void NewUserRequest::PrepareResponse()
 }
 bool NewUserRequest::SendResponde()
 {
-  Logger::LogOut(client_socket_->socketDescriptor(),outcome_data_);
+  QString Ip = client_socket_->peerAddress().toString();
+  QString Logstring = Ip + "::" + Logger::ConvertQuint16ToString(income_data_.port);
+  Logger::LogOut(Logstring, outcome_data_);
+  
   client_socket_->write(outcome_data_);
   client_socket_->waitForBytesWritten(3000);
   client_socket_->disconnectFromHost();
