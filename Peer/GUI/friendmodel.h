@@ -8,26 +8,18 @@ class FriendModel : public QAbstractListModel
 {
   Q_OBJECT
 
+
 public:
   explicit FriendModel(QObject *parent = nullptr);
 
-  enum {
-    OBJECT_ROLE = Qt::UserRole
-  };
-
-  // Basic functionality:
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
-
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
-
-
   QHash<int, QByteArray> roleNames() const override;
 
-  void addFriendToList(FriendItem*);
-  bool removeFriendFromList(FriendItem*);
+  void AddFriendToList(std::shared_ptr<FriendItem>);
+  bool RemoveFriendFromList(std::shared_ptr<FriendItem>);
 
 private:
-  QList<FriendItem*> friends_list_;
+  QList<std::shared_ptr<FriendItem>> friends_list_;
 };
-
 #endif // FRIENDMODEL_H

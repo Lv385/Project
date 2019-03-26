@@ -2,8 +2,11 @@
 #define GUIMANAGER_H
 
 #include <QObject>
+
 #include "GUI/frienditem.h"
 #include "GUI/friendmodel.h"
+#include "GUI/messageitem.h"
+#include "GUI/messagemodel.h"
 
 #include "dalmanager.h"
 
@@ -11,30 +14,31 @@ class GUIManager : public QObject
 {
   Q_OBJECT
 
-  Q_PROPERTY(QObject* friendModel READ friendModel NOTIFY friendModelChanged)
+  Q_PROPERTY(QObject* friend_model READ friend_model)
+  Q_PROPERTY(QObject* message_model READ message_model)
 
 public:
   explicit GUIManager(QObject *parent = nullptr);
+  GUIManager(const GUIManager&) = delete;
+  GUIManager& operator= (const GUIManager&) = delete;
 
-  FriendModel* friendModel();
+  FriendModel* friend_model();
+  MessageModel* message_model();
 
-  //test functions
-  Q_INVOKABLE void newFriend();
-  Q_INVOKABLE void deleteFriend(FriendItem*);
-
-signals:
-  void friendModelChanged();
-
-public slots:
-  void logIn();   //for testing
-  void logIn2();  //for testing
+  //theese functions must start from low letter
+  Q_INVOKABLE void newFriend();             //temporary implementation(for testing)
+  Q_INVOKABLE void deleteFriend(std::shared_ptr<FriendItem>);
+  Q_INVOKABLE void newMessage(QString);
+  Q_INVOKABLE void loadMessages(QString);   //temporary implementation(for testing)
 
 private:
-  void LoadFriends();
+  void LoadFriends();            //temporary implementation(for testing)
+
+  int my_id;
 
   FriendModel friend_model_;
-  DALManager client_dal_;  //for testing
+  MessageModel message_model_;
 
+  DALManager client_dal_;        //for testing
 };
-
 #endif

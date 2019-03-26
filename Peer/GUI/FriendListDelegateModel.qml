@@ -4,12 +4,10 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.5
 
 Item {
-    property alias visualModel: visualModelId
-    property ListView listView
-    //property alias deleteFriendButton: deleteFriendButtonId
+    property alias visualModel: visualFriendModel
 
     DelegateModel {
-            id: visualModelId
+            id: visualFriendModel
             delegate: friendDelegate
         }
 
@@ -23,14 +21,14 @@ Item {
 
             spacing: 10
 
-            Rectangle{
+            Rectangle {
                 id: friendField
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                color: object.status ? "#2aa32a" : "#d85454"
+                color: friend.status ? "#2aa32a" : "#d85454"
 
                 Text {
-                    text: object.login
+                    text: friend.login
                     color: "#ffffff"
                     anchors.verticalCenter: parent.verticalCenter
                 }
@@ -40,7 +38,7 @@ Item {
                     anchors { top: parent.top; right: parent.right }
                     height: parent.height / 2
                     width: height
-                    onClicked: guiManager.deleteFriend(object)
+                    onClicked: guiManager.deleteFriend(friend)
                 }
             }
 

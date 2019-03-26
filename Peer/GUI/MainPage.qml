@@ -2,7 +2,6 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQml.Models 2.12
 
-import Friends 1.0
 
 MainPageForm {
 
@@ -11,18 +10,28 @@ MainPageForm {
     }
 
     FriendListDelegateModel {
-        id: delegateModelId
-        visualModel.model: guiManager.friendModel
-        listView: parent.listView
-        //deleteFriendButton.onClicked: guiManager.deleteFriend(object)
+        id: friendModel
+        visualModel.model: guiManager.friend_model
     }
 
-    friendList.model: delegateModelId.visualModel
+    MessageListDelegateModel {
+        id: messageModel
+        visualModel.model: guiManager.message_model
+    }
+
+    friendList.model: friendModel.visualModel
     friendList.spacing: 5
 
+    messageList.model: messageModel.visualModel
+    messageList.spacing: 10
 
     addButton.onClicked: {
         guiManager.newFriend()
+    }
+
+    sendButton.onClicked: {
+        guiManager.newMessage(messageField.text)
+        messageField.text = "";
     }
 }
 
