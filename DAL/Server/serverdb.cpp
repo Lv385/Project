@@ -31,7 +31,6 @@ void ServerDB::CloseConncetion(const QString connection_name)
 }
 
 
-
 int ServerDB::FindMaxID() {
 
     if (!query_->exec("select MAX(user_ID) from users")) {
@@ -231,8 +230,7 @@ unsigned int  ServerDB::GetIDByLogin(const QString& user_login) {
 			ErrorInfo();
 		}
 		return id;
-	} else {
-		//qDebug() << "User login dont exist";
+	} else {		
 		return 0;
 	}
 }
@@ -378,7 +376,6 @@ void ServerDB::DeleteAllFriends(const unsigned int& user) {
   }
 
 }
-
 
 void ServerDB::DeleteAllPendingRequest(const unsigned int& user_id) {
   query_->prepare(
