@@ -99,6 +99,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\DAL\Server\serverdb.cpp" />
+    <ClCompile Include="..\Encryption\abstract_cypher.cpp" />
     <ClCompile Include="..\Parser&amp;Structs\parser.cpp" />
     <ClCompile Include="AsyncServer.cpp" />
     <ClCompile Include="DAL\client.cpp" />
@@ -120,6 +121,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DAL\Server\serverdb.h" />
+    <ClInclude Include="..\Encryption\abstract_cypher.h" />
     <ClInclude Include="..\Parser&amp;Structs\parser.h" />
     <ClInclude Include="..\Parser&amp;Structs\request_types.h" />
     <ClInclude Include="DAL\Client.h" />
