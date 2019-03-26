@@ -8,18 +8,26 @@ MainPageForm {
 
     background: Rectangle {
         color: backGroundColor
+        Text
+        {
+            padding: 10
+            text: qsTr("Contacts")
+            color: friendListColor
+            font.pixelSize: 23
+            horizontalAlignment: Text.AlignJustify
+            verticalAlignment: Text.AlignVCenter
+            font.family: "fontawesome"
+        }
     }
 
     FriendListDelegateModel {
         id: delegateModelId
         visualModel.model: guiManager.friendModel
-        listView: parent.listView
+        listView1: parent.friendList
         //deleteFriendButton.onClicked: guiManager.deleteFriend(object)
     }
 
     friendList.model: delegateModelId.visualModel
-    friendList.spacing: 5
-
 
     addButton.onClicked: {
         guiManager.newFriend()
