@@ -40,7 +40,7 @@ bool FriendshipRequest::SendResponde() {
   if (!doNothing_) {
     outcome_data_ =
         Parser::NewFriendInfo_ToByteArray(outcome_for_requester_);
-    Logger::LogOut(outcome_data_);
+    Logger::LogOut(client_socket_->socketDescriptor(),outcome_data_);
     client_socket_->write(outcome_data_);
     client_socket_->waitForBytesWritten(3000);
     client_socket_->disconnectFromHost();
@@ -53,7 +53,7 @@ bool FriendshipRequest::SendResponde() {
                                 new_friend_.GetUserPort());
 
     if (output_socket.waitForConnected(5000)) {  // check if can connect if yes -> send friend_update
-      Logger::LogOut(outcome_data_);
+      Logger::LogOut(output_socket.socketDescriptor(),outcome_data_);
       output_socket.write(outcome_data_);
       output_socket.waitForBytesWritten(1000);
       output_socket.disconnectFromHost();

@@ -4,6 +4,7 @@
 LoginRequest::LoginRequest(QByteArray& A, DAL* d, QTcpSocket* s)
     : AbstractRequest(d, s) {
   incoming_structure_ = Parser::ParseAsLoginInfo(A);
+  Logger::LogOut(client_socket_->socketDescriptor(),A);
   PrepareResponse();
 }
 
@@ -40,7 +41,7 @@ bool LoginRequest::SendResponde() {
     QByteArray b =
         Parser::Empty_ToByteArray((quint8)ServerRequests::LOGIN_SUCCEED);
     b.append(Parser::GetUnpossibleSequence());
-    Logger::LogOut(b);
+    Logger::LogOut(client_socket_->socketDescriptor(),b);
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
     SendingPendingFriendRequests();
@@ -66,7 +67,7 @@ bool LoginRequest::SendResponde() {
     // sending ServerRequests::LOGIN_FAILED
     QByteArray b = Parser::Empty_ToByteArray(response_to_requester_);
     b.append(Parser::GetUnpossibleSequence());
-    Logger::LogOut(b);
+    Logger::LogOut(client_socket_->socketDescriptor(),b);
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
     // client_socket_->disconnectFromHost();
@@ -79,7 +80,7 @@ bool LoginRequest::SendToFriend(QTcpSocket& output_socket, QByteArray raw_data,
   Client tempClient = database_->getClient(id);
   output_socket.connectToHost(tempClient.GetUserIp(), tempClient.GetUserPort());
   if (output_socket.waitForConnected(5000)) { // default is 5000 but this thing is makes bigger time of login req execution 
-    Logger::LogOut(raw_data);                       // if 5000 exec time is around 5 sec // if 3 000 exec time is 3 sec
+    Logger::LogOut(output_socket.socketDescriptor(),raw_data);                       // if 5000 exec time is around 5 sec // if 3 000 exec time is 3 sec
     output_socket.write(raw_data);
     output_socket.waitForBytesWritten(1000);
     output_socket.disconnectFromHost();
@@ -103,7 +104,7 @@ void LoginRequest::SendingPendingFriendRequests() {
     possible_friend.requester_id = tmp.GetUserId();
     raw_data = Parser::AddFriendInfo_ToByteArray(possible_friend);
     raw_data.append(Parser::GetUnpossibleSequence());
-    Logger::LogOut(raw_data);
+    Logger::LogOut(client_socket_->socketDescriptor(),raw_data);
     client_socket_->write(raw_data);
     client_socket_->waitForBytesWritten(1000);
     requester_.RemovePendingFriendRequest(tmp);
@@ -128,7 +129,7 @@ void LoginRequest::SendingPendingNotifications() {
     from_new_friend.port = tmp.GetUserPort();
     raw_data = Parser::NewFriendInfo_ToByteArray(from_new_friend);
     raw_data.append(Parser::GetUnpossibleSequence());
-    Logger::LogOut(raw_data);
+    Logger::LogOut(client_socket_->socketDescriptor(),raw_data);
     client_socket_->write(raw_data);
     client_socket_->waitForBytesWritten(1000);
     requester_.RemovePendingNotification(tmp);

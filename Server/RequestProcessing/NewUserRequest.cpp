@@ -7,6 +7,7 @@ NewUserRequest::NewUserRequest(QByteArray& request, DAL* d, QTcpSocket* s)
     : AbstractRequest(d,s) {
 
 	income_data_ = Parser::ParseAsRegisterInfo(request);
+  Logger::LogOut(client_socket_->socketDescriptor(),request);
 	PrepareResponse();
 }
 
@@ -34,7 +35,7 @@ void NewUserRequest::PrepareResponse()
 }
 bool NewUserRequest::SendResponde()
 {
-  Logger::LogOut(outcome_data_);
+  Logger::LogOut(client_socket_->socketDescriptor(),outcome_data_);
   client_socket_->write(outcome_data_);
   client_socket_->waitForBytesWritten(3000);
   client_socket_->disconnectFromHost();

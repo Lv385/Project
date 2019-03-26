@@ -3,16 +3,21 @@
 #include <QDateTime>
 #include <QFile>
 #include <QTextStream>
+#include <QTcpSocket>
 #include <QIODevice>
 #include "../Parser&Structs/parser.h"
 #include "DAL/Client.h"
+
+#define stringify( name ) # name
+
 class Logger {
  static bool const ifLogingEnable = true;
  public:
-   static void LogOut(QByteArray);
+   static void LogOut(int , QByteArray);
    static QString Log_User(Client &cl);
  private:
    //static void WriteLogToFile(QString&,QString&);
+   static QString Log_Empty(quint8 type);
    static void WriteLogToFile(QString&);
    static QString ConvertQuint8ToString(quint8& num);
    static QString ConvertQuint16ToString(quint16 & num);
@@ -24,4 +29,5 @@ class Logger {
    static QString Log_RegisterInfo(RegisterInfo&out);
    static QString Log_FriendRequestInfo(FriendRequestInfo &out);   
    static QString Log_NEW_FRIEND_INFO(NewFriendInfo &out);
+
 };

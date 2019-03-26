@@ -34,7 +34,7 @@ bool AddFriendRequest::SendResponde() {
   if (response_to_requester_ == (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED) {
     QByteArray b = Parser::Empty_ToByteArray( (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED);
     b.append(Parser::GetUnpossibleSequence());
-    Logger::LogOut(b);
+    Logger::LogOut(client_socket_->socketDescriptor(),b);
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
     client_socket_->disconnectFromHost();
@@ -42,7 +42,8 @@ bool AddFriendRequest::SendResponde() {
     //sending ADD_FRIEND_REQUEST,//+AddFriendInfo(s->c)I,-FRIEND_REQUEST;    
     QTcpSocket output_socket;
     output_socket.connectToHost(requested_guy.GetUserIp(), requested_guy.GetUserPort());
-    Logger::LogOut(send_addfriend_info_bytearr);
+    
+    Logger::LogOut(output_socket.socketDescriptor(),send_addfriend_info_bytearr);
     if (output_socket.waitForConnected(5000)) {  // check if can connect if yes -> send add friend     
       output_socket.write(send_addfriend_info_bytearr);
       output_socket.waitForBytesWritten(1000);
@@ -58,7 +59,7 @@ bool AddFriendRequest::SendResponde() {
   } else {
     QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequests::FRIEND_REQUEST_FAILED);
     b.append(Parser::GetUnpossibleSequence());
-    Logger::LogOut(b);
+    Logger::LogOut(client_socket_->socketDescriptor(),b);
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
     client_socket_->disconnectFromHost();
