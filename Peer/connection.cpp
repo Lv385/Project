@@ -91,7 +91,7 @@ void Connection::ReceiveRequests() {
     switch (requestType) {
     case (quint8)ClientRequest::MESSAGE: {
       Message mes = Parser::ParseAsMessage(received_data_);
-      QString str = QString("<%1>: %2").arg(client_data_.GetLoginById(client_data_.GetIDByIPPort(this->peerAddress().toString(), this->peerPort())))
+      QString str = QString("<%1>: %2").arg(client_data_.GetLoginById(mes.id))
                     .arg(mes.message);
 
       emit SendMessageToUI(str);
