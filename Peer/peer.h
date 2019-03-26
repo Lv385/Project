@@ -89,6 +89,7 @@ class Peer : public QObject {
 
   bool is_active_;
   DALManager client_dal_;
+  ClientLogger* logger_;
 };
 
 #endif  // TEST_H

@@ -4,30 +4,27 @@
 #include <qsqlrecord.h>
 #include <QString>
 #include <memory>
-#include "connection.h"
-#include "unitofwork.h"
+#include "Connection/connect.h"
 
-#define CLIENT_DB "Client"
-#define SERVER_DB "Server"
+#define CLIENT_DB "../DAL2 dont touch/DAL2/Client"
+#define SERVER_DB "../DAL2 dont touch/DAL2/Server"
 
-class Statement {
- public:
-  Statement(std::shared_ptr<Connection> connection);
-  Statement() = default;
-  ~Statement();
+namespace SQLDAL {
+	class Statement {
+	public:
+		Statement(std::shared_ptr<Connect> Connect);
+		Statement() = default;
+		virtual ~Statement();
 
-  protected:
-  virtual QString UpdateQuery() = 0;
-  virtual QString SelectQuery() = 0;
-  virtual QString InsertQuery() = 0;
-  virtual QString DeleteQuery() = 0;
+	protected:
 
-  void SetQuery(QSqlDatabase database);
-  void ExectuteQuery(QString query);
-  void ErrorInfo();
 
-  std::shared_ptr<Connection> connection_;
-  QSqlQuery query_;
-};
+		void SetQuery(QSqlDatabase database);
+		void ExectuteQuery(QString query);
+		void ErrorInfo();
 
+		std::shared_ptr<Connect> Connect_;
+		QSqlQuery query_;
+	};
+}
 #endif  // !STATEMENT_H
