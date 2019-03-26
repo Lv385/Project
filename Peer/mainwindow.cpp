@@ -13,7 +13,7 @@ MainWindow::MainWindow(QWidget* parent)
   logger_->SetLogLevel(LogLevel::HIGH); // u can switch levels of logging(NOLOG, LOW, HIGH)
 
   QVector<SQLDAL::Friend> friends = client_data_.GetFriends();
-  for (const SQLDAL::Friend& i: friends) {
+  for (const SQLDAL::Friend& i : friends) {
     ui_->combo_box_friends->addItem(i.login);
   }
   

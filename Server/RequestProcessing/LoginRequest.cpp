@@ -45,7 +45,6 @@ bool LoginRequest::SendResponde() {
     client_socket_->waitForBytesWritten(3000);
     SendingPendingFriendRequests();
     SendingPendingNotifications();
-    database_->UpdateClient(requester_);
     client_socket_->disconnectFromHost();
 
     // sending FriendUpdateInfo to all friends
@@ -106,10 +105,7 @@ void LoginRequest::SendingPendingFriendRequests() {
     Logger::LogOut(raw_data);
     client_socket_->write(raw_data);
     client_socket_->waitForBytesWritten(1000);
-    requester_.RemovePendingFriendRequest(tmp);
   }
-  
-  
 }
 
 void LoginRequest::SendingPendingNotifications() {
@@ -131,6 +127,5 @@ void LoginRequest::SendingPendingNotifications() {
     Logger::LogOut(raw_data);
     client_socket_->write(raw_data);
     client_socket_->waitForBytesWritten(1000);
-    requester_.RemovePendingNotification(tmp);
   }
 }
