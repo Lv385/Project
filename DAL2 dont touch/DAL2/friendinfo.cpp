@@ -2,6 +2,9 @@
 #include "friendinfo.h"
 
 namespace SQLDAL {
+FriendInfo::FriendInfo(std::shared_ptr<Connect> Connect) {
+  Connect_->Open(SERVER_DB);
+}
 void FriendInfo::Add(const unsigned int first_user_id,
                      const unsigned int second_user_id) {
   ExectuteQuery(AddQuery(first_user_id, second_user_id));
