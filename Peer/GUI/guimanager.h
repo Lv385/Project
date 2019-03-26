@@ -5,7 +5,7 @@
 #include "GUI/frienditem.h"
 #include "GUI/friendmodel.h"
 
-#include "dalmanager.h"
+#include "dataaccessor.h"
 
 class GUIManager : public QObject
 {
@@ -33,7 +33,7 @@ private:
   void LoadFriends();
 
   FriendModel friend_model_;
-  DALManager client_dal_;  //for testing
+  DataAccessor client_data_;  //for testing
 
 };
 

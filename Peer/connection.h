@@ -6,7 +6,7 @@
 #include <QTimer>
 
 #include <ui_mainwindow.h>
-#include "dalmanager.h"
+#include "dataaccessor.h"
 #include "clientlogger.h"
 #include "../Parser&Structs/parser.h"
 
@@ -40,7 +40,7 @@ class Connection : public QTcpSocket {
   quint16 receiver_port_;
 
   const QByteArray k_unpossiblle_2_bytes_sequence_;
-  DALManager client_dal_;
+  DataAccessor client_data_;
   ClientLogger* logger_;
 
 };
