@@ -24,5 +24,5 @@ class DALManager {
   void UpdateIPPort(const unsigned id, const QString new_ip, const unsigned new_port);
 
   
-};
-#endif
+  };
+  #endif

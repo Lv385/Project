@@ -3,12 +3,18 @@ Connection::Connection(QObject* parent)
     : QTcpSocket(parent),
       receiver_ip_(QHostAddress::Null),
       receiver_port_(0),
-      k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()) {  // the only idea i had, must be fixed
-}
+      k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()),
+      reader_(this, this),
+      writer_(this, this) {
+  connect(&reader_, SIGNAL(ReadyReadBlock()), this, SLOT(ReceiveRequests()));
+  }
 
 Connection::Connection(qintptr socketDescriptor, QObject* parent)
-    : k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()) {
+    : k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()),
+      reader_(this, this),
+      writer_(this, this) {
   setSocketDescriptor(socketDescriptor);
+  connect(&reader_, SIGNAL(ReadyReadBlock()), this, SLOT(ReceiveRequests()));
 }
 
 void Connection::SendMessage(Message message) {
@@ -21,14 +27,12 @@ void Connection::SendMessage(Message message) {
     emit SendLog(mes_log);
 
     QByteArray to_write = Parser::Message_ToByteArray(message);       // pack
-    to_write.append(k_unpossiblle_2_bytes_sequence_);                 // append separator
-    this->write(to_write);                                            // need to be unpacked by Parser on the other side
+    writer_.WriteBlock(to_write);  // need to be unpacked by Parser on the other side
 
     QString str = "->: " + message.message;
     emit SendMessageToUI(str);
     
-	connection_timer_.start(30000);  //reset timer for new 30 sec
-
+	  connection_timer_.start(30000);  //reset timer for new 30 sec
   } 
   else {
     QString str = QString("cannot coonect to") + receiver_ip_.toString() +
@@ -65,28 +69,13 @@ void Connection::StartConnectionTimer(unsigned miliseconds) {
 
 //reading requests due to separator
 void Connection::ReceiveRequests() {
-  QByteArray nextData;
-  int separatorIndex;
-
-  received_data_.append(this->readAll());
-
-  // work on all requests if there are more than one
-  // using such a separator, untill we design something better
-  while (received_data_.contains(k_unpossiblle_2_bytes_sequence_)) {
-    separatorIndex = received_data_.indexOf(k_unpossiblle_2_bytes_sequence_);
-
-    nextData = received_data_.mid(separatorIndex + 2);
-    received_data_ = received_data_.left(separatorIndex);
-
-    emit SendLog("recieving something from" + this->peerAddress().toString() +
-                 ":" + QString::number(this->peerPort()));
-
-    // here we should change behaviour depening on type of message
-    quint16 requestType = Parser::getRequestType(received_data_);
+  while (reader_.HasPendingBlock()) {
+    QByteArray data = reader_.ReadNextBlock();
+    quint16 requestType = Parser::getRequestType(data);
 
     switch (requestType) {
-    case (quint8)ClientRequest::MESSAGE: {
-      Message mes = Parser::ParseAsMessage(received_data_);
+    case (quint8)ClientClientRequest::MESSAGE: {
+        Message mes = Parser::ParseAsMessage(data);
       QString str = QString("<%1>: %2").arg(client_dal_.GetLoginById(mes.id))
                     .arg(mes.message);
 
@@ -97,10 +86,8 @@ void Connection::ReceiveRequests() {
       break;
     }
     }
-    // no longer needed after using
-    received_data_ = nextData;
+ 
   }
-  // if there is a part of another request, save it
 }
 
 //#tofix should be refactored

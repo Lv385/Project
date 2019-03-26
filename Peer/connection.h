@@ -1,12 +1,15 @@
 #ifndef CONNECTION_H
 #define CONNECTION_H
 
+#include <ui_mainwindow.h>
+#include "blockreader.h"
+#include "blockwriter.h"
+#include "dalmanager.h"
+
 #include <QHostAddress>
 #include <QTcpSocket>
 #include <QTimer>
 
-#include <ui_mainwindow.h>
-#include "dalmanager.h"
 #include "../DAL/Client/clientdb.h"
 #include "../Parser&Structs/parser.h"
 
@@ -34,6 +37,9 @@ class Connection : public QTcpSocket {
 
  private:
   QByteArray received_data_;
+
+  BlockReader reader_;
+  BlockWriter writer_;
 
   QTimer connection_timer_;
 

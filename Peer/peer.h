@@ -1,7 +1,10 @@
 #ifndef TEST_H
 #define TEST_H
 
-#include <../DAL/Client/clientdb.h>
+#include "connection.h"
+#include "localserver.h"
+#include "dalmanager.h"
+
 #include <ui_mainwindow.h>
 #include <QDebug>
 #include <QHostAddress>
@@ -15,10 +18,7 @@
 #include <QUdpSocket>
 #include <QVector>
 
-#include "connection.h"
-#include "tcpserver.h"
-#include "dalmanager.h"
-
+#include <../DAL/Client/clientdb.h>
 #include "../Parser&Structs/parser.h"
 
 class Peer : public QObject {
@@ -52,7 +52,7 @@ class Peer : public QObject {
 
  private slots:
   void DisconncetFromPeer();
-  void SetSocket(Connection* connection);
+  void SetSocket(QTcpSocket*);
   void OnServerConnected(Connection* connection);
   void UpdateFriendsInfo();
   void SendUpdateInfo();
@@ -63,7 +63,7 @@ class Peer : public QObject {
   // void DisplayError(QAbstractSocket::SocketError socketError);
 
  private:
-  TcpServer* tcp_server_;  // server for listening
+  LocalServer* tcp_server_;  // server for listening
 
   QString my_login_;
   quint32 my_id_;

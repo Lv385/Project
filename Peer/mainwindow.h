@@ -3,9 +3,11 @@
 
 #include "dalmanager.h"
 #include "peer.h"
+#include "clientcontroller.h"
 
 #include <QComboBox>
 #include <QMainWindow>
+#include <qmainwindow.h>
 #include <QRegExpValidator>
 #include <QShortcut>
 #include <QVector>
@@ -13,7 +15,6 @@
 namespace Ui {
 class MainWindow;
 }
-
 class MainWindow : public QMainWindow {
   Q_OBJECT
 
@@ -39,6 +40,7 @@ class MainWindow : public QMainWindow {
   Ui::MainWindow* ui_;
   Peer* peer_;
   DALManager client_dal_;
+  ClientController* client_controller_;
 };
 
 #endif  // MAINWINDOW_H

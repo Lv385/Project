@@ -5,17 +5,18 @@
 
 class Connection;
 
-class TcpServer : public QTcpServer {
+class LocalServer : public QTcpServer {
   Q_OBJECT
 
  public:
-  TcpServer(QObject* parent);
-  ~TcpServer();
+  LocalServer(QObject* parent);
+  ~LocalServer();
   void set_remote_server_ip_port(QHostAddress& remote_server_ip,
                              quint16& remote_server_port);
  signals:
-  void NewConnection(Connection* connection);
-  void NewServerConnection(Connection* connection);
+  void NewClientConnection(QTcpSocket* socket);
+  void NewServerConnection(QTcpSocket* socket);
+
  protected:
   void incomingConnection(qintptr socketDescriptor) override;
 

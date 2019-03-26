@@ -184,12 +184,27 @@
   <ItemGroup>
     <ClCompile Include="..\DAL\Client\clientdb.cpp" />
     <ClCompile Include="..\Parser&amp;Structs\parser.cpp" />
+    <ClCompile Include="blockreader.cpp" />
+    <ClCompile Include="blockwriter.cpp" />
+    <ClCompile Include="clientcontroller.cpp" />
+    <ClCompile Include="clientworker.cpp" />
     <ClCompile Include="connection.cpp" />
     <ClCompile Include="dalmanager.cpp" />
+    <ClCompile Include="friendsupdatemanager.cpp" />
+    <ClCompile Include="friendsworker.cpp" />
+    <ClCompile Include="guimanager.cpp" />
+    <ClCompile Include="loginstrategy.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="mainwindow.cpp" />
+    <ClCompile Include="messagestrategy.cpp" />
     <ClCompile Include="peer.cpp" />
-    <ClCompile Include="tcpserver.cpp" />
+    <ClCompile Include="localserver.cpp" />
+    <ClCompile Include="abstractstrategy.cpp" />
+    <ClCompile Include="signalredirector.cpp" />
+    <ClCompile Include="serverworker.cpp" />
+    <ClCompile Include="worker.cpp" />
+    <ClCompile Include="workhelper.cpp" />
+    <ClCompile Include="workmanager.cpp" />
   </ItemGroup>
   <ItemGroup>
     <QtMoc Include="mainwindow.h">
@@ -198,6 +213,26 @@
     </QtMoc>
   </ItemGroup>
   <ItemGroup>
+    <QtMoc Include="blockwriter.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
+    <QtMoc Include="worker.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
+    <QtMoc Include="workhelper.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
+    <QtMoc Include="serverworker.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
+    <QtMoc Include="workmanager.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
     <CustomBuild Include="debug\moc_predefs.h.cbt">
       <FileType>Document</FileType>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</ExcludedFromBuild>
@@ -216,8 +251,7 @@
     </CustomBuild>
     <ClInclude Include="..\DAL\Client\clientdb.h" />
     <ClInclude Include="..\Parser&amp;Structs\parser.h" />
-    <ClInclude Include="..\Parser&amp;Structs\request_types.h" />
-    <QtMoc Include="tcpserver.h">
+    <QtMoc Include="localserver.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
     </QtMoc>
@@ -225,7 +259,49 @@
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
     </QtMoc>
+    <QtMoc Include="clientcontroller.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
+    <QtMoc Include="abstractstrategy.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
+    <QtMoc Include="friendsupdatemanager.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
+    <QtMoc Include="guimanager.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
+    <QtMoc Include="messagestrategy.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
+    <QtMoc Include="loginstrategy.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
+    <ClInclude Include="..\Parser&amp;Structs\request_types.h" />
+    <QtMoc Include="blockreader.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
+    <QtMoc Include="clientworker.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
     <ClInclude Include="dalmanager.h" />
+    <QtMoc Include="friendsworker.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
+    <ClInclude Include="peerinfo.h" />
+    <QtMoc Include="signalredirector.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
     <ClInclude Include="ui_mainwindow.h" />
   </ItemGroup>
   <ItemGroup>

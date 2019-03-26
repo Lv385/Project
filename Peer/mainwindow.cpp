@@ -3,7 +3,11 @@
 #include "ui_mainwindow.h"
 
 MainWindow::MainWindow(QWidget* parent)
-    : QMainWindow(parent), peer_(nullptr), ui_(new Ui::MainWindow) {
+    : QMainWindow(parent),
+      peer_(nullptr),
+      ui_(new Ui::MainWindow),
+      client_controller_(nullptr) 
+{
   ui_->setupUi(this);
 
   SetIpValidator();
@@ -40,6 +44,12 @@ MainWindow::MainWindow(QWidget* parent)
                     this, SLOT(OnRbSimpleClicked()));
   connect(ui_->rb_engineering, SIGNAL(clicked()), 
                          this, SLOT(OnRbEngineeringClicked()));
+
+  // CLIENT CONTROLLER
+ /* connect(client_controller_, SIGNAL(SendMessageToUI(QString)),
+                        this, SLOT(AppendMessage(QString)));
+  connect(client_controller_, SIGNAL(SendLog(QString)),
+                        this, SLOT(AppendLogMessage(QString)));*/
 }
 
 void MainWindow::OnPbStartClicker() {
