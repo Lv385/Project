@@ -12,8 +12,7 @@
 #include <QtSql/QSqlTableModel>
 #include <iostream>
 
-// Class uses to make connection server-data base
-// It consist all methods needed to work with db.
+// Class contains all methods needed to work with db.
 // Each server or client thread must hold instance
 // of this class to perform db tasks
 class ServerDB {
@@ -27,9 +26,9 @@ class ServerDB {
                   const QString& new_user_password);
 
   void UpdateIPPort(const QString& user_login, const QString& new_user_ip,
-                    const int& new_user_port);  // by login
+                    const int& new_user_port); 
   void UpdateIPPort(const unsigned int& user_id, const QString& new_user_ip,
-                    const int& new_user_port);  // by id
+                    const int& new_user_port);  
 
   QPair<QString, int> GetIPPort(const QString& user_login);
   QPair<QString, int> GetIPPort(const unsigned int& user_id);
