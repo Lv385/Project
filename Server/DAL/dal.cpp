@@ -8,16 +8,13 @@ DAL::DAL() {
 
 DAL::~DAL() { database_.CloseConncetion(connection_name_); }
 
-void DAL::CreateNew(Client cl) {
-  // this function is only for new user request (register)
+void DAL::CreateNew(Client cl) { 
   database_.AddNewUser(cl.GetUserName(), cl.GetUserPassword());
   database_.UpdateIPPort(cl.GetUserName(), cl.GetUserIp().toString(),
                          (int)cl.GetUserPort());
 }
 
-
 void DAL::UpdateClient(Client cl) {
-  //  this is used when login   and MAYBE  when adding to friend
   database_.UpdateIPPort(cl.GetUserName(), cl.GetUserIp().toString(),(int)cl.GetUserPort());  
   QVector<unsigned int> curr_pend_cl = cl.Get_Pending_Requests();
   QVector<unsigned int> db_pend_cl = database_.GetPendingFriendRequests(cl.GetUserId());
@@ -82,7 +79,7 @@ bool DAL::Check_If_Client_exists_In_Db(Client cl) {
 }
 
 bool DAL::Check_If_Client_exists_In_Db(QString login) {
-  return !(database_.GetIDByLogin(login) == 0); // according to mentor recomendations
+  return !(database_.GetIDByLogin(login) == 0); 
 }
 
 int DAL::GetClientId(Client cl) {

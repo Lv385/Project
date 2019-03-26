@@ -8,7 +8,6 @@
 #include <QUuid>
 #include "client.h"
 
-// using namespace std;
 
 class DAL {
  public:
