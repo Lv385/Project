@@ -23,6 +23,8 @@
 DAL/Server/Server
 DAL/Client/Client
 Server/DAL/Client
+DAL2 dont touch/DAL2/Client
+DAL2 dont touch/DAL2/Server
 **/*.txt
 
 #other files
