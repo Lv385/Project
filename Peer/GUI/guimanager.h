@@ -40,7 +40,6 @@ private:
   FriendModel friend_model_;
   MessageModel message_model_;
 
-  FriendModel friend_model_;
   DataAccessor client_data_;  //for testing
 
 };

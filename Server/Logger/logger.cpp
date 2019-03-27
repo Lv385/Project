@@ -12,15 +12,15 @@ void Logger::WriteLogToFile(QString& text) {
   }
 }
 
-QString Logger::ConvertQuint8ToString(quint8& num) {
+QString Logger::ConvertQuint8ToString(quint8 num) {
   QString tmp;
   return tmp.setNum(num);
 }
-QString Logger::ConvertQuint16ToString(quint16& num) {
+QString Logger::ConvertQuint16ToString(quint16 num) {
   QString tmp;
   return tmp.setNum(num);
 }
-QString Logger::ConvertQuint32ToString(quint32& num) {
+QString Logger::ConvertQuint32ToString(quint32 num) {
   QString tmp;
   return tmp.setNum(num);
 }
