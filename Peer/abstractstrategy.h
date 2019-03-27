@@ -34,7 +34,8 @@ class AbstractStrategy : public QObject {
 
  protected:
   QByteArray data_;
-
+  DALManager dal;
+  SignalRedirector& redirector_;
 };
 
 #endif  // !ABSTRACTSTRATEGY_H

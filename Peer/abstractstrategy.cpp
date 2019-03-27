@@ -2,11 +2,14 @@
 #include "signalredirector.h"
 
 
-AbstractStrategy::AbstractStrategy() { }
+AbstractStrategy::AbstractStrategy() 
+  : redirector_(SignalRedirector::get_instance())
+{ }
 
 
 AbstractStrategy::AbstractStrategy(QByteArray data)
-    : data_(data){
+    : data_(data),
+      redirector_(SignalRedirector::get_instance()){
 }
 
 void AbstractStrategy::set_data(QByteArray data) { 

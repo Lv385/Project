@@ -48,7 +48,7 @@ enum class ClientRequest : quint8 {
 };
 
 // no more than 64 types
-enum class ServerRequests : quint8 {
+enum class ServerRequest : quint8 {
   LOGIN_SUCCEED = ServerRequests,  // empty(s->c)LOGIN
   LOGIN_FAILED,                    // empty(s->c)LOGIN
 

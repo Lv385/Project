@@ -52,7 +52,7 @@ bool Connection::LoginRequest(LoginInfo info) {
       emit SendLog("writing to server");
       read = read.left(read.indexOf(k_unpossiblle_2_bytes_sequence_));
       quint8 type = Parser::getRequestType(read);
-      if (type == (quint8)ServerRequests::LOGIN_SUCCEED) {
+      if (type == (quint8)ServerRequest::LOGIN_SUCCEED) {
         emit SendLog("Logged in success");
         return true;
       }
