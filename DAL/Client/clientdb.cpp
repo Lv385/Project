@@ -80,8 +80,8 @@ void ClientDAL::ClientDB::AddMessage(const Message &message, const QString& user
         query_.bindValue(":new_user_ID", user_id);
         query_.bindValue(":new_owner_ID", message.owner_id);
         query_.bindValue(":new_message_data", message.data);
-        query_.bindValue(":new_message_date", message.date.toString());
-        query_.bindValue(":new_message_time", message.time.toString());
+        query_.bindValue(":new_message_date", message.date);
+        query_.bindValue(":new_message_time", message.time);
         query_.bindValue(":new_message_status", message.status);
 
         if (!query_.exec()) {

@@ -4,15 +4,12 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls 2.5
 
 Item {
-    property alias visualModel: visualModelId
-    property ListView listView1
-
-    //property alias deleteFriendButton: deleteFriendButtonId
+    property alias visualModel: visualFriendModel
 
     DelegateModel {
-        id: visualModelId
-        delegate: friendDelegate
-    }
+            id: visualFriendModel
+            delegate: friendDelegate
+        }
 
     Component {
         id: friendDelegate
@@ -42,7 +39,7 @@ Item {
 
                 Text {
                     id: friendName
-                    text: object.login
+                    text: friend.login
                     color: borderColor
                     font.pixelSize: 13
                     anchors.verticalCenter: parent.verticalCenter
@@ -56,7 +53,7 @@ Item {
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.margins: 25
-                    color: object.status ? onlineFriendColor : offlineFriendColor
+                    color: friend.status ? onlineFriendColor : offlineFriendColor
                     radius: 15
                 }
 
@@ -75,7 +72,7 @@ Item {
                         anchors.horizontalCenter: parent.horizontalCenter
                     }
                     width: height
-                    onClicked: guiManager.deleteFriend(object)
+                    onClicked: guiManager.deleteFriend(friend)
                 }
             }
         }
