@@ -4,6 +4,9 @@ AddFriendRequest::AddFriendRequest(QByteArray &request, DAL *d, QTcpSocket *s)
     : AbstractRequest(d, s) {
   income_data_ = Parser::ParseAsFriendRequestInfo(request);
   PrepareResponse();
+  QString IP = client_socket_->peerAddress().toString();
+  QString logstring = IP + ":: No port";
+  Logger::LogOut(logstring, request);
 }
 
 void AddFriendRequest::PrepareResponse() {
@@ -17,6 +20,8 @@ void AddFriendRequest::PrepareResponse() {
     //TODO: check if parties are not friends allready!!!!!
     if (QString::compare(sender_guy.GetUserPassword(), income_data_.password) == 0) {
       requested_guy = database_->getClient(income_data_.other_login);
+      info_to_send.requester_id = sender_guy.GetUserId();
+      info_to_send.requester_login = sender_guy.GetUserName();
       send_addfriend_info_bytearr = Parser::AddFriendInfo_ToByteArray(info_to_send);
       response_to_requester_ = (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED;
     } else {
@@ -32,7 +37,11 @@ bool AddFriendRequest::SendResponde() {
   if (response_to_requester_ == (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED) {
     QByteArray b = Parser::Empty_ToByteArray( (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED);
     b.append(Parser::GetUnpossibleSequence());
-    Logger::LogOut(b);
+
+    QString ip = client_socket_->peerAddress().toString();
+    QString logstring_ = ip + ":: No port";
+    Logger::LogOut(logstring_, b);
+
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
     client_socket_->disconnectFromHost();
@@ -40,9 +49,12 @@ bool AddFriendRequest::SendResponde() {
     //sending ADD_FRIEND_REQUEST,//+AddFriendInfo(s->c)I,-FRIEND_REQUEST;    
     QTcpSocket output_socket;
     output_socket.connectToHost(requested_guy.GetUserIp(), requested_guy.GetUserPort());
+    
+    QString ip_ = output_socket.peerAddress().toString();
+    QString Logstring_ = ip_ + "::"+Logger::ConvertQuint32ToString(requested_guy.GetUserPort());
+    Logger::LogOut(Logstring_, b);
 
-    if (output_socket.waitForConnected(5000)) {  // check if can connect if yes -> send add friend
-      Logger::LogOut(send_addfriend_info_bytearr);
+    if (output_socket.waitForConnected(5000)) {  // check if can connect if yes -> send add friend     
       output_socket.write(send_addfriend_info_bytearr);
       output_socket.waitForBytesWritten(1000);
       output_socket.disconnectFromHost();
@@ -57,7 +69,11 @@ bool AddFriendRequest::SendResponde() {
   } else {
     QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequests::FRIEND_REQUEST_FAILED);
     b.append(Parser::GetUnpossibleSequence());
-    Logger::LogOut(b);
+
+    QString Ip = client_socket_->peerAddress().toString();
+    QString logstrin = Ip + "::" + Logger::ConvertQuint32ToString(sender_guy.GetUserPort());
+    Logger::LogOut(logstrin, b);
+
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
     client_socket_->disconnectFromHost();

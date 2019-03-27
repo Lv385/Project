@@ -1,27 +1,94 @@
 import QtQuick 2.4
 import QtQuick.Controls 2.3
+import QtQuick.Layouts 1.3
 
 Page {
-    property alias friendList: friendList
     property alias addButton: addButton
+    property alias friendList: friendList
+    
+    property alias messageList: messageList
+    property alias sendButton: sendButton
+    property alias messageField: messageField
+
+    Rectangle {
+        x: 0
+        y: 36
+        width: friendList.width
+        height: friendList.height
+        color: friendListColor
+    }
 
     ListView {
         id: friendList
-        x: 24
-        y: 85
-        width: 130
-        height: 324
+        x: 0
+        y: 36
+        width: 269
+        height: 600
+        highlightRangeMode: ListView.ApplyRange
+        flickableDirection: Flickable.VerticalFlick
+        //color: "lightgrey";
+        boundsBehavior: Flickable.StopAtBounds
+        orientation: ListView.Vertical
+
+        focus: true
+        highlight: Rectangle {
+            color: "lightsteelblue"
+            radius: 5
+        }
     }
 
     Button {
         id: addButton
-        x: 160
-        y: 323
+        x: 270
+        y: 560
         text: qsTr("Add")
     }
+
+    ColumnLayout {
+        id: columnLayout
+        x: 265
+        y: 85
+        width: 348
+        height: 324
+
+        ListView {
+            id: messageList
+            Layout.fillWidth: true
+            Layout.fillHeight: true
+            Layout.margins: pane.leftPadding + messageField.leftPadding
+            displayMarginBeginning: 40
+            displayMarginEnd: 40
+            verticalLayoutDirection: ListView.BottomToTop
+            spacing: 12
+
+            ScrollBar.vertical: ScrollBar {
+                anchors.left: parent.right
+            }
+        }
+
+        Pane {
+            id: pane
+            Layout.fillWidth: true
+
+            RowLayout {
+                width: parent.width
+
+                TextArea {
+                    id: messageField
+                    Layout.fillWidth: true
+                    placeholderText: qsTr("Compose message")
+                    wrapMode: TextArea.Wrap
+                }
+
+                Button {
+                    id: sendButton
+                    text: qsTr("Send")
+                    enabled: messageField.length > 0
+                }
+            }
+        }
+    }
 }
-
-
 
 
 /*##^## Designer {
