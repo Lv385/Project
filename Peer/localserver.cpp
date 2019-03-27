@@ -19,5 +19,4 @@ void LocalServer::set_remote_server_ip_port(QHostAddress& remote_server_ip,
   remote_server_port_ = remote_server_port;
 }
 
-
 LocalServer::~LocalServer() {}

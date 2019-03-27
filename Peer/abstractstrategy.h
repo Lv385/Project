@@ -26,18 +26,15 @@ class AbstractStrategy : public QObject {
   Q_OBJECT
 
  public:
-  AbstractStrategy(PeerInfo peer_info);
+  AbstractStrategy();
+  AbstractStrategy(QByteArray data);
+  void set_data(QByteArray data);
   virtual void DoWork() = 0;
   virtual ~AbstractStrategy();
 
- public slots:
-  // virtual void DoWork() = 0;
-
  protected:
-  PeerInfo peer_info_;
-  DALManager cdb_;
   QByteArray data_;
-  SignalRedirector& redirector_;
+
 };
 
 #endif  // !ABSTRACTSTRATEGY_H

@@ -1,8 +1,8 @@
 #include "messagestrategy.h"
 
 MessageStrategy::MessageStrategy(QObject *parent, PeerInfo peer_info,
-                                 QTcpSocket* socket)
-    : AbstractStrategy(peer_info) {
+                                 QTcpSocket* socket, QByteArray data)
+    : AbstractStrategy(data) {
   timer_.setSingleShot(true);
   timer_.start(kMsecConnectionDuration_);
   connect(&timer_, SIGNAL(timeout()), this, SLOT(disconnectFromHost()));
@@ -14,7 +14,7 @@ MessageStrategy::~MessageStrategy() {}
 
 void MessageStrategy::SendMessage() {
   Message mes = Parser::ParseAsMessage(data_);
-  QByteArray to_write = Parser::Message_ToByteArray(mes);
+//  QByteArray to_write = Parser::Message_ToByteArray();
  //ocket_->write(to_write);
   timer_.start(kMsecConnectionDuration_);
 }

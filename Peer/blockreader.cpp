@@ -8,6 +8,10 @@ BlockReader::BlockReader(QTcpSocket* socket)
 
 BlockReader::~BlockReader() {}
 
+void BlockReader::set_socket(QTcpSocket* socket) { 
+  socket_ = socket; 
+}
+
 QByteArray BlockReader::ReadNextBlock() {
   QByteArray result;
   result = blocks_.first();

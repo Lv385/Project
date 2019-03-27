@@ -11,6 +11,9 @@ struct ApplicationInfo {
 
   QHostAddress app_server_ip;
   quint16 app_server_port;
+
+  quint32 my_id;
+  QString my_login;
 };
 
 #endif  // !APPLICATIONINFO_H

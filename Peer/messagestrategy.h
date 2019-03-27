@@ -10,7 +10,7 @@ class MessageStrategy : public AbstractStrategy
 
 public:
   MessageStrategy(QObject *parent, PeerInfo peer_info, 
-                  QTcpSocket* socket);
+                  QTcpSocket* socket, QByteArray data);
   ~MessageStrategy();
  public slots:
   //void DoWork() override;

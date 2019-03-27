@@ -2,12 +2,16 @@
 #include "signalredirector.h"
 
 
-AbstractStrategy::AbstractStrategy(PeerInfo peer_info) : 
-  peer_info_(peer_info),
-  redirector_(SignalRedirector::get_instance()) {
-  }
+AbstractStrategy::AbstractStrategy() { }
 
 
-AbstractStrategy::~AbstractStrategy() {
+AbstractStrategy::AbstractStrategy(QByteArray data)
+    : data_(data){
 }
+
+void AbstractStrategy::set_data(QByteArray data) { 
+  data_ = data; 
+}
+
+AbstractStrategy::~AbstractStrategy() {}
 

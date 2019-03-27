@@ -5,14 +5,14 @@ Connection::Connection(QObject* parent)
       receiver_port_(0),
       k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()),
       reader_(this),
-      writer_(this, this) {
+      writer_(this) {
   connect(&reader_, SIGNAL(ReadyReadBlock()), this, SLOT(ReceiveRequests()));
   }
 
 Connection::Connection(qintptr socketDescriptor, QObject* parent)
     : k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()),
       reader_(this),
-      writer_(this, this) {
+      writer_(this) {
   setSocketDescriptor(socketDescriptor);
   connect(&reader_, SIGNAL(ReadyReadBlock()), this, SLOT(ReceiveRequests()));
 }

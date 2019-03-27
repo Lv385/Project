@@ -3,8 +3,10 @@
 
 #include "friendsupdatemanager.h"
 #include "peerinfo.h"
-#include "workmanager.h"
-
+#include "servermanager.h"
+#include "application_info.h"
+#include "localserver.h"
+#include "friendsmanager.h"
 #include <QByteArray>
 #include <QObject>
 #include <QTcpSocket>
@@ -26,7 +28,6 @@ class ClientController : public QObject {
   void Registered();
 
  private:
-
   void SendMessage(PeerInfo peer_info, QString message);
   void LogIn(QString login, QString password);
   void Register();
@@ -34,15 +35,24 @@ class ClientController : public QObject {
   void DeleteFriend();
   void OnFriendRequestRecieved();
 
+ private slots:
+  void OnNewConnection(QTcpSocket* socket);
+
  private:
   void Start();
   void Stop();
 
-  WorkManager* work_manager_;
   FriendsUpdateManager* friendsupdate_manager;
 
   PeerInfo my_info;
   QHash<unsigned, PeerInfo> friends_cache;
+
+  LocalServer* local_server_;
+
+  FriendsManager client_worker_;
+  ServerManager server_worker_;
+
+  ApplicationInfo app_info_;
 };
 
 #endif  // !CLIENT_CONTROLLER_H

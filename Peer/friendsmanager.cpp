@@ -1,10 +1,10 @@
-#include "clientworker.h"
+#include "friendsmanager.h"
 
-ClientWorker::ClientWorker(QObject* parent) : QObject(parent) {}
+FriendsManager::FriendsManager() {}
 
-ClientWorker::~ClientWorker() {}
+FriendsManager::~FriendsManager() {}
 
-void ClientWorker::SendRequest(PeerInfo peer_info, quint8 request_type,
+void FriendsManager::SendRequest(PeerInfo peer_info, quint8 request_type,
                                QByteArray data) {
   quint32 id = peer_info.id;
 
@@ -21,12 +21,12 @@ void ClientWorker::SendRequest(PeerInfo peer_info, quint8 request_type,
   delete strategy;
 }
 
-void ClientWorker::RemoveWorker(unsigned id) {
+void FriendsManager::RemoveWorker(unsigned id) {
   delete workers_.find(id).value();
   workers_.remove(id);
 }
 
-void ClientWorker::OnFirstRequestRecieved() {
+void FriendsManager::OnFirstRequestRecieved() {
   BlockReader* reader = qobject_cast<BlockReader*>(sender());
   QByteArray data = reader->ReadNextBlock();
 
