@@ -23,14 +23,17 @@ class Logger {
    static QString ConvertQuint32ToString(quint32  num);
  private:
    //static void WriteLogToFile(QString&,QString&);
-   static QString Log_Empty(quint8 type);
+  // static QString Log_Empty(quint8 type);
    static void WriteLogToFile(QString&);
-   static QString Log_REGISTER_SUCCEED(RegisterSuccessInfo &out);
-   static QString Log_ADD_FRIEND_REQUEST(AddFriendInfo &out);
-   static QString Log_FRIEND_UPDATE_INFO(FriendUpdateInfo &out);
+   static QString Log_RegisterSuccessInfo(RegisterSuccessInfo &out);
+   static QString Log_AddFriendInfo(AddFriendInfo &out);
+   static QString Log_FriendUpdateInfo(FriendUpdateInfo &out);
    static QString Log_LoginInfo(LoginInfo &out);
    static QString Log_RegisterInfo(RegisterInfo&out);
    static QString Log_FriendRequestInfo(FriendRequestInfo &out);   
-   static QString Log_NEW_FRIEND_INFO(NewFriendInfo &out);
+   static QString Log_NewFriendInfo(NewFriendInfo &out);
    static void RemoveShit(QString &stringd);
+   
+   //static std::map<quint8, QString> m;
+
 };
