@@ -1,18 +1,13 @@
 #ifndef SIGNALREDIRECTOR_H
 #define SIGNALREDIRECTOR_H
 
-#include "clientcontroller.h"
-
 #include <QObject>
+#include "clientcontroller.h"
 
 class SignalRedirector : public QObject {
   Q_OBJECT
-
  public:
-  static SignalRedirector& get_instance() {
-    static SignalRedirector instance(nullptr);
-    return instance;
-  }
+  static SignalRedirector& get_instance();
   SignalRedirector(SignalRedirector const&) = delete;
   void operator=(SignalRedirector const&) = delete;
 
@@ -21,9 +16,10 @@ class SignalRedirector : public QObject {
   void ConnectToLoggedIn(QObject* object);
 
  private:
-  SignalRedirector(QObject* parent);
+  SignalRedirector();
   ClientController* clientController_;
-};
+}; 
+
+
 
 #endif  // !SIGNALREDIRECTOR_H
-

@@ -2,23 +2,37 @@
 #define WORKER_H
 
 #include "abstractstrategy.h"
+#include "messagestrategy.h"
 #include "blockreader.h"
 
-#include <QObject>
 #include <QByteArray>
+#include <QObject>
+
+#include "../Parser&Structs/parser.h"
 
 class Worker : public QObject {
   Q_OBJECT
 
  public:
-  Worker(QObject *parent);
-
+  Worker(BlockReader* reader);
   ~Worker();
 
- private:
+  void DoWork();
+  void SetStrategy(StrategyType strategy_type);
+
+ signals:
+  void Disconnected(unsigned id);
+
+ private slots:
+  void OnDisconnected();
+  void OnReadyReadBlock();
+
+private:
   AbstractStrategy* strategy_;
-  QByteArray data_;
- // BlockReader reader;
+  PeerInfo peer_info_;
+  QTcpSocket* socket_;
+  BlockReader* reader_;
+  QHash<StrategyType, AbstractStrategy*> strategies_;
 };
 
 #endif  // !WORKER_H

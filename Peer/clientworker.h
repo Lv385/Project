@@ -1,33 +1,33 @@
 #ifndef CLIENTWORKER_H
 #define CLIENTWORKER_H
 
-#include "abstractstrategy.h"
-#include "peerinfo.h"
-#include "messagestrategy.h"
 #include "../Parser&Structs/parser.h"
+#include "abstractstrategy.h"
+#include "messagestrategy.h"
+#include "peerinfo.h"
 #include "worker.h"
 
 #include <QByteArray>
+#include <QList>
 #include <QObject>
 #include <QSet>
 #include <QTcpSocket>
-#include <QList>
 
 class ClientWorker : public QObject {
   Q_OBJECT
 
-public:
+ public:
   ClientWorker(QObject *parent);
   ~ClientWorker();
   void SendRequest(PeerInfo peer_info, quint8 reques_type, QByteArray data);
- 
-private slots:
-  void OnFirstRequest();
-  void OnRequestRecieved();
 
-private:
+ private slots:
+  void OnFirstRequestRecieved();
+  void RemoveWorker(unsigned id);
+
+ private:
   QList<QTcpSocket *> undefined_connections;
-  QHash<unsigned, AbstractStrategy*> connections_;
+  QHash<unsigned, Worker *> workers_;
   QSet<AbstractStrategy *> works_;
 };
 

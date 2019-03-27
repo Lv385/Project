@@ -72,13 +72,30 @@ quint8 Parser::getRequestType(QByteArray& data) {
   return result;
 }
 
-QByteArray Parser::RegisterInfo_ToByteArray(RegisterInfo& regis_info) {	  
+QByteArray Parser::ConnectInfo_ToByteArray(ConnectInfo& connect_info) {
+  QByteArray result;
+  QDataStream out(&result, QIODevice::WriteOnly);
+  out << quint8(ClientClientRequest::CONNECT);  // type
+  out << connect_info.id;                       // id
+  return result;
+}
+
+ConnectInfo Parser::ParseAsConnectInfo(QByteArray& data) {
+  ConnectInfo result;
+  QDataStream in(&data, QIODevice::ReadOnly);
+  quint8 type;
+  in >> type;
+  in >> result.id;
+  return result;
+}
+
+QByteArray Parser::RegisterInfo_ToByteArray(RegisterInfo& register_info) {	  
   QByteArray result;
   QDataStream out(&result, QIODevice::WriteOnly);
   out << quint8(ClientRequest::REGISTER);               // type
-  out << regis_info.port;                      // port
-  out << regis_info.login;                // login
-  out << regis_info.password;               // password   
+  out << register_info.port;                            // port
+  out << register_info.login;                           // login
+  out << register_info.password;                        // password   
   return result;
 }
 
@@ -111,8 +128,6 @@ RegisterSuccessInfo Parser::ParseAsRegisterSuccessInfo(QByteArray& data) {
   return result;
 }
 
-
-
 QByteArray Parser::FriendUpdateInfo_ToByteArray(
     FriendUpdateInfo& friend_update_info) {
   QByteArray result;
@@ -142,9 +157,8 @@ FriendUpdateInfo Parser::ParseAsFriendUpdateInfo(QByteArray& data) {
 QByteArray Parser::Message_ToByteArray(Message& message) {
   QByteArray result;
   QDataStream out(&result, QIODevice::WriteOnly);
-  out << quint8(ClientRequest::MESSAGE);  // type
-  out << message.id;                      // id
-  out << message.message;                 // message
+  out << quint8(ClientClientRequest::MESSAGE);    // type
+  out << message.message;                         // message
   return result;
 }
 
@@ -152,9 +166,8 @@ Message Parser::ParseAsMessage(QByteArray& data) {
   Message result;
   QDataStream in(&data, QIODevice::ReadOnly);
   quint8 type;
-  in >> type;
-  in >> result.id;
-  in >> result.message;
+  in >> type;                                     // type
+  in >> result.message;                           // message
   return result;
 }
 

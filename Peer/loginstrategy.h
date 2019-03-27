@@ -9,7 +9,7 @@ class LoginStrategy : public AbstractStrategy {
   Q_OBJECT
 
  public:
-  LoginStrategy(QObject *parent);
+  LoginStrategy(PeerInfo peer_info);
   ~LoginStrategy();
 };
 

@@ -14,8 +14,7 @@ class LocalServer : public QTcpServer {
   void set_remote_server_ip_port(QHostAddress& remote_server_ip,
                              quint16& remote_server_port);
  signals:
-  void NewClientConnection(QTcpSocket* socket);
-  void NewServerConnection(QTcpSocket* socket);
+  void NewConnection(QTcpSocket* socket);
 
  protected:
   void incomingConnection(qintptr socketDescriptor) override;

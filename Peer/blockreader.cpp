@@ -1,8 +1,7 @@
 #include "blockreader.h"
 
-BlockReader::BlockReader(QObject* parent, QTcpSocket* socket)
-    : QObject(parent),
-      socket_(socket),
+BlockReader::BlockReader(QTcpSocket* socket)
+    : socket_(socket),
       unpossible_sequence_(Parser::GetUnpossibleSequence()) {
   connect(socket_, SIGNAL(readyRead()), this, SLOT(OnReadyRead()));
 }
@@ -17,8 +16,12 @@ QByteArray BlockReader::ReadNextBlock() {
 }
 
 bool BlockReader::HasPendingBlock() { 
-  return blocks_.size() != 0;
+  return blocks_.size() != 0; }
+
+bool BlockReader::WaitForReadyReadBlock() { 
+  return false; 
 }
+
 void BlockReader::OnReadyRead() {
   int separatorIndex;
 

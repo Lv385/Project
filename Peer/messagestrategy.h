@@ -9,7 +9,7 @@ class MessageStrategy : public AbstractStrategy
   Q_OBJECT
 
 public:
-  MessageStrategy(QObject *parent, PeerInfo peer_info, QByteArray data,
+  MessageStrategy(QObject *parent, PeerInfo peer_info, 
                   QTcpSocket* socket);
   ~MessageStrategy();
  public slots:

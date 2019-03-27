@@ -1,14 +1,16 @@
 #ifndef CLIENT_CONTROLLER_H
 #define CLIENT_CONTROLLER_H
 
-#include <QHash>
-#include <QObject>
-#include <QSet>
-
-#include "../Parser&Structs/request_types.h"
 #include "friendsupdatemanager.h"
 #include "peerinfo.h"
 #include "workmanager.h"
+
+#include <QByteArray>
+#include <QObject>
+#include <QTcpSocket>
+#include <memory>
+
+#include "../Parser&Structs/request_types.h"
 
 class ClientController : public QObject {
   Q_OBJECT
@@ -20,9 +22,11 @@ class ClientController : public QObject {
  signals:
   void messageReceived();
   void messageSent();
+  void LoggedIn();
+  void Registered();
 
-  private :
-  
+ private:
+
   void SendMessage(PeerInfo peer_info, QString message);
   void LogIn(QString login, QString password);
   void Register();

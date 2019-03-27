@@ -3,7 +3,7 @@
 
 #include "abstractstrategy.h"
 #include "messagestrategy.h"
-
+#include "blockreader.h"
 #include <QObject>
 #include <memory>
 
@@ -13,10 +13,10 @@ class ServerWorker : public QObject {
  public:
   ServerWorker(QObject* parent);
   ~ServerWorker();
+  void SetSocket(QTcpSocket* socket);
 
  private:
-
-  QTcpSocket* socket_;
+  BlockReader* reader_;
 };
 
-#endif // !SERVERWORKER_H
+#endif  // !SERVERWORKER_H

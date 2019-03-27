@@ -88,7 +88,7 @@ void Peer::SendRequest(unsigned id, QString message) {
   }
 
   if (connections_[id]->state() == QAbstractSocket::ConnectedState) {
-    Message mes = {my_id_, message};
+    Message mes = {message};
     connections_[id]->SendMessage(mes);
     client_dal_.AddMessageToDB(message, id, my_id_);
   }

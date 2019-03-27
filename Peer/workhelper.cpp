@@ -2,7 +2,7 @@
 
 WorkHelper::WorkHelper(QObject *parent, QTcpSocket* socket)
     : QObject(parent) 
-      , peer_info(std::make_shared<PeerInfo>()) {
+      , peer_info() {
   
 }
 
@@ -11,10 +11,7 @@ WorkHelper::~WorkHelper() {}
 AbstractStrategy* WorkHelper::GetWork() { return nullptr; }
 
 void WorkHelper::OnReadyRead() {
-  QByteArray nextData;
-  int separatorIndex;
-
-  *data_ = socket_->readAll();
+  
 
   //// work on all requests if there are more than one
   //// using such a separator, untill we design something better

@@ -13,14 +13,14 @@ class BlockReader : public QObject {
   Q_OBJECT
 
  public:
-  BlockReader(QObject* parent, QTcpSocket* socket);
+  BlockReader(QTcpSocket* socket);
   ~BlockReader();
 
   QByteArray ReadNextBlock();
   bool HasPendingBlock();
-  bool WaitForBlock();
+  bool WaitForReadyReadBlock();
 
- signals:
+signals:
   void ReadyReadBlock();
 
  private slots:

@@ -4,14 +4,14 @@ Connection::Connection(QObject* parent)
       receiver_ip_(QHostAddress::Null),
       receiver_port_(0),
       k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()),
-      reader_(this, this),
+      reader_(this),
       writer_(this, this) {
   connect(&reader_, SIGNAL(ReadyReadBlock()), this, SLOT(ReceiveRequests()));
   }
 
 Connection::Connection(qintptr socketDescriptor, QObject* parent)
     : k_unpossiblle_2_bytes_sequence_(Parser::GetUnpossibleSequence()),
-      reader_(this, this),
+      reader_(this),
       writer_(this, this) {
   setSocketDescriptor(socketDescriptor);
   connect(&reader_, SIGNAL(ReadyReadBlock()), this, SLOT(ReceiveRequests()));
@@ -76,12 +76,12 @@ void Connection::ReceiveRequests() {
     switch (requestType) {
     case (quint8)ClientClientRequest::MESSAGE: {
         Message mes = Parser::ParseAsMessage(data);
-      QString str = QString("<%1>: %2").arg(client_dal_.GetLoginById(mes.id))
+      QString str = QString("<%1>: %2").arg("not working now")
                     .arg(mes.message);
 
       emit SendMessageToUI(str);
 
-      client_dal_.AddMessageToDB(mes.message, mes.id, mes.id);
+      //client_dal_.AddMessageToDB(mes.message, mes.id, mes.id);
 
       break;
     }
