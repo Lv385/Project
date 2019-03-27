@@ -6,17 +6,15 @@ namespace SQLDAL {
 class NotificationInfo : public Info {
  public:
   NotificationInfo(std::shared_ptr<Connect> Connect);
-  void Add(const unsigned int first_user_id, const unsigned int second_user_id);
-  QVector<unsigned int> Get(const unsigned int id);
-  void Delete(const unsigned int first_user_id,
-              const unsigned int second_user_id);
+  NotificationInfo();
+  void Add();
+  QVector<NotificationInfo> Get(const unsigned int id);
+  void Delete();
 
  protected:
-  QString AddQuery(const unsigned int first_user_id,
-                   const unsigned int second_user_id);
+  QString AddQuery();
   QString GetQuery(const unsigned int id);
-  QString DeleteQuery(const unsigned int first_user_id,
-                      const unsigned int second_user_id);
+  QString DeleteQuery();
 };
 }  // namespace SQLDAL
 

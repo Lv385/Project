@@ -5,18 +5,17 @@
 namespace SQLDAL {
 class RequestInfo : public Info {
  public:
+	 RequestInfo(unsigned int f_id, unsigned int s_id, std::shared_ptr<Connect> Connect);
   RequestInfo(std::shared_ptr<Connect> Connect);
-  void Add(const unsigned int first_user_id, const unsigned int second_user_id);
-  QVector<unsigned int> Get(const unsigned int id);
-  void Delete(const unsigned int first_user_id,
-              const unsigned int second_user_id);
+  RequestInfo();
+  void Add();
+  QVector<RequestInfo> Get(const unsigned int id);
+  void Delete();
 
  protected:
-  QString AddQuery(const unsigned int first_user_id,
-                   const unsigned int second_user_id);
+  QString AddQuery();
   QString GetQuery(const unsigned int id);
-  QString DeleteQuery(const unsigned int first_user_id,
-                      const unsigned int second_user_id);
+  QString DeleteQuery();
 };
 }  // namespace SQLDAL
 

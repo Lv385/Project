@@ -6,8 +6,8 @@
 #include <memory>
 #include "Connection/connect.h"
 
-#define CLIENT_DB "../DAL2 dont touch/DAL2/Client"
-#define SERVER_DB "../DAL2 dont touch/DAL2/Server"
+#define CLIENT_DB "Client"
+#define SERVER_DB "Server"
 
 namespace SQLDAL {
 	class Statement {

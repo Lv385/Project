@@ -2,34 +2,38 @@
 #include "friendinfo.h"
 
 namespace SQLDAL {
-FriendInfo::FriendInfo(std::shared_ptr<Connect> Connect) {
+FriendInfo::FriendInfo(std::shared_ptr<Connect> Connect):Info(Connect) {
   Connect_->Open(SERVER_DB);
 }
-void FriendInfo::Add(const unsigned int first_user_id,
-                     const unsigned int second_user_id) {
-  ExectuteQuery(AddQuery(first_user_id, second_user_id));
+FriendInfo::FriendInfo()
+{
+}
+void FriendInfo::Add() {
+  ExectuteQuery(AddQuery());
   query_.finish();
 }
 
-QVector<unsigned int> FriendInfo::Get(const unsigned int id) {
-  QVector<unsigned int> result;
+QVector<FriendInfo> FriendInfo::Get(const unsigned int id) {
+  QVector<FriendInfo> result;
   ExectuteQuery(GetQuery(id));
   
   while (query_.next()) {
-    result.push_back(query_.record().value(0).toUInt());
+	  FriendInfo a(Connect_);
+	  a.first_user_id = id;
+	  a.second_user_id = query_.record().value(0).toUInt();
+
+    result.push_back(a);
   }
   query_.finish();
   return result;
 }
 
-void FriendInfo::Delete(const unsigned int first_user_id,
-                        const unsigned int second_user_id) {
-  ExectuteQuery(DeleteQuery(first_user_id,second_user_id));
+void FriendInfo::Delete() {
+  ExectuteQuery(DeleteQuery());
   query_.finish();
 }
 
-QString FriendInfo::AddQuery(const unsigned int first_user_id,
-                             const unsigned int second_user_id) {
+QString FriendInfo::AddQuery() {
   return QString(
       "insert into friends (first_user_ID, second_user_ID) values (" +
       QString::number(first_user_id) + ", " + QString::number(second_user_id) + ")");
@@ -40,8 +44,7 @@ QString FriendInfo::GetQuery(const unsigned int id) {
                  QString::number(id));
 }
 
-QString FriendInfo::DeleteQuery(const unsigned int first_user_id,
-                                const unsigned int second_user_id) {
+QString FriendInfo::DeleteQuery() {
   return QString("delete from friends where first_user_ID = " +
                  QString::number(first_user_id) +
                  " and second_user_ID = " + QString::number(second_user_id));

@@ -2,6 +2,9 @@
 namespace SQLDAL {
 User::User(std::shared_ptr<Connect> Connect) : Statement(Connect) {
   Connect_->Open(SERVER_DB);  // Path
+  friend_obj = std::make_shared<FriendInfo>(Connect);
+  request_obj = std::make_shared<RequestInfo>(Connect);
+  notification_obj = std::make_shared<NotificationInfo>(Connect);
 }
 
 User::~User() {}
@@ -32,6 +35,38 @@ void User::DeleteUser() {
   ExectuteQuery(DeleteQuery());
   query_.finish();
   // query_.clear();
+}
+
+void User::GetFriends()
+{
+	friends = friend_obj->Get(id);
+
+}
+
+void User::GetFriendsRequest()
+{
+	requests = request_obj->Get(id);
+}
+
+void User::GetFriendsNotification()
+{
+	notification = notification_obj->Get(id);
+}
+
+void User::AddFriend(unsigned int user_id)
+{
+	friend_obj->first_user_id = id;
+	friend_obj->second_user_id = user_id;
+	friend_obj->Add();
+	GetFriends();
+}
+
+void User::AddFriendRequest(unsigned int id)
+{
+}
+
+void User::AddFriendNotification(unsigned int id)
+{
 }
 
 QString User::SelectQuery() {
