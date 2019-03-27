@@ -3,6 +3,7 @@
 GUIManager::GUIManager(QObject *parent)
     : QObject(parent),
       my_id(1) {     //for testing
+
   LoadFriends();
   loadMessages("markiyan");
 }
@@ -16,14 +17,13 @@ MessageModel* GUIManager::message_model() {
 }
 
 void GUIManager::newFriend() {
-  std::shared_ptr<FriendItem> new_friend = std::make_shared<FriendItem>("oleksyk", true);
+  FriendItem* new_friend = new FriendItem("oleksyk", true);
   friend_model_.AddFriendToList(new_friend);
 }
 
-void GUIManager::deleteFriend(std::shared_ptr<FriendItem> friend_to_delete) {
+void GUIManager::deleteFriend(FriendItem* friend_to_delete) {
   if (!friend_to_delete)
       return;
-
   friend_model_.RemoveFriendFromList(friend_to_delete);
 }
 
@@ -56,7 +56,7 @@ void GUIManager::LoadFriends() {
 
   for(const QString& friend_login : friends) {
     bool status = client_dal_.GetFriendStatus(client_dal_.GetIDByLogin(friend_login));  // just for test
-    std::shared_ptr<FriendItem> friend_item = std::make_shared<FriendItem>(friend_login, status);
+    FriendItem* friend_item = new FriendItem(friend_login, status);
     friend_model_.AddFriendToList(friend_item);
   }
 }

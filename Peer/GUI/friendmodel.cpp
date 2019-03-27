@@ -1,6 +1,12 @@
 #include "friendmodel.h"
 #include "rolesenum.h"
 
+#include <memory>
+#include <QMetaType>
+#include <QDebug>
+
+Q_DECLARE_SMART_POINTER_METATYPE(std::shared_ptr)
+
 FriendModel::FriendModel(QObject *parent)
   : QAbstractListModel(parent) {
 }
@@ -14,7 +20,7 @@ QVariant FriendModel::data(const QModelIndex &index, int role) const {
     return QVariant();
 
   if (role == Roles::FRIEND_ROLE)
-    return QVariant::fromValue(qobject_cast<QObject*>(friends_list_[index.row()].get()));
+    return QVariant::fromValue(qobject_cast<QObject*>(friends_list_[index.row()]));
 
   return QVariant();
 }
@@ -25,7 +31,7 @@ QHash<int, QByteArray> FriendModel::roleNames() const {
   return names;
 }
 
-void FriendModel::AddFriendToList(std::shared_ptr<FriendItem> new_friend) {  //adding to an end
+void FriendModel::AddFriendToList(FriendItem* new_friend) {  //adding to an end
   const int index = friends_list_.size();
 
   beginInsertRows(QModelIndex(), index, index);
@@ -33,12 +39,12 @@ void FriendModel::AddFriendToList(std::shared_ptr<FriendItem> new_friend) {  //a
   endInsertRows();
 }
 
-bool FriendModel::RemoveFriendFromList(std::shared_ptr<FriendItem> friend_to_delete) {
+bool FriendModel::RemoveFriendFromList(FriendItem* friend_to_delete) {
   if (friends_list_.contains(friend_to_delete)) {
     const int index = friends_list_.indexOf(friend_to_delete);
 
     beginRemoveRows(QModelIndex(), index, index);
-    friends_list_[index]->deleteLater();
+    //friends_list_[index]->deleteLater();
     friends_list_.removeAt(index);
     endRemoveRows();
 

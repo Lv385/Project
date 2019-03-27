@@ -53,7 +53,7 @@ Item {
                     anchors.right: parent.right
                     anchors.verticalCenter: parent.verticalCenter
                     anchors.margins: 25
-                    color: object.status ? onlineFriendColor : offlineFriendColor
+                    color: friend.status ? onlineFriendColor : offlineFriendColor
                     radius: 15
                 }
 
