@@ -23,8 +23,7 @@ Page {
             anchors.leftMargin: -13
             anchors.topMargin: 0
             anchors.fill: parent
-            source: "file:/D:/Projects/geometry.jpg"
-
+            source: "qrc:/geometry.jpg"
         }
     }
 
@@ -129,7 +128,7 @@ Page {
             text: qsTr("Log In")
             focusPolicy: Qt.StrongFocus
             font.pointSize: 16
-            focus:true
+            focus: true
 
             contentItem: Text {
                 font: buttonLogIn.font
@@ -138,11 +137,9 @@ Page {
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
             }
-            MouseArea
-            {
-                onClicked:
-                       (mouse.button === Qt.LeftButton) && (mouse.modifiers & Qt.ShiftModifier)
-
+            MouseArea {
+                onClicked: (mouse.button === Qt.LeftButton)
+                           && (mouse.modifiers & Qt.ShiftModifier)
             }
 
             background: Rectangle {
@@ -152,7 +149,6 @@ Page {
                 opacity: buttonLogIn.down ? 0.7 : 1
                 radius: height / 3
                 border.color: mainAppColor
-
             }
         }
 
@@ -184,23 +180,7 @@ Page {
             }
         }
     }
-
-
-
-
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
