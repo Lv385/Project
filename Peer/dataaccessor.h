@@ -8,15 +8,15 @@ class DataAccessor {
   DataAccessor();
   ~DataAccessor();
 
-  QString GetLoginById(const unsigned user_id);
-  QPair<QString, int> GetIPPort(const unsigned user_id);
-  QVector<SQLDAL::Friend> GetFriends();
-  QVector<SQLDAL::Message> GetMessages(const QString user_login);
-  unsigned GetIDByLogin(const QString user_login);
-  unsigned GetIDByIPPort(const QString ip, const unsigned port);
-  bool GetFriendStatus(const unsigned user_id);
+  QString get_login_by_id(const unsigned user_id);
+  QPair<QString, int> get_ip_port(const unsigned user_id);
+  QVector<SQLDAL::Friend> get_friends();
+  QVector<SQLDAL::Message> get_messages(const QString user_login);
+  unsigned get_id_by_login(const QString user_login);
+  unsigned get_id_by_ip_port(const QString ip, const unsigned port);
+  bool get_friends_status(const unsigned user_id);
 
-  void SetFriendStatus(const unsigned user_id, const bool status);
+  void set_friend_status(const unsigned user_id, const bool status);
 
   void AddMessageToDB(const QString message, const unsigned user_id, const unsigned owner_id);
   void UpdateIPPort(const unsigned id, const QString new_ip, const unsigned new_port);

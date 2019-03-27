@@ -42,10 +42,10 @@ void GUIManager::logIn2() {
 }
 
 void GUIManager::LoadFriends() {
-  QVector<SQLDAL::Friend> friends = client_data_.GetFriends();
+  QVector<SQLDAL::Friend> friends = client_data_.get_friends();
 
   for (const SQLDAL::Friend& i : friends) {
-    bool status = client_data_.GetFriendStatus(client_data_.GetIDByLogin(i.login));  // just for test
+    bool status = client_data_.get_friends_status(client_data_.get_id_by_login(i.login));  // just for test
     FriendItem* friend_item = new FriendItem(i.login, status);
     friend_model_.addFriendToList(friend_item);
   }

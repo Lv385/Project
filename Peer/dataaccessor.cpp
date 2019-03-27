@@ -6,51 +6,51 @@ DataAccessor::DataAccessor(){
 
 DataAccessor::~DataAccessor(){}
 
-QString DataAccessor::GetLoginById(const unsigned user_id) { 
+QString DataAccessor::get_login_by_id(const unsigned user_id) { 
   user_->id = user_id;
   user_->GetFriend();
   return user_->login;
 }
 
-QPair<QString, int> DataAccessor::GetIPPort(const unsigned user_id){
+QPair<QString, int> DataAccessor::get_ip_port(const unsigned user_id){
   user_->id = user_id;
   user_->GetFriend();
   QPair<QString, unsigned> ip_port{user_->ip, user_->port};
   return ip_port;
 }
 
-QVector<SQLDAL::Friend> DataAccessor::GetFriends() { 
+QVector<SQLDAL::Friend> DataAccessor::get_friends() { 
   QVector<SQLDAL::Friend> friends = user_->GetFriends();
   return friends;
 }
 
-unsigned DataAccessor::GetIDByLogin(const QString user_login){ 
+unsigned DataAccessor::get_id_by_login(const QString user_login){ 
   user_->login = user_login;
   user_->GetFriend();
   return user_->id;
 }
 
-unsigned DataAccessor::GetIDByIPPort(const QString ip, const unsigned port) {
+unsigned DataAccessor::get_id_by_ip_port(const QString ip, const unsigned port) {
   user_->ip = ip;
   user_->port = port;
   user_->GetFriend();
   return user_->id;
 }
 
-QVector<SQLDAL::Message> DataAccessor::GetMessages(const QString user_login) {
-  message_->chat_id = GetIDByLogin(user_login);
+QVector<SQLDAL::Message> DataAccessor::get_messages(const QString user_login) {
+  message_->chat_id = get_id_by_login(user_login);
   QVector<SQLDAL::Message> messages = message_->GetMessages();
   return messages;
 }
 
-void DataAccessor::SetFriendStatus(const unsigned user_id, const bool status) {
+void DataAccessor::set_friend_status(const unsigned user_id, const bool status) {
   user_->id = user_id;
   user_->GetFriend();
   user_->status = status;
   user_->UpdateFriend();
 }
 
-bool DataAccessor::GetFriendStatus(const unsigned user_id){
+bool DataAccessor::get_friends_status(const unsigned user_id){
   user_->id = user_id;
   user_->GetFriend();
   return user_->status;

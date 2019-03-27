@@ -114,7 +114,7 @@ void Peer::SendRequest(unsigned id, QString message) {
 
 bool Peer::ConnectToPeer(unsigned id) {
   //tcp_socket_ = new QTcpSocket(this);
-  QPair<QString, int> ip_port = client_data_.GetIPPort(id); // marko - change to QPair<QString, quint16>  GetIPPort(const unsigned& user_id);
+  QPair<QString, int> ip_port = client_data_.get_ip_port(id); // marko - change to QPair<QString, quint16>  GetIPPort(const unsigned& user_id);
   connections_[id]->connectToHost(ip_port.first, ip_port.second);
   QString logMessage = receiver_ip_.toString() + " : " + QString::number(ip_port.second);
   logger_->WriteLog(LogType::INFO, " trying connect to: " + logMessage);
@@ -161,7 +161,7 @@ void Peer::SendUpdateInfo() {
   QByteArray to_write = Parser::IdPort_ToByteArray(my_id_port); //pack
   to_write.append(Parser::GetUnpossibleSequence());			    //append separator
 
-  QVector<SQLDAL::Friend> friends = client_data_.GetFriends();
+  QVector<SQLDAL::Friend> friends = client_data_.get_friends();
 
   for (const SQLDAL::Friend& i : friends) {
     update_sender_.writeDatagram(to_write, QHostAddress(i.ip), my_listen_port_);
@@ -185,7 +185,7 @@ void Peer::UpdateFriendsInfo() {
 
 
     if (check_timers_.find(updated_friend_info.id) == check_timers_.end()) { 
-      client_data_.SetFriendStatus(updated_friend_info.id, true);
+      client_data_.set_friend_status(updated_friend_info.id, true);
 
 	  QTimer* timer = new QTimer();
       timer->start(10000);
@@ -200,7 +200,7 @@ void Peer::UpdateFriendsInfo() {
 
    logger_->WriteLog(LogType::INFO,
                       " updated " +
-                           client_data_.GetLoginById(updated_friend_info.id) +
+                           client_data_.get_login_by_id(updated_friend_info.id) +
                            "'s info");
   }
 }
@@ -209,11 +209,11 @@ void Peer::SetOfflineStatus() {
   QTimer* to_delete = static_cast<QTimer*>(QObject::sender());   //get user id that came offline
   unsigned id = check_timers_.key(to_delete);
 
-  client_data_.SetFriendStatus(id, false);
+  client_data_.set_friend_status(id, false);
 
   logger_->WriteLog(LogType::INFO,
                     " set " + 
-    client_data_.GetLoginById(id) + " offline status");
+    client_data_.get_login_by_id(id) + " offline status");
 
   check_timers_.remove(id);
   to_delete->deleteLater();  // use deleteLater() instead of delete
@@ -224,7 +224,7 @@ bool Peer::LogIn(QString login, QString password) {
   server_connection_ = new Connection(this);
   
   LoginInfo info;
-  info.id = client_data_.GetIDByLogin(login);
+  info.id = client_data_.get_id_by_login(login);
   info.password = password;
   info.port = get_my_port();
 
@@ -244,7 +244,7 @@ bool Peer::LogIn(QString login, QString password) {
 
 void Peer::SetSocket(Connection* connection) {
 
-  unsigned id = client_data_.GetIDByIPPort(connection->peerAddress().toString(), connection->peerPort());
+  unsigned id = client_data_.get_id_by_ip_port(connection->peerAddress().toString(), connection->peerPort());
 
   connections_[id] = connection;
 

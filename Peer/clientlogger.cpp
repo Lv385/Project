@@ -40,12 +40,12 @@ void ClientLogger::WriteLog(LogType type, const QString& msg) {
   emit DisplayLog(ErrorValueNames[type], msg);
 }
 
-void ClientLogger::SetSpecificLog(LogType specific_type) {
+void ClientLogger::set_specific_log(LogType specific_type) {
   specific_log_ = true;
   specific_type_ = specific_type;
 }
 
-void ClientLogger::SetLogLevel(LogLevel log_level) { 
+void ClientLogger::set_log_level(LogLevel log_level) { 
   log_level_ = log_level; 
 }
 
