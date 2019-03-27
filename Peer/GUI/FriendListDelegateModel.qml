@@ -23,8 +23,6 @@ Item {
                 id: friendField
                 Layout.fillHeight: true
                 Layout.fillWidth: true
-                border.color: borderColor
-                border.width: 1
 
                 color:friendFieldMouseArea.containsMouse? friendMouseAreaColor : friendListColor
                 MouseArea {
@@ -32,10 +30,20 @@ Item {
                    hoverEnabled: true
                    anchors.fill: friendField
 
-                   onClicked: {
-                    console.log("On " + friendName.text + " clicked")
-                   }
-               }
+
+                                    onClicked: {
+                                        friendField.color = choosenFriendColor
+                                        friendName.color = mainTextCOlor
+                                        console.log("On " + friendName.text + " clicked")
+
+                                    }
+                                   onExited :  {
+                                 friendField.color=friendListColor
+                                  friendName.color=borderColor
+                                   }
+                                }
+
+
 
                 Text {
                     id: friendName

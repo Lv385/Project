@@ -7,16 +7,7 @@ MainPageForm {
 
     background: Rectangle {
         color: backGroundColor
-        Text
-        {
-            padding: 10
-            text: qsTr("Contacts")
-            color: friendListColor
-            font.pixelSize: 23
-            horizontalAlignment: Text.AlignJustify
-            verticalAlignment: Text.AlignVCenter
-            font.family: "fontawesome"
-        }
+
     }
 
     FriendListDelegateModel {
@@ -34,9 +25,7 @@ MainPageForm {
     messageList.model: messageModel.visualModel
     messageList.spacing: 10
 
-    addButton.onClicked: {
-        guiManager.newFriend()
-    }
+
 
     sendButton.onClicked: {
         guiManager.newMessage(messageField.text)
