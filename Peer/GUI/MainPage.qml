@@ -13,12 +13,28 @@ MainPageForm {
     FriendListDelegateModel {
         id: friendModel
         visualModel.model: guiManager.friend_model
+        list: friendList
     }
 
     MessageListDelegateModel {
         id: messageModel
         visualModel.model: guiManager.message_model
     }
+
+    Component {
+        id: highlightBar
+        Rectangle {
+            width: friendList.width; height: 40
+            color: friendMouseAreaColor
+            y: friendList.currentItem.y;
+            //Behavior on y { SpringAnimation { spring: 2; damping: 0.1 } }
+        }
+    }
+
+    friendList.focus: true
+    friendList.highlight: highlightBar
+    friendList.highlightFollowsCurrentItem: false
+
 
     friendList.model: friendModel.visualModel
 

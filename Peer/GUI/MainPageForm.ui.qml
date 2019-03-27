@@ -36,10 +36,10 @@ Page {
             }
             Button {
                 id: findButton1
-                x: 170
-                y: 5
-                width: 100
-                height: 40
+                x: 209
+                y: 13
+                width: 60
+                height: 25
                 text: qsTr("Search")
                 focusPolicy: Qt.WheelFocus
                 enabled: messageField.length > 0
@@ -48,8 +48,8 @@ Page {
     }
 
     Rectangle {
-        x: 0
-        y: 81
+        x: friendList.x
+        y: friendList.y
         width: friendList.width
         height: friendList.height
         color: friendListColor
@@ -65,12 +65,6 @@ Page {
         flickableDirection: Flickable.VerticalFlick
         boundsBehavior: Flickable.StopAtBounds
         orientation: ListView.Vertical
-
-        focus: true
-        highlight: Rectangle {
-            color: "lightsteelblue"
-            radius: 5
-        }
     }
 
     ColumnLayout {
@@ -95,7 +89,7 @@ Page {
             spacing: 12
 
             ScrollBar.vertical: ScrollBar {
-            anchors.left: parent.right
+                anchors.left: parent.right
             }
         }
 
@@ -127,26 +121,16 @@ Page {
 
             Button {
                 id: sendButton
-                x: 399
-                y: -16
+                x: 417
+                y: -4
+                width: 82
+                height: 28
                 text: qsTr("Send")
                 enabled: messageField.length > 0
             }
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
