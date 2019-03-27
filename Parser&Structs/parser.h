@@ -10,6 +10,7 @@ class Parser {
  public:
   static quint8 getRequestType(QByteArray& data);
 
+  
   static QByteArray ConnectInfo_ToByteArray(ConnectInfo& connect_info);
   static ConnectInfo ParseAsConnectInfo(QByteArray& data);
 
@@ -31,10 +32,12 @@ class Parser {
   static QByteArray AddFriendInfo_ToByteArray(AddFriendInfo& login_info);
   static AddFriendInfo ParseAsAddFriendInfo(QByteArray& data);  
 
-  static FriendUpdateInfo ParseAsFriendUpdateInfo(QByteArray& data);
-  static QByteArray FriendUpdateInfo_ToByteArray(
-    FriendUpdateInfo& friend_update_info);
+  static NewFriendInfo ParseAsNewFriendInfo(QByteArray& data);
+  static QByteArray NewFriendInfo_ToByteArray(NewFriendInfo& new_friend_info);
 
+  static QByteArray FriendUpdateInfo_ToByteArray(FriendUpdateInfo& friend_update_info);
+  static FriendUpdateInfo ParseAsFriendUpdateInfo(QByteArray& data);
+ 
   static QByteArray GetUnpossibleSequence();
   // hardcode, this shoud be added to the end of any
   // QByteArray that is written by socket to awoid
