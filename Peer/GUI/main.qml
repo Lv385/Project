@@ -12,6 +12,7 @@ ApplicationWindow {
     title: qsTr("MesX")
 
     property color backGroundColor : "#3E2723"
+    property color topLoginPageColor: "#593c6c"
     property color mainAppColor: "#D7CCC8"
     property color mainTextCOlor: "#f0f0f0"
     property color friendListColor: "#A1887F"
@@ -20,6 +21,7 @@ ApplicationWindow {
     property color onlineFriendColor: "#AED581"
     property color offlineFriendColor: "#FFAB91"
     property color borderColor: "#4E342E"
+
 
     FontLoader {
         id: fontAwesome
@@ -45,7 +47,7 @@ ApplicationWindow {
         background: Rectangle {
             implicitWidth: rootWindow.width
             implicitHeight: 60
-            color: popupBackGroundColor
+            color: backGroundColor
         }
         y: (rootWindow.height - 60)
         modal: true
@@ -55,7 +57,7 @@ ApplicationWindow {
             id: message
             anchors.centerIn: parent
             font.pointSize: 12
-            color: popupTextCOlor
+            color: mainTextCOlor
         }
         onOpened: popupClose.start()
     }
