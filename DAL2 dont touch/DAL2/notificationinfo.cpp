@@ -8,17 +8,17 @@ namespace SQLDAL {
 	{
 	}
 
-	void SQLDAL::NotificationInfo::Add() {
-		ExectuteQuery(AddQuery());
+	void SQLDAL::NotificationInfo::Add(UsersID users_id) {
+		ExectuteQuery(AddQuery(users_id));
 		query_.finish();
 	}
 
-	QVector<NotificationInfo> SQLDAL::NotificationInfo::Get(const unsigned int id) {
-		QVector<NotificationInfo> result;
+	QVector<UsersID> SQLDAL::NotificationInfo::Get(const unsigned int id) {
+		QVector<UsersID> result;
 		ExectuteQuery(GetQuery(id));
 
 		while (query_.next()) {
-			NotificationInfo a(Connect_);
+			UsersID a;
 			a.second_user_id = id;
 			a.first_user_id = query_.record().value(0).toUInt();
 
@@ -28,15 +28,15 @@ namespace SQLDAL {
 		return result;
 	}
 
-	void SQLDAL::NotificationInfo::Delete() {
-		ExectuteQuery(DeleteQuery());
+	void SQLDAL::NotificationInfo::Delete(UsersID users_id) {
+		ExectuteQuery(DeleteQuery(users_id));
 		query_.finish();
 	}
 
-	QString SQLDAL::NotificationInfo::AddQuery() {
+	QString SQLDAL::NotificationInfo::AddQuery(UsersID users_id) {
 		return QString(
 			"insert into friends_notification (first_user_ID, second_user_ID) values (" +
-			QString::number(first_user_id) + ", " + QString::number(second_user_id) +
+			QString::number(users_id.first_user_id) + ", " + QString::number(users_id.second_user_id) +
 			")");
 	}
 
@@ -46,9 +46,9 @@ namespace SQLDAL {
 			QString::number(id));
 	}
 
-	QString SQLDAL::NotificationInfo::DeleteQuery() {
+	QString SQLDAL::NotificationInfo::DeleteQuery(UsersID users_id) {
 		return QString("delete from friends_notification where first_user_ID = " +
-			QString::number(first_user_id) +
-			" and second_user_ID = " + QString::number(second_user_id));
+			QString::number(users_id.first_user_id) +
+			" and second_user_ID = " + QString::number(users_id.second_user_id));
 	}
 }

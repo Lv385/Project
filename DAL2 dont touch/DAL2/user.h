@@ -15,9 +15,9 @@ namespace SQLDAL {
 		QString			ip;
 		unsigned int	port;
 
-		QVector<FriendInfo> friends; 
-		QVector<RequestInfo> requests;
-		QVector<NotificationInfo> notification;
+		QVector<UsersID> friends; 
+		QVector<UsersID> requests;
+		QVector<UsersID> notification;
 
 		void			GetUser();             // Select
 		void			UpdateUser();          // Update
@@ -26,9 +26,12 @@ namespace SQLDAL {
 		void			GetFriends();
 		void			GetFriendsRequest();
 		void			GetFriendsNotification();
-		void			AddFriend(unsigned int id);
-		void			AddFriendRequest(unsigned int id);
-		void			AddFriendNotification(unsigned int id);
+		void			AddFriend(unsigned int user_id);
+		void			AddFriendRequest(unsigned int user_id);
+		void			AddFriendNotification(unsigned int user_id);
+		void            DeleteFriend(unsigned int user_id);
+		void			DeleteFriendRequest(unsigned int user_id);
+		void			DeleteFriendNotification(unsigned int user_id);
 
 	private:
 		std::shared_ptr<FriendInfo> friend_obj;
