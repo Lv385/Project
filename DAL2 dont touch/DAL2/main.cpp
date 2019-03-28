@@ -21,9 +21,9 @@ int main(int argc, char *argv[]) {
   user->DeleteMessage();*/
 
   //fr_rq->Add(2, 3);
-  //user->id = 3;
-  //user->GetFriendsRequest();
-  //std::cout << user->requests[0].first_user_id;
-  ////user->requests[0].Delete();
+  user->id = 3;
+  user->GetFriendsRequest();
+  std::cout << user->requests[0].first_user_id;
+  //user->requests[0].Delete();
   return a.exec();
 }
