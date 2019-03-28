@@ -6,6 +6,8 @@ GUIManager::GUIManager(QObject *parent)
 
   LoadFriends();
   loadMessages(friend_model_.GetFirstFriend());
+  newFriendRiequest();
+  newFriendRiequest();
 }
 
 FriendModel* GUIManager::friend_model() {
@@ -51,7 +53,17 @@ void GUIManager::loadMessages(QString friend_login) {
       message_model_.AddMessageToList(new_message);
     }
   }
+}
 
+void GUIManager::deleteFriendRiequest(FriendRequestItem* friend_request_to_delete) {
+  if (!friend_request_to_delete)
+      return;
+  friend_request_model_.RemoveRequestFromList(friend_request_to_delete);
+}
+
+void GUIManager::newFriendRiequest() {
+  FriendRequestItem* new_friend_request = new FriendRequestItem("oleksyk", 7);
+  friend_request_model_.AddRequestToList(new_friend_request);
 }
 
 void GUIManager::LoadFriends() {   //don't forget to load id
