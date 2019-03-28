@@ -30,8 +30,8 @@ class ClientController : public QObject {
  private:
   void SendMessage(PeerInfo peer_info, QString message);
   void LogIn(QString login, QString password);
-  void Register();
-  void AddFriend();
+  void Register(QString login, QString password);
+  void AddFriend(QString login);
   void DeleteFriend();
   void OnFriendRequestRecieved();
 
@@ -49,8 +49,8 @@ class ClientController : public QObject {
 
   LocalServer* local_server_;
 
-  FriendsManager client_worker_;
-  ServerManager server_worker_;
+  FriendsManager friend_manager_;
+  ServerManager server_manager_;
 
   ApplicationInfo app_info_;
 };

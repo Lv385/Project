@@ -15,10 +15,12 @@ class Worker : public QObject {
 
  public:
   Worker(BlockReader* reader);
+  Worker(PeerInfo peer_info, QString message);
   ~Worker();
 
   void DoWork();
   void SetStrategy(StrategyType strategy_type);
+  void SendMessage(QString message);
 
  signals:
   void Disconnected(unsigned id);
@@ -30,8 +32,10 @@ class Worker : public QObject {
 private:
   AbstractStrategy* strategy_;
   PeerInfo peer_info_;
+  QString message_;
   QTcpSocket* socket_;
   BlockReader* reader_;
+  BlockWriter writer_;
   QHash<StrategyType, AbstractStrategy*> strategies_;
 };
 

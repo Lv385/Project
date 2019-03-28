@@ -4,26 +4,49 @@ FriendsManager::FriendsManager() {}
 
 FriendsManager::~FriendsManager() {}
 
-void FriendsManager::SendRequest(PeerInfo peer_info, quint8 request_type,
-                               QByteArray data) {
-  quint32 id = peer_info.id;
+void FriendsManager::SendMessage(PeerInfo peer_info, QString message) { 
+  if (workers_.find(peer_info.id) == workers_.end()){++++
+    if (workers_.find(peer_info.id) == workers_.end())
+    Worker* worker = new Worker(peer_info, message);
 
-  AbstractStrategy* strategy;
-
-  switch (request_type) {
-    case static_cast<quint8>(ClientClientRequest::MESSAGE): {
-      workers_[id];
-      break;
-    }
-    default: { throw 1; }
   }
-  //  strategy->DoWork();
-  delete strategy;
+      connecting_sockets_.find(peer_info.id) != connecting_sockets_.end()) {
+    Connect(peer_info);
+  } else {
+  }    
 }
+
+//void FriendsManager::SendRequest(PeerInfo peer_info, quint8 request_type,
+//                               QByteArray data) {
+//  quint32 id = peer_info.id;
+//
+//  AbstractStrategy* strategy;
+//
+//  switch (request_type) {
+//    case static_cast<quint8>(ClientClientRequest::MESSAGE): {
+//      workers_[id];
+//      break;
+//    }
+//    default: { throw 1; }
+//  }
+//  //  strategy->DoWork();
+//  delete strategy;
+//}
 
 void FriendsManager::RemoveWorker(unsigned id) {
   delete workers_.find(id).value();
   workers_.remove(id);
+}
+
+void FriendsManager::OnConnected() {
+}
+
+void FriendsManager::OnError() {
+
+}
+
+void FriendsManager::Connect(PeerInfo peer_info) { 
+  Worker* worker = new Worker(peer_info);
 }
 
 void FriendsManager::OnFirstRequestRecieved() {

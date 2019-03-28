@@ -8,12 +8,22 @@ Worker::Worker(BlockReader* reader) {
   //strategies_.insert(SEND_MESSAGE, new MessageStrategy(this, peer_info_));
 }
 
+
+Worker::Worker(PeerInfo peer_info) { 
+  QTcpSocket* socket = new QTcpSocket();
+}
+
+
 void Worker::DoWork() { 
   strategy_->DoWork();
 }
  
 void Worker::SetStrategy(StrategyType strategy_type) {
   strategy_ = strategies_[strategy_type];
+}
+
+void Worker::SendMessage() {
+  writer_
 }
 
 void Worker::OnReadyReadBlock() {

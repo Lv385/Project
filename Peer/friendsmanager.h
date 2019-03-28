@@ -19,15 +19,18 @@ class FriendsManager : public QObject {
  public:
   FriendsManager();
   ~FriendsManager();
-  void SendRequest(PeerInfo peer_info, quint8 reques_type, QByteArray data);
   void SendMessage(PeerInfo peer_info, QString message);
- private slots:
 
+ private slots:
   void OnFirstRequestRecieved();
   void RemoveWorker(unsigned id);
+  void OnConnected();
+  void OnError();
 
  private:
-  QList<QTcpSocket*> undefined_connections;
+  void Connect(PeerInfo peer_info);
+
+  QHash<unsigned, Worker*> connecting_sockets_;
   QHash<unsigned, Worker*> workers_;
   QSet<AbstractStrategy*> works_;
 };
