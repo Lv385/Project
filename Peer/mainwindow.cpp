@@ -11,19 +11,20 @@ MainWindow::MainWindow(QWidget* parent)
   ui_->setupUi(this);
 
   SetIpValidator();
-  client_controller_ = new ClientController(this);
 
   // ui_->pb_start->setEnabled(false);
   ui_->pb_send->setEnabled(false);
 
-  QVector<QString> friend_logins = client_dal_.GetFriendsLogin();
-  for (const QString& login : friend_logins) {
-    ui_->combo_box_friends->addItem(login);
+  logger_ = ClientLogger::Instance();
+  logger_->set_log_level(LogLevel::HIGH); // u can switch levels of logging(NOLOG, LOW, HIGH)
+
+  QVector<SQLDAL::Friend> friends = client_data_.get_friends();
+  for (const SQLDAL::Friend& i : friends) {
+    ui_->combo_box_friends->addItem(i.login);
   }
   
   //peer_ = new Peer(this, ui_->le_port_my->text().toUShort());
 
-  //ui_->rb_engineering->setChecked(true);
   if (ui_->rb_engineering->isChecked()) {
     OnRbEngineeringClicked();
   }
@@ -67,7 +68,7 @@ void MainWindow::OnPbStartClicker() {
   }*/
 
   QString login = ui_->le_login->text();
-  quint32 id = client_dal_.GetIDByLogin(login);
+  quint32 id = client_data_.get_id_by_login(login);
 
  // peer_->set_login(login);
 //peer_->set_id(id);
@@ -97,9 +98,9 @@ void MainWindow::AppendHistory() {
   ui_->plainTextEdit->clear();
   QString login = ui_->combo_box_friends->currentText();
 
-  QVector<ClientDAL::Message> history = client_dal_.GetMessages(login);
+  QVector<SQLDAL::Message> history = client_data_.get_messages(login);
   for (auto i : history) {
-    if (login == client_dal_.GetLoginById(i.owner_id)) {
+    if (login == client_data_.get_login_by_id(i.owner_id)) {
       ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + '<' +
                                           login + ">: " + i.data);
     } else {
@@ -121,8 +122,10 @@ void MainWindow::OnPbSendClicked() {
   ui_->plainTextEdit_Log->appendPlainText("\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
 }
 
-void MainWindow::AppendLogMessage(QString message) {
-  ui_->plainTextEdit_Log->appendPlainText(message);
+
+void MainWindow::AppendLogMessage(const char* value, QString message) {
+  ui_->plainTextEdit_Log->appendPlainText(value + message);
+
 }
 
 void MainWindow::OnPbLoginClicked() {
@@ -130,7 +133,7 @@ void MainWindow::OnPbLoginClicked() {
     //ui_->le_server_port->text().toShort());
 
   QString login = ui_->le_login->text();
-  quint32 id = client_dal_.GetIDByLogin(login);
+  quint32 id = client_data_.get_id_by_login(login);
  
  // peer_->set_login(login);
 //peer_->set_id(id);

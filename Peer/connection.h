@@ -10,7 +10,9 @@
 #include <QTcpSocket>
 #include <QTimer>
 
-#include "../DAL/Client/clientdb.h"
+#include <ui_mainwindow.h>
+#include "dataaccessor.h"
+#include "clientlogger.h"
 #include "../Parser&Structs/parser.h"
 
 class Connection : public QTcpSocket {
@@ -31,9 +33,8 @@ class Connection : public QTcpSocket {
   void ServerWorker();
 
  signals:
-  void SendLog(QString);
   void SendMessageToUI(QString);
-  void CoonectionTimeout();
+  void ConnectionTimeout();
 
  private:
   QByteArray received_data_;
@@ -47,6 +48,8 @@ class Connection : public QTcpSocket {
   quint16 receiver_port_;
 
   const QByteArray k_unpossiblle_2_bytes_sequence_;
-  DALManager client_dal_;
+  DataAccessor client_data_;
+  ClientLogger* logger_;
+
 };
 #endif

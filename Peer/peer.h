@@ -1,10 +1,6 @@
 #ifndef TEST_H
 #define TEST_H
 
-#include "connection.h"
-#include "localserver.h"
-#include "dalmanager.h"
-
 #include <ui_mainwindow.h>
 #include <QDebug>
 #include <QHostAddress>
@@ -18,7 +14,12 @@
 #include <QUdpSocket>
 #include <QVector>
 
-#include <../DAL/Client/clientdb.h>
+#include "connection.h"
+#include "tcpserver.h"
+#include "dataaccessor.h"
+#include "clientlogger.h"
+
+
 #include "../Parser&Structs/parser.h"
 
 class Peer : public QObject {
@@ -47,7 +48,6 @@ class Peer : public QObject {
   bool LogIn(QString login, QString password);
 
  signals:
-  void SendLog(QString);
   void SendMessageToUI(QString);
 
  private slots:
@@ -87,7 +87,8 @@ class Peer : public QObject {
   quint16 receiver_port_;
 
   bool is_active_;
-  DALManager client_dal_;
+  DataAccessor client_data_;
+  ClientLogger* logger_;
 };
 
 #endif  // TEST_H

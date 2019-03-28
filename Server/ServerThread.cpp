@@ -3,18 +3,16 @@
 #include <sstream>
 #include "RequestProcessing/NewUserRequest.h"
 #include "RequestProcessing/LoginRequest.h"
-
+#include "RequestProcessing/add_friend_request.h"
+#include "RequestProcessing/friendship_request.h"
 
 ServerThread::ServerThread(int socket_descriptor, QObject *parent) : QThread(parent),socket_descriptor_(socket_descriptor)
 {
-	
 	qDebug() << "New threaded connection!\a\n";
-
 }
 
 
 void ServerThread::run()
-
 {
 	QTcpSocket incomming_connection;
   incomming_connection.setSocketDescriptor(socket_descriptor_);
@@ -28,7 +26,7 @@ void ServerThread::run()
     
 		request_->SendResponde();
     // Watch out!!! This thread should be alive till incomming_connection is in use
-    //Consider palcing while(signal) here
+    //Consider parcing while(signal) here
 	}
 }
 
@@ -40,9 +38,14 @@ void ServerThread::SetRequest(quint8 type, QTcpSocket* connection)
 		 request_ = new NewUserRequest(data_, &dal_, connection); 
 		 break;
 	case (quint8)ClientRequest::LOGIN:
-         request_ = new LoginRequest(data_, &dal_, connection);
-         break;
+     request_ = new LoginRequest(data_, &dal_, connection);
+     break;
   case (quint8)ClientRequest::FRIEND_REQUEST:
+    request_ = new AddFriendRequest(data_, &dal_, connection);
+    break;
+  case (quint8)ClientRequest::FRIENDSHIP_ACCEPTED:
+  case (quint8)ClientRequest::FRIENDSHIP_REJECTED:
+    request_ = new FriendshipRequest(data_, &dal_, connection);
     break;
 
 	}

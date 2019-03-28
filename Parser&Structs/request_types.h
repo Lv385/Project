@@ -7,7 +7,7 @@
 
 // NOTATION:
 //
-//  HEADER,//+accompanying_structure(c->s) Initiator^,-src, -prc
+//  HEADER,//+accompanying_structure(c->s) Initiator^,-src 
 //
 //  (c->s)||(s->c)- direction of data flow: client to server or server to client
 //  Initiator - who initizlize sending this data. Communication works
@@ -55,10 +55,10 @@ enum class ServerRequest : quint8 {
   REGISTER_SUCCEED,  //+RegisterSuccessInfo(s->c)REGISTER
   REGISTER_FAILED,   // empty(s->c)REGISTER
 
-  // requested login - not found
-  FRIEND_REQUEST_FAILED,   // empty(s->c)FRIEND_REQUEST;
-  FRIEND_REQUEST_SUCCEED,  // empty(s->c)FRIEND_REQUEST;
-  ADD_FRIEND_REQUEST,      //+AddFriendInfo(s->c)I,-FRIEND_REQUEST;
+  //requested login - not found
+  FRIEND_REQUEST_FAILED,//empty(s->c)FRIEND_REQUEST;   
+  FRIEND_REQUEST_SUCCEED,//empty(s->c)FRIEND_REQUEST;
+  ADD_FRIEND_REQUEST,//+AddFriendInfo(s->c)I,-FRIEND_REQUEST ; 
 
   // sending to all friends on peer logined
   FRIEND_UPDATE_INFO,  //+FriendUpdateInfo(s->c)I,-LOGIN ;
@@ -110,7 +110,17 @@ struct FriendRequestInfo {
   QString password;
 };
 
-// comes after ADD_FRIEND_REQUEST header (s->c)
+// This structure should be accepted by client from server. It holds data
+// of a person that are interested in friendship with this
+// structure receiver. After receiving this, user get options:
+// accept or reject friendship. In a case of rejection
+// user send empty request FRIENDSHIP_REJECTED (c->s). If friendship accepted -
+// FriendRequestInfo should be sended to server (with FRIENDSHIP_ACCEPTED
+// header), where: FriendRequestInfo.other_login = AddFriend.requester_login;
+// FriendRequestInfo.login = your login
+// FriendRequestInfo.password = your pass
+
+//comes after ADD_FRIEND_REQUEST header (s->c)
 struct AddFriendInfo {
   QString requester_login;
   quint32 requester_id;
