@@ -2,35 +2,50 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQml.Models 2.12
 
-import Friends 1.0
 
 MainPageForm {
 
     background: Rectangle {
         color: backGroundColor
-        Text
-        {
-            padding: 10
-            text: qsTr("Contacts")
-            color: friendListColor
-            font.pixelSize: 23
-            horizontalAlignment: Text.AlignJustify
-            verticalAlignment: Text.AlignVCenter
-            font.family: "fontawesome"
-        }
+
     }
 
     FriendListDelegateModel {
-        id: delegateModelId
-        visualModel.model: guiManager.friendModel
-        listView1: parent.friendList
-        //deleteFriendButton.onClicked: guiManager.deleteFriend(object)
+        id: friendModel
+        visualModel.model: guiManager.friend_model
+        list: friendList
     }
 
-    friendList.model: delegateModelId.visualModel
+    MessageListDelegateModel {
+        id: messageModel
+        visualModel.model: guiManager.message_model
+    }
 
-    addButton.onClicked: {
-        guiManager.newFriend()
+    Component {
+        id: highlightBar
+        Rectangle {
+            width: friendList.width; height: 40
+            color: friendMouseAreaColor
+            y: friendList.currentItem.y;
+            //Behavior on y { SpringAnimation { spring: 2; damping: 0.1 } }
+        }
+    }
+
+    friendList.focus: true
+    friendList.highlight: highlightBar
+    friendList.highlightFollowsCurrentItem: false
+
+
+    friendList.model: friendModel.visualModel
+
+    messageList.model: messageModel.visualModel
+    messageList.spacing: 10
+
+
+
+    sendButton.onClicked: {
+        guiManager.newMessage(messageField.text)
+        messageField.text = "";
     }
 }
 

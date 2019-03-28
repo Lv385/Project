@@ -4,7 +4,6 @@ import QtQuick.Controls 2.5
 LoginPageForm {
     id: rect
     buttonLogIn.onClicked: {
-        guiManager.logIn2()
         stackView.push("MainPage.qml")
     }
 }
