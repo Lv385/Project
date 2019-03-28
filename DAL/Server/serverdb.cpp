@@ -31,6 +31,7 @@ void ServerDB::CloseConncetion(const QString connection_name)
 }
 
 
+
 int ServerDB::FindMaxID() {
 
     if (!query_->exec("select MAX(user_ID) from users")) {
@@ -230,7 +231,8 @@ unsigned int  ServerDB::GetIDByLogin(const QString& user_login) {
 			ErrorInfo();
 		}
 		return id;
-	} else {		
+	} else {
+		//qDebug() << "User login dont exist";
 		return 0;
 	}
 }
@@ -365,16 +367,6 @@ void ServerDB::AddFriend(const unsigned int & user_id, const unsigned int & seco
 	} else {
 		qDebug("You are already friends");
 	}
-}
-
-void ServerDB::DeleteAllFriends(const unsigned int& user) {
-  query_->prepare(
-      "DELETE FROM friends WHERE first_user_ID = :user_to_delete");
-  query_->bindValue(":user_to_delete", user);
-  if (!query_->exec()) {
-    ErrorInfo();
-  }
-
 }
 
 void ServerDB::DeleteAllPendingRequest(const unsigned int& user_id) {

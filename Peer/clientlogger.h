@@ -18,8 +18,8 @@ class ClientLogger : public QObject {
   static ClientLogger* Instance();
 
   void WriteLog(LogType type, const QString& msg);
-  void SetSpecificLog(LogType specific_type);
-  void SetLogLevel(LogLevel log_level);
+  void set_specific_log(LogType specific_type);
+  void set_log_level(LogLevel log_level);
  signals:
   void DisplayLog(const char*, QString msg);
 

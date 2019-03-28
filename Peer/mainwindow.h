@@ -1,7 +1,7 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "dalmanager.h"
+#include "dataaccessor.h"
 #include "peer.h"
 
 #include "clientlogger.h"
@@ -40,7 +40,7 @@ class MainWindow : public QMainWindow {
  private:
   Ui::MainWindow* ui_;
   Peer* peer_;
-  DALManager client_dal_;
+  DataAccessor client_data_;
   ClientLogger* logger_;
 };
 

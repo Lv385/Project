@@ -8,13 +8,16 @@ DAL::DAL() {
 
 DAL::~DAL() { database_.CloseConncetion(connection_name_); }
 
-void DAL::CreateNew(Client cl) { 
+void DAL::CreateNew(Client cl) {
+  // this function is only for new user request (register)
   database_.AddNewUser(cl.GetUserName(), cl.GetUserPassword());
   database_.UpdateIPPort(cl.GetUserName(), cl.GetUserIp().toString(),
                          (int)cl.GetUserPort());
 }
 
+
 void DAL::UpdateClient(Client cl) {
+  //  this is used when login   and MAYBE  when adding to friend
   database_.UpdateIPPort(cl.GetUserName(), cl.GetUserIp().toString(),(int)cl.GetUserPort());  
   QVector<unsigned int> curr_pend_cl = cl.Get_Pending_Requests();
   QVector<unsigned int> db_pend_cl = database_.GetPendingFriendRequests(cl.GetUserId());
@@ -33,17 +36,6 @@ void DAL::UpdateClient(Client cl) {
     database_.DeleteAllPendingNotifications(cl.GetUserId());
     for (int i = 0; i < curr_notif_cl.size(); i++) {
       database_.addPendingNotification(cl.GetUserId(), curr_notif_cl.at(i));
-    }
-  }
-  QVector<unsigned int> curr_friends_cl = cl.GetFriends();
-  QVector<unsigned int> db_friends_cl =
-      database_.GetFriends(cl.GetUserId());
-  if (curr_friends_cl.size() != db_friends_cl.size() ||
-      ((!db_friends_cl.isEmpty()) &&
-       db_friends_cl.last() != curr_friends_cl.last())) {       
-         database_.DeleteAllFriends(cl.GetUserId());
-    for (int i = 0; i < curr_friends_cl.size(); i++) {
-      database_.AddFriend(cl.GetUserId(), curr_friends_cl.at(i));
     }
   }
   
@@ -79,7 +71,7 @@ bool DAL::Check_If_Client_exists_In_Db(Client cl) {
 }
 
 bool DAL::Check_If_Client_exists_In_Db(QString login) {
-  return !(database_.GetIDByLogin(login) == 0); 
+  return !(database_.GetIDByLogin(login) == 0); // according to mentor recomendations
 }
 
 int DAL::GetClientId(Client cl) {
