@@ -10,11 +10,11 @@ namespace SQLDAL {
 	  User(std::shared_ptr<Connect> Connect);
 	  ~User();
       /*Columns from table */
-	  unsigned int	id;
+	  unsigned int	    id;
 	  QString			login;
 	  QString			password;
 	  QString			ip;
-	  unsigned int	port;
+	  unsigned int		port;
 
       /* Vectors to show our relations */
 	  QVector<UsersID> friends; 
@@ -33,7 +33,7 @@ namespace SQLDAL {
 	  void			 AddFriend(unsigned int user_id);
 	  void			 AddFriendRequest(unsigned int user_id);
 	  void			 AddFriendNotification(unsigned int user_id);
-	  void             DeleteFriend(unsigned int user_id);
+	  void           DeleteFriend(unsigned int user_id);
 	  void			 DeleteFriendRequest(unsigned int user_id);
 	  void			 DeleteFriendNotification(unsigned int user_id);
  

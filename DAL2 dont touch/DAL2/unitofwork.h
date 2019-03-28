@@ -13,13 +13,13 @@ namespace SQLDAL {
 	~UnitOfWork();
 
 	template <typename T>
-	std::shared_ptr<T>			   GetEntity();
+	std::shared_ptr<T>			       GetEntity();
 	void							   GenerateUniqueConnection();
 
    private:
 	std::shared_ptr<Connect>		   connection_;
-	static std::atomic<unsigned int> connection_number_;
-	QString						   GenerateNewConnection();
+	static std::atomic<unsigned int>   connection_number_;
+	QString						       GenerateNewConnection();
   };
 
   template <typename T>

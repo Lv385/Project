@@ -8,7 +8,7 @@ namespace SQLDAL {
   // This is our entity from database
   struct Friends {
 	unsigned int id;
-	QString	   ip;
+	QString		 ip;
 	unsigned int port;
 	QString      login;
 	QString      name;
@@ -23,7 +23,7 @@ namespace SQLDAL {
 	Friend();
 
 	QVector<Friends>	GetFriends();  // Getting all users
-	Friends			GetFriend(const unsigned int id);
+	Friends				GetFriend(const unsigned int id);
 	void				UpdateFriend(Friends _friend);
 	void				AddNewFriend(Friends _friend);
 	void				DeleteFriend(Friends _friend);
