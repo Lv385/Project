@@ -8,7 +8,7 @@ class FriendInfo : public Info {
   FriendInfo(std::shared_ptr<Connect> Connect);
   FriendInfo();
   void					Add();
-  QVector<FriendInfo> Get(const unsigned int id);
+  QVector<FriendInfo>   Get(const unsigned int id);
   void				    Delete();
 
  protected:

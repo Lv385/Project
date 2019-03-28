@@ -7,30 +7,31 @@
 #include <QTime>
 #include "statement.h"
 namespace SQLDAL {
-	class Message : public Statement {
-	public:
-		Message(std::shared_ptr<Connect> Connect);
-		Message();
+struct Messages {
+  unsigned int id;
+  unsigned int chat_id;
+  unsigned int owner_id;
+  QString data;
+  QDate date;
+  QTime time;
+  bool status;
+};
+class Message : public Statement {
+ public:
+  Message(std::shared_ptr<Connect> Connect);
+  Message();
+  QVector<Messages> messages;
+  void GetMessages(unsigned int chat_id);  // Select All Info About One Chat
+  void AddNewMessage(Messages message);
+  void DeleteMessage(Messages message);
+  void UpdateMessage(Messages message);
 
-		unsigned int		id;
-		unsigned int		chat_id;
-		unsigned int		owner_id;
-		QString			data;
-		QDate				date;
-		QTime				time;
-		bool				status;
-
-		QVector<Message>	GetMessages();  // SelectAllInfoAboutOneChat
-		void			    AddNewMessage();
-		void              DeleteMessage();
-		void			    UpdateMessage();
-
-	private:
-		QString UpdateQuery();
-		QString SelectQuery();
-		QString InsertQuery();
-		QString DeleteQuery();
-		QString CreateQueryCountOfMessages();
-	};
-}
+ private:
+  QString UpdateQuery(Messages message);
+  QString SelectQuery(unsigned int chat_id);
+  QString InsertQuery(Messages message);
+  QString DeleteQuery(Messages message);
+  QString CreateQueryCountOfMessages(unsigned int chat_id);
+};
+}  // namespace SQLDAL
 #endif  // MESSAGE_H

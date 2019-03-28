@@ -3,15 +3,16 @@
 #include "statement.h"
 
 namespace SQLDAL {
-	class Info : public Statement {
-	public:
-		Info(std::shared_ptr<Connect> Connect) :Statement(Connect) {}
-		Info() {}
-		unsigned int first_user_id;
-		unsigned int second_user_id;
+
+class Info : public Statement {
+ public:
+  unsigned int first_user_id;
+  unsigned int second_user_id;
+  Info(std::shared_ptr<Connect> Connect) : Statement(Connect) {}
+  Info() {}
 
   virtual void Add() = 0;
-  //virtual QVector<unsigned int> Get(const unsigned int id) = 0;
+  // virtual QVector<unsigned int> Get(const unsigned int id) = 0;
   virtual void Delete() = 0;
 
  protected:

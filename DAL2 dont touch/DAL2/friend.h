@@ -1,36 +1,40 @@
 #ifndef FRIEND_H
 #define FRIEND_H
-#include <QString>
 #include <qsqlrecord.h>
+#include <QString>
 #include "statement.h"
 namespace SQLDAL {
-	class Friend : public Statement {
-	public:
-		Friend(std::shared_ptr<Connect> Connect);
-		Friend();
 
-		unsigned int	  id;
-		QString		  ip;
-		unsigned int	  port;
-		QString		  login;
-		QString		  name;
-		QString		  surname;
-		bool			  status;
-		// IMAGE photo;
+// This is our entity from database
+struct Friends { 
+  unsigned int id;
+  QString ip;
+  unsigned int port;
+  QString login;
+  QString name;
+  QString surname;
+  bool status;
+  //IMAGE photo  //in progress
+};
 
-		QVector<Friend> GetFriends();  // SelectAllInfoAboutOneChat
-		void			  GetFriend();
-		void			  UpdateFriend();
-		void			  AddNewFriend();
-		void			  DeleteFriend();
+class Friend : public Statement {
+ public:
+  Friend(std::shared_ptr<Connect> Connect);
+  Friend();
 
-	private:
-		QString CreateQuerySelectAll();
-		QString UpdateQuery();
-		QString SelectQuery();
-		QString InsertQuery();
-		QString DeleteQuery();
-		QString CreateQueryCountOfFriends();
-	};
-}
+  QVector<Friends> GetFriends();  // Getting all users
+  Friends GetFriend(const unsigned int id);
+  void UpdateFriend(Friends _friend);
+  void AddNewFriend(Friends _friend);
+  void DeleteFriend(Friends _friend);
+
+ private:
+  QString CreateQuerySelectAll();
+  QString UpdateQuery(Friends _friend);
+  QString SelectQuery(const unsigned int id);
+  QString InsertQuery(Friends _friend);
+  QString DeleteQuery(Friends _friend);
+  QString CreateQueryCountOfFriends();
+};
+}  // namespace SQLDAL
 #endif  // FRIEND_H
