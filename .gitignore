@@ -20,7 +20,7 @@
 **/*.autosave
 
 #databases
-DAL/Server/Server
+
 DAL/Client/Client
 Server/DAL/Client
 **/*.txt
