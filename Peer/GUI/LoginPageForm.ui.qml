@@ -9,7 +9,6 @@ Page {
     property alias buttonLogIn: buttonLogIn
     property alias buttonRegister: buttonRegister
     property alias loginUsername: loginUsername
-    property alias image: image
     contentWidth: 0
     contentHeight: -1
     focusPolicy: Qt.WheelFocus
@@ -17,22 +16,15 @@ Page {
 
     background: Rectangle {
         color: backGroundColor
-        Image {
-            id: image
-            anchors.rightMargin: 13
-            anchors.bottomMargin: 0
-            anchors.leftMargin: -13
-            anchors.topMargin: 0
-            anchors.fill: parent
-            source: "qrc:/geometry.jpg"
-        }
+
     }
 
     Rectangle {
         id: iconRect
         width: parent.width
         height: parent.height / 3
-        color: "#593c6c"
+        color: topLoginPageColor
+        border.width: 0
         transformOrigin: Item.Center
 
         Text {
@@ -189,6 +181,12 @@ Page {
         }
     }
 }
+
+
+
+
+
+
 
 
 

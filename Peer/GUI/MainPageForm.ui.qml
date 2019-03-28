@@ -70,9 +70,9 @@ Page {
     ColumnLayout {
         id: columnLayout
         x: 283
-        y: 54
+        y: 100
         width: 520
-        height: 511
+        height: 465
 
         ListView {
             id: messageList
@@ -80,6 +80,9 @@ Page {
             y: 0
             width: 519
             height: 470
+            highlightRangeMode: ListView.ApplyRange
+            orientation: ListView.Vertical
+            cacheBuffer: 318
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.margins: pane.leftPadding + messageField.leftPadding
@@ -131,6 +134,8 @@ Page {
         }
     }
 }
+
+
 
 
 
