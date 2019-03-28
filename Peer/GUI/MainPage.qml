@@ -13,7 +13,6 @@ MainPageForm {
     FriendListDelegateModel {
         id: friendModel
         visualModel.model: guiManager.friend_model
-        list: friendList
     }
 
     MessageListDelegateModel {

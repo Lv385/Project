@@ -11,6 +11,14 @@ FriendModel::FriendModel(QObject *parent)
   : QAbstractListModel(parent) {
 }
 
+QString FriendModel::GetFirstFriend() const {
+  if (!friends_list_.isEmpty()) {
+    return friends_list_[0]->login();
+  } else {
+    return "";    //FIXME
+  }
+}
+
 int FriendModel::rowCount(const QModelIndex &parent) const {
   return parent.isValid() ? 0 : friends_list_.size();
 }

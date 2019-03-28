@@ -5,6 +5,7 @@ GUIManager::GUIManager(QObject *parent)
       my_id(1) {     //for testing
 
   LoadFriends();
+  loadMessages(friend_model_.GetFirstFriend());
 }
 
 FriendModel* GUIManager::friend_model() {
@@ -33,21 +34,24 @@ void GUIManager::newMessage(QString message) {
 }
 
 void GUIManager::loadMessages(QString friend_login) {
-  message_model_.RemoveAllMessagesFromList();
+  if(friend_login != "") {    //FIXME
+    message_model_.RemoveAllMessagesFromList();
 
-  QString data, time, date;
-  int owner_id;
-  MessageItem* new_message;
+    QString data, time, date;
+    int owner_id;
+    MessageItem* new_message;
 
-  QVector<ClientDAL::Message> history = client_dal_.GetMessages(friend_login);
-  for(const auto& msg : history) {
-    data = msg.data;
-    time = msg.time.toString("hh:mm");
-    date = msg.date.toString("d MMM");  //FIX date
-    owner_id = msg.owner_id;
-    new_message = new MessageItem(data, time, date, owner_id);
-    message_model_.AddMessageToList(new_message);
+    QVector<ClientDAL::Message> history = client_dal_.GetMessages(friend_login);
+    for(const auto& msg : history) {
+      data = msg.data;
+      time = msg.time.toString("hh:mm");
+      date = msg.date.toString("d MMM");  //FIX date
+      owner_id = msg.owner_id;
+      new_message = new MessageItem(data, time, date, owner_id);
+      message_model_.AddMessageToList(new_message);
+    }
   }
+
 }
 
 void GUIManager::LoadFriends() {   //don't forget to load id
