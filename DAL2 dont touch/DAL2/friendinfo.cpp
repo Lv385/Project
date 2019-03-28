@@ -1,26 +1,24 @@
-#include "info.h"
 #include "friendinfo.h"
+#include "info.h"
 
 namespace SQLDAL {
-FriendInfo::FriendInfo(std::shared_ptr<Connect> Connect):Info(Connect) {
+FriendInfo::FriendInfo(std::shared_ptr<Connect> Connect) : Info(Connect) {
   connection_->Open(SERVER_DB);
 }
-FriendInfo::FriendInfo()
-{
-}
+FriendInfo::FriendInfo() {}
 void FriendInfo::Add(UsersID users_id) {
   ExectuteQuery(AddQuery(users_id));
   query_.finish();
 }
 
-QVector<UsersID > FriendInfo::Get(const unsigned int id) {
+QVector<UsersID> FriendInfo::Get(const unsigned int id) {
   QVector<UsersID> result;
   ExectuteQuery(GetQuery(id));
-  
+
   while (query_.next()) {
-	  UsersID a;
-	  a.first_user_id = id;
-	  a.second_user_id = query_.record().value(0).toUInt();
+    UsersID a;
+    a.first_user_id = id;
+    a.second_user_id = query_.record().value(0).toUInt();
 
     result.push_back(a);
   }
@@ -36,7 +34,8 @@ void FriendInfo::Delete(UsersID users_id) {
 QString FriendInfo::AddQuery(UsersID users_id) {
   return QString(
       "insert into friends (first_user_ID, second_user_ID) values (" +
-      QString::number(users_id.first_user_id) + ", " + QString::number(users_id.second_user_id) + ")");
+      QString::number(users_id.first_user_id) + ", " +
+      QString::number(users_id.second_user_id) + ")");
 }
 
 QString FriendInfo::GetQuery(const unsigned int id) {
@@ -45,9 +44,10 @@ QString FriendInfo::GetQuery(const unsigned int id) {
 }
 
 QString FriendInfo::DeleteQuery(UsersID users_id) {
-  return QString("delete from friends where first_user_ID = " +
-                 QString::number(users_id.first_user_id) +
-                 " and second_user_ID = " + QString::number(users_id.second_user_id));
+  return QString(
+      "delete from friends where first_user_ID = " +
+      QString::number(users_id.first_user_id) +
+      " and second_user_ID = " + QString::number(users_id.second_user_id));
 }
 
 }  // namespace SQLDAL

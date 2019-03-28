@@ -75,7 +75,7 @@ QString Friend::SelectQuery(const unsigned int id) {
   return QString(
       "SELECT user_id, user_name, user_surname,  user_IP, user_port, "
       "user_login, user_status FROM friends where user_id = " +
-      QString::number(id));// + " or user_login = '" + login + "'");
+      QString::number(id));  // + " or user_login = '" + login + "'");
 }
 
 QString Friend::InsertQuery(Friends _friend) {
@@ -84,8 +84,7 @@ QString Friend::InsertQuery(Friends _friend) {
       "(user_id,user_IP,user_port,user_login,user_status,user_name,user_"
       "surname) values (" +
       QString::number(_friend.id) + ", '" + _friend.ip + "', " +
-      QString::number(_friend.port) +
-      ", '" + _friend.login + "', " +
+      QString::number(_friend.port) + ", '" + _friend.login + "', " +
       QString::number(_friend.status) + ", '" + _friend.name + "', '" +
       _friend.surname + "')");
 }
