@@ -1,10 +1,11 @@
 #include "worker.h"
 #include "signalredirector.h"
 
-Worker::Worker(BlockReader* reader)
+Worker::Worker(BlockReader* reader, unsigned user_id)
     : reader_(reader),
-      socket_(reader_->get_socket()),
-      redirector_(SignalRedirector::get_instance()){
+      user_id_(user_id),
+     redirector_(SignalRedirector::get_instance()) {
+  socket_ = reader_->get_socket();
   writer_ = new BlockWriter(socket_);
   connect(reader_, SIGNAL(ReadyReadBlock()), this, SLOT(OnReadyReadBlock()));
   strategies_.insert(static_cast<quint8>(ClientClientRequest::MESSAGE), new RecieveMessageStrategy());
@@ -57,9 +58,14 @@ void Worker::OnReadyReadBlock() {
     data = reader_->ReadNextBlock();
     quint8 type = Parser::getRequestType(data);
     strategy_ = strategies_[type];
+    PeerInfo info;
+    info.id = user_id_;
+    strategy_->set_data(data);
+    strategy_->set_peer_info(info);
     DoWork();
   }
 }
+
 
 Worker::~Worker() { 
   delete writer_;

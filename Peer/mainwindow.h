@@ -5,7 +5,7 @@
 #include "clientlogger.h"
 #include "dataaccessor.h"
 #include "peer.h"
-
+#include "signalredirector.h"
 #include <QComboBox>
 #include <QMainWindow>
 #include <QRegExpValidator>

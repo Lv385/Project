@@ -12,7 +12,7 @@ void BlockReader::set_socket(QTcpSocket* socket) {
   socket_ = socket; 
 }
 
-QTcpSocket* BlockReader::get_socket() const { 
+QTcpSocket* BlockReader::get_socket() { 
   return socket_;
 }
 

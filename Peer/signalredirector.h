@@ -16,6 +16,7 @@ class SignalRedirector : public QObject {
   void ConnectToLoginResult(QObject* object);
   void ConnectToRegisterResult(QObject* object);
 
+  void set_controller(ClientController*);
  private:
   SignalRedirector();
   ClientController* clientController_;

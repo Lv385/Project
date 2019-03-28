@@ -16,7 +16,7 @@ class Worker : public QObject {
   Q_OBJECT
 
  public:
-  Worker(BlockReader* reader);
+  Worker(BlockReader* reader, unsigned user_id);
   Worker(PeerInfo peer_info, QString message);
   ~Worker();
   void DoWork();
@@ -37,6 +37,7 @@ class Worker : public QObject {
   void OnReadyReadBlock();
 
  private:
+  unsigned user_id_;
   AbstractStrategy* strategy_;
   PeerInfo peer_info_;
   QString message_;
