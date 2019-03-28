@@ -24,13 +24,11 @@ class FriendsManager : public QObject {
  private slots:
   void OnFirstRequestRecieved();
   void RemoveWorker(unsigned id);
-  void OnConnected();
-  void OnError();
+  void OnConnected(unsigned id);
 
  private:
-  QHash<unsigned, Worker*> connecting_sockets_;
+  QHash<unsigned, Worker*> connecting_workers_;
   QHash<unsigned, Worker*> workers_;
-  QSet<AbstractStrategy*> works_;
 };
 
 #endif  // !CLIENTMANAGER_H

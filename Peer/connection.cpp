@@ -75,7 +75,7 @@ void Connection::ReceiveRequests() {
 
     switch (requestType) {
     case (quint8)ClientClientRequest::MESSAGE: {
-        Message mes = Parser::ParseAsMessage(data);
+      Message mes = Parser::ParseAsMessage(data);
       QString str = QString("<%1>: %2").arg("not working now")
                     .arg(mes.message);
 

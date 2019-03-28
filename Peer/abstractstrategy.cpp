@@ -16,5 +16,9 @@ void AbstractStrategy::set_data(QByteArray data) {
   data_ = data; 
 }
 
+void AbstractStrategy::set_peer_info(PeerInfo info) { 
+  peer_info_ = info; 
+}
+
 AbstractStrategy::~AbstractStrategy() {}
 

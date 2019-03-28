@@ -68,6 +68,7 @@ enum class ServerRequest : quint8 {
 struct ConnectInfo {
   quint32 id;
 };
+
 struct Message {
   QString message;
 };

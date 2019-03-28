@@ -4,13 +4,14 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
-      peer_(nullptr),
+      //peer_(nullptr),
       ui_(new Ui::MainWindow),
       client_controller_(nullptr) 
 {
   ui_->setupUi(this);
 
   SetIpValidator();
+  client_controller_ = new ClientController(this);
 
   // ui_->pb_start->setEnabled(false);
   ui_->pb_send->setEnabled(false);
@@ -20,17 +21,17 @@ MainWindow::MainWindow(QWidget* parent)
     ui_->combo_box_friends->addItem(login);
   }
   
-  peer_ = new Peer(this, ui_->le_port_my->text().toUShort());
+  //peer_ = new Peer(this, ui_->le_port_my->text().toUShort());
 
   //ui_->rb_engineering->setChecked(true);
   if (ui_->rb_engineering->isChecked()) {
     OnRbEngineeringClicked();
   }
-
-  connect(peer_, SIGNAL(SendMessageToUI(QString)), 
-           this, SLOT(AppendMessage(QString)));
-  connect(peer_, SIGNAL(SendLog(QString)), this,
-                 SLOT(AppendLogMessage(QString)));
+//
+////  connect(peer_, SIGNAL(SendMessageToUI(QString)), 
+//           this, SLOT(AppendMessage(QString)));
+//  connect(peer_, SIGNAL(SendLog(QString)), this,
+//                 SLOT(AppendLogMessage(QString)));
 
   connect(ui_->pb_start, SIGNAL(clicked()), 
                    this, SLOT(OnPbStartClicker()));
@@ -53,23 +54,23 @@ MainWindow::MainWindow(QWidget* parent)
 }
 
 void MainWindow::OnPbStartClicker() {
-  peer_->set_server_ip_port((QHostAddress(ui_->le_server_ip->text())),
-                            ui_->le_server_port->text().toShort());
+ // peer_->set_server_ip_port((QHostAddress(ui_->le_server_ip->text())),
+                           // ui_->le_server_port->text().toShort());
 
-  if (peer_->StartListening(ui_->le_port_my->text().toUShort())) {
+  /*if (peer_->StartListening(ui_->le_port_my->text().toUShort())) {
 
     ui_->l_your_status->setText(
         tr("The server is running on\n\nIP: %1\nport: %2\n")
             .arg(peer_->get_my_ip().toString())
             .arg(peer_->get_my_port()));
     ui_->pb_send->setEnabled(true);
-  }
+  }*/
 
   QString login = ui_->le_login->text();
   quint32 id = client_dal_.GetIDByLogin(login);
 
-  peer_->set_login(login);
-  peer_->set_id(id);
+ // peer_->set_login(login);
+//peer_->set_id(id);
   /*if (peer_->LogIn(login, ui_->le_password->text()))
  {
        ui_->l_your_status->setText(tr("The server is running on\n\nIP:%1\nport:%2\n").arg(peer_->get_my_ip().toString()) .arg(peer_->get_my_port()));
@@ -110,12 +111,12 @@ void MainWindow::AppendHistory() {
 
 void MainWindow::OnPbSendClicked() {
   qDebug() << "clicked";
-  peer_->set_receiver_ip(QHostAddress(ui_->le_ip->text()));
-  peer_->set_receiver_port(ui_->le_port->text().toUShort());
+  //peer_->set_receiver_ip(QHostAddress(ui_->le_ip->text()));
+ // peer_->set_receiver_port(ui_->le_port->text().toUShort());
 
   QString selected_login = ui_->combo_box_friends->currentText();
-  peer_->SendRequest(client_dal_.GetIDByLogin(selected_login),
-                     ui_->le_message->text());  // id + mes  zzz
+ // peer_->SendRequest(client_dal_.GetIDByLogin(selected_login),
+                //     ui_->le_message->text());  // id + mes  zzz
 
   ui_->plainTextEdit_Log->appendPlainText("\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
 }
@@ -125,18 +126,18 @@ void MainWindow::AppendLogMessage(QString message) {
 }
 
 void MainWindow::OnPbLoginClicked() {
-  peer_->set_server_ip_port((QHostAddress(ui_->le_server_ip->text())),
-    ui_->le_server_port->text().toShort());
+ // peer_->set_server_ip_port((QHostAddress(ui_->le_server_ip->text())),
+    //ui_->le_server_port->text().toShort());
 
   QString login = ui_->le_login->text();
   quint32 id = client_dal_.GetIDByLogin(login);
  
-  peer_->set_login(login);
-  peer_->set_id(id);
-   if (peer_->LogIn(login, ui_->le_password->text()))
+ // peer_->set_login(login);
+//peer_->set_id(id);
+//if (peer_->LogIn(login, ui_->le_password->text()))
   {
-  	ui_->l_your_status->setText(tr("The server is running on\n\nIP:%1\nport: %2\n").arg(peer_->get_my_ip().toString())
-  		.arg(peer_->get_my_port()));
+  	//->l_your_status->setText(tr("The server is running on\n\nIP:%1\nport: %2//n").arg(peer_->get_my_ip().toString())
+  		//.arg(peer_->get_my_port()));
   }
 }
 void MainWindow::OnRbSimpleClicked() {

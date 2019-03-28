@@ -1,12 +1,13 @@
 #ifndef PEERINFO_H
 #define PEERINFO_H
 
-#include <QString>
 #include <QHostAddress>
+#include <QString>
+#include <memory>
 
+//typedef std::shared_ptr<PeerInfo>  PeerInfoPtr;
 
-struct PeerInfo
-{
+struct PeerInfo {
   quint32 id;
   QString login;
   QHostAddress ip;
@@ -14,4 +15,4 @@ struct PeerInfo
   bool is_online;
 };
 
-#endif // !PEERINFO_H
+#endif  // !PEERINFO_H

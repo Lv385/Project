@@ -9,7 +9,6 @@
 class Parser {
  public:
   static quint8 getRequestType(QByteArray& data);
-
   
   static QByteArray ConnectInfo_ToByteArray(ConnectInfo& connect_info);
   static ConnectInfo ParseAsConnectInfo(QByteArray& data);

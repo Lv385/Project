@@ -36,9 +36,11 @@ class MainWindow : public QMainWindow {
   void OnRbSimpleClicked();
   void OnRbEngineeringClicked();
 
+
+
  private:
   Ui::MainWindow* ui_;
-  Peer* peer_;
+  //Peer* peer_;
   DALManager client_dal_;
   ClientController* client_controller_;
 };

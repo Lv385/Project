@@ -16,9 +16,15 @@ ServerManager::ServerManager(QTcpSocket *socket) : socket_(socket) {
   strategies_.insert(static_cast<quint8>(ServerRequest::FRIEND_UPDATE_INFO), friend_update);
 }
 
-ServerManager::ServerManager() {}
+ServerManager::ServerManager() {
+}
 
-ServerManager::~ServerManager() {}
+ServerManager::~ServerManager() {
+}
+
+void ServerManager::SendRequest(QByteArray data) { 
+  writer_->WriteBlock(data); 
+}
 
 void ServerManager::DoWork() { 
   strategy_->DoWork(); 
@@ -34,6 +40,5 @@ void ServerManager::OnReadyReadBlock() {
     strategy_->set_data(data);
     DoWork();
   }
-
 }
 

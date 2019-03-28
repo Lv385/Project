@@ -7,10 +7,12 @@
 #include "application_info.h"
 #include "localserver.h"
 #include "friendsmanager.h"
+
 #include <QByteArray>
 #include <QObject>
 #include <QTcpSocket>
 #include <memory>
+#include <QNetworkInterface>
 
 #include "../Parser&Structs/request_types.h"
 
@@ -21,22 +23,26 @@ class ClientController : public QObject {
   ClientController(QObject* parent);
   ~ClientController();
 
- signals:
-  void messageReceived();
-  void messageSent();
-  void LoginResult(bool);
-  void RegisterResult(quint32);
+  QVector<PeerInfo> LoadFriends();
 
- private:
   void SendMessage(PeerInfo peer_info, QString message);
   void LogIn(QString login, QString password);
   void Register(QString login, QString password);
   void AddFriend(QString login);
-  void DeleteFriend();
-  void OnFriendRequestRecieved();
+
+ signals:
+  void messageReceived(quint32 id);
+  void messageSent(quint32 id);
+  void LoginResult(bool);
+  void RegisterResult(quint32 id);
+  void MessageRecieved(quint32 id);
+  void StatusChanged(quint32 id, bool status);
+
+ private:
 
  private slots:
   void OnNewConnection(QTcpSocket* socket);
+  void OnFriendRequestRecieved();
 
  private:
   void Start();
@@ -47,12 +53,13 @@ class ClientController : public QObject {
   PeerInfo my_info;
   QHash<unsigned, PeerInfo> friends_cache;
 
-  LocalServer* local_server_;
+  LocalServer local_server_;
 
   FriendsManager friend_manager_;
   ServerManager server_manager_;
 
   ApplicationInfo app_info_;
+  DALManager dal;
 };
 
 #endif  // !CLIENT_CONTROLLER_H

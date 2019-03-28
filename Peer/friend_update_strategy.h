@@ -12,7 +12,7 @@ class FriendUpdateStrategy : public AbstractStrategy {
   virtual void DoWork() override;
 
   private:
-  FriendUpdateInfo info;
+  FriendUpdateInfo info_;
 };
 
 #endif  // !FRIENDUPDATESTRATEGY_H

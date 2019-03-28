@@ -29,12 +29,14 @@ class AbstractStrategy : public QObject {
   AbstractStrategy();
   AbstractStrategy(QByteArray data);
   void set_data(QByteArray data);
+  void set_peer_info(PeerInfo info);
   virtual void DoWork() = 0;
   virtual ~AbstractStrategy();
 
  protected:
+  PeerInfo peer_info_;
   QByteArray data_;
-  DALManager dal;
+  DALManager dal_;
   SignalRedirector& redirector_;
 };
 

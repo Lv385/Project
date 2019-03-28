@@ -2,6 +2,7 @@
 #define TCPSERVER_H
 
 #include <QTcpServer>
+#include "application_info.h"
 
 class Connection;
 
@@ -9,10 +10,11 @@ class LocalServer : public QTcpServer {
   Q_OBJECT
 
  public:
-  LocalServer(QObject* parent);
+  LocalServer(ApplicationInfo& app_info);
   ~LocalServer();
-  void set_remote_server_ip_port(QHostAddress& remote_server_ip,
-                             quint16& remote_server_port);
+
+  bool Start();
+
  signals:
   void NewConnection(QTcpSocket* socket);
 
@@ -20,8 +22,7 @@ class LocalServer : public QTcpServer {
   void incomingConnection(qintptr socketDescriptor) override;
 
  private:
-  QHostAddress remote_server_ip_;
-  quint16 remote_server_port_;
+  ApplicationInfo& app_info_;
 };
 
 #endif

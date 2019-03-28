@@ -17,7 +17,6 @@ class DALManager {
   unsigned GetIDByIPPort(const QString ip, const unsigned port) const;
   QVector<ClientDAL::Message> GetMessages(const QString user_login) const;
 
-
   void SetFriendStatus(const unsigned user_id, const bool status);
 
   void AddMessageToDB(const QString message, const unsigned user_id, const unsigned owner_id);

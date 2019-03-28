@@ -7,7 +7,7 @@ Peer::Peer(QObject* parent, quint16 listen_port)
       my_listen_port_(listen_port),
       server_connection_(nullptr),
       is_active_(false) {
-  tcp_server_ = new LocalServer(this);
+  //tcp_server_ = new LocalServer(this);
 
   QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
 
@@ -25,10 +25,7 @@ Peer::Peer(QObject* parent, quint16 listen_port)
 
   emit SendLog("My IP: " + my_ip_.toString());
 
-  connect(tcp_server_, SIGNAL(NewClientConnection(QTcpSocket*)), this,
-          SLOT(SetSocket(QTcpSocket*)));
-  connect(tcp_server_, SIGNAL(NewServerConnection(Connection*)), this,
-          SLOT(OnServerConnected(Connection*)));
+
 
   connect(&update_info_timer_, SIGNAL(timeout()), this, SLOT(SendUpdateInfo()));
   connect(&update_receiver_, SIGNAL(readyRead()), this,
@@ -58,7 +55,6 @@ void Peer::set_server_ip_port(QHostAddress server_ip, quint16 server_port) {
 bool Peer::is_active() { return is_active_; }
 
 bool Peer::StartListening(quint16 listen_port) {
-  tcp_server_->set_remote_server_ip_port(server_ip_, server_port_);
   my_listen_port_ = listen_port;
   tcp_server_->close();
   if (!tcp_server_->listen(QHostAddress::Any, my_listen_port_)) {
