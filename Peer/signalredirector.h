@@ -13,7 +13,8 @@ class SignalRedirector : public QObject {
 
   void ConnectToMessageSent(QObject* object);
   void ConnectToMessageRecieved(QObject* object);
-  void ConnectToLoggedIn(QObject* object);
+  void ConnectToLoginResult(QObject* object);
+  void ConnectToRegisterResult(QObject* object);
 
  private:
   SignalRedirector();

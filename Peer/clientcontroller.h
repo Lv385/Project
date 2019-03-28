@@ -24,8 +24,8 @@ class ClientController : public QObject {
  signals:
   void messageReceived();
   void messageSent();
-  void LoggedIn();
-  void Registered();
+  void LoginResult(bool);
+  void RegisterResult(quint32);
 
  private:
   void SendMessage(PeerInfo peer_info, QString message);

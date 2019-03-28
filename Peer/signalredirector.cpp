@@ -15,7 +15,14 @@ SignalRedirector& SignalRedirector::get_instance() {
   return instance_;
 }
 
-void SignalRedirector::ConnectToLoggedIn(QObject *object) {
+void SignalRedirector::ConnectToLoginResult(QObject *object) {
+  connect(object, SIGNAL(LoginResult(bool)), clientController_,
+          SIGNAL(LoginResult(bool)));
+}
+
+void SignalRedirector::ConnectToRegisterResult(QObject *object) {
+  connect(object, SIGNAL(RegisterResult(quint32)), clientController_,
+          SIGNAL(RegisterResult(quint32)));
 }
 
 void ConnectToMessageSent(QObject *object) {
