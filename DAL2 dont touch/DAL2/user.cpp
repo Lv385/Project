@@ -1,7 +1,7 @@
 #include "user.h"
 namespace SQLDAL {
 	User::User(std::shared_ptr<Connect> Connect) : Statement(Connect) {
-		Connect_->Open(SERVER_DB);  // Path
+		connection_->Open(SERVER_DB);  // Path
 		friend_obj = std::make_shared<FriendInfo>(Connect);
 		request_obj = std::make_shared<RequestInfo>(Connect);
 		notification_obj = std::make_shared<NotificationInfo>(Connect);

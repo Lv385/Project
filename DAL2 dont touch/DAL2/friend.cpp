@@ -1,7 +1,7 @@
 #include "friend.h"
 namespace SQLDAL {
 Friend::Friend(std::shared_ptr<Connect> Connect) : Statement(Connect) {
-  Connect_->Open(CLIENT_DB);
+  connection_->Open(CLIENT_DB);
 }
 
 Friend::Friend() : Statement() {}

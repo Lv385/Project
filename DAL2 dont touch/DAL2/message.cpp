@@ -1,7 +1,7 @@
 #include "message.h"
 namespace SQLDAL {
 Message::Message(std::shared_ptr<Connect> Connect) : Statement(Connect) {
-  Connect_->Open(CLIENT_DB);
+  connection_->Open(CLIENT_DB);
 }
 
 Message::Message() : Statement() {}
@@ -9,8 +9,8 @@ Message::Message() : Statement() {}
 void Message::GetMessages(unsigned int chat_id) {
   ExectuteQuery(CreateQueryCountOfMessages(chat_id));
   query_.first();
-  unsigned int CountOfMessages = query_.value(0).toInt();
-  messages.resize(CountOfMessages);
+  unsigned int count_of_messages = query_.value(0).toInt();
+  messages.resize(count_of_messages);
   ExectuteQuery(SelectQuery(chat_id));
   int counter = 0;
   while (query_.next()) {

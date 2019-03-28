@@ -1,16 +1,16 @@
 #include "unitofwork.h"
 namespace SQLDAL {
-std::atomic<unsigned int> UnitOfWork::Connect_number_ = 0;
+std::atomic<unsigned int> UnitOfWork::connection_number_ = 0;
 
-UnitOfWork::UnitOfWork() { Connect_ = nullptr; }
+UnitOfWork::UnitOfWork() { connection_ = nullptr; }
 
 void UnitOfWork::GenerateUniqueConnection() {
-  Connect_ = std::make_shared<Connect>(GenerateNewConnection());
+  connection_ = std::make_shared<Connect>(GenerateNewConnection());
 }
 
-UnitOfWork::~UnitOfWork() { Connect_->Close(); }
+UnitOfWork::~UnitOfWork() { connection_->Close(); }
 
 QString UnitOfWork::GenerateNewConnection() {
-  return QString("Connection number:" + QString::number(Connect_number_++));
+  return QString("Connection number:" + QString::number(connection_number_++));
 }
 }  // namespace SQLDAL

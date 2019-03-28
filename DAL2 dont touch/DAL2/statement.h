@@ -12,7 +12,7 @@
 namespace SQLDAL {
 	class Statement {
 	public:
-		Statement(std::shared_ptr<Connect> Connect);
+		Statement(std::shared_ptr<Connect> connection);
 		Statement() = default;
 		virtual ~Statement();
 
@@ -23,7 +23,7 @@ namespace SQLDAL {
 		void ExectuteQuery(QString query);
 		void ErrorInfo();
 
-		std::shared_ptr<Connect> Connect_;
+		std::shared_ptr<Connect> connection_;
 		QSqlQuery query_;
 	};
 }

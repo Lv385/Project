@@ -15,14 +15,14 @@ namespace SQLDAL {
 		std::shared_ptr<T> GetEntity();
         void               GenerateUniqueConnection();
 	private:
-		std::shared_ptr<Connect> Connect_;
-		static std::atomic<unsigned int> Connect_number_;
+		std::shared_ptr<Connect> connection_;
+		static std::atomic<unsigned int> connection_number_;
 		QString GenerateNewConnection();
 	};
 
 	template <typename T>
 	std::shared_ptr<T> UnitOfWork::GetEntity() {
-		return std::make_shared<T>(Connect_);
+		return std::make_shared<T>(connection_);
 	}
 }
 #endif  // !UNITOFWORK_H

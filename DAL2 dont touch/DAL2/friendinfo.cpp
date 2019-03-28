@@ -3,7 +3,7 @@
 
 namespace SQLDAL {
 FriendInfo::FriendInfo(std::shared_ptr<Connect> Connect):Info(Connect) {
-  Connect_->Open(SERVER_DB);
+  connection_->Open(SERVER_DB);
 }
 FriendInfo::FriendInfo()
 {
