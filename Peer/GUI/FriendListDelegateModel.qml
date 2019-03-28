@@ -33,7 +33,7 @@ Item {
                    anchors.fill: friendField
 
                    onClicked: {
-                    console.log("On " + friendName.text + " clicked")
+                       guiManager.loadMessages(friend.login)
                    }
                }
 

@@ -5,7 +5,6 @@ GUIManager::GUIManager(QObject *parent)
       my_id(1) {     //for testing
 
   LoadFriends();
-  loadMessages("markiyan");
 }
 
 FriendModel* GUIManager::friend_model() {
@@ -51,7 +50,7 @@ void GUIManager::loadMessages(QString friend_login) {
   }
 }
 
-void GUIManager::LoadFriends() {
+void GUIManager::LoadFriends() {   //don't forget to load id
   QVector<QString> friends = client_dal_.GetFriendsLogin();
 
   for(const QString& friend_login : friends) {

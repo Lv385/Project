@@ -8,5 +8,7 @@
         <file>MainPageForm.ui.qml</file>
         <file>FriendListDelegateModel.qml</file>
         <file>MessageListDelegateModel.qml</file>
+        <file>RegisterPage.qml</file>
+        <file>RegisterPageForm.ui.qml</file>
     </qresource>
 </RCC>
