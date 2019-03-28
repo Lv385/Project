@@ -8,6 +8,9 @@ GUIManager::GUIManager(QObject *parent)
   loadMessages(friend_model_.GetFirstFriend());
   newFriendRiequest();
   newFriendRiequest();
+  newFriendRiequest();
+  newFriendRiequest();
+
 }
 
 FriendModel* GUIManager::friend_model() {
@@ -18,8 +21,12 @@ MessageModel* GUIManager::message_model() {
   return &message_model_;
 }
 
-void GUIManager::newFriend() {
-  FriendItem* new_friend = new FriendItem("oleksyk", true);
+FriendRequestModel *GUIManager::friend_request_model() {
+  return &friend_request_model_;
+}
+
+void GUIManager::newFriend(QString new_friend_login) {
+  FriendItem* new_friend = new FriendItem(new_friend_login, qrand() % 2);
   friend_model_.AddFriendToList(new_friend);
 }
 

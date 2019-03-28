@@ -5,9 +5,13 @@ import QtQuick.Layouts 1.3
 Page {
     property alias friendList: friendList
     property alias messageList: messageList
-    property alias sendButton: sendButton
     property alias messageField: messageField
     property alias rectangleX: rectangle.x
+    property alias buttonRequests: buttonRequests
+    property alias friendRequestDialog: friendRequestDialog
+    property alias friendRequestList: friendRequestList
+    property alias findButton: findButton
+    property alias findUserField: findUserField
 
     Pane {
         id: pane1
@@ -25,24 +29,24 @@ Page {
             color: friendMouseAreaColor
 
             TextArea {
-                id: enterLoginField
+                id: findUserField
                 x: 9
                 y: 9
-                width: 155
+                width: 180
                 height: 32
                 Layout.fillWidth: true
-                placeholderText: qsTr("Enter login")
+                placeholderText: qsTr("Enter user login")
                 wrapMode: TextArea.Wrap
             }
             Button {
-                id: findButton1
-                x: 209
+                id: findButton
+                x: 200
                 y: 13
-                width: 60
+                width: 70
                 height: 25
-                text: qsTr("Search")
+                text: qsTr("Add friend")
                 focusPolicy: Qt.WheelFocus
-                enabled: messageField.length > 0
+                enabled: findUserField.length > 0
             }
         }
     }
@@ -100,50 +104,79 @@ Page {
             id: pane
             y: 536
             width: 519
-            height: 10
+            height: 100
             Layout.fillWidth: true
 
             Rectangle {
                 x: -12
                 y: -35
                 width: 519
-                height: 96
+                height: 90
                 color: friendMouseAreaColor
             }
 
-            TextArea {
+            TextField {
                 id: messageField
                 x: 5
-                y: -12
-                width: 394
+                y: -20
+                width: 480
                 height: 52
                 Layout.fillWidth: false
                 placeholderText: qsTr("Compose message")
                 wrapMode: TextArea.Wrap
             }
+        }
+    }
 
-            Button {
-                id: sendButton
-                x: 417
-                y: -4
-                width: 82
-                height: 28
-                text: qsTr("Send")
-                enabled: messageField.length > 0
+    Button {
+        id: buttonRequests
+        x: 601
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.rightMargin: 18
+        anchors.topMargin: 30
+        width: 21
+        height: 26
+
+        Text {
+            text: "\uf007"
+            anchors.right: parent.right
+            font.pointSize: 14
+            font.family: "fontawesome"
+            color: friendListColor
+        }
+        background: Rectangle {
+            color: backGroundColor
+        }
+
+        Dialog {
+            id: friendRequestDialog
+            background: Rectangle {
+                color: backGroundColor
+                border.color: friendListColor
+            }
+            x: -130
+            y: 25
+            height: 300
+            width: 150
+
+            Label {
+                id: friendRequestLabel
+                text: "Friend requests"
+                color: mainTextCOlor
+            }
+
+            ListView {
+                id: friendRequestList
+                anchors.fill: parent
+                highlightRangeMode: ListView.ApplyRange
+                flickableDirection: Flickable.VerticalFlick
+                boundsBehavior: Flickable.StopAtBounds
+                orientation: ListView.Vertical
             }
         }
     }
 }
-
-
-
-
-
-
-
-
-
-
 
 
 

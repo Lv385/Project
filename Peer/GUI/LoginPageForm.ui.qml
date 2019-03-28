@@ -16,7 +16,6 @@ Page {
 
     background: Rectangle {
         color: backGroundColor
-
     }
 
     Rectangle {
@@ -176,17 +175,11 @@ Page {
 
         BusyIndicator {
             Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: 30
+            Layout.topMargin: -760
             running: runIndicator
         }
     }
 }
-
-
-
-
-
-
 
 
 

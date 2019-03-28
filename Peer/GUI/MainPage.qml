@@ -20,47 +20,11 @@ MainPageForm {
         visualModel.model: guiManager.message_model
     }
 
-    Button {
-        anchors.right: parent.right
-        anchors.top: parent.top
-        anchors.rightMargin: 18
-        anchors.topMargin: 30
-        width: 120
-        height: 26
-
-        onClicked: friendRequestList.open()
-        Text {
-            text: "\uf007"
-            anchors.right: parent.right
-            font.pointSize: 14
-            font.family: "fontawesome"
-            color: friendListColor
-        }
-        background: Rectangle
-        {
-            color: backGroundColor
-        }
-
-
-        Dialog {
-            id: friendRequestList
-            background: Rectangle {
-                color: backGroundColor
-                border.color: friendListColor
-            }
-            x: 0
-            y: 25
-            height: 300
-            width: parent.width
-
-
-
-            Label {
-                text: "Lorem ipsum dolor sit amet..."
-
-            }
-        }
+    FriendRequestListDelegateModel {
+        id: friendRequestModel
+        visualModel.model: guiManager.friend_request_model
     }
+
 
     Component {
         id: highlightBar
@@ -75,17 +39,27 @@ MainPageForm {
     friendList.highlight: highlightBar
     friendList.highlightFollowsCurrentItem: false
 
-
     friendList.model: friendModel.visualModel
 
     messageList.model: messageModel.visualModel
     messageList.spacing: 10
 
+    friendRequestList.model: friendRequestModel.visualModel
 
+    findButton.onClicked: {
+        guiManager.newFriend(findUserField.text)
+        findUserField.text = ""
+    }
 
-    sendButton.onClicked: {
-        guiManager.newMessage(messageField.text)
-        messageField.text = "";
+    buttonRequests.onClicked: {
+        friendRequestDialog.open()
+    }
+
+    messageField.onEditingFinished: {
+        if(messageField.text != "") {
+            guiManager.newMessage(messageField.text)
+            messageField.text = "";
+        }
     }
 }
 

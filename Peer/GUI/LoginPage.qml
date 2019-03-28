@@ -11,7 +11,6 @@ LoginPageForm {
     buttonRegister.onClicked: {
         stackView.push("RegisterPage.qml")
     }
-
 }
 
 /*##^## Designer {

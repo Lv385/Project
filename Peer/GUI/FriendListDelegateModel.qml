@@ -47,9 +47,9 @@ Item {
                 anchors.fill: parent
                 hoverEnabled: true
                 onClicked: {
-			friendField.ListView.view.currentIndex = index
-                        guiManager.loadMessages(friend.login)
-			}
+                    friendField.ListView.view.currentIndex = index
+                    guiManager.loadMessages(friend.login)
+                }
             }
 
 
@@ -62,15 +62,15 @@ Item {
                     color: "transparent"
                 }
 
-                    Text {
-                        text: "X"
-                        anchors.verticalCenter: parent.verticalCenter
-                        anchors.horizontalCenter: parent.horizontalCenter
-                    }
-                    width: height
-                    onClicked: guiManager.deleteFriend(friend)
+                Text {
+                    text: "X"
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
                 }
+                width: height
+                onClicked: guiManager.deleteFriend(friend)
             }
         }
     }
+}
 
