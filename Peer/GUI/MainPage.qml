@@ -7,21 +7,13 @@ MainPageForm {
 
     background: Rectangle {
         color: backGroundColor
-        Text
-        {
-            padding: 10
-            text: qsTr("Contacts")
-            color: friendListColor
-            font.pixelSize: 23
-            horizontalAlignment: Text.AlignJustify
-            verticalAlignment: Text.AlignVCenter
-            font.family: "fontawesome"
-        }
+
     }
 
     FriendListDelegateModel {
         id: friendModel
         visualModel.model: guiManager.friend_model
+        list: friendList
     }
 
     MessageListDelegateModel {
@@ -29,14 +21,27 @@ MainPageForm {
         visualModel.model: guiManager.message_model
     }
 
+    Component {
+        id: highlightBar
+        Rectangle {
+            width: friendList.width; height: 40
+            color: friendMouseAreaColor
+            y: friendList.currentItem.y;
+            //Behavior on y { SpringAnimation { spring: 2; damping: 0.1 } }
+        }
+    }
+
+    friendList.focus: true
+    friendList.highlight: highlightBar
+    friendList.highlightFollowsCurrentItem: false
+
+
     friendList.model: friendModel.visualModel
 
     messageList.model: messageModel.visualModel
     messageList.spacing: 10
 
-    addButton.onClicked: {
-        guiManager.newFriend()
-    }
+
 
     sendButton.onClicked: {
         guiManager.newMessage(messageField.text)
