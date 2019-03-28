@@ -10,6 +10,7 @@ void FriendsManager::SendMessage(PeerInfo peer_info, QString message) {
     Worker* worker = new Worker(peer_info, message);
     connect(worker, SIGNAL(Connected(unsigned)), this, SLOT(OnConnected(unsigned)));
   } else {
+    workers_[id]->set_message(message);
     workers_[id]->SendMessage();
   }    
 }

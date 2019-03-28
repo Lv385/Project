@@ -1,8 +1,10 @@
 #ifndef TCPSERVER_H
 #define TCPSERVER_H
 
-#include <QTcpServer>
 #include "application_info.h"
+#include "clientlogger.h"
+#include <QTcpServer>
+#include <QTcpSocket>
 
 class Connection;
 

@@ -26,6 +26,7 @@ bool LocalServer::Start() {
     { return false;
     } else {
       app_info_.my_port = this->serverPort();
+    
     }
   }
   return true;

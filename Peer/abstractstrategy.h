@@ -1,8 +1,9 @@
 #ifndef ABSTRACTSTRATEGY_H
 #define ABSTRACTSTRATEGY_H
 
+#include "cachedata.h"
 #include "blockwriter.h"
-#include "dalmanager.h"
+#include "dataaccessor.h"
 #include "peerinfo.h"
 
 #include <QByteArray>
@@ -36,8 +37,9 @@ class AbstractStrategy : public QObject {
  protected:
   PeerInfo peer_info_;
   QByteArray data_;
-  DALManager dal_;
+  DataAccessor client_data_;
   SignalRedirector& redirector_;
+  CacheData& cache_data_;
 };
 
 #endif  // !ABSTRACTSTRATEGY_H

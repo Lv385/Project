@@ -1,18 +1,19 @@
 #ifndef CLIENT_CONTROLLER_H
 #define CLIENT_CONTROLLER_H
 
+#include "application_info.h"
+#include "cachedata.h"
+#include "friendsmanager.h"
 #include "friendsupdatemanager.h"
+#include "localserver.h"
 #include "peerinfo.h"
 #include "servermanager.h"
-#include "application_info.h"
-#include "localserver.h"
-#include "friendsmanager.h"
 
 #include <QByteArray>
+#include <QNetworkInterface>
 #include <QObject>
 #include <QTcpSocket>
 #include <memory>
-#include <QNetworkInterface>
 
 #include "../Parser&Structs/request_types.h"
 
@@ -29,27 +30,32 @@ class ClientController : public QObject {
   void LogIn(QString login, QString password);
   void Register(QString login, QString password);
   void AddFriend(QString login);
+  void Start();
+  void Stop();
+  void SetAppInfo(ApplicationInfo info);
+  //QString GetMessage(unsigned);
+  QVector<SQLDAL::Message> LoadMessages(unsigned id);
 
  signals:
-  void messageReceived(quint32 id);
+
+  void messageReceived(PeerInfo info, QString message);
   void messageSent(quint32 id);
   void LoginResult(bool);
   void RegisterResult(quint32 id);
-  void MessageRecieved(quint32 id);
+  void MessageRecieved(unsigned id);
   void StatusChanged(quint32 id, bool status);
 
  private:
-
  private slots:
   void OnNewConnection(QTcpSocket* socket);
   void OnFriendRequestRecieved();
 
+ public:
+  ApplicationInfo app_info_;
+
  private:
-  void Start();
-  void Stop();
-
   FriendsUpdateManager* friendsupdate_manager;
-
+  CacheData& cache_data_;
   PeerInfo my_info;
   QHash<unsigned, PeerInfo> friends_cache;
 
@@ -58,8 +64,7 @@ class ClientController : public QObject {
   FriendsManager friend_manager_;
   ServerManager server_manager_;
 
-  ApplicationInfo app_info_;
-  DALManager dal;
+  DataAccessor client_data_;
 };
 
 #endif  // !CLIENT_CONTROLLER_H

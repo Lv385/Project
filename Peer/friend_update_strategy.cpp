@@ -11,5 +11,5 @@ FriendUpdateStrategy::~FriendUpdateStrategy()
 
 void FriendUpdateStrategy::DoWork() {
   info_ = Parser::ParseAsFriendUpdateInfo(data_);
-  dal_.UpdateIPPort(info_.id, info_.ip.toString(), info_.port);
+  client_data_.UpdateIPPort(info_.id, info_.ip.toString(), info_.port);
 }

@@ -73,7 +73,7 @@ class ClientDB {
   bool GetFriendStatus(const QString& user_login);
   bool GetFriendStatus(const int& user_id);
 
-  unsigned int GetIDByLogin(const QString& user_login);
+  unsigned int get_id_by_login(const QString& user_login);
   unsigned GetIDByIpPort(const QString& ip, int port);
   QString GetLoginById(const int& user_id);
 

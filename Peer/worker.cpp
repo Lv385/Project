@@ -29,6 +29,9 @@ void Worker::SetStrategy(StrategyType strategy_type) {
   strategy_ = strategies_[strategy_type];
 }
 
+void Worker::set_message(QString message) { 
+  message_ = message; }
+
 void Worker::SendMessage() {
   Message mes = {message_};
   QByteArray data = Parser::Message_ToByteArray(mes);

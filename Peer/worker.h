@@ -21,6 +21,7 @@ class Worker : public QObject {
   ~Worker();
   void DoWork();
   void SetStrategy(StrategyType strategy_type);
+  void set_message(QString message);
 
  signals:
   void Disconnected(unsigned id);
