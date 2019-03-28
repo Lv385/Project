@@ -79,20 +79,7 @@ QByteArray Parser::NewFriendInfo_ToByteArray(
 }
 
 
-NewFriendInfo Parser::ParseAsNewFriendInfo(QByteArray& data) {
-  NewFriendInfo result;
-  QDataStream in(&data, QIODevice::ReadOnly);
-  quint8 type;
-  quint32 ip;
-  in >> type;
-  in >> ip;
-  in >> result.port;
-  in >> result.id;
-  in >> result.login;
-  result.ip = QHostAddress(ip);
 
-  return result;
-}
 
 quint8 Parser::getRequestType(QByteArray& data) {
   quint8 result = data.data()[0];
@@ -155,17 +142,7 @@ RegisterSuccessInfo Parser::ParseAsRegisterSuccessInfo(QByteArray& data) {
   return result;
 }
 
-QByteArray Parser::FriendUpdateInfo_ToByteArray(
-    FriendUpdateInfo& friend_update_info) {
-  QByteArray result;
-  QDataStream out(&result, QIODevice::WriteOnly);
-  out << quint8(ServerRequest::FRIEND_UPDATE_INFO);  // type
-  out << friend_update_info.ip.toIPv4Address();       // ip
-  out << friend_update_info.port;                     // port
-  out << friend_update_info.id;                       // id
 
-  return result;
-}
 
 FriendUpdateInfo Parser::ParseAsFriendUpdateInfo(QByteArray& data) {
   FriendUpdateInfo result;
@@ -176,6 +153,32 @@ FriendUpdateInfo Parser::ParseAsFriendUpdateInfo(QByteArray& data) {
   in >> ip;
   in >> result.port;
   in >> result.id;
+  result.ip = QHostAddress(ip);
+
+  return result;
+}
+
+QByteArray Parser::FriendUpdateInfo_ToByteArray(
+    FriendUpdateInfo& friend_update_info) {
+  QByteArray result;
+  QDataStream out(&result, QIODevice::WriteOnly);
+  out << quint8(ServerRequest::FRIEND_UPDATE_INFO);  // type
+  out << friend_update_info.ip.toIPv4Address();       // ip
+  out << friend_update_info.port;                     // port
+  out << friend_update_info.id;                       // id
+  return result;
+}
+
+NewFriendInfo Parser::ParseAsNewFriendInfo(QByteArray& data) {
+  NewFriendInfo result;
+  QDataStream in(&data, QIODevice::ReadOnly);
+  quint8 type;
+  quint32 ip;
+  in >> type;
+  in >> ip;
+  in >> result.port;
+  in >> result.id;
+  in >> result.login;
   result.ip = QHostAddress(ip);
 
   return result;

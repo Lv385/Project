@@ -57,7 +57,7 @@
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)DAL2 dont touch\DAL2;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
     </ClCompile>
     <Link>
@@ -69,7 +69,7 @@
     </Link>
     <QtMoc>
       <Define>QT_QML_DEBUG;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_CORE_LIB;QT_NETWORK_LIB;QT_SQL_LIB;%(PreprocessorDefinitions)</Define>
-      <IncludePath>.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;%(AdditionalIncludeDirectories)</IncludePath>
+      <IncludePath>$(SolutionDir)DAL2 dont touch\DAL2;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;%(AdditionalIncludeDirectories)</IncludePath>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
     </QtMoc>
@@ -99,6 +99,8 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\DAL\Server\serverdb.cpp" />
+    <ClCompile Include="..\Encryption\abstract_cypher.cpp" />
+    <ClCompile Include="..\Encryption\speck_cypher.cpp" />
     <ClCompile Include="..\Parser&amp;Structs\parser.cpp" />
     <ClCompile Include="AsyncServer.cpp" />
     <ClCompile Include="DAL\client.cpp" />
@@ -107,6 +109,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RequestProcessing\AbstractRequest.cpp" />
     <ClCompile Include="RequestProcessing\add_friend_request.cpp" />
+    <ClCompile Include="RequestProcessing\friendship_request.cpp" />
     <ClCompile Include="RequestProcessing\LoginRequest.cpp" />
     <ClCompile Include="RequestProcessing\NewUserRequest.cpp" />
     <ClCompile Include="ServerThread.cpp" />
@@ -119,6 +122,8 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\DAL\Server\serverdb.h" />
+    <ClInclude Include="..\Encryption\abstract_cypher.h" />
+    <ClInclude Include="..\Encryption\speck_cypher.h" />
     <ClInclude Include="..\Parser&amp;Structs\parser.h" />
     <ClInclude Include="..\Parser&amp;Structs\request_types.h" />
     <ClInclude Include="DAL\Client.h" />
@@ -127,8 +132,14 @@
     <ClInclude Include="Exceptions\user_not_found.h" />
     <ClInclude Include="Logger\logger.h" />
     <ClInclude Include="RequestProcessing\add_friend_request.h" />
+    <ClInclude Include="RequestProcessing\friendship_request.h" />
     <ClInclude Include="RequestProcessing\LoginRequest.h" />
     <ClInclude Include="RequestProcessing\NewUserRequest.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\DAL2 dont touch\DAL2\DAL2.vcxproj">
+      <Project>{3f4a82b1-4157-400a-82d0-e6516372e8d2}</Project>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

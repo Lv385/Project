@@ -20,13 +20,13 @@ class ServerManager : public QObject {
   ServerManager();
   ~ServerManager();
 
-  void Login();
+ /* void Login();
   void Register();
-  void AddFriend();
-  
- private:
-  void DoWork();
+  void AddFriend();*/
+  void SendRequest(QByteArray data);
+
  private slots:
+  void DoWork();
   void OnReadyReadBlock();
 
  private:

@@ -1,13 +1,13 @@
 #ifndef MAINWINDOW_H
 #define MAINWINDOW_H
 
-#include "dalmanager.h"
-#include "peer.h"
 #include "clientcontroller.h"
+#include "clientlogger.h"
+#include "dataaccessor.h"
+#include "peer.h"
 
 #include <QComboBox>
 #include <QMainWindow>
-#include <qmainwindow.h>
 #include <QRegExpValidator>
 #include <QShortcut>
 #include <QVector>
@@ -28,7 +28,7 @@ class MainWindow : public QMainWindow {
  private slots:
   void AppendMessage(QString);
   void AppendHistory();
-  void AppendLogMessage(QString);
+  void AppendLogMessage(const char*, QString);
 
   void OnPbStartClicker();
   void OnPbLoginClicked();
@@ -36,11 +36,16 @@ class MainWindow : public QMainWindow {
   void OnRbSimpleClicked();
   void OnRbEngineeringClicked();
 
+  void OnMessageRecieved(unsigned id);
+
  private:
   Ui::MainWindow* ui_;
-  Peer* peer_;
-  DALManager client_dal_;
+  //  Peer* peer_;
+  DataAccessor client_data_;
+  ClientLogger* logger_;
   ClientController* client_controller_;
+  ApplicationInfo app_info_;
+  QVector<PeerInfo> friends_;
 };
 
 #endif  // MAINWINDOW_H

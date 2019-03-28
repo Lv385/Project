@@ -2,18 +2,20 @@
 #define MESSAGESTRATEGY_H
 
 #include "abstractstrategy.h"
+#include "blockwriter.h"
+
 #include "QTimer"
 
-class MessageStrategy : public AbstractStrategy
-{
+class SendMessageStrategy : public AbstractStrategy{
   Q_OBJECT
 
 public:
-  MessageStrategy(QObject *parent, PeerInfo peer_info, 
-                  QTcpSocket* socket, QByteArray data);
-  ~MessageStrategy();
+  SendMessageStrategy(PeerInfo peer_info, 
+                      QTcpSocket* socket, QByteArray data);
+ ~SendMessageStrategy();
  public slots:
-  //void DoWork() override;
+  //void DoWork() override;.
+
  signals:
   void MessageSent();
 
@@ -22,8 +24,8 @@ public:
 private:
 
   QTimer timer_;
-  static const int kMsecConnectionDuration_ = 60;
   PeerInfo peer_info_;
+  BlockWriter writer_;
 };
 
 

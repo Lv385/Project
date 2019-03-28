@@ -4,81 +4,67 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
-      peer_(nullptr),
+      // peer_(nullptr),
       ui_(new Ui::MainWindow),
-      client_controller_(nullptr) 
-{
+      client_controller_(nullptr) {
   ui_->setupUi(this);
+
+  client_controller_ = new ClientController(this);
+  client_controller_->app_info_.remote_server_ip = ui_->le_server_ip->text();
+  client_controller_->app_info_.remote_server_port =
+      ui_->le_server_port->text().toUShort();
+  client_controller_->app_info_.my_port =
+      ui_->le_port->text().toUShort();
 
   SetIpValidator();
 
   // ui_->pb_start->setEnabled(false);
-  ui_->pb_send->setEnabled(false);
+  ui_->pb_send->setEnabled(true);
 
-  QVector<QString> friend_logins = client_dal_.GetFriendsLogin();
-  for (const QString& login : friend_logins) {
-    ui_->combo_box_friends->addItem(login);
+  logger_ = ClientLogger::Instance();
+  logger_->set_log_level(
+      LogLevel::HIGH);  // u can switch levels of logging(NOLOG, LOW, HIGH)
+
+  QVector<SQLDAL::Friend> friends = client_data_.get_friends();
+  for (const SQLDAL::Friend& i : friends) {
+    ui_->combo_box_friends->addItem(i.login);
   }
-  
-  peer_ = new Peer(this, ui_->le_port_my->text().toUShort());
 
-  //ui_->rb_engineering->setChecked(true);
+  // peer_ = new Peer(this, ui_->le_port_my->text().toUShort());
+
   if (ui_->rb_engineering->isChecked()) {
     OnRbEngineeringClicked();
   }
+  //
+  ////  connect(peer_, SIGNAL(SendMessageToUI(QString)),
+  //           this, SLOT(AppendMessage(QString)));
+  //  connect(peer_, SIGNAL(SendLog(QString)), this,
+  //                 SLOT(AppendLogMessage(QString)));
 
-  connect(peer_, SIGNAL(SendMessageToUI(QString)), 
-           this, SLOT(AppendMessage(QString)));
-  connect(peer_, SIGNAL(SendLog(QString)), this,
-                 SLOT(AppendLogMessage(QString)));
+  connect(ui_->pb_start, SIGNAL(clicked()), this, SLOT(OnPbStartClicker()));
+  connect(ui_->combo_box_friends, SIGNAL(currentIndexChanged(QString)), this,
+          SLOT(AppendHistory()));
+  connect(ui_->pb_send, SIGNAL(clicked()), this, SLOT(OnPbSendClicked()));
+  connect(ui_->pb_login, SIGNAL(clicked()), this, SLOT(OnPbLoginClicked()));
+  connect(ui_->rb_simple, SIGNAL(clicked()), this, SLOT(OnRbSimpleClicked()));
+  connect(ui_->rb_engineering, SIGNAL(clicked()), this,
+          SLOT(OnRbEngineeringClicked()));
 
-  connect(ui_->pb_start, SIGNAL(clicked()), 
-                   this, SLOT(OnPbStartClicker()));
-  connect(ui_->combo_box_friends, SIGNAL(currentIndexChanged(QString)), 
-                            this, SLOT(AppendHistory()));
-  connect(ui_->pb_send, SIGNAL(clicked()), 
-                  this, SLOT(OnPbSendClicked()));
-  connect(ui_->pb_login, SIGNAL(clicked()), 
-                   this, SLOT(OnPbLoginClicked()));
-  connect(ui_->rb_simple, SIGNAL(clicked()), 
-                    this, SLOT(OnRbSimpleClicked()));
-  connect(ui_->rb_engineering, SIGNAL(clicked()), 
-                         this, SLOT(OnRbEngineeringClicked()));
-
+  connect(client_controller_, SIGNAL(MessageRecieved(unsigned)), this,
+          SLOT(OnMessageRecieved(unsigned)));
   // CLIENT CONTROLLER
- /* connect(client_controller_, SIGNAL(SendMessageToUI(QString)),
-                        this, SLOT(AppendMessage(QString)));
-  connect(client_controller_, SIGNAL(SendLog(QString)),
-                        this, SLOT(AppendLogMessage(QString)));*/
+  /* connect(client_controller_, SIGNAL(SendMessageToUI(QString)),
+                         this, SLOT(AppendMessage(QString)));
+   connect(client_controller_, SIGNAL(SendLog(QString)),
+                         this, SLOT(AppendLogMessage(QString)));*/
+  friends_ = client_controller_->LoadFriends();
 }
 
-void MainWindow::OnPbStartClicker() {
-  peer_->set_server_ip_port((QHostAddress(ui_->le_server_ip->text())),
-                            ui_->le_server_port->text().toShort());
-
-  if (peer_->StartListening(ui_->le_port_my->text().toUShort())) {
-
-    ui_->l_your_status->setText(
-        tr("The server is running on\n\nIP: %1\nport: %2\n")
-            .arg(peer_->get_my_ip().toString())
-            .arg(peer_->get_my_port()));
-    ui_->pb_send->setEnabled(true);
-  }
-
-  QString login = ui_->le_login->text();
-  quint32 id = client_dal_.GetIDByLogin(login);
-
-  peer_->set_login(login);
-  peer_->set_id(id);
-  /*if (peer_->LogIn(login, ui_->le_password->text()))
- {
-       ui_->l_your_status->setText(tr("The server is running on\n\nIP:%1\nport:%2\n").arg(peer_->get_my_ip().toString()) .arg(peer_->get_my_port()));
- }*/
+void MainWindow::OnPbStartClicker() { 
+  client_controller_->Start();
 }
 
-MainWindow::~MainWindow() {
-  delete ui_;
-}
+MainWindow::~MainWindow() { delete ui_; }
 
 void MainWindow::SetIpValidator() {
   QString ip_range = "(?:[0-1]?[0-9]?[0-9]|2[0-4][0-9]|25[0-5])";
@@ -95,10 +81,14 @@ void MainWindow::AppendMessage(QString message) {
 void MainWindow::AppendHistory() {
   ui_->plainTextEdit->clear();
   QString login = ui_->combo_box_friends->currentText();
+  unsigned id;
+  for (auto a : friends_)
+    if (a.login == login) 
+      id = a.id;
 
-  QVector<ClientDAL::Message> history = client_dal_.GetMessages(login);
+  QVector<SQLDAL::Message> history = client_controller_->LoadMessages(id);
   for (auto i : history) {
-    if (login == client_dal_.GetLoginById(i.owner_id)) {
+    if (login == client_data_.get_login_by_id(i.owner_id)) {
       ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + '<' +
                                           login + ">: " + i.data);
     } else {
@@ -110,33 +100,35 @@ void MainWindow::AppendHistory() {
 
 void MainWindow::OnPbSendClicked() {
   qDebug() << "clicked";
-  peer_->set_receiver_ip(QHostAddress(ui_->le_ip->text()));
-  peer_->set_receiver_port(ui_->le_port->text().toUShort());
+  // peer_->set_receiver_ip(QHostAddress(ui_->le_ip->text()));
+  // peer_->set_receiver_port(ui_->le_port->text().toUShort());
 
   QString selected_login = ui_->combo_box_friends->currentText();
-  peer_->SendRequest(client_dal_.GetIDByLogin(selected_login),
-                     ui_->le_message->text());  // id + mes  zzz
-
-  ui_->plainTextEdit_Log->appendPlainText("\\\\\\\\\\\\\\\\\\\\\\\\\\\\");
+  // peer_->SendRequest(client_client_data_.get_id_by_login(selected_login),
+  //     ui_->le_message->text());  // id + mes  zzz
+  // PeerInfo
+  for (auto a : friends_)
+    if (a.login == selected_login)
+      client_controller_->SendMessage(a, ui_->le_message->text());
 }
 
-void MainWindow::AppendLogMessage(QString message) {
-  ui_->plainTextEdit_Log->appendPlainText(message);
+void MainWindow::AppendLogMessage(const char* value, QString message) {
+  ui_->plainTextEdit_Log->appendPlainText(value + message);
 }
 
 void MainWindow::OnPbLoginClicked() {
-  peer_->set_server_ip_port((QHostAddress(ui_->le_server_ip->text())),
-    ui_->le_server_port->text().toShort());
+  // peer_->set_server_ip_port((QHostAddress(ui_->le_server_ip->text())),
+  // ui_->le_server_port->text().toShort());
 
   QString login = ui_->le_login->text();
-  quint32 id = client_dal_.GetIDByLogin(login);
- 
-  peer_->set_login(login);
-  peer_->set_id(id);
-   if (peer_->LogIn(login, ui_->le_password->text()))
+  quint32 id = client_data_.get_id_by_login(login);
+
+  // peer_->set_login(login);
+  // peer_->set_id(id);
+  // if (peer_->LogIn(login, ui_->le_password->text()))
   {
-  	ui_->l_your_status->setText(tr("The server is running on\n\nIP:%1\nport: %2\n").arg(peer_->get_my_ip().toString())
-  		.arg(peer_->get_my_port()));
+    //->l_your_status->setText(tr("The server is running on\n\nIP:%1\nport:
+    //%2//n").arg(peer_->get_my_ip().toString()) .arg(peer_->get_my_port()));
   }
 }
 void MainWindow::OnRbSimpleClicked() {
@@ -154,7 +146,10 @@ void MainWindow::OnRbSimpleClicked() {
   ui_->le_server_port->setVisible(false);
   ui_->label_6->setVisible(false);
   ui_->label_7->setVisible(false);
-  ui_->pb_login->setGeometry(610,330, 70, 30);
+  ui_->pb_login->setGeometry(610, 330, 70, 30);
+}
+void MainWindow::OnMessageRecieved(unsigned id) {
+  AppendHistory();
 }
 void MainWindow::OnRbEngineeringClicked() {
   ui_->l_your_status->setVisible(true);

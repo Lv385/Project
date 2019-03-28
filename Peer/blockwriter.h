@@ -14,7 +14,6 @@ class BlockWriter : public QObject {
   BlockWriter(QTcpSocket* socket);
   ~BlockWriter();
   void set_socket(QTcpSocket* socket);
-  
   void WriteBlock(QByteArray data);
 
  private:

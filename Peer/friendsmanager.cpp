@@ -4,27 +4,31 @@ FriendsManager::FriendsManager() {}
 
 FriendsManager::~FriendsManager() {}
 
-void FriendsManager::SendRequest(PeerInfo peer_info, quint8 request_type,
-                               QByteArray data) {
-  quint32 id = peer_info.id;
-
-  AbstractStrategy* strategy;
-
-  switch (request_type) {
-    case static_cast<quint8>(ClientClientRequest::MESSAGE): {
-      workers_[id];
-      break;
-    }
-    default: { throw 1; }
-  }
-  //  strategy->DoWork();
-  delete strategy;
+void FriendsManager::SendMessage(PeerInfo peer_info, QString message) { 
+  unsigned id = peer_info.id;
+  if (workers_.find(id) == workers_.end()) {
+    Worker* worker = new Worker(peer_info, message);
+    connect(worker, SIGNAL(Connected(unsigned)), this, SLOT(OnConnected(unsigned)));
+  } else {
+    workers_[id]->set_message(message);
+    workers_[id]->SendMessage();
+  }    
 }
 
 void FriendsManager::RemoveWorker(unsigned id) {
   delete workers_.find(id).value();
   workers_.remove(id);
 }
+
+
+void FriendsManager::OnConnected(unsigned id) { 
+  workers_.insert(id, connecting_workers_[id]);
+  connecting_workers_.remove(id);
+
+}
+
+
+
 
 void FriendsManager::OnFirstRequestRecieved() {
   BlockReader* reader = qobject_cast<BlockReader*>(sender());
