@@ -1,10 +1,7 @@
 #include "recieve_message_strategy.h"
+#include "signalredirector.h"
 
-RecieveMessageStrategy::RecieveMessageStrategy(QObject *parent)
-    : AbstractStrategy(parent)
-{
-}
+RecieveMessageStrategy::RecieveMessageStrategy()
+    : AbstractStrategy() {}
 
-RecieveMessageStrategy::~RecieveMessageStrategy()
-{
-}
+RecieveMessageStrategy::~RecieveMessageStrategy() {}

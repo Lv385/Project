@@ -28,8 +28,6 @@ class FriendsManager : public QObject {
   void OnError();
 
  private:
-  void Connect(PeerInfo peer_info);
-
   QHash<unsigned, Worker*> connecting_sockets_;
   QHash<unsigned, Worker*> workers_;
   QSet<AbstractStrategy*> works_;

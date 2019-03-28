@@ -12,6 +12,10 @@ void BlockReader::set_socket(QTcpSocket* socket) {
   socket_ = socket; 
 }
 
+QTcpSocket* BlockReader::get_socket() const { 
+  return socket_;
+}
+
 QByteArray BlockReader::ReadNextBlock() {
   QByteArray result;
   result = blocks_.first();

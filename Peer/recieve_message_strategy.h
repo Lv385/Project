@@ -1,12 +1,14 @@
-#pragma once
+#ifndef RECIEVEMESSAGESTRATEGY_H
+#define RECIEVEMESSAGESTRATEGY_H
 
-#include <AbstractStrategy>
+#include "abstractstrategy.h"
 
-class RecieveMessageStrategy : public AbstractStrategy
-{
+class RecieveMessageStrategy : public AbstractStrategy {
   Q_OBJECT
 
-public:
-    RecieveMessageStrategy(QObject *parent);
-    ~RecieveMessageStrategy();
+ public:
+  RecieveMessageStrategy();
+  ~RecieveMessageStrategy();
 };
+
+#endif  // !RECIEVEMESSAGESTRATEGY_H

@@ -16,7 +16,7 @@ class BlockReader : public QObject {
   BlockReader(QTcpSocket* socket);
   ~BlockReader();
   void set_socket(QTcpSocket* socket);
-
+  QTcpSocket* get_socket() const;
   bool HasPendingBlock();
   bool WaitForReadyReadBlock();
   QByteArray ReadNextBlock();

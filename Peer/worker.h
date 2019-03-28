@@ -17,16 +17,17 @@ class Worker : public QObject {
   Worker(BlockReader* reader);
   Worker(PeerInfo peer_info, QString message);
   ~Worker();
-
   void DoWork();
   void SetStrategy(StrategyType strategy_type);
-  void SendMessage(QString message);
+  void SendMessage();
 
  signals:
   void Disconnected(unsigned id);
+  void Connected(unsigned id);
 
  private slots:
   void OnDisconnected();
+  void OnConnected();
   void OnReadyReadBlock();
 
 private:
@@ -35,7 +36,7 @@ private:
   QString message_;
   QTcpSocket* socket_;
   BlockReader* reader_;
-  BlockWriter writer_;
+  BlockWriter* writer_;
   QHash<StrategyType, AbstractStrategy*> strategies_;
 };
 

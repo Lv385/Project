@@ -5,14 +5,12 @@ FriendsManager::FriendsManager() {}
 FriendsManager::~FriendsManager() {}
 
 void FriendsManager::SendMessage(PeerInfo peer_info, QString message) { 
-  if (workers_.find(peer_info.id) == workers_.end()){++++
-    if (workers_.find(peer_info.id) == workers_.end())
+  unsigned id = peer_info.id;
+  if (workers_.find(id) == workers_.end()) {
     Worker* worker = new Worker(peer_info, message);
 
-  }
-      connecting_sockets_.find(peer_info.id) != connecting_sockets_.end()) {
-    Connect(peer_info);
   } else {
+    workers_[id]->SendMessage();
   }    
 }
 
@@ -45,9 +43,6 @@ void FriendsManager::OnError() {
 
 }
 
-void FriendsManager::Connect(PeerInfo peer_info) { 
-  Worker* worker = new Worker(peer_info);
-}
 
 void FriendsManager::OnFirstRequestRecieved() {
   BlockReader* reader = qobject_cast<BlockReader*>(sender());

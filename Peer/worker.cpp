@@ -1,18 +1,20 @@
 #include "worker.h"
 
-Worker::Worker(BlockReader* reader) {
+Worker::Worker(BlockReader* reader)
+    : reader_(reader), 
+      socket_(reader_->get_socket()){
   connect(reader_, SIGNAL(ReadyReadBlock()), this, SLOT(OnReadyReadBlock()));
 
+  writer_ = new BlockWriter(socket_);
   //strategies_.insert(SEND_MESSAGE, new MessageStrategy(this, peer_info_));
   //strategies_.insert(RECEIVE_MESSAGE, new MessageStrategy(this, peer_info_));
   //strategies_.insert(SEND_MESSAGE, new MessageStrategy(this, peer_info_));
 }
 
 
-Worker::Worker(PeerInfo peer_info) { 
+Worker::Worker(PeerInfo peer_info, QString message) { 
   QTcpSocket* socket = new QTcpSocket();
 }
-
 
 void Worker::DoWork() { 
   strategy_->DoWork();
@@ -23,7 +25,17 @@ void Worker::SetStrategy(StrategyType strategy_type) {
 }
 
 void Worker::SendMessage() {
-  writer_
+  Message mes = {message_};
+  QByteArray data = Parser::Message_ToByteArray(mes);
+  writer_->WriteBlock(data);
+}
+
+void Worker::OnDisconnected() {
+  emit Disconnected(peer_info_.id);
+}
+
+void Worker::OnConnected() { 
+  emit Connected(peer_info_.id);
 }
 
 void Worker::OnReadyReadBlock() {
@@ -36,14 +48,9 @@ void Worker::OnReadyReadBlock() {
         SetStrategy(StrategyType::RECEIVE_MESSAGE);
         break;
       }
-                     
     }
     DoWork();
   }
-}
-
-void Worker::OnDisconnected() { 
-  emit Disconnected(peer_info_.id); 
 }
 
 Worker::~Worker() {}
