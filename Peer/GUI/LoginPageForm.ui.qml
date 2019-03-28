@@ -24,7 +24,7 @@ Page {
             anchors.leftMargin: -13
             anchors.topMargin: 0
             anchors.fill: parent
-            source: "file:/D:/Projects/geometry.jpg"
+            source: "qrc:/geometry.jpg"
         }
     }
 
@@ -138,6 +138,10 @@ Page {
                 text: "Log In"
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
+            }
+            MouseArea {
+                onClicked: (mouse.button === Qt.LeftButton)
+                           && (mouse.modifiers & Qt.ShiftModifier)
             }
 
             background: Rectangle {

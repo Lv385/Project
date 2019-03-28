@@ -10,5 +10,6 @@
         <file>MessageListDelegateModel.qml</file>
         <file>RegisterPage.qml</file>
         <file>RegisterPageForm.ui.qml</file>
+	<file>geometry.jpg</file>
     </qresource>
 </RCC>
