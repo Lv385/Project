@@ -1,20 +1,9 @@
 #pragma once
-#include "logger.h"
-
-
-//nevermind about following
-
-//QString Logger::Log_Empty(quint8 type)
-//{
-//   // should be ended // possibly by adding other map where value is a key map<value,bool> and it means is empty or not  
-//  m[(quint8)ServerRequests::LOGIN_SUCCEED] = "LOGIN_SUCCEED";
-//  m[(quint8)ServerRequests::LOGIN_FAILED] = "LOGIN_FAILED";
-//  return  "  Server output: "+QString(m[type])+" ";
-//}
+#include "logger.h" 
 
 // void Logger::WriteLogToFile(QString& filename, QString& text)
 void Logger::WriteLogToFile(QString& text) {
-  // QFile file(filename);
+  //QFile file(filename);
   QFile file("LOG.txt");
   if (file.open(QIODevice::Append | QIODevice::Text)) {
     QTextStream stream(&file);

@@ -5,9 +5,7 @@ namespace SQLDAL {
 		SetQuery(Connect_->GetDB());
 	}
 
-	Statement::~Statement() {
-	  Connect_->Close();
-	}
+	Statement::~Statement() {}
 
 	void Statement::SetQuery(QSqlDatabase database) {
 		query_ = QSqlQuery(database);

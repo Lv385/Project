@@ -1,7 +1,6 @@
 #ifndef TEST_H
 #define TEST_H
 
-#include <../DAL/Client/clientdb.h>
 #include <ui_mainwindow.h>
 #include <QDebug>
 #include <QHostAddress>
@@ -17,7 +16,7 @@
 
 #include "connection.h"
 #include "tcpserver.h"
-#include "dalmanager.h"
+#include "dataaccessor.h"
 #include "clientlogger.h"
 
 
@@ -88,7 +87,7 @@ class Peer : public QObject {
   quint16 receiver_port_;
 
   bool is_active_;
-  DALManager client_dal_;
+  DataAccessor client_data_;
   ClientLogger* logger_;
 };
 
