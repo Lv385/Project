@@ -1,6 +1,10 @@
 #include "friendsmanager.h"
 
-FriendsManager::FriendsManager() {}
+FriendsManager::FriendsManager(ApplicationInfo& info) 
+    : app_info(info) {
+
+}
+
 
 FriendsManager::~FriendsManager() {}
 
@@ -8,8 +12,11 @@ void FriendsManager::SendMessage(PeerInfo peer_info, QString message) {
   unsigned id = peer_info.id;
   if (workers_.find(id) == workers_.end()) {
     Worker* worker = new Worker(peer_info, message);
+    worker->set_my_id(app_info.my_id);
+    connecting_workers_.insert(id, worker);
     connect(worker, SIGNAL(Connected(unsigned)), this, SLOT(OnConnected(unsigned)));
   } else {
+    workers_[id]->set_my_id(app_info.my_id);
     workers_[id]->set_message(message);
     workers_[id]->SendMessage();
   }    
@@ -38,7 +45,7 @@ void FriendsManager::OnFirstRequestRecieved() {
       static_cast<quint8>(ClientClientRequest::CONNECT)) {
     ConnectInfo connect_info = Parser::ParseAsConnectInfo(data);
 
-    Worker* worker = new Worker(reader);
+    Worker* worker = new Worker(reader, connect_info.id);
     workers_.insert(connect_info.id, worker);
     connect(worker, SIGNAL(Disconnected(unsigned id)), this,
             SLOT(RemoveWorker(unsigned id)));

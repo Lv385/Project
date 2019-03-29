@@ -25,13 +25,17 @@ QVector<SQLDAL::Friend> DataAccessor::get_friends() {
   return friends;
 }
 
-unsigned DataAccessor::get_id_by_login(const QString user_login){ 
+unsigned DataAccessor::get_id_by_login(const QString user_login){
+  user_->id = 0;
+  user_->login = "";
   user_->login = user_login;
   user_->GetFriend();
   return user_->id;
 }
 
 unsigned DataAccessor::get_id_by_ip_port(const QString ip, const unsigned port) {
+  user_->id = 0;
+  user_->login = "";
   user_->ip = ip;
   user_->port = port;
   user_->GetFriend();

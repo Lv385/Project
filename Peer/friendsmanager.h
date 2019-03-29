@@ -6,6 +6,7 @@
 #include "messagestrategy.h"
 #include "peerinfo.h"
 #include "worker.h"
+#include "application_info.h"
 
 #include <QByteArray>
 #include <QList>
@@ -17,7 +18,7 @@ class FriendsManager : public QObject {
   Q_OBJECT
 
  public:
-  FriendsManager();
+  FriendsManager(ApplicationInfo& info);
   ~FriendsManager();
   void SendMessage(PeerInfo peer_info, QString message);
 
@@ -27,6 +28,7 @@ class FriendsManager : public QObject {
   void OnConnected(unsigned id);
 
  private:
+  ApplicationInfo& app_info;
   QHash<unsigned, Worker*> connecting_workers_;
   QHash<unsigned, Worker*> workers_;
 };

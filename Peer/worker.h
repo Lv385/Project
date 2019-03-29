@@ -16,12 +16,13 @@ class Worker : public QObject {
   Q_OBJECT
 
  public:
-  Worker(BlockReader* reader);
+  Worker(BlockReader* reader, unsigned user_id);
   Worker(PeerInfo peer_info, QString message);
   ~Worker();
   void DoWork();
   void SetStrategy(StrategyType strategy_type);
   void set_message(QString message);
+  void set_my_id(unsigned id);
 
  signals:
   void Disconnected(unsigned id);
@@ -37,6 +38,8 @@ class Worker : public QObject {
   void OnReadyReadBlock();
 
  private:
+  unsigned my_id_;
+  unsigned user_id_;
   AbstractStrategy* strategy_;
   PeerInfo peer_info_;
   QString message_;

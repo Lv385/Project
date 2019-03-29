@@ -3,6 +3,8 @@
 ClientController::ClientController(QObject *parent)
     : QObject(parent), 
       local_server_(app_info_), 
+      friend_manager_(app_info_),
+      server_manager_(nullptr, app_info_),
       cache_data_(CacheData::get_instance())
 {
   connect(&local_server_, SIGNAL(NewConnection(QTcpSocket* )), this,
@@ -87,12 +89,12 @@ QVector<SQLDAL::Message> ClientController::LoadMessages(unsigned id) {
 void ClientController::OnFriendRequestRecieved() {}
 
 void ClientController::OnNewConnection(QTcpSocket *socket) {
-  if (socket->peerAddress().isEqual(app_info_.remote_server_ip),
-      QHostAddress::TolerantConversion) {
+  if (socket->peerAddress().isEqual(app_info_.remote_server_ip, 
+      QHostAddress::TolerantConversion)){
     server_manager_;
   } else {
     BlockReader *reader = new BlockReader(socket);
-    connect(reader, SIGNAL(ReadyReadBlock()), &friend_manager_,
+    disconnect(reader, SIGNAL(ReadyReadBlock()), &friend_manager_,
             SLOT(OnFirstRequestRecieved()));
   }
 }

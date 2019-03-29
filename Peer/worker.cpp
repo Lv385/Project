@@ -1,11 +1,13 @@
 #include "worker.h"
 #include "signalredirector.h"
 
-Worker::Worker(BlockReader* reader)
+Worker::Worker(BlockReader* reader, unsigned user_id)
     : reader_(reader),
+      user_id_(user_id),
       socket_(reader_->get_socket()),
       redirector_(SignalRedirector::get_instance()){
   writer_ = new BlockWriter(socket_);
+
   connect(reader_, SIGNAL(ReadyReadBlock()), this, SLOT(OnReadyReadBlock()));
   strategies_.insert(static_cast<quint8>(ClientClientRequest::MESSAGE), new RecieveMessageStrategy());
 }
@@ -32,6 +34,8 @@ void Worker::SetStrategy(StrategyType strategy_type) {
 void Worker::set_message(QString message) { 
   message_ = message; }
 
+void Worker::set_my_id(unsigned id) { my_id_ = id; }
+
 void Worker::SendMessage() {
   Message mes = {message_};
   QByteArray data = Parser::Message_ToByteArray(mes);
@@ -46,7 +50,7 @@ void Worker::OnDisconnected() {
 void Worker::OnConnected() {
   unsigned id = peer_info_.id;
   emit Connected(id);
-  ConnectInfo connect_info = {id};
+  ConnectInfo connect_info = {my_id_};
   writer_->WriteBlock(Parser::ConnectInfo_ToByteArray(connect_info));
   SendMessage();
 }
@@ -57,6 +61,10 @@ void Worker::OnReadyReadBlock() {
     data = reader_->ReadNextBlock();
     quint8 type = Parser::getRequestType(data);
     strategy_ = strategies_[type];
+    PeerInfo info;
+    info.id = user_id_;
+    strategy_->set_data(data);
+    strategy_->set_peer_info(info);
     DoWork();
   }
 }

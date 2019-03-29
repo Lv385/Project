@@ -15,6 +15,9 @@ MainWindow::MainWindow(QWidget* parent)
       ui_->le_server_port->text().toUShort();
   client_controller_->app_info_.my_port =
       ui_->le_port->text().toUShort();
+  client_controller_->app_info_.my_id =
+      client_data_.get_id_by_login(ui_->le_login->text());
+
 
   SetIpValidator();
 
@@ -121,15 +124,10 @@ void MainWindow::OnPbLoginClicked() {
   // ui_->le_server_port->text().toShort());
 
   QString login = ui_->le_login->text();
+  QString password = ui_->le_password->text();
   quint32 id = client_data_.get_id_by_login(login);
 
-  // peer_->set_login(login);
-  // peer_->set_id(id);
-  // if (peer_->LogIn(login, ui_->le_password->text()))
-  {
-    //->l_your_status->setText(tr("The server is running on\n\nIP:%1\nport:
-    //%2//n").arg(peer_->get_my_ip().toString()) .arg(peer_->get_my_port()));
-  }
+  client_controller_->LogIn(login, password);
 }
 void MainWindow::OnRbSimpleClicked() {
   ui_->l_your_status->setVisible(false);
