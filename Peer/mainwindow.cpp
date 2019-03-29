@@ -9,6 +9,7 @@ MainWindow::MainWindow(QWidget* parent)
       client_controller_(nullptr) {
   ui_->setupUi(this);
 
+  
   client_controller_ = new ClientController(this);
   client_controller_->app_info_.remote_server_ip = ui_->le_server_ip->text();
   client_controller_->app_info_.remote_server_port =
@@ -18,6 +19,8 @@ MainWindow::MainWindow(QWidget* parent)
   client_controller_->app_info_.my_id =
       client_data_.get_id_by_login(ui_->le_login->text());
 
+
+  SignalRedirector::get_instance().set_controller(client_controller_);
 
   SetIpValidator();
 
@@ -91,12 +94,11 @@ void MainWindow::AppendHistory() {
 
   QVector<SQLDAL::Message> history = client_controller_->LoadMessages(id);
   for (auto i : history) {
-    if (login == client_data_.get_login_by_id(i.owner_id)) {
+    if (client_controller_->app_info_.my_login != client_data_.get_login_by_id(i.owner_id)) {
       ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + '<' +
-                                          login + ">: " + i.data);
+          client_data_.get_login_by_id(i.owner_id) + ">: " + i.data);
     } else {
-      ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' +
-                                          "<Me> : " + i.data);
+      ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + "<Me> : " + i.data);
     }
   }
 }
@@ -147,7 +149,17 @@ void MainWindow::OnRbSimpleClicked() {
   ui_->pb_login->setGeometry(610, 330, 70, 30);
 }
 void MainWindow::OnMessageRecieved(unsigned id) {
-  AppendHistory();
+  ui_->plainTextEdit->clear();
+  QVector<SQLDAL::Message> history = client_controller_->LoadMessages(id);
+  
+  for (auto i : history) {
+    if (client_controller_->app_info_.my_login != client_data_.get_login_by_id(i.owner_id)) {
+      ui_->plainTextEdit->appendPlainText( i.time.toString() + '|' + '<' +
+              client_data_.get_login_by_id(i.owner_id) + ">: " + i.data);
+    } else {
+      ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + "<Me> : " + i.data);
+    }
+  }
 }
 void MainWindow::OnRbEngineeringClicked() {
   ui_->l_your_status->setVisible(true);

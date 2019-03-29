@@ -41,20 +41,20 @@ void FriendsManager::OnFirstRequestRecieved() {
   BlockReader* reader = qobject_cast<BlockReader*>(sender());
   QByteArray data = reader->ReadNextBlock();
 
-  if (Parser::getRequestType(data) ==
-      static_cast<quint8>(ClientClientRequest::CONNECT)) {
+  if (Parser::getRequestType(data) == static_cast<quint8>(ClientClientRequest::CONNECT)) {
     ConnectInfo connect_info = Parser::ParseAsConnectInfo(data);
 
     Worker* worker = new Worker(reader, connect_info.id);
     workers_.insert(connect_info.id, worker);
     connect(worker, SIGNAL(Disconnected(unsigned id)), this,
             SLOT(RemoveWorker(unsigned id)));
+    disconnect(reader, SIGNAL(ReadyReadBlock()), this, SLOT(OnFirstRequestRecieved()));
   } else {
     throw 1;
   }
 }
 
-// void ClientWorker::OnFirstRequest() {
+    // void ClientWorker::OnFirstRequest() {
 //  QByteArray received_data, nextData;
 //  int separatorIndex;
 //  QTcpSocket* socket = qobject_cast<QTcpSocket*>(sender());

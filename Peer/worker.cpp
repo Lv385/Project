@@ -4,8 +4,8 @@
 Worker::Worker(BlockReader* reader, unsigned user_id)
     : reader_(reader),
       user_id_(user_id),
-      socket_(reader_->get_socket()),
-      redirector_(SignalRedirector::get_instance()){
+     redirector_(SignalRedirector::get_instance()) {
+  socket_ = reader_->get_socket();
   writer_ = new BlockWriter(socket_);
 
   connect(reader_, SIGNAL(ReadyReadBlock()), this, SLOT(OnReadyReadBlock()));
@@ -68,6 +68,7 @@ void Worker::OnReadyReadBlock() {
     DoWork();
   }
 }
+
 
 Worker::~Worker() { 
   delete writer_;

@@ -89,12 +89,12 @@ QVector<SQLDAL::Message> ClientController::LoadMessages(unsigned id) {
 void ClientController::OnFriendRequestRecieved() {}
 
 void ClientController::OnNewConnection(QTcpSocket *socket) {
-  if (socket->peerAddress().isEqual(app_info_.remote_server_ip, 
-      QHostAddress::TolerantConversion)){
+  if (socket->peerAddress().isEqual(app_info_.remote_server_ip),
+      QHostAddress::TolerantConversion) {
     server_manager_;
   } else {
     BlockReader *reader = new BlockReader(socket);
-    disconnect(reader, SIGNAL(ReadyReadBlock()), &friend_manager_,
+    connect(reader, SIGNAL(ReadyReadBlock()), &friend_manager_,
             SLOT(OnFirstRequestRecieved()));
   }
 }
