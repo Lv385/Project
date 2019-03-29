@@ -25,8 +25,7 @@ QString Logger::ConvertQuint32ToString(quint32 num) {
   return tmp.setNum(num);
 }
 
-void Logger::LogOut(QString &IpAndPort, QByteArray raw_data) {
-  RemoveShit(IpAndPort);
+void Logger::LogOut(QString &IpAndPort, QByteArray raw_data) { 
   if (ifLogingEnable) {
     QString outingString;  
     QString time = QDateTime::currentDateTime().toString("dd.MM hh:mm:ss ");
@@ -192,20 +191,7 @@ QString Logger::Log_NewFriendInfo(NewFriendInfo& out) {
          ", Login: " + QString(out.login) + " }" + txt + '\n';
 }
 
-void Logger::RemoveShit(QString &stringd)
-{
-    std::vector<std::string>msg;
-    std::string myText = stringd.toStdString();
-    std::istringstream iss(myText);
-    std::string token;
-    while (std::getline(iss, token, ':'))
-    {
-      //
-      msg.push_back(token);
-    }
-    QString Ip = QString::fromUtf8(msg[3].c_str());//only ip without ffff
-    stringd = Ip + "::"+ QString::fromUtf8(msg[5].c_str());
-}
+
 
 QString Logger::Log_User(Client& cl) {
   QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");

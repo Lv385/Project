@@ -20,12 +20,13 @@
 //  '_'       -if accompanying_structure  is ending with "_" this -only part of structure will be used
 //            
 enum RequestOwnerType : quint8 {
-  ClientRequest = 0x0,
+  ClientClientRequests = 0x0,
+  ClientRequests = 0x40,
   ServerRequests = 0x80
 };
 //no more than 128 types
 enum class ClientRequest : quint8 {
-  MESSAGE = ClientRequest,
+  MESSAGE = ClientRequests,
   LOGIN,//+LoginInfo(c->s)I,-user,-prc LoginRequest
   REGISTER,//+RegisterInfo(c->s)I,-user, -prc NewUserRequest
   FRIEND_REQUEST,//+FriendRequestInfo(c->s)I,-user, -prc add_friend_request
