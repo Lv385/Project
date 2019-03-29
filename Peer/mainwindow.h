@@ -27,12 +27,15 @@ class MainWindow : public QMainWindow {
 
  private slots:
   void AppendMessage(QString);
-  void AppendHistory();
+  void AppendHistory(QString);
   void AppendLogMessage(const char*, QString);
 
-  void OnPbStartClicker();
+  void OnPbStartClicked();
+  void OnPbStopClicked();
+
   void OnPbLoginClicked();
   void OnPbSendClicked();
+
   void OnRbSimpleClicked();
   void OnRbEngineeringClicked();
 
@@ -42,9 +45,8 @@ class MainWindow : public QMainWindow {
   Ui::MainWindow* ui_;
   //  Peer* peer_;
   DataAccessor client_data_;
-  ClientLogger* logger_;
+  ClientLogger& logger_;
   ClientController* client_controller_;
-  ApplicationInfo app_info_;
   QVector<PeerInfo> friends_;
 };
 

@@ -1,8 +1,8 @@
 #include "clientlogger.h"
 
-ClientLogger* ClientLogger::Instance() {
+ClientLogger& ClientLogger::Instance() {
   static ClientLogger logger_; 
-    return &logger_;
+    return logger_;
 }
 const char* ErrorValueNames[] = {GET_NAME(ERROR), GET_NAME(SUCCESS),
                                  GET_NAME(INFO), GET_NAME(WARNING), GET_NAME(DEBUG)};

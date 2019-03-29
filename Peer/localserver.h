@@ -16,6 +16,7 @@ class LocalServer : public QTcpServer {
   ~LocalServer();
 
   bool Start();
+  void Stop();
 
  signals:
   void NewConnection(QTcpSocket* socket);
@@ -25,6 +26,7 @@ class LocalServer : public QTcpServer {
 
  private:
   ApplicationInfo& app_info_;
+  ClientLogger& logger_;
 };
 
 #endif

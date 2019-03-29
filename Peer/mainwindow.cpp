@@ -4,20 +4,14 @@
 
 MainWindow::MainWindow(QWidget* parent)
     : QMainWindow(parent),
-      // peer_(nullptr),
+      logger_(ClientLogger::Instance()),
       ui_(new Ui::MainWindow),
       client_controller_(nullptr) {
   ui_->setupUi(this);
 
   
   client_controller_ = new ClientController(this);
-  client_controller_->app_info_.remote_server_ip = ui_->le_server_ip->text();
-  client_controller_->app_info_.remote_server_port =
-      ui_->le_server_port->text().toUShort();
-  client_controller_->app_info_.my_port =
-      ui_->le_port->text().toUShort();
-  client_controller_->app_info_.my_id =
-      client_data_.get_id_by_login(ui_->le_login->text());
+
 
 
   SignalRedirector::get_instance().set_controller(client_controller_);
@@ -27,8 +21,7 @@ MainWindow::MainWindow(QWidget* parent)
   // ui_->pb_start->setEnabled(false);
   ui_->pb_send->setEnabled(true);
 
-  logger_ = ClientLogger::Instance();
-  logger_->set_log_level(
+  logger_.set_log_level(
       LogLevel::HIGH);  // u can switch levels of logging(NOLOG, LOW, HIGH)
 
   QVector<SQLDAL::Friend> friends = client_data_.get_friends();
@@ -46,10 +39,11 @@ MainWindow::MainWindow(QWidget* parent)
   //           this, SLOT(AppendMessage(QString)));
   //  connect(peer_, SIGNAL(SendLog(QString)), this,
   //                 SLOT(AppendLogMessage(QString)));
+  connect(ui_->pb_start, SIGNAL(clicked()), this, SLOT(OnPbStartClicked()));
+  connect(ui_->pb_stop, SIGNAL(clicked()), this, SLOT(OnPbStopClicked()));
 
-  connect(ui_->pb_start, SIGNAL(clicked()), this, SLOT(OnPbStartClicker()));
   connect(ui_->combo_box_friends, SIGNAL(currentIndexChanged(QString)), this,
-          SLOT(AppendHistory()));
+          SLOT(AppendHistory(QString)));
   connect(ui_->pb_send, SIGNAL(clicked()), this, SLOT(OnPbSendClicked()));
   connect(ui_->pb_login, SIGNAL(clicked()), this, SLOT(OnPbLoginClicked()));
   connect(ui_->rb_simple, SIGNAL(clicked()), this, SLOT(OnRbSimpleClicked()));
@@ -59,15 +53,31 @@ MainWindow::MainWindow(QWidget* parent)
   connect(client_controller_, SIGNAL(MessageRecieved(unsigned)), this,
           SLOT(OnMessageRecieved(unsigned)));
   // CLIENT CONTROLLER
-  /* connect(client_controller_, SIGNAL(SendMessageToUI(QString)),
-                         this, SLOT(AppendMessage(QString)));
-   connect(client_controller_, SIGNAL(SendLog(QString)),
-                         this, SLOT(AppendLogMessage(QString)));*/
+  // connect(client_controller_, SIGNAL(SendMessageToUI(QString)),
+           //              this, SLOT(AppendMessage(QString)));
+
+  connect(&logger_, SIGNAL(DisplayLog(const char*, QString)), 
+             this, SLOT(AppendLogMessage(const char*, QString)));
+
   friends_ = client_controller_->LoadFriends();
 }
 
-void MainWindow::OnPbStartClicker() { 
+void MainWindow::OnPbStartClicked() {
+  client_controller_->app_info_.remote_server_ip = ui_->le_server_ip->text();
+  client_controller_->app_info_.remote_server_port = ui_->le_server_port->text().toUShort();
+  client_controller_->app_info_.my_port = ui_->le_my_port->text().toUShort();
+  client_controller_->app_info_.my_login = ui_->le_login->text();
+
+  client_controller_->app_info_.my_id = client_data_.get_id_by_login(ui_->le_login->text());
+
+  logger_.WriteLog(SUCCESS,
+      "my id: " + QString::number(client_controller_->app_info_.my_id));
+
   client_controller_->Start();
+}
+
+void MainWindow::OnPbStopClicked() { 
+  client_controller_->Stop(); 
 }
 
 MainWindow::~MainWindow() { delete ui_; }
@@ -84,23 +94,9 @@ void MainWindow::AppendMessage(QString message) {
   ui_->plainTextEdit->appendPlainText(message);  // username by id + message
 }
 
-void MainWindow::AppendHistory() {
-  ui_->plainTextEdit->clear();
-  QString login = ui_->combo_box_friends->currentText();
-  unsigned id;
-  for (auto a : friends_)
-    if (a.login == login) 
-      id = a.id;
-
-  QVector<SQLDAL::Message> history = client_controller_->LoadMessages(id);
-  for (auto i : history) {
-    if (client_controller_->app_info_.my_login != client_data_.get_login_by_id(i.owner_id)) {
-      ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + '<' +
-          client_data_.get_login_by_id(i.owner_id) + ">: " + i.data);
-    } else {
-      ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + "<Me> : " + i.data);
-    }
-  }
+void MainWindow::AppendHistory(QString login) {
+  unsigned id = client_data_.get_id_by_login(login);
+  OnMessageRecieved(id);
 }
 
 void MainWindow::OnPbSendClicked() {
@@ -118,7 +114,7 @@ void MainWindow::OnPbSendClicked() {
 }
 
 void MainWindow::AppendLogMessage(const char* value, QString message) {
-  ui_->plainTextEdit_Log->appendPlainText(value + message);
+  ui_->plainTextEdit_Log->appendPlainText(value +QString("  ")+ message);
 }
 
 void MainWindow::OnPbLoginClicked() {
@@ -139,7 +135,7 @@ void MainWindow::OnRbSimpleClicked() {
   ui_->le_port->setVisible(false);
   ui_->label_logs->setVisible(false);
   ui_->label_3->setVisible(false);
-  ui_->le_port_my->setVisible(false);
+  ui_->le_my_port->setVisible(false);
   ui_->plainTextEdit_Log->setVisible(false);
   ui_->pb_start->setVisible(false);
   ui_->le_server_ip->setVisible(false);
@@ -169,7 +165,7 @@ void MainWindow::OnRbEngineeringClicked() {
   ui_->le_port->setVisible(true);
   ui_->label_logs->setVisible(true);
   ui_->label_3->setVisible(true);
-  ui_->le_port_my->setVisible(true);
+  ui_->le_my_port->setVisible(true);
   ui_->plainTextEdit_Log->setVisible(true);
   ui_->pb_start->setVisible(true);
   ui_->le_server_ip->setVisible(true);

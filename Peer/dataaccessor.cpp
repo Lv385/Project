@@ -28,6 +28,7 @@ QVector<SQLDAL::Friend> DataAccessor::get_friends() {
 unsigned DataAccessor::get_id_by_login(const QString user_login){
   user_->id = 0;
   user_->login = "";
+  user_->ip = "";
   user_->login = user_login;
   user_->GetFriend();
   return user_->id;

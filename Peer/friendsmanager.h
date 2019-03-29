@@ -7,6 +7,7 @@
 #include "peerinfo.h"
 #include "worker.h"
 #include "application_info.h"
+#include "clientlogger.h"
 
 #include <QByteArray>
 #include <QList>
@@ -24,13 +25,16 @@ class FriendsManager : public QObject {
 
  private slots:
   void OnFirstRequestRecieved();
-  void RemoveWorker(unsigned id);
+
+  void OnDisconnected(unsigned id);
   void OnConnected(unsigned id);
+  void OnError(unsigned id);
 
  private:
   ApplicationInfo& app_info;
   QHash<unsigned, Worker*> connecting_workers_;
   QHash<unsigned, Worker*> workers_;
+  ClientLogger& logger_;
 };
 
 #endif  // !CLIENTMANAGER_H

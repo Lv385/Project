@@ -15,7 +15,7 @@ class ClientLogger : public QObject {
   Q_OBJECT
 
  public:
-  static ClientLogger* Instance();
+  static ClientLogger& Instance();
 
   void WriteLog(LogType type, const QString& msg);
   void set_specific_log(LogType specific_type);

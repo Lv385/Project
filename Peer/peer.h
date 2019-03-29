@@ -88,7 +88,7 @@
 //
 //  bool is_active_;
 //  DataAccessor client_data_;
-//  ClientLogger* logger_;
+//  ClientLogger& logger_;
 //};
 //
 //#endif  // TEST_H

@@ -12,10 +12,9 @@ RecieveMessageStrategy::~RecieveMessageStrategy()
 }
 
 void RecieveMessageStrategy::DoWork() {
-  //cache_data_.SetMessage(peer_info_.id, message_.message);
-  //unsigned id = peer_info_.id;
+  unsigned id = peer_info_.id;
   message_ = Parser::ParseAsMessage(data_);
   
-  client_data_.AddMessageToDB(message_.message, peer_info_.id, peer_info_.id);
-  emit MessageRecieved(peer_info_.id);
+  client_data_.AddMessageToDB(message_.message, id, id);
+  emit MessageRecieved(id);
 }

@@ -49,7 +49,7 @@
 //
 //  const QByteArray k_unpossiblle_2_bytes_sequence_;
 //  DataAccessor client_data_;
-//  ClientLogger* logger_;
+//  ClientLogger& logger_;
 //
 //};
 //#endif

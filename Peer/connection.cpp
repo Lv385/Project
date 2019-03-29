@@ -17,7 +17,7 @@
 //
 //void Connection::SendMessage(Message message) {
 //  if (this->state() == QAbstractSocket::ConnectedState) {
-//    logger_->WriteLog(LogType::SUCCESS,
+//    logger_.WriteLog(LogType::SUCCESS,
 //                     " Me: " + this->localAddress().toString() + ':' +
 //                         QString::number(this->localPort()) +
 //                         " Peer: " + this->peerAddress().toString() + ':' +
@@ -35,7 +35,7 @@
 //
 //    QString str = QString(" cannot coonect to") + receiver_ip_.toString() +
 //                  ' : ' + QString::number(receiver_port_);
-//    logger_->WriteLog(LogType::ERROR, str);
+//    logger_.WriteLog(LogType::ERROR, str);
 //    emit SendMessageToUI(str);
 //  }
 //}
@@ -47,7 +47,7 @@
 //
 //    if (waitForReadyRead(4000)) {
 //      QByteArray read = readAll();
-//      logger_->WriteLog(LogType::INFO, " writing to server");
+//      logger_.WriteLog(LogType::INFO, " writing to server");
 //      read = read.left(read.indexOf(k_unpossiblle_2_bytes_sequence_));
 //      quint8 type = Parser::getRequestType(read);
 //      if (type == (quint8)ServerRequests::LOGIN_SUCCEED) {
@@ -80,7 +80,7 @@
 //    nextData = received_data_.mid(separatorIndex + 2);
 //    received_data_ = received_data_.left(separatorIndex);
 //
-//    logger_->WriteLog(LogType::INFO, " recieving something from" +
+//    logger_.WriteLog(LogType::INFO, " recieving something from" +
 //      this->peerAddress().toString() + ":" + QString::number(this->peerPort()));
 //
 //    // here we should change behaviour depening on type of message

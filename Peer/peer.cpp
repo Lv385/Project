@@ -25,7 +25,7 @@
 //  if (my_ip_.toString().isEmpty())
 //    my_ip_ = QHostAddress(QHostAddress::LocalHost);
 //
-//  logger_->WriteLog(LogType::INFO, " My IP: " + my_ip_.toString());
+//  logger_.WriteLog(LogType::INFO, " My IP: " + my_ip_.toString());
 //
 //
 //
@@ -60,7 +60,7 @@
 //  my_listen_port_ = listen_port;
 //  tcp_server_->close();
 //  if (!tcp_server_->listen(QHostAddress::Any, my_listen_port_)) {
-//    logger_->WriteLog(LogType::ERROR,
+//    logger_.WriteLog(LogType::ERROR,
 //                      " cannot start on: " + QString::number(my_listen_port_));
 //
 //
@@ -70,7 +70,7 @@
 //    }
 //  }
 //
-//  logger_->WriteLog(LogType::SUCCESS,
+//  logger_.WriteLog(LogType::SUCCESS,
 //                    " Started listening on " + QString::number(get_my_port()));
 //
 //  is_active_ = true;
@@ -101,10 +101,10 @@
 //  QPair<QString, int> ip_port = client_data_.get_ip_port(id); // marko - change to QPair<QString, quint16>  GetIPPort(const unsigned& user_id);
 //  connections_[id]->connectToHost(ip_port.first, ip_port.second);
 //  QString logMessage = receiver_ip_.toString() + " : " + QString::number(ip_port.second);
-//  logger_->WriteLog(LogType::INFO, " trying connect to: " + logMessage);
+//  logger_.WriteLog(LogType::INFO, " trying connect to: " + logMessage);
 //
 //  if (connections_[id]->waitForConnected(5000)) {
-//    logger_->WriteLog(LogType::SUCCESS, " connected to:" + logMessage);
+//    logger_.WriteLog(LogType::SUCCESS, " connected to:" + logMessage);
 //    connections_[id]->StartConnectionTimer(30000);  // 30 sec until disconnecting	
 //    connect(connections_[id], SIGNAL(ConnectionTimeout()), 
 //                        this, SLOT(DisconncetFromPeer()));
@@ -117,7 +117,7 @@
 //    return true;
 //  } 
 //  else {
-//    logger_->WriteLog(LogType::ERROR, " cannot connect to " + logMessage);
+//    logger_.WriteLog(LogType::ERROR, " cannot connect to " + logMessage);
 //    //tcp_socket_->deleteLater();
 //    //tcp_socket_ = nullptr;
 //    return false;
@@ -145,7 +145,7 @@
 //  for (const SQLDAL::Friend& i : friends) {
 //    update_sender_.writeDatagram(to_write, QHostAddress(i.ip), my_listen_port_);
 //  }
-//  logger_->WriteLog(LogType::INFO, " update sent");
+//  logger_.WriteLog(LogType::INFO, " update sent");
 //}
 //
 //void Peer::UpdateFriendsInfo() {
@@ -177,7 +177,7 @@
 //    }
 //    client_data_.UpdateIPPort(updated_friend_info.id, peer_address.toString(), updated_friend_info.port); 
 //
-//   logger_->WriteLog(LogType::INFO,
+//   logger_.WriteLog(LogType::INFO,
 //                      " updated " +
 //                           client_data_.get_login_by_id(updated_friend_info.id) +
 //                           "'s info");
@@ -191,7 +191,7 @@
 //
 //  client_data_.set_friend_status(id, false);
 //
-//  logger_->WriteLog(LogType::INFO,
+//  logger_.WriteLog(LogType::INFO,
 //                    " set " + 
 //    client_data_.get_login_by_id(id) + " offline status");
 //
@@ -234,7 +234,7 @@
 //
 //  connect(connection, SIGNAL(SendMessageToUI(QString)),
 //                this, SIGNAL(SendMessageToUI(QString)));
-//  logger_->WriteLog(LogType::INFO," setting socket: " + QString::number(connection->localPort()));
+//  logger_.WriteLog(LogType::INFO," setting socket: " + QString::number(connection->localPort()));
 //}
 //
 //void Peer::OnServerConnected(Connection* connection) {

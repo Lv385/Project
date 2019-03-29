@@ -1,7 +1,9 @@
 #ifndef WORKER_H
 #define WORKER_H
 
+#include "dataaccessor.h"
 #include "abstractstrategy.h"
+#include "clientlogger.h"
 #include "recieve_mesage_strategy.h"
 
 #include "blockreader.h"
@@ -9,6 +11,7 @@
 
 #include <QByteArray>
 #include <QObject>
+#include <QTimer>
 
 #include "../Parser&Structs/parser.h"
 
@@ -16,8 +19,8 @@ class Worker : public QObject {
   Q_OBJECT
 
  public:
-  Worker(BlockReader* reader, unsigned user_id);
-  Worker(PeerInfo peer_info, QString message);
+  Worker(BlockReader* reader, unsigned user_id, unsigned my_id);
+  Worker(PeerInfo peer_info, QString message, unsigned my_id);
   ~Worker();
   void DoWork();
   void SetStrategy(StrategyType strategy_type);
@@ -27,6 +30,7 @@ class Worker : public QObject {
  signals:
   void Disconnected(unsigned id);
   void Connected(unsigned id);
+  void Error(unsigned id);
   void MessageSent(unsigned id, bool result);
 
  public slots:
@@ -34,13 +38,15 @@ class Worker : public QObject {
 
  private slots:
   void OnDisconnected();
+  void OnTimedOut();
   void OnConnected();
+  void OnError(QAbstractSocket::SocketError);
   void OnReadyReadBlock();
 
  private:
   unsigned my_id_;
-  unsigned user_id_;
   AbstractStrategy* strategy_;
+  DataAccessor client_data_;
   PeerInfo peer_info_;
   QString message_;
   QTcpSocket* socket_;
@@ -48,6 +54,9 @@ class Worker : public QObject {
   BlockWriter* writer_;
   QHash<quint8, AbstractStrategy*> strategies_;
   SignalRedirector& redirector_;
+  ClientLogger& logger_;
+  QTimer timer_;
+  int k_msc = 10000;  // connection time
 };
 
 #endif  // !WORKER_H

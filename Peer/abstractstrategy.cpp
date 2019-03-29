@@ -21,5 +21,9 @@ void AbstractStrategy::set_peer_info(PeerInfo info) {
   peer_info_ = info; 
 }
 
+void AbstractStrategy::set_my_id(unsigned my_id) { 
+  my_id_ = my_id; 
+}
+
 AbstractStrategy::~AbstractStrategy() {}
 

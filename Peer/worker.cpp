@@ -1,30 +1,41 @@
 #include "worker.h"
 #include "signalredirector.h"
 
-Worker::Worker(BlockReader* reader, unsigned user_id)
+Worker::Worker(BlockReader* reader, unsigned user_id, unsigned my_id)
     : reader_(reader),
-      user_id_(user_id),
-     redirector_(SignalRedirector::get_instance()) {
+      my_id_(my_id),
+      logger_(ClientLogger::Instance()),
+      redirector_(SignalRedirector::get_instance()) {
+  peer_info_.id = user_id;
   socket_ = reader_->get_socket();
   writer_ = new BlockWriter(socket_);
-
+  connect(socket_, SIGNAL(disconnected()), this, SLOT(OnDisconnected()));
   connect(reader_, SIGNAL(ReadyReadBlock()), this, SLOT(OnReadyReadBlock()));
-  strategies_.insert(static_cast<quint8>(ClientClientRequest::MESSAGE), new RecieveMessageStrategy());
+  strategies_.insert(static_cast<quint8>(ClientClientRequest::MESSAGE),
+                     new RecieveMessageStrategy());
 }
 
-Worker::Worker(PeerInfo peer_info, QString message)
-    : message_(message),
-      peer_info_(peer_info),
+Worker::Worker(PeerInfo peer_info, QString message, unsigned my_id)
+    : message_(message), peer_info_(peer_info), 
+      my_id_(my_id),
+      logger_(ClientLogger::Instance()),
       redirector_(SignalRedirector::get_instance()) {
   socket_ = new QTcpSocket();
   writer_ = new BlockWriter(socket_);
   reader_ = new BlockReader(socket_);
+
+  connect(reader_, SIGNAL(ReadyReadBlock()), this, SLOT(OnReadyReadBlock()));
   connect(socket_, SIGNAL(connected()), this, SLOT(OnConnected()));
+  connect(socket_, SIGNAL(disconnected()), this, SLOT(OnDisconnected()));
+  connect(socket_, SIGNAL(error(QAbstractSocket::SocketError)), this,
+          SLOT(OnError(QAbstractSocket::SocketError)));
   socket_->connectToHost(peer_info_.ip, peer_info_.port);
+  strategies_.insert(static_cast<quint8>(ClientClientRequest::MESSAGE),
+                     new RecieveMessageStrategy());
 }
 
 void Worker::DoWork() { 
-  strategy_->DoWork(); 
+  strategy_->DoWork();
 }
 
 void Worker::SetStrategy(StrategyType strategy_type) {
@@ -32,22 +43,39 @@ void Worker::SetStrategy(StrategyType strategy_type) {
 }
 
 void Worker::set_message(QString message) { 
-  message_ = message; }
+  message_ = message; 
+}
 
-void Worker::set_my_id(unsigned id) { my_id_ = id; }
+void Worker::set_my_id(unsigned id) { 
+  my_id_ = id; 
+}
 
 void Worker::SendMessage() {
+  timer_.start(k_msc);
   Message mes = {message_};
   QByteArray data = Parser::Message_ToByteArray(mes);
   emit MessageSent(peer_info_.id, true);
   writer_->WriteBlock(data);
+  client_data_.AddMessageToDB(message_, peer_info_.id, my_id_);
 }
 
-void Worker::OnDisconnected() { 
+void Worker::OnDisconnected() {
   emit Disconnected(peer_info_.id);
 }
 
+void Worker::OnError(QAbstractSocket::SocketError) {
+  emit Error(peer_info_.id);
+}
+
+void Worker::OnTimedOut() { 
+  logger_.WriteLog(INFO, "Auto disconnecting from" + peer_info_.login);
+  socket_->disconnectFromHost();
+}
+
 void Worker::OnConnected() {
+  timer_.start(k_msc);
+  connect(&timer_, SIGNAL(timeout()), 
+          this, SLOT(OnTimedOut));
   unsigned id = peer_info_.id;
   emit Connected(id);
   ConnectInfo connect_info = {my_id_};
@@ -62,15 +90,14 @@ void Worker::OnReadyReadBlock() {
     quint8 type = Parser::getRequestType(data);
     strategy_ = strategies_[type];
     PeerInfo info;
-    info.id = user_id_;
     strategy_->set_data(data);
-    strategy_->set_peer_info(info);
+    strategy_->set_peer_info(peer_info_);
+    strategy_->set_my_id(my_id_);
     DoWork();
   }
 }
 
-
-Worker::~Worker() { 
+Worker::~Worker() {
   delete writer_;
   delete reader_;
   delete socket_;
