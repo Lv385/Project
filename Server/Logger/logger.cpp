@@ -125,7 +125,7 @@ void Logger::LogOut(QString &IpAndPort, QByteArray raw_data) {
     case (quint8)ServerRequests::FRIEND_UPDATE_INFO: {
       FriendUpdateInfo out;
       out = Parser::ParseAsFriendUpdateInfo(raw_data);
-      outingString = " Server  output: FRIEND_UPDATE_INFO(" +
+      outingString = time + IpAndPort +"out: FRIEND_UPDATE_INFO(" +
         ConvertQuint8ToString(type) + ") " +
         Log_FriendUpdateInfo(out);
       qDebug().noquote() << outingString << "\n";
@@ -135,7 +135,7 @@ void Logger::LogOut(QString &IpAndPort, QByteArray raw_data) {
     case (quint8)ServerRequests::NEW_FRIEND_INFO: {
       NewFriendInfo out;
       out = Parser::ParseAsNewFriendInfo(raw_data);
-      outingString = " Server  output:NEW_FRIEND_INFO (" +
+      outingString = time+IpAndPort+"out:NEW_FRIEND_INFO (" +
         ConvertQuint8ToString(type) + ") " +
         Log_NewFriendInfo(out);
       qDebug().noquote() << outingString << "\n";
@@ -152,13 +152,12 @@ QString Logger::Log_RegisterSuccessInfo(RegisterSuccessInfo& out) {
 }
 
 
-
+//test // b2 upper intermediate
 QString Logger::Log_FriendUpdateInfo(FriendUpdateInfo& out) {
-  QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
-  return "Friend_Update_Info{  ip: " + out.ip.toString() +
-         ", Port: " + ConvertQuint16ToString(out.port) +
-         ",  ID: " + ConvertQuint32ToString(out.id) + " }" + txt + '\n';
-  return txt;
+  
+  return "\n\t\tFriend_Update_Info{  ip: " + out.ip.toString() +
+         "\n\t\tPort: " + ConvertQuint16ToString(out.port) +
+         "\n\t\tID: " + ConvertQuint32ToString(out.id) + " }\n";
 }
 //DONE
 QString Logger::Log_LoginInfo(LoginInfo& out) {  
@@ -183,14 +182,14 @@ QString Logger::Log_FriendRequestInfo(FriendRequestInfo& out) {
          "\n\t\t\tid: " + ConvertQuint32ToString(out.id) +
          "\n\t\t\tpassword: " + out.password + "}\n";
 }
-
+//test
 QString Logger::Log_NewFriendInfo(NewFriendInfo& out) {
-  QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
-  return "NEW_FRIEND_INFO{ IP: " + out.ip.toString() +
-         ", Port: " + ConvertQuint16ToString(out.port) +
-         ", ID: " + ConvertQuint32ToString(out.id) +
-         ", Login: " + QString(out.login) + " }" + txt + '\n';
-}
+  
+  return "\n\tNewFriendInfo{ IP: " + out.ip.toString() +
+         "\n\t\t\tPort: " + ConvertQuint16ToString(out.port) +
+         "\n\t\t\tID: " + ConvertQuint32ToString(out.id) +
+         "\n\t\t\tLogin: " + QString(out.login) + " }\n";
+} 
 
 void Logger::RemoveShit(QString &stringd)
 {
