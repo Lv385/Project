@@ -6,23 +6,26 @@
 #include "statement.h"
 
 namespace SQLDAL {
-	class UnitOfWork {
-	public:
-		UnitOfWork();
-		~UnitOfWork();
 
-		template <typename T>
-		std::shared_ptr<T> GetEntity();
-
-	private:
-		std::shared_ptr<Connect> Connect_;
-		static std::atomic<unsigned int> Connect_number_;
-		QString GenerateNewConnection();
-	};
+  class UnitOfWork {
+   public:
+	UnitOfWork();
+	virtual ~UnitOfWork();
 
 	template <typename T>
-	std::shared_ptr<T> UnitOfWork::GetEntity() {
-		return std::make_shared<T>(Connect_);
-	}
-}
+	std::shared_ptr<T>			       GetEntity();
+	void							   GenerateUniqueConnection();
+
+   private:
+	std::shared_ptr<Connect>		   connection_;
+	static std::atomic<unsigned int>   connection_number_;
+	QString						       GenerateNewConnection();
+  };
+
+  template <typename T>
+  std::shared_ptr<T> UnitOfWork::GetEntity() {
+	return std::make_shared<T>(connection_);
+  }
+
+}  // namespace SQLDAL
 #endif  // !UNITOFWORK_H
