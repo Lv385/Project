@@ -34,7 +34,7 @@ class ClientController : public QObject {
   void Stop();
   void SetAppInfo(ApplicationInfo info);
   //QString GetMessage(unsigned);
-  QVector<SQLDAL::Message> LoadMessages(unsigned id);
+  QVector<SQLDAL::Messages> LoadMessages(unsigned id);
 
  signals:
 
