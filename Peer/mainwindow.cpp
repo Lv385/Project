@@ -24,8 +24,8 @@ MainWindow::MainWindow(QWidget* parent)
   logger_->set_log_level(
       LogLevel::HIGH);  // u can switch levels of logging(NOLOG, LOW, HIGH)
 
-  QVector<SQLDAL::Friend> friends = client_data_.get_friends();
-  for (const SQLDAL::Friend& i : friends) {
+  QVector<SQLDAL::Friends> friends = client_data_.get_friends();
+  for (const SQLDAL::Friends& i : friends) {
     ui_->combo_box_friends->addItem(i.login);
   }
 
@@ -147,7 +147,7 @@ void MainWindow::OnRbSimpleClicked() {
 }
 void MainWindow::OnMessageRecieved(unsigned id) {
   ui_->plainTextEdit->clear();
-  QVector<SQLDAL::Message> history = client_controller_->LoadMessages(id);
+  QVector<SQLDAL::Messages> history = client_controller_->LoadMessages(id);
   
   for (auto i : history) {
     if (client_controller_->app_info_.my_login != client_data_.get_login_by_id(i.owner_id)) {

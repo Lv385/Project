@@ -2,47 +2,55 @@
 #define USER_H
 #include <QString>
 #include "statement.h"
+#include "sqldal.h"
 namespace SQLDAL {
-	class User : public Statement {
-	public:
-		User(std::shared_ptr<Connect> Connect);
-		~User();
 
-		unsigned int	id;
-		QString		login;
-		QString		password;
-		QString		ip;
-		unsigned int	port;
+  class User : public Statement {
+  public:
+	  User(std::shared_ptr<Connect> Connect);
+	  ~User();
+      /*Columns from table */
+	  unsigned int	    id;
+	  QString			login;
+	  QString			password;
+	  QString			ip;
+	  unsigned int		port;
 
+      /* Vectors to show our relations */
+	  QVector<UsersID> friends; 
+	  QVector<UsersID> requests;
+	  QVector<UsersID> notification;
 
-		void			AddNewFriend(const unsigned int& friend_id);
-		QVector<int>	GetFriends();// SelectAllFriendsAboutOneUser
-		void			DeleteFriend(const unsigned int& friend_id);
+	  void			 GetUser(const unsigned int& user_id);
+	  void			 GetUser(const QString& user_login);// Select
+	  void			 UpdateUser();          // Update
+	  void			 AddNewUser();          // Insert
+	  void			 DeleteUser();          // Delete
 
-		void			AddNewFriendRequest(const unsigned int& friend_id);
-		QVector<int>	GetFriendsRequest();  // SelectAllFriendsRequestAboutOneUser
-		void			DeleteFriendRequest(const unsigned int& friend_id);
+	  void			 GetFriends();
+	  void			 GetFriendsRequest();
+	  void			 GetFriendsNotification();
 
-		void			GetUser();             // Select
-		void			UpdateUser();          // Update
-		void			AddNewUser();          // Insert
-		void			DeleteUser();          // Delete
+	  void			 AddFriend(unsigned int user_id);
+	  void			 AddFriendRequest(unsigned int user_id);
+	  void			 AddFriendNotification(unsigned int user_id);
+	  void           DeleteFriend(unsigned int user_id);
+	  void			 DeleteFriendRequest(unsigned int user_id);
+	  void			 DeleteFriendNotification(unsigned int user_id);
+ 
+  private:
+	  std::shared_ptr<FriendInfo>       friend_obj;
+	  std::shared_ptr<RequestInfo>      request_obj;
+	  std::shared_ptr<NotificationInfo> notification_obj;
 
-	private:
-		QString InsertFriendQuery(unsigned int friend_id);
-		QString SelectFriendsQuery();
-		QString DeleteFriendQuery(const unsigned int& friend_id);
+	  QString							  UpdateQuery();
+	  QString							  SelectQuery(unsigned int user_id);
+	  QString							  SelectQuery(QString user_login);
+	  QString							  InsertQuery();
+	  QString							  DeleteQuery();
+	  QString							  CountOfFriends();
+	  QString							  CountOfFriendsRequest();
+  };
 
-		QString InsertFriendRequestQuery(unsigned int friend_id);
-		QString SelectFriendsRequestQuery();
-		QString DeleteFriendRequestQuery(const unsigned int& friend_id);
-
-		QString UpdateQuery();
-		QString SelectQuery();
-		QString InsertQuery();
-		QString DeleteQuery();
-		QString CountOfFriends();
-		QString CountOfFriendsRequest();
-	};
 }
 #endif  // !USER_H 

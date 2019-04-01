@@ -190,7 +190,7 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\DAL\Client\clientdb.cpp" />
+    
     <ClCompile Include="..\Parser&amp;Structs\parser.cpp" />
     <ClCompile Include="blockreader.cpp" />
     <ClCompile Include="blockwriter.cpp" />
@@ -267,7 +267,6 @@
       <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">release\moc_predefs.h;%(Outputs)</Outputs>
       <ExcludedFromBuild Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</ExcludedFromBuild>
     </CustomBuild>
-    <ClInclude Include="..\DAL\Client\clientdb.h" />
     <ClInclude Include="..\Parser&amp;Structs\parser.h" />
     <QtMoc Include="localserver.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql</IncludePath>
