@@ -34,7 +34,7 @@ class FriendsManager : public QObject {
   ApplicationInfo& app_info;
   QHash<unsigned, Worker*> connecting_workers_;
   QHash<unsigned, Worker*> workers_;
-  ClientLogger& logger_;
+  ClientLogger* logger_;
 };
 
 #endif  // !CLIENTMANAGER_H

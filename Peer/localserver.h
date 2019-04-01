@@ -26,7 +26,7 @@ class LocalServer : public QTcpServer {
 
  private:
   ApplicationInfo& app_info_;
-  ClientLogger& logger_;
+  ClientLogger* logger_;
 };
 
 #endif

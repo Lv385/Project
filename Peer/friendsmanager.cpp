@@ -15,10 +15,10 @@ void FriendsManager::SendMessage(PeerInfo peer_info, QString message) {
 " " + peer_info.ip.toString() + " " + QString::number(peer_info.port);
   
   if(connecting_workers_.find(id) != connecting_workers_.end()) {
-    logger_.WriteLog(INFO, "Still connecting to " + log);
+    logger_->WriteLog(INFO, "Still connecting to " + log);
 
   } else if(workers_.find(id) == workers_.end()) {
-    logger_.WriteLog(INFO, "Connecting to " + log);
+    logger_->WriteLog(INFO, "Connecting to " + log);
     Worker* worker = new Worker(peer_info, message, app_info.my_id);
     connecting_workers_.insert(id, worker);
     connect(worker, SIGNAL(Connected(unsigned)), this,
@@ -27,7 +27,7 @@ void FriendsManager::SendMessage(PeerInfo peer_info, QString message) {
             SLOT(OnDisconnected(unsigned)));
     connect(worker, SIGNAL(Error(unsigned)), this, SLOT(OnError(unsigned)));
   } else {
-    logger_.WriteLog(INFO, "Sending  to " + log);
+    logger_->WriteLog(INFO, "Sending  to " + log);
     workers_[id]->set_my_id(app_info.my_id);
     workers_[id]->set_message(message);
     workers_[id]->SendMessage();
@@ -36,8 +36,10 @@ void FriendsManager::SendMessage(PeerInfo peer_info, QString message) {
 
 
 void FriendsManager::OnDisconnected(unsigned id) {
-  delete workers_.find(id).value();
-  workers_.remove(id);
+  if (workers_.find(id) != workers_.end()) {
+    delete workers_[id];
+    workers_.remove(id);
+  }
 }
 
 void FriendsManager::OnConnected(unsigned id) { 
@@ -46,13 +48,17 @@ void FriendsManager::OnConnected(unsigned id) {
 }
 
 void FriendsManager::OnError(unsigned id) {
-  logger_.WriteLog(ERROR, "Failed on to" + QString::number(id));
+  logger_->WriteLog(ERROR, "Failed on to" + QString::number(id));
+
   if (connecting_workers_.find(id) != connecting_workers_.end()) {
     delete connecting_workers_[id];
+    connecting_workers_.remove(id);
   }
-  connecting_workers_.remove(id);
+  if (workers_.find(id) != workers_.end()) {
+    delete workers_[id];
+    workers_.remove(id);
+  }
 }
-
 
 void FriendsManager::OnFirstRequestRecieved() {
   BlockReader* reader = qobject_cast<BlockReader*>(sender());

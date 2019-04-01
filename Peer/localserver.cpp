@@ -35,12 +35,12 @@ bool LocalServer::Start() {
   }
   log = "Started on ";
   log += QString::number(this->serverPort());
-  logger_.WriteLog(SUCCESS, log);
+  logger_->WriteLog(SUCCESS, log);
   return true;
 }
 
 void LocalServer::Stop() { 
-  logger_.WriteLog(SUCCESS, "Stop listening on" + QString::number(this->serverPort()));
+  logger_->WriteLog(SUCCESS, "Stop listening on" + QString::number(this->serverPort()));
   this->close();
 }
 

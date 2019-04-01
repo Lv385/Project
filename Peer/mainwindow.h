@@ -35,6 +35,7 @@ class MainWindow : public QMainWindow {
 
   void OnPbLoginClicked();
   void OnPbSendClicked();
+  //void OnPbRegisterclicked();
 
   void OnRbSimpleClicked();
   void OnRbEngineeringClicked();
@@ -45,7 +46,7 @@ class MainWindow : public QMainWindow {
   Ui::MainWindow* ui_;
   //  Peer* peer_;
   DataAccessor client_data_;
-  ClientLogger& logger_;
+  ClientLogger* logger_;
   ClientController* client_controller_;
   QVector<PeerInfo> friends_;
 };

@@ -68,7 +68,7 @@ public:
     {
         if (MainWindow->objectName().isEmpty())
             MainWindow->setObjectName(QString::fromUtf8("MainWindow"));
-        MainWindow->resize(700, 575);
+        MainWindow->resize(730, 578);
         MainWindow->setFocusPolicy(Qt::TabFocus);
         MainWindow->setStyleSheet(QString::fromUtf8("QMainWindow{\n"
 "background-color:#1d1d1d\n"
@@ -131,7 +131,7 @@ public:
         l_your_status->setGeometry(QRect(520, 0, 141, 81));
         layoutWidget = new QWidget(centralWidget);
         layoutWidget->setObjectName(QString::fromUtf8("layoutWidget"));
-        layoutWidget->setGeometry(QRect(450, 380, 141, 86));
+        layoutWidget->setGeometry(QRect(860, 230, 141, 86));
         formLayout = new QFormLayout(layoutWidget);
         formLayout->setSpacing(6);
         formLayout->setContentsMargins(11, 11, 11, 11);
@@ -170,7 +170,7 @@ public:
         label_logs->setGeometry(QRect(230, 360, 101, 16));
         combo_box_friends = new QComboBox(centralWidget);
         combo_box_friends->setObjectName(QString::fromUtf8("combo_box_friends"));
-        combo_box_friends->setGeometry(QRect(470, 310, 131, 22));
+        combo_box_friends->setGeometry(QRect(580, 10, 131, 22));
         combo_box_friends->setStyleSheet(QString::fromUtf8("QComboBox{\n"
 "    color: #fff;\n"
 "    background-color: QLinearGradient( x1: 0, y1: 0, x2: 0, y2: 1, stop: 0 #565656, stop: 0.1 #525252, stop: 0.5 #4e4e4e, stop: 0.9 #4a4a4a, stop: 1 #464646);\n"
@@ -193,7 +193,7 @@ public:
 ""));
         pb_start = new QPushButton(centralWidget);
         pb_start->setObjectName(QString::fromUtf8("pb_start"));
-        pb_start->setGeometry(QRect(590, 70, 70, 30));
+        pb_start->setGeometry(QRect(630, 160, 70, 30));
         pb_start->setStyleSheet(QString::fromUtf8("QPushButton\n"
 "{\n"
 "    color: #b1b1b1;\n"
@@ -223,7 +223,7 @@ public:
 "}"));
         layoutWidget_2 = new QWidget(centralWidget);
         layoutWidget_2->setObjectName(QString::fromUtf8("layoutWidget_2"));
-        layoutWidget_2->setGeometry(QRect(450, 470, 141, 41));
+        layoutWidget_2->setGeometry(QRect(870, 340, 150, 41));
         formLayout_2 = new QFormLayout(layoutWidget_2);
         formLayout_2->setSpacing(6);
         formLayout_2->setContentsMargins(11, 11, 11, 11);
@@ -255,14 +255,14 @@ public:
         le_password->setGeometry(QRect(450, 210, 131, 20));
         label_4 = new QLabel(centralWidget);
         label_4->setObjectName(QString::fromUtf8("label_4"));
-        label_4->setGeometry(QRect(450, 120, 47, 13));
+        label_4->setGeometry(QRect(450, 140, 47, 13));
         label_4->setStyleSheet(QString::fromUtf8(""));
         label_5 = new QLabel(centralWidget);
         label_5->setObjectName(QString::fromUtf8("label_5"));
         label_5->setGeometry(QRect(450, 190, 47, 13));
         pb_login = new QPushButton(centralWidget);
         pb_login->setObjectName(QString::fromUtf8("pb_login"));
-        pb_login->setGeometry(QRect(590, 150, 70, 30));
+        pb_login->setGeometry(QRect(450, 240, 70, 30));
         pb_login->setStyleSheet(QString::fromUtf8("QPushButton\n"
 "{\n"
 "    color: #b1b1b1;\n"
@@ -300,25 +300,25 @@ public:
         rb_engineering->setChecked(true);
         le_server_ip = new QLineEdit(centralWidget);
         le_server_ip->setObjectName(QString::fromUtf8("le_server_ip"));
-        le_server_ip->setGeometry(QRect(590, 400, 106, 16));
+        le_server_ip->setGeometry(QRect(470, 430, 106, 16));
         le_server_port = new QLineEdit(centralWidget);
         le_server_port->setObjectName(QString::fromUtf8("le_server_port"));
-        le_server_port->setGeometry(QRect(590, 440, 106, 16));
+        le_server_port->setGeometry(QRect(470, 470, 106, 16));
         label_6 = new QLabel(centralWidget);
         label_6->setObjectName(QString::fromUtf8("label_6"));
-        label_6->setGeometry(QRect(610, 380, 81, 16));
+        label_6->setGeometry(QRect(490, 410, 81, 16));
         label_7 = new QLabel(centralWidget);
         label_7->setObjectName(QString::fromUtf8("label_7"));
-        label_7->setGeometry(QRect(610, 420, 91, 16));
+        label_7->setGeometry(QRect(490, 450, 91, 16));
         pb_register = new QPushButton(centralWidget);
         pb_register->setObjectName(QString::fromUtf8("pb_register"));
-        pb_register->setGeometry(QRect(590, 190, 75, 23));
+        pb_register->setGeometry(QRect(920, 100, 75, 23));
         pb_add_friend = new QPushButton(centralWidget);
         pb_add_friend->setObjectName(QString::fromUtf8("pb_add_friend"));
-        pb_add_friend->setGeometry(QRect(590, 220, 75, 23));
+        pb_add_friend->setGeometry(QRect(920, 150, 75, 23));
         pb_stop = new QPushButton(centralWidget);
         pb_stop->setObjectName(QString::fromUtf8("pb_stop"));
-        pb_stop->setGeometry(QRect(590, 110, 70, 30));
+        pb_stop->setGeometry(QRect(630, 200, 70, 30));
         pb_stop->setStyleSheet(QString::fromUtf8("QPushButton\n"
 "{\n"
 "    color: #b1b1b1;\n"
@@ -349,7 +349,7 @@ public:
         MainWindow->setCentralWidget(centralWidget);
         menuBar = new QMenuBar(MainWindow);
         menuBar->setObjectName(QString::fromUtf8("menuBar"));
-        menuBar->setGeometry(QRect(0, 0, 700, 21));
+        menuBar->setGeometry(QRect(0, 0, 730, 21));
         MainWindow->setMenuBar(menuBar);
         statusBar = new QStatusBar(MainWindow);
         statusBar->setObjectName(QString::fromUtf8("statusBar"));
@@ -371,16 +371,16 @@ public:
         le_port->setText(QApplication::translate("MainWindow", "8989", nullptr));
         label_logs->setText(QApplication::translate("MainWindow", "logs and testing", nullptr));
         pb_start->setText(QApplication::translate("MainWindow", "Start", nullptr));
-        le_my_port->setText(QApplication::translate("MainWindow", "9001", nullptr));
+        le_my_port->setText(QApplication::translate("MainWindow", "8989", nullptr));
         label_3->setText(QApplication::translate("MainWindow", "Enter your port to listen", nullptr));
-        le_login->setText(QApplication::translate("MainWindow", "test1", nullptr));
+        le_login->setText(QApplication::translate("MainWindow", "liubomyr", nullptr));
         le_password->setText(QApplication::translate("MainWindow", "password", nullptr));
         label_4->setText(QApplication::translate("MainWindow", "Login", nullptr));
         label_5->setText(QApplication::translate("MainWindow", "Password", nullptr));
         pb_login->setText(QApplication::translate("MainWindow", "Log In", nullptr));
         rb_simple->setText(QApplication::translate("MainWindow", "Simple mode", nullptr));
         rb_engineering->setText(QApplication::translate("MainWindow", "Engineering mode", nullptr));
-        le_server_ip->setText(QApplication::translate("MainWindow", "192.168.103.121", nullptr));
+        le_server_ip->setText(QApplication::translate("MainWindow", "192.168.103.102", nullptr));
         le_server_port->setText(QApplication::translate("MainWindow", "8888", nullptr));
         label_6->setText(QApplication::translate("MainWindow", "Enter server IP", nullptr));
         label_7->setText(QApplication::translate("MainWindow", "Enter server port", nullptr));

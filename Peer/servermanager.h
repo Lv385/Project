@@ -5,6 +5,7 @@
 #include "abstractstrategy.h"
 #include "blockreader.h"
 #include "blockwriter.h"
+#include "clientlogger.h"
 #include "friend_update_strategy.h"
 #include "login_response_strategy.h"
 #include "messagestrategy.h"
@@ -20,23 +21,23 @@ class ServerManager : public QObject {
   ServerManager(QTcpSocket* socket, ApplicationInfo& info);
   ServerManager();
   ~ServerManager();
-
-  /* void Login();
-   void Register();
-   void AddFriend();*/
+  void set_socket(QTcpSocket* socket);
   void SendRequest(QByteArray data);
 
  private slots:
   void DoWork();
   void OnReadyReadBlock();
+  void OnConnected();
 
  private:
+  QByteArray data_;
   ApplicationInfo& app_info_;
   AbstractStrategy* strategy_;
   QHash<quint8, AbstractStrategy*> strategies_;
   BlockWriter* writer_;
   BlockReader* reader_;
   QTcpSocket* socket_;
+  ClientLogger* logger_;
 };
 
 #endif  // !SERVERMANAGER_H

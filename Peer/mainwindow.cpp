@@ -21,7 +21,7 @@ MainWindow::MainWindow(QWidget* parent)
   // ui_->pb_start->setEnabled(false);
   ui_->pb_send->setEnabled(true);
 
-  logger_.set_log_level(
+  logger_->set_log_level(
       LogLevel::HIGH);  // u can switch levels of logging(NOLOG, LOW, HIGH)
 
   QVector<SQLDAL::Friend> friends = client_data_.get_friends();
@@ -56,7 +56,7 @@ MainWindow::MainWindow(QWidget* parent)
   // connect(client_controller_, SIGNAL(SendMessageToUI(QString)),
            //              this, SLOT(AppendMessage(QString)));
 
-  connect(&logger_, SIGNAL(DisplayLog(const char*, QString)), 
+  connect(logger_, SIGNAL(DisplayLog(const char*, QString)), 
              this, SLOT(AppendLogMessage(const char*, QString)));
 
   friends_ = client_controller_->LoadFriends();
@@ -70,7 +70,7 @@ void MainWindow::OnPbStartClicked() {
 
   client_controller_->app_info_.my_id = client_data_.get_id_by_login(ui_->le_login->text());
 
-  logger_.WriteLog(SUCCESS,
+  logger_->WriteLog(SUCCESS,
       "my id: " + QString::number(client_controller_->app_info_.my_id));
 
   client_controller_->Start();
@@ -111,6 +111,7 @@ void MainWindow::OnPbSendClicked() {
   for (auto a : friends_)
     if (a.login == selected_login)
       client_controller_->SendMessage(a, ui_->le_message->text());
+  ui_->plainTextEdit->appendPlainText("->: " + ui_->le_message->text());
 }
 
 void MainWindow::AppendLogMessage(const char* value, QString message) {

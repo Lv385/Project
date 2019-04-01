@@ -9,6 +9,7 @@ Worker::Worker(BlockReader* reader, unsigned user_id, unsigned my_id)
   peer_info_.id = user_id;
   socket_ = reader_->get_socket();
   writer_ = new BlockWriter(socket_);
+  redirector_.ConnectToMessageRecieved(this);
   connect(socket_, SIGNAL(disconnected()), this, SLOT(OnDisconnected()));
   connect(reader_, SIGNAL(ReadyReadBlock()), this, SLOT(OnReadyReadBlock()));
   strategies_.insert(static_cast<quint8>(ClientClientRequest::MESSAGE),
@@ -68,7 +69,7 @@ void Worker::OnError(QAbstractSocket::SocketError) {
 }
 
 void Worker::OnTimedOut() { 
-  logger_.WriteLog(INFO, "Auto disconnecting from" + peer_info_.login);
+  logger_->WriteLog(INFO, "Auto disconnecting from" + peer_info_.login);
   socket_->disconnectFromHost();
 }
 
@@ -98,7 +99,7 @@ void Worker::OnReadyReadBlock() {
 }
 
 Worker::~Worker() {
-  delete writer_;
+  writer_;
   delete reader_;
   delete socket_;
 }

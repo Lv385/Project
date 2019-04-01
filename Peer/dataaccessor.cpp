@@ -8,6 +8,9 @@ DataAccessor::DataAccessor(){
 DataAccessor::~DataAccessor(){}
 
 QString DataAccessor::get_login_by_id(const unsigned user_id) { 
+  user_->id = 0;
+  user_->login = "";
+  user_->ip = "";
   user_->id = user_id;
   user_->GetFriend();
   return user_->login;

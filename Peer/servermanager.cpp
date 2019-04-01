@@ -2,7 +2,8 @@
 
 ServerManager::ServerManager(QTcpSocket *socket, ApplicationInfo& info) 
      :  socket_(socket), 
-        app_info_(info){
+        app_info_(info),
+        logger_(ClientLogger::Instance()){
   reader_ = new BlockReader(socket_);
   writer_ = new BlockWriter(socket_);
   connect(reader_, SIGNAL(ReadyReadBlock()), this, SLOT(OnReadyReadBlock()));
@@ -17,18 +18,27 @@ ServerManager::ServerManager(QTcpSocket *socket, ApplicationInfo& info)
   strategies_.insert(static_cast<quint8>(ServerRequest::REGISTER_FAILED), reg);
   strategies_.insert(static_cast<quint8>(ServerRequest::FRIEND_UPDATE_INFO), friend_update);
 }
-//
-//ServerManager::ServerManager() {
-//}
 
-ServerManager::~ServerManager() {
+ServerManager::~ServerManager() {}
+
+void ServerManager::set_socket(QTcpSocket* socket) { 
+  socket_ = socket;
+  writer_->set_socket(socket_);
+  reader_->set_socket(socket_);
 }
 
 void ServerManager::SendRequest(QByteArray data) { 
-  socket_ = new QTcpSocket();
+  if (socket_ == nullptr) {
+    socket_ = new QTcpSocket();
+  }
+  logger_->WriteLog(INFO, "trying connect to server on:" +
+     app_info_.remote_server_ip.toString() + "  " +QString::number(app_info_.remote_server_port));
   socket_->connectToHost(app_info_.remote_server_ip,
                          app_info_.remote_server_port);
-  writer_->WriteBlock(data); 
+  data_ = data;
+  writer_->set_socket(socket_);
+  reader_->set_socket(socket_);
+  connect(socket_, SIGNAL(connected()), this, SLOT(OnConnected()));
 }
 
 void ServerManager::DoWork() { 
@@ -47,3 +57,6 @@ void ServerManager::OnReadyReadBlock() {
   }
 }
 
+void ServerManager::OnConnected() { 
+  writer_->WriteBlock(data_);
+}

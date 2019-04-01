@@ -1,19 +1,26 @@
 #include "clientlogger.h"
 
-ClientLogger& ClientLogger::Instance() {
-  static ClientLogger logger_; 
-    return logger_;
+std::atomic<ClientLogger*> ClientLogger::logger_ = nullptr;
+std::mutex ClientLogger::mutex_;
+
+ClientLogger* ClientLogger::Instance() {
+  if(logger_ == nullptr){
+    std::lock_guard<std::mutex> lock(mutex_);
+    if(logger_ == nullptr){
+      logger_ = new ClientLogger();
+    }
+  }
+  return logger_;
 }
 const char* ErrorValueNames[] = {GET_NAME(ERROR), GET_NAME(SUCCESS),
                                  GET_NAME(INFO), GET_NAME(WARNING), GET_NAME(DEBUG)};
 
-ClientLogger::ClientLogger() {
+ClientLogger::ClientLogger()
+  : file_(new QFile("Log.txt")){
+  file_->open(QIODevice::Append | QIODevice::Text);
   specific_log_ = false;
   log_level_ = LogLevel::NOLOG;
-  if (!file_) {
-    file_ = new QFile("Log.txt");
-    file_->open(QIODevice::Append | QIODevice::Text);
-  }
+  
 }
 void ClientLogger::WriteLog(LogType type, const QString& msg) { 
   QString text;
@@ -33,6 +40,7 @@ void ClientLogger::WriteLog(LogType type, const QString& msg) {
   }else{
     text = tr("[%1] %2 ").arg(ErrorValueNames[type]).arg(log);
   }
+  
   QTextStream out(file_);
   if (file_) {
     out << text;
