@@ -23,19 +23,19 @@ void AddFriendRequest::PrepareResponse() {
       info_to_send.requester_id = sender_guy.GetUserId();
       info_to_send.requester_login = sender_guy.GetUserName();
       send_addfriend_info_bytearr = Parser::AddFriendInfo_ToByteArray(info_to_send);
-      response_to_requester_ = (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED;
+      response_to_requester_ = (quint8)ServerRequest::FRIEND_REQUEST_SUCCEED;
     } else {
-      response_to_requester_ = (quint8)ServerRequests::FRIEND_REQUEST_FAILED;
+      response_to_requester_ = (quint8)ServerRequest::FRIEND_REQUEST_FAILED;
       // because password is incorrect
     }
   } catch (UserNotFound &e) {
-    response_to_requester_ = (quint8)ServerRequests::FRIEND_REQUEST_FAILED;
+    response_to_requester_ = (quint8)ServerRequest::FRIEND_REQUEST_FAILED;
     qDebug() << e.what();
   }
 }
 bool AddFriendRequest::SendResponde() {
-  if (response_to_requester_ == (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED) {
-    QByteArray b = Parser::Empty_ToByteArray( (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED);
+  if (response_to_requester_ == (quint8)ServerRequest::FRIEND_REQUEST_SUCCEED) {
+    QByteArray b = Parser::Empty_ToByteArray( (quint8)ServerRequest::FRIEND_REQUEST_SUCCEED);
     b.append(Parser::GetUnpossibleSequence());
 
     QString ip = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();
@@ -66,7 +66,7 @@ bool AddFriendRequest::SendResponde() {
     // IMPORTANT!!!!   Dopilit login with checking  if user had any issues to
     // him
   } else {
-    QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequests::FRIEND_REQUEST_FAILED);
+    QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequest::FRIEND_REQUEST_FAILED);
     b.append(Parser::GetUnpossibleSequence());
 
     QString Ip = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();

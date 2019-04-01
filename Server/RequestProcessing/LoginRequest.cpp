@@ -21,21 +21,21 @@ void LoginRequest::PrepareResponse() {
       requester_.SetUserIp(client_socket_->peerAddress());
       requester_.SetUserPort(incoming_structure_.port);
       database_->UpdateClient(requester_);  // updating ip::port
-      response_to_requester_ = (quint8)ServerRequests::LOGIN_SUCCEED;
+      response_to_requester_ = (quint8)ServerRequest::LOGIN_SUCCEED;
     } else {
       // incorrect password
-      response_to_requester_ = (quint8)ServerRequests::LOGIN_FAILED;
+      response_to_requester_ = (quint8)ServerRequest::LOGIN_FAILED;
     }
   } catch (UserNotFound& e) {
-    response_to_requester_ = (quint8)ServerRequests::LOGIN_FAILED;
+    response_to_requester_ = (quint8)ServerRequest::LOGIN_FAILED;
     qDebug() << e.what();
   }
 }
 
 bool LoginRequest::SendResponde() {
-  if (response_to_requester_ == (quint8)ServerRequests::LOGIN_SUCCEED) {
+  if (response_to_requester_ == (quint8)ServerRequest::LOGIN_SUCCEED) {
     QByteArray b =
-        Parser::Empty_ToByteArray((quint8)ServerRequests::LOGIN_SUCCEED);
+        Parser::Empty_ToByteArray((quint8)ServerRequest::LOGIN_SUCCEED);
     b.append(Parser::GetUnpossibleSequence());
 
     QString ip = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();   

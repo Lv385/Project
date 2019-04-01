@@ -31,7 +31,7 @@ void NewUserRequest::PrepareResponse()
 
 	}
 	else {
-		outcome_data_ = Parser::Empty_ToByteArray((quint8)ServerRequests::REGISTER_FAILED);
+		outcome_data_ = Parser::Empty_ToByteArray((quint8)ServerRequest::REGISTER_FAILED);
 		outcome_data_.append(Parser::GetUnpossibleSequence());
 	}
 }
