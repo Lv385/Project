@@ -9,6 +9,7 @@
 #include "peerinfo.h"
 #include "servermanager.h"
 
+#include <qplaintextedit.h>
 #include <QByteArray>
 #include <QNetworkInterface>
 #include <QObject>
@@ -26,7 +27,7 @@ class ClientController : public QObject {
 
   QVector<PeerInfo> LoadFriends();
 
-  void SendMessage(PeerInfo peer_info, QString message);
+  void SendMessage(PeerInfo peer_info, QString message, QPlainTextEdit* edit);
   void LogIn(QString login, QString password);
   void Register(QString login, QString password);
   void AddFriend(QString login);

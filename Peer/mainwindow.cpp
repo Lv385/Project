@@ -12,8 +12,6 @@ MainWindow::MainWindow(QWidget* parent)
   
   client_controller_ = new ClientController(this);
 
-
-
   SignalRedirector::get_instance().set_controller(client_controller_);
 
   SetIpValidator();
@@ -90,9 +88,9 @@ void MainWindow::SetIpValidator() {
   ui_->le_ip->setValidator(ip_validator);
 }
 
-void MainWindow::AppendMessage(QString message) {
+/*void MainWindow::AppendMessage(QString message) {
   ui_->plainTextEdit->appendPlainText(message);  // username by id + message
-}
+}*/
 
 void MainWindow::AppendHistory(QString login) {
   unsigned id = client_data_.get_id_by_login(login);
@@ -110,8 +108,7 @@ void MainWindow::OnPbSendClicked() {
   // PeerInfo
   for (auto a : friends_)
     if (a.login == selected_login)
-      client_controller_->SendMessage(a, ui_->le_message->text());
-  ui_->plainTextEdit->appendPlainText("->: " + ui_->le_message->text());
+      client_controller_->SendMessage(a, ui_->le_message->text(),ui_->plainTextEdit);
 }
 
 void MainWindow::AppendLogMessage(const char* value, QString message) {
