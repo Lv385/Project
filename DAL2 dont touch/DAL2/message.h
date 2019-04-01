@@ -25,6 +25,7 @@ namespace SQLDAL {
 	Message();
 
 	QVector<Messages>	GetMessages(unsigned int chat_id);  // Select All Info About One Chat
+	QVector<Messages>	GetMessages(QString user_login);  // Select All Info About One Chat
 	void				AddNewMessage(const Messages& message);
 	void				DeleteMessage(const Messages& message);
 	void				UpdateMessage(const Messages& message);
@@ -32,9 +33,11 @@ namespace SQLDAL {
    private:
 	QString			UpdateQuery(const Messages& message);
 	QString			SelectQuery(unsigned int chat_id);
+	QString			SelectQuery(QString user_login);
 	QString			InsertQuery(const Messages& message);
 	QString			DeleteQuery(const Messages& message);
 	QString			CreateQueryCountOfMessages(unsigned int chat_id);
+	QString			CreateQueryCountOfMessages(QString user_login);
   };
 }  // namespace SQLDAL
 #endif  // MESSAGE_H
