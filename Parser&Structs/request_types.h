@@ -37,13 +37,11 @@ enum class ClientClientRequest : quint8 {
 // no more than 64 types
 enum class ClientRequest : quint8 {
   MESSAGE = ClientRequests,
-  LOGIN,           //+LoginInfo(c->s)I,-user,-prc LoginRequest
-  REGISTER,        //+RegisterInfo(c->s)I,-user, -prc NewUserRequest
-  FRIEND_REQUEST,  //+FriendRequestInfo(c->s)I,-user, -prc add_friend_request
-  FRIENDSHIP_REJECTED,  //+FriendRequestInfo_(c->s)ADD_FRIEND_REQUEST^, -prc
-                        //friendship_request
-  FRIENDSHIP_ACCEPTED,  //+FriendRequestInfo(c->s)ADD_FRIEND_REQUEST^, -prc
-                        //friendship_request
+  LOGIN,//+LoginInfo(c->s)I,-user,-prc LoginRequest
+  REGISTER,//+RegisterInfo(c->s)I,-user, -prc NewUserRequest
+  FRIEND_REQUEST,//+FriendRequestInfo(c->s)I,-user, -prc add_friend_request
+  FRIENDSHIP_REJECTED,//+FriendRequestInfo_(c->s)ADD_FRIEND_REQUEST^, -prc friendship_request
+  FRIENDSHIP_ACCEPTED,//+FriendRequestInfo(c->s)ADD_FRIEND_REQUEST^, -prc friendship_request
   ONLINE_UPDATE,
 };
 

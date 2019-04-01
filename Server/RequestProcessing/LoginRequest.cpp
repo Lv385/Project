@@ -4,18 +4,12 @@
 LoginRequest::LoginRequest(QByteArray& A, DAL* d, QTcpSocket* s)
     : AbstractRequest(d, s) {
   incoming_structure_ = Parser::ParseAsLoginInfo(A);
-  PrepareResponse();
-  QString IP_ = client_socket_->peerAddress().toString();
+  PrepareResponse();  
+  QString IP_ = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();
   QString logstring = IP_+"::"+Logger::ConvertQuint16ToString(incoming_structure_.port);
   Logger::LogOut(logstring, A);
 }
 
-LoginRequest::~LoginRequest()
-{
-  clock_t end = clock();
-  double seconds = (double)(end - start) / CLOCKS_PER_SEC;
-  qDebug() << "Login request time execution is : "<<seconds << "\n";
-}
 
 void LoginRequest::PrepareResponse() {
   // check user in db  and set t or f
@@ -44,8 +38,8 @@ bool LoginRequest::SendResponde() {
         Parser::Empty_ToByteArray((quint8)ServerRequests::LOGIN_SUCCEED);
     b.append(Parser::GetUnpossibleSequence());
 
-    QString Ip = client_socket_->peerAddress().toString();
-    QString logstring_ = Ip + "::" + Logger::ConvertQuint16ToString(incoming_structure_.port);
+    QString ip = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();   
+    QString logstring_ = ip + "::" + Logger::ConvertQuint16ToString(incoming_structure_.port);
     Logger::LogOut(logstring_, b);
 
     client_socket_->write(b);
@@ -88,7 +82,7 @@ bool LoginRequest::SendToFriend(QTcpSocket& output_socket, QByteArray raw_data,
                                 unsigned int id) {
   Client tempClient = database_->getClient(id);
   output_socket.connectToHost(tempClient.GetUserIp(), tempClient.GetUserPort());
-  if (output_socket.waitForConnected(5000)) { // default is 5000 but this thing is makes bigger time of login req execution 
+  if (output_socket.waitForConnected(2000)) { // default is 5000 but this thing is makes bigger time of login req execution 
     
     QString ip = output_socket.peerAddress().toString();
     QString Logstring_ = ip + "::" + Logger::ConvertQuint16ToString(tempClient.GetUserPort());
@@ -118,7 +112,7 @@ void LoginRequest::SendingPendingFriendRequests() {
     raw_data = Parser::AddFriendInfo_ToByteArray(possible_friend);
     raw_data.append(Parser::GetUnpossibleSequence());
 
-    QString ip__ = client_socket_->peerAddress().toString();
+    QString ip__ = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();    
     QString logstring__ = ip__ + "::" + Logger::ConvertQuint16ToString(incoming_structure_.port);
     Logger::LogOut(logstring__,raw_data);
 
@@ -144,7 +138,7 @@ void LoginRequest::SendingPendingNotifications() {
     raw_data = Parser::NewFriendInfo_ToByteArray(from_new_friend);
     raw_data.append(Parser::GetUnpossibleSequence());
 
-    QString Ip__ = client_socket_->peerAddress().toString();
+    QString Ip__ = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();    
     QString Logstring__ = Ip__ + "::" + Logger::ConvertQuint16ToString(incoming_structure_.port);
     Logger::LogOut(Logstring__, raw_data);
 

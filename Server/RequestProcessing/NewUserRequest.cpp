@@ -9,7 +9,7 @@ NewUserRequest::NewUserRequest(QByteArray& request, DAL* d, QTcpSocket* s)
 	income_data_ = Parser::ParseAsRegisterInfo(request);
   QString IP = client_socket_->peerAddress().toString();
   QString logstring = IP + "::" + Logger::ConvertQuint16ToString(income_data_.port);
-  Logger::LogOut(logstring, outcome_data_);
+  Logger::LogOut(logstring, request);
 	PrepareResponse();
 }
 
