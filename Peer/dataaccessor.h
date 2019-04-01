@@ -11,10 +11,10 @@ class DataAccessor {
   QString get_login_by_id(const unsigned user_id);
   QPair<QString, int> get_ip_port(const unsigned user_id);
   QVector<SQLDAL::Friends> get_friends();
-  //QVector<SQLDAL::Message> get_messages(const QString user_login);
+  QVector<SQLDAL::Messages> get_messages(const QString user_login);
   QVector<SQLDAL::Messages> get_messages(unsigned user_id);
 
-  //unsigned get_id_by_login(const QString user_login);
+  unsigned get_id_by_login(const QString user_login);
   //unsigned get_id_by_ip_port(const QString ip, const unsigned port);
   bool get_friends_status(const unsigned user_id);
 

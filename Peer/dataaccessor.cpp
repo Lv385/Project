@@ -1,6 +1,7 @@
 #include "dataaccessor.h"
 
-DataAccessor::DataAccessor(){ 
+DataAccessor::DataAccessor(){
+  db_.GenerateUniqueConnection();
   user_ = db_.GetEntity<SQLDAL::Friend>();
   message_ = db_.GetEntity<SQLDAL::Message>();
 }
@@ -23,10 +24,10 @@ QVector<SQLDAL::Friends> DataAccessor::get_friends() {
   return client_friend;
 }
 
-/*unsigned DataAccessor::get_id_by_login(const QString user_login){
- 
-  return {}; }*/
-
+unsigned DataAccessor::get_id_by_login(const QString user_login){
+  SQLDAL::Friends client_friend = user_->GetFriend(user_login);
+  return client_friend.id;
+}
 /*unsigned DataAccessor::get_id_by_ip_port(const QString ip, const unsigned port) {
   user_->id = 0;
   user_->login = "";
@@ -36,15 +37,14 @@ QVector<SQLDAL::Friends> DataAccessor::get_friends() {
   return user_->id;
 }*/
 
-/*QVector<SQLDAL::Message> DataAccessor::get_messages(const QString user_login) {
-  message_->chat_id = get_id_by_login(user_login);
-  QVector<SQLDAL::Message> messages = message_->GetMessages();
+QVector<SQLDAL::Messages> DataAccessor::get_messages(const QString user_login) {
+  QVector<SQLDAL::Messages> messages = message_->GetMessages(user_login);
   return messages;
-}*/
+}
 
 QVector<SQLDAL::Messages> DataAccessor::get_messages(unsigned user_id) {
-  message_->GetMessages(user_id);
-  return message_->messages;
+  QVector<SQLDAL::Messages> messages = message_->GetMessages(user_id);
+  return messages;
 }
 
 void DataAccessor::set_friend_status(const unsigned user_id, const bool status) {
