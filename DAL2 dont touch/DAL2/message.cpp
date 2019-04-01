@@ -25,6 +25,26 @@ QVector<Messages> Message::GetMessages(unsigned int chat_id) {
   return messages;
 }
 
+QVector<Messages> Message::GetMessages(QString user_login)
+{
+	ExectuteQuery(CreateQueryCountOfMessages(user_login));
+	query_.first();
+	unsigned int count_of_messages = query_.value(0).toInt();
+	QVector<Messages> messages(count_of_messages);
+	ExectuteQuery(SelectQuery(user_login));
+	int counter = 0;
+	while (query_.next()) {
+		messages[counter].id = query_.record().value(0).toInt();
+		messages[counter].chat_id = query_.record().value(1).toInt();
+		messages[counter].owner_id = query_.record().value(2).toInt();
+		messages[counter].data = query_.record().value(3).toString();
+		messages[counter].date = query_.record().value(4).toDate();
+		messages[counter].time = query_.record().value(5).toTime();
+		messages[counter++].status = query_.record().value(6).toInt();
+	}
+	return messages;
+}
+
 void Message::AddNewMessage(const Messages& message) {
   ExectuteQuery(InsertQuery(message));
   query_.finish();
@@ -43,6 +63,12 @@ void Message::UpdateMessage(const Messages& message) {
 QString Message::SelectQuery(unsigned int chat_id) {
   return QString("select * from Messages where user_ID = " +
                  QString::number(chat_id));
+}
+
+QString Message::SelectQuery(QString user_login)
+{
+	return QString("select * from Messages where user_login = '" +user_login+ "'");
+		
 }
 
 QString Message::InsertQuery(const Messages& messages) {
@@ -69,5 +95,9 @@ QString Message::DeleteQuery(const Messages& message) {
 QString Message::CreateQueryCountOfMessages(unsigned int chat_id) {
   return QString("SELECT COUNT(user_ID) FROM Messages WHERE user_ID = " +
                  QString::number(chat_id));
+}
+QString Message::CreateQueryCountOfMessages(QString user_login)
+{
+	return QString("SELECT COUNT(user_ID) FROM Messages WHERE user_login = '" + user_login +"'");
 }
 }  // namespace SQLDAL
