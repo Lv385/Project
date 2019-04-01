@@ -1,8 +1,10 @@
 #ifndef FRIEND_H
 #define FRIEND_H
-#include <qsqlrecord.h>
+
 #include <QString>
+#include <qsqlrecord.h>
 #include "statement.h"
+
 namespace SQLDAL {
 
   // This is our entity from database
@@ -24,16 +26,16 @@ namespace SQLDAL {
 
 	QVector<Friends>	GetFriends();  // Getting all users
 	Friends				GetFriend(const unsigned int id);
-	void				UpdateFriend(Friends _friend);
-	void				AddNewFriend(Friends _friend);
-	void				DeleteFriend(Friends _friend);
+	void				UpdateFriend(const Friends& _friend);
+	void				AddNewFriend(const Friends& _friend);
+	void				DeleteFriend(const Friends& _friend);
 
    private:
 	QString CreateQuerySelectAll();
-	QString UpdateQuery(Friends _friend);
+    QString UpdateQuery(const Friends& _friend);
 	QString SelectQuery(const unsigned int id);
-	QString InsertQuery(Friends _friend);
-	QString DeleteQuery(Friends _friend);
+    QString InsertQuery(const Friends& _friend);
+	QString DeleteQuery(const Friends& _friend);
 	QString CreateQueryCountOfFriends();
   };
 }  // namespace SQLDAL

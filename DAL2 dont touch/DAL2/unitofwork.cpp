@@ -2,7 +2,7 @@
 namespace SQLDAL {
 std::atomic<unsigned int> UnitOfWork::connection_number_ = 0;
 
-UnitOfWork::UnitOfWork() { connection_ = nullptr; }
+UnitOfWork::UnitOfWork() : connection_(nullptr) {}
 
 void UnitOfWork::GenerateUniqueConnection() {
   connection_ = std::make_shared<Connect>(GenerateNewConnection());

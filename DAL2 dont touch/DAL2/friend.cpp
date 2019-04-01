@@ -41,17 +41,17 @@ Friends Friend::GetFriend(const unsigned int id) {
   return _friend;
 }
 
-void Friend::UpdateFriend(Friends _friend) {
+void Friend::UpdateFriend(const Friends& _friend) {
   ExectuteQuery(UpdateQuery(_friend));
   query_.finish();
 }
 
-void Friend::AddNewFriend(Friends _friend) {
+void Friend::AddNewFriend(const Friends& _friend) {
   ExectuteQuery(InsertQuery(_friend));
   query_.finish();
 }
 
-void Friend::DeleteFriend(Friends _friend) {
+void Friend::DeleteFriend(const Friends& _friend) {
   ExectuteQuery(DeleteQuery(_friend));
   query_.finish();
 }
@@ -62,7 +62,7 @@ QString Friend::CreateQuerySelectAll() {
       "user_login, user_status FROM friends");
 }
 
-QString Friend::UpdateQuery(Friends _friend) {
+QString Friend::UpdateQuery(const Friends& _friend) {
   return QString("update friends set user_name = '" + _friend.name +
                  "', user_surname= '" + _friend.surname + "',  user_IP= '" +
                  _friend.ip + "', user_port= " + QString::number(_friend.port) +
@@ -78,7 +78,7 @@ QString Friend::SelectQuery(const unsigned int id) {
       QString::number(id));  // + " or user_login = '" + login + "'");
 }
 
-QString Friend::InsertQuery(Friends _friend) {
+QString Friend::InsertQuery(const Friends& _friend) {
   return QString(
       "insert into friends "
       "(user_id,user_IP,user_port,user_login,user_status,user_name,user_"
@@ -89,7 +89,7 @@ QString Friend::InsertQuery(Friends _friend) {
       _friend.surname + "')");
 }
 
-QString Friend::DeleteQuery(Friends _friend) {
+QString Friend::DeleteQuery(const Friends& _friend) {
   return QString(
       "delete from friends where user_id = " + QString::number(_friend.id) +
       " or user_login = '" + _friend.login + "'");

@@ -1,7 +1,7 @@
 #include "statement.h"
 namespace SQLDAL {
-Statement::Statement(std::shared_ptr<Connect> connection) {
-  connection_ = connection;
+Statement::Statement(std::shared_ptr<Connect> connection)
+    : connection_(connection) {
   SetQuery(connection_->GetDB());
 }
 

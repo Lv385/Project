@@ -8,7 +8,7 @@ namespace SQLDAL {
 	{
 	}
 
-	void SQLDAL::NotificationInfo::Add(UsersID users_id) {
+	void SQLDAL::NotificationInfo::Add(const UsersID& users_id) {
 		ExectuteQuery(AddQuery(users_id));
 		query_.finish();
 	}
@@ -28,12 +28,12 @@ namespace SQLDAL {
 		return result;
 	}
 
-	void SQLDAL::NotificationInfo::Delete(UsersID users_id) {
+	void SQLDAL::NotificationInfo::Delete(const UsersID& users_id) {
 		ExectuteQuery(DeleteQuery(users_id));
 		query_.finish();
 	}
 
-	QString SQLDAL::NotificationInfo::AddQuery(UsersID users_id) {
+	QString SQLDAL::NotificationInfo::AddQuery(const UsersID& users_id) {
 		return QString(
 			"insert into friends_notification (first_user_ID, second_user_ID) values (" +
 			QString::number(users_id.first_user_id) + ", " + QString::number(users_id.second_user_id) +
@@ -46,7 +46,7 @@ namespace SQLDAL {
 			QString::number(id));
 	}
 
-	QString SQLDAL::NotificationInfo::DeleteQuery(UsersID users_id) {
+	QString SQLDAL::NotificationInfo::DeleteQuery(const UsersID& users_id) {
 		return QString("delete from friends_notification where first_user_ID = " +
 			QString::number(users_id.first_user_id) +
 			" and second_user_ID = " + QString::number(users_id.second_user_id));

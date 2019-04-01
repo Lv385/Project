@@ -24,18 +24,18 @@ void Message::GetMessages(unsigned int chat_id) {
   }
 }
 
-void Message::AddNewMessage(Messages mes) {
-  ExectuteQuery(InsertQuery(mes));
+void Message::AddNewMessage(const Messages& message) {
+  ExectuteQuery(InsertQuery(message));
   query_.finish();
 }
 
-void Message::DeleteMessage(Messages mes) {
-  ExectuteQuery(DeleteQuery(mes));
+void Message::DeleteMessage(const Messages& message) {
+  ExectuteQuery(DeleteQuery(message));
   query_.finish();
 }
 
-void Message::UpdateMessage(Messages mes) {
-  ExectuteQuery(UpdateQuery(mes));
+void Message::UpdateMessage(const Messages& message) {
+  ExectuteQuery(UpdateQuery(message));
   query_.finish();
 }
 
@@ -44,7 +44,7 @@ QString Message::SelectQuery(unsigned int chat_id) {
                  QString::number(chat_id));
 }
 
-QString Message::InsertQuery(Messages messages) {
+QString Message::InsertQuery(const Messages& messages) {
   return QString(
       "insert into Messages (user_ID, owner_ID, message_data, message_date, "
       "message_tima, message_status) values (" +
@@ -54,15 +54,15 @@ QString Message::InsertQuery(Messages messages) {
       QString::number(messages.status) + ")");
 }
 
-QString Message::UpdateQuery(Messages mes) {
-  return QString("update Messages set message_data = '" + mes.data +
-                 "', message_status = '" + QString::number(mes.status) +
-                 "'  where message_ID = " + QString::number(mes.id));
+QString Message::UpdateQuery(const Messages& message) {
+  return QString("update Messages set message_data = '" + message.data +
+                 "', message_status = '" + QString::number(message.status) +
+                 "'  where message_ID = " + QString::number(message.id));
 }
 
-QString Message::DeleteQuery(Messages mes) {
+QString Message::DeleteQuery(const Messages& message) {
   return QString("delete from Messages where message_ID = " +
-                 QString::number(mes.id));
+                 QString::number(message.id));
 }
 
 QString Message::CreateQueryCountOfMessages(unsigned int chat_id) {

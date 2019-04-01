@@ -10,7 +10,7 @@ namespace SQLDAL {
   class UnitOfWork {
    public:
 	UnitOfWork();
-	~UnitOfWork();
+	virtual ~UnitOfWork();
 
 	template <typename T>
 	std::shared_ptr<T>			       GetEntity();

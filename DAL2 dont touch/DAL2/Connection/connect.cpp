@@ -1,9 +1,9 @@
 #include "connect.h"
 namespace SQLDAL {
-Connect::Connect(const QString& connection_name) {
+Connect::Connect(const QString& connection_name)
+    : connection_name_(connection_name_) {
   const QString driver_name = "QSQLITE";
   data_base_ = QSqlDatabase::addDatabase(driver_name, connection_name);
-  connection_name_ = connection_name;
 }
 
 void Connect::Open(const QString& database_path) {

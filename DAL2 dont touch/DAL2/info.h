@@ -14,14 +14,14 @@ class Info : public Statement {
   Info(std::shared_ptr<Connect> Connect) : Statement(Connect) {}
   Info() {}
 
-  virtual void			   Add(UsersID users_id) = 0;
+  virtual void			   Add(const UsersID& users_id) = 0;
   virtual QVector<UsersID> Get(const unsigned int id) = 0;
-  virtual void             Delete(UsersID users_id) = 0;
+  virtual void             Delete(const UsersID& users_id) = 0;
 
  protected:
-  virtual QString          AddQuery(UsersID users_id) = 0;
+  virtual QString          AddQuery(const UsersID& users_id) = 0;
   virtual QString		   GetQuery(const unsigned int id) = 0;
-  virtual QString		   DeleteQuery(UsersID users_id) = 0;
+  virtual QString		   DeleteQuery(const UsersID& users_id) = 0;
 };
 }  // namespace SQLDAL
 #endif  // !INFO_H
