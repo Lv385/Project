@@ -132,6 +132,7 @@ void Logger::LogOut(QString &IpAndPort, QByteArray raw_data) {
       WriteLogToFile(outingString);
       break;
     }
+    //DONE
     case (quint8)ServerRequest::NEW_FRIEND_INFO: {
       NewFriendInfo out;
       out = Parser::ParseAsNewFriendInfo(raw_data);
@@ -174,7 +175,7 @@ QString Logger::Log_RegisterInfo(RegisterInfo& out) {
 // DONE
 QString Logger::Log_AddFriendInfo(AddFriendInfo& out) {
   return "\n\t\tAddFriendInfo{ requester_login: "+out.requester_login+
-          "\n\t\t\trequester_id: "+ConvertQuint32ToString(out.requester_id) + " }\n";
+          "\n\t\t\t\trequester_id: "+ConvertQuint32ToString(out.requester_id) + " }\n";
 }
 // DONE
 QString Logger::Log_FriendRequestInfo(FriendRequestInfo& out) {
@@ -182,7 +183,7 @@ QString Logger::Log_FriendRequestInfo(FriendRequestInfo& out) {
          "\n\t\t\tid: " + ConvertQuint32ToString(out.id) +
          "\n\t\t\tpassword: " + out.password + "}\n";
 }
-//test
+//DONE
 QString Logger::Log_NewFriendInfo(NewFriendInfo& out) {
   
   return "\n\tNewFriendInfo{ IP: " + out.ip.toString() +

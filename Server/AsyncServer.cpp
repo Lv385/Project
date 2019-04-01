@@ -34,17 +34,6 @@ AsyncServer::AsyncServer(QObject *parent) :QTcpServer ()
 
 		qDebug() << "Server are listening: " << ipAddress << ":" << this->serverPort();
 	}
-        /*
-	DAL dal_;
-	//database testing        
-	Client cl = dal_.getClient(4);
-	Client cl2 = dal_.getClient(8);       
-  cl.AddPendingFriendRequest(cl2);
-  dal_.UpdateClient(cl);
-  Client cl3 = dal_.getClient(4);
-	
-  */
-	
 }
 
 
