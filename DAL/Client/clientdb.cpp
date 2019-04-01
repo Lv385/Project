@@ -75,7 +75,7 @@ void ClientDAL::ClientDB::UpdateIPPort(const int &user_id, const QString &new_us
 
 void ClientDAL::ClientDB::AddMessage(const Message &message, const QString& user_login) {
 
-        int user_id = GetIDByLogin(user_login);
+        int user_id = get_id_by_login(user_login);
         query_.prepare("INSERT INTO Messages (user_ID, owner_ID, message_data,message_date,message_tima, message_status) VALUES ( :new_user_ID , :new_owner_ID, :new_message_data, :new_message_date,:new_message_time,:new_message_status)");
         query_.bindValue(":new_user_ID", user_id);
         query_.bindValue(":new_owner_ID", message.owner_id);
@@ -96,7 +96,7 @@ void ClientDAL::ClientDB::AddMessage(const Message &message, const int& user_id)
 QVector<ClientDAL::Message> ClientDAL::ClientDB::GetMessages(const QString &user_login) {
     int count_of_messages = CountOfMessages(user_login);
 
-    unsigned int user_id = GetIDByLogin(user_login);
+    unsigned int user_id = get_id_by_login(user_login);
     QVector<Message> messages(count_of_messages);
     query_.prepare("SELECT owner_ID,message_data,message_date,message_tima, message_ID FROM Messages WHERE user_ID = :user_id ");
     query_.bindValue(":user_id", user_id );
@@ -125,7 +125,7 @@ QVector<ClientDAL::Message> ClientDAL::ClientDB::GetMessages(const int &user_id)
 }
 
 void ClientDAL::ClientDB::UpdateUserProfile(const QString &user_login, const QString &user_name, const QString &user_surname) {
-    int user_id = GetIDByLogin(user_login);
+    int user_id = get_id_by_login(user_login);
     query_.prepare("UPDATE friend_info SET user_name = :new_user_name, user_surname = :new_user_surname WHERE user_ID  = :user_id ");
     query_.bindValue(":user_id", user_id);
     query_.bindValue(":new_user_name",user_name);
@@ -213,7 +213,7 @@ void ClientDAL::ClientDB::DeleteFriend(const int &user_id) {
 }
 
 void ClientDAL::ClientDB::SetFriendStatus(const QString &user_login, bool status) {
-    int user_id = GetIDByLogin(user_login);
+    int user_id = get_id_by_login(user_login);
     query_.prepare("UPDATE friends SET user_status = :new_user_status WHERE user_ID  = :user_id ");
     query_.bindValue(":user_id", user_id);
     query_.bindValue(":new_user_status", status);
@@ -268,7 +268,7 @@ int ClientDAL::ClientDB::CountOfFriends()
 
 int ClientDAL::ClientDB::CountOfMessages(const QString &user_login) {
     unsigned int count_of_messages = 0;
-    unsigned int user_id = GetIDByLogin(user_login);
+    unsigned int user_id = get_id_by_login(user_login);
     query_.prepare("SELECT COUNT(user_ID) FROM Messages WHERE user_ID = :user_id ");
     query_.bindValue(":user_id", user_id );
     if (query_.exec()) {
@@ -295,7 +295,7 @@ void ClientDAL::ClientDB::CreateUserProfile(const unsigned int user_id) {
 }
 
 void ClientDAL::ClientDB::DeleteUserProfile(const QString &user_login) {
-    uint user_id = GetIDByLogin(user_login);
+    uint user_id = get_id_by_login(user_login);
 
     query_.prepare("DELETE FROM friend_info WHERE user_ID  = :user_id ");
     query_.bindValue(":user_id", user_id);
@@ -313,7 +313,7 @@ void ClientDAL::ClientDB::ErrorInfo() {
     qDebug() << query_.lastError().driverText();
 }
 
-unsigned int ClientDAL::ClientDB::GetIDByLogin(const QString &user_login) {
+unsigned int ClientDAL::ClientDB::get_id_by_login(const QString &user_login) {
 	query_.prepare("select user_id from friends where user_login = :user_login");
 	query_.bindValue(":user_login", user_login);
 

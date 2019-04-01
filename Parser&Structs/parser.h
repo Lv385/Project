@@ -9,8 +9,14 @@
 class Parser {
  public:
   static quint8 getRequestType(QByteArray& data);
+  
+  static QByteArray ConnectInfo_ToByteArray(ConnectInfo& connect_info);
+  static ConnectInfo ParseAsConnectInfo(QByteArray& data);
 
-  static QByteArray RegisterInfo_ToByteArray(RegisterInfo& regis_info);
+  static QByteArray Message_ToByteArray(Message& message);
+  static Message ParseAsMessage(QByteArray& data);
+
+  static QByteArray RegisterInfo_ToByteArray(RegisterInfo& register_info);
   static RegisterInfo ParseAsRegisterInfo(QByteArray& data);
 
   static QByteArray RegisterSuccessInfo_ToByteArray(RegisterSuccessInfo& regis_info);
@@ -28,11 +34,8 @@ class Parser {
   static NewFriendInfo ParseAsNewFriendInfo(QByteArray& data);
   static QByteArray NewFriendInfo_ToByteArray(NewFriendInfo& new_friend_info);
 
-  static FriendUpdateInfo ParseAsFriendUpdateInfo(QByteArray& data);
   static QByteArray FriendUpdateInfo_ToByteArray(FriendUpdateInfo& friend_update_info);
-
-  static QByteArray Message_ToByteArray(Message& message);
-  static Message ParseAsMessage(QByteArray& data);
+  static FriendUpdateInfo ParseAsFriendUpdateInfo(QByteArray& data);
 
   static QByteArray GetUnpossibleSequence();
   // hardcode, this shoud be added to the end of any
