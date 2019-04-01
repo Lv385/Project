@@ -3,8 +3,9 @@
 SignalRedirector::SignalRedirector() {}
 
 void SignalRedirector::ConnectToMessageSent(QObject *object) {
-    connect(object, SIGNAL(messageSent()), 
- clientController_, SIGNAL(messageSent()));
+    connect(object, SIGNAL(MessageSent(unsigned, bool)), 
+ clientController_, SIGNAL(MessageSent(unsigned, bool)));
+
 }
 
 void SignalRedirector::ConnectToMessageRecieved(QObject *object) {
@@ -29,7 +30,4 @@ void SignalRedirector::ConnectToRegisterResult(QObject *object) {
 
 void SignalRedirector::set_controller(ClientController * controller) {
   clientController_ = controller;
-}
-
-void ConnectToMessageSent(QObject *object) {
 }

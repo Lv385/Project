@@ -9,6 +9,7 @@ Worker::Worker(BlockReader* reader, unsigned user_id, unsigned my_id)
   peer_info_.id = user_id;
   socket_ = reader_->get_socket();
   writer_ = new BlockWriter(socket_);
+  redirector_.ConnectToMessageSent(this);
   redirector_.ConnectToMessageRecieved(this);
   connect(socket_, SIGNAL(disconnected()), this, SLOT(OnDisconnected()));
   connect(reader_, SIGNAL(ReadyReadBlock()), this, SLOT(OnReadyReadBlock()));
@@ -24,8 +25,15 @@ Worker::Worker(PeerInfo peer_info, QString message, unsigned my_id)
   socket_ = new QTcpSocket();
   writer_ = new BlockWriter(socket_);
   reader_ = new BlockReader(socket_);
+  redirector_.ConnectToMessageSent(this);
+ // int a = receivers(SIGNAL(MessageSent(unsigned id, bool result)));
+
+  redirector_.ConnectToMessageRecieved(this);
+  //int b = receivers(SIGNAL(MessageRecieved(unsigned id)));
 
   connect(reader_, SIGNAL(ReadyReadBlock()), this, SLOT(OnReadyReadBlock()));
+  this->dumpObjectInfo();
+
   connect(socket_, SIGNAL(connected()), this, SLOT(OnConnected()));
   connect(socket_, SIGNAL(disconnected()), this, SLOT(OnDisconnected()));
   connect(socket_, SIGNAL(error(QAbstractSocket::SocketError)), this,
@@ -55,9 +63,9 @@ void Worker::SendMessage() {
   timer_.start(k_msc);
   Message mes = {message_};
   QByteArray data = Parser::Message_ToByteArray(mes);
+  client_data_.AddMessageToDB(message_, peer_info_.id, my_id_);
   emit MessageSent(peer_info_.id, true);
   writer_->WriteBlock(data);
-  client_data_.AddMessageToDB(message_, peer_info_.id, my_id_);
 }
 
 void Worker::OnDisconnected() {

@@ -50,6 +50,8 @@ MainWindow::MainWindow(QWidget* parent)
 
   connect(client_controller_, SIGNAL(MessageRecieved(unsigned)), this,
           SLOT(OnMessageRecieved(unsigned)));
+  connect(client_controller_, SIGNAL(MessageSent(unsigned,bool)), this,
+          SLOT(OnMessageSent(unsigned, bool)));
   // CLIENT CONTROLLER
   // connect(client_controller_, SIGNAL(SendMessageToUI(QString)),
            //              this, SLOT(AppendMessage(QString)));
@@ -153,6 +155,11 @@ void MainWindow::OnMessageRecieved(unsigned id) {
     } else {
       ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + "<Me> : " + i.data);
     }
+  }
+}
+void MainWindow::OnMessageSent(unsigned id, bool is_sent) { 
+  if(is_sent){
+    OnMessageRecieved(id);
   }
 }
 void MainWindow::OnRbEngineeringClicked() {

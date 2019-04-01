@@ -40,7 +40,7 @@ class ClientController : public QObject {
  signals:
 
   void messageReceived(PeerInfo info, QString message);
-  void messageSent(quint32 id);
+  void MessageSent(unsigned, bool);
   void LoginResult(bool);
   void RegisterResult(quint32 id);
   void MessageRecieved(unsigned id);
