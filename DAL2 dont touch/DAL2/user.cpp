@@ -9,20 +9,35 @@ User::User(std::shared_ptr<Connect> Connect) : Statement(Connect) {
 
 	User::~User() {}
 
-void User::GetUser() {
-  ExectuteQuery(SelectQuery());
-  query_.first();
-  id = query_.value(0).toInt();
-  login = query_.value(1).toString();
-  password = query_.value(2).toString();
-  ip = query_.value(3).toString();
-  port = query_.value(4).toInt();
+	void User::GetUser(const unsigned int& user_id) {
+		ExectuteQuery(SelectQuery(user_id));
+		query_.first();
+		id = query_.value(0).toInt();
+		login = query_.value(1).toString();
+		password = query_.value(2).toString();
+		ip = query_.value(3).toString();
+		port = query_.value(4).toInt();
 
-  query_.finish();
-  GetFriends();
-  GetFriendsRequest();
-  GetFriendsNotification();
-}
+		query_.finish();
+		GetFriends();
+		GetFriendsRequest();
+		GetFriendsNotification();
+	}
+
+	void User::GetUser(const QString& user_login) {
+		ExectuteQuery(SelectQuery(user_login));
+		query_.first();
+		id = query_.value(0).toInt();
+		login = query_.value(1).toString();
+		password = query_.value(2).toString();
+		ip = query_.value(3).toString();
+		port = query_.value(4).toInt();
+
+		query_.finish();
+		GetFriends();
+		GetFriendsRequest();
+		GetFriendsNotification();
+	}
 
 void User::UpdateUser() {
   ExectuteQuery(UpdateQuery());
@@ -95,9 +110,11 @@ void User::DeleteFriendNotification(unsigned int user_id) {
   GetFriendsNotification();
 }
 
-QString User::SelectQuery() {
-  return QString("select * from users where user_login = '" + login +
-                 "' or user_id = " + QString::number(id));
+QString User::SelectQuery(unsigned int user_id) {
+	return QString("select * from users where user_id = " + QString::number(user_id));
+}
+QString User::SelectQuery(QString user_login) {
+	return QString("select * from users where user_login = '" + login + "'");
 }
 
 QString User::InsertQuery() {

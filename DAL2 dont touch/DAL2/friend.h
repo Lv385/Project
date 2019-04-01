@@ -26,6 +26,7 @@ namespace SQLDAL {
 
 	QVector<Friends>	GetFriends();  // Getting all users
 	Friends				GetFriend(const unsigned int id);
+	Friends				GetFriend(const QString& login);
 	void				UpdateFriend(const Friends& _friend);
 	void				AddNewFriend(const Friends& _friend);
 	void				DeleteFriend(const Friends& _friend);
@@ -34,6 +35,7 @@ namespace SQLDAL {
 	QString CreateQuerySelectAll();
     QString UpdateQuery(const Friends& _friend);
 	QString SelectQuery(const unsigned int id);
+	QString SelectQuery(const QString& login);
     QString InsertQuery(const Friends& _friend);
 	QString DeleteQuery(const Friends& _friend);
 	QString CreateQueryCountOfFriends();

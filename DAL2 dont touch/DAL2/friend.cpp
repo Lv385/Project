@@ -41,6 +41,23 @@ Friends Friend::GetFriend(const unsigned int id) {
   return _friend;
 }
 
+Friends Friend::GetFriend(const QString & login)
+{
+	ExectuteQuery(SelectQuery(login));
+	query_.first();
+	Friends _friend;
+	_friend.id = query_.value(0).toInt();
+	_friend.name = query_.value(1).toString();
+	_friend.surname = query_.value(2).toString();
+	_friend.ip = query_.value(3).toString();
+	_friend.port = query_.value(4).toInt();
+	_friend.login = query_.value(5).toString();
+	_friend.status = query_.value(6).toBool();
+
+	query_.finish();
+	return _friend;
+}
+
 void Friend::UpdateFriend(const Friends& _friend) {
   ExectuteQuery(UpdateQuery(_friend));
   query_.finish();
@@ -75,7 +92,14 @@ QString Friend::SelectQuery(const unsigned int id) {
   return QString(
       "SELECT user_id, user_name, user_surname,  user_IP, user_port, "
       "user_login, user_status FROM friends where user_id = " +
-      QString::number(id));  // + " or user_login = '" + login + "'");
+      QString::number(id));
+}
+
+QString Friend::SelectQuery(const QString & login)
+{
+	return QString(
+		"SELECT user_id, user_name, user_surname,  user_IP, user_port, "
+		"user_login, user_status FROM friends where  user_login = '" + login + "'");
 }
 
 QString Friend::InsertQuery(const Friends& _friend) {

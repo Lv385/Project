@@ -6,11 +6,11 @@ Message::Message(std::shared_ptr<Connect> Connect) : Statement(Connect) {
 
 Message::Message() : Statement() {}
 
-void Message::GetMessages(unsigned int chat_id) {
+QVector<Messages> Message::GetMessages(unsigned int chat_id) {
   ExectuteQuery(CreateQueryCountOfMessages(chat_id));
   query_.first();
   unsigned int count_of_messages = query_.value(0).toInt();
-  messages.resize(count_of_messages);
+  QVector<Messages> messages(count_of_messages);
   ExectuteQuery(SelectQuery(chat_id));
   int counter = 0;
   while (query_.next()) {
@@ -22,6 +22,7 @@ void Message::GetMessages(unsigned int chat_id) {
     messages[counter].time = query_.record().value(5).toTime();
     messages[counter++].status = query_.record().value(6).toInt();
   }
+  return messages;
 }
 
 void Message::AddNewMessage(const Messages& message) {

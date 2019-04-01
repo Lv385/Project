@@ -21,7 +21,8 @@ namespace SQLDAL {
 	  QVector<UsersID> requests;
 	  QVector<UsersID> notification;
 
-	  void			 GetUser();             // Select
+	  void			 GetUser(const unsigned int& user_id);
+	  void			 GetUser(const QString& user_login);// Select
 	  void			 UpdateUser();          // Update
 	  void			 AddNewUser();          // Insert
 	  void			 DeleteUser();          // Delete
@@ -43,7 +44,8 @@ namespace SQLDAL {
 	  std::shared_ptr<NotificationInfo> notification_obj;
 
 	  QString							  UpdateQuery();
-	  QString							  SelectQuery();
+	  QString							  SelectQuery(unsigned int user_id);
+	  QString							  SelectQuery(QString user_login);
 	  QString							  InsertQuery();
 	  QString							  DeleteQuery();
 	  QString							  CountOfFriends();

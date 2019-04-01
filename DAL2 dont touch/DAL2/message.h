@@ -23,8 +23,8 @@ namespace SQLDAL {
    public:
 	Message(std::shared_ptr<Connect> Connect);
 	Message();
-	QVector<Messages>	messages;
-	void				GetMessages(unsigned int chat_id);  // Select All Info About One Chat
+
+	QVector<Messages>	GetMessages(unsigned int chat_id);  // Select All Info About One Chat
 	void				AddNewMessage(const Messages& message);
 	void				DeleteMessage(const Messages& message);
 	void				UpdateMessage(const Messages& message);

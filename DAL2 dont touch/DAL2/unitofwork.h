@@ -18,7 +18,7 @@ namespace SQLDAL {
 
    private:
 	std::shared_ptr<Connect>		   connection_;
-	static std::atomic<unsigned int>   connection_number_;
+	static std::atomic<unsigned long long int>   connection_number_;
 	QString						       GenerateNewConnection();
   };
 

@@ -1,6 +1,6 @@
 #include "unitofwork.h"
 namespace SQLDAL {
-std::atomic<unsigned int> UnitOfWork::connection_number_ = 0;
+std::atomic<unsigned long long int> UnitOfWork::connection_number_ = 0;
 
 UnitOfWork::UnitOfWork() : connection_(nullptr) {}
 
