@@ -40,8 +40,6 @@ class ServerDB {
   void AddFriend(const QString& user_login, const QString& second_user_login);
   void AddFriend(const unsigned int& user_id, const unsigned int& second_user_id);
 
-  void DeleteAllFriends(const unsigned int& user);
-
   void DeleteAllPendingRequest(const unsigned int& user);
   void DeleteAllPendingNotifications(const unsigned int& user);
 

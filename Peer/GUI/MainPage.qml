@@ -2,27 +2,50 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQml.Models 2.12
 
-import Friends 1.0
 
 MainPageForm {
 
     background: Rectangle {
         color: backGroundColor
+
     }
 
     FriendListDelegateModel {
-        id: delegateModelId
-        visualModel.model: guiManager.friendModel
-        listView: parent.listView
-        //deleteFriendButton.onClicked: guiManager.deleteFriend(object)
+        id: friendModel
+        visualModel.model: guiManager.friend_model
+        list: friendList
     }
 
-    friendList.model: delegateModelId.visualModel
-    friendList.spacing: 5
+    MessageListDelegateModel {
+        id: messageModel
+        visualModel.model: guiManager.message_model
+    }
+
+    Component {
+        id: highlightBar
+        Rectangle {
+            width: friendList.width; height: 40
+            color: friendMouseAreaColor
+            y: friendList.currentItem.y;
+            //Behavior on y { SpringAnimation { spring: 2; damping: 0.1 } }
+        }
+    }
+
+    friendList.focus: true
+    friendList.highlight: highlightBar
+    friendList.highlightFollowsCurrentItem: false
 
 
-    addButton.onClicked: {
-        guiManager.newFriend()
+    friendList.model: friendModel.visualModel
+
+    messageList.model: messageModel.visualModel
+    messageList.spacing: 10
+
+
+
+    sendButton.onClicked: {
+        guiManager.newMessage(messageField.text)
+        messageField.text = "";
     }
 }
 

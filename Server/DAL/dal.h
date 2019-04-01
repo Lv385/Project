@@ -7,7 +7,7 @@
 
 #include <QUuid>
 #include "client.h"
-
+#include "sqldal.h"
 // using namespace std;
 
 class DAL {
@@ -30,5 +30,6 @@ class DAL {
  private:
   ServerDB database_;
   QString connection_name_;
+  //SQLDAL::UnitOfWork database;
   // std::map<QString, Client> database;
 };

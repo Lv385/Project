@@ -14,7 +14,7 @@ namespace SQLDAL {
 	public:
 		Statement(std::shared_ptr<Connect> connection);
 		Statement() = default;
-		virtual ~Statement();
+		~Statement();
 
 	protected:
 

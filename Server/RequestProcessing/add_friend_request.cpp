@@ -4,6 +4,9 @@ AddFriendRequest::AddFriendRequest(QByteArray &request, DAL *d, QTcpSocket *s)
     : AbstractRequest(d, s) {
   income_data_ = Parser::ParseAsFriendRequestInfo(request);
   PrepareResponse();
+  QString IP = client_socket_->peerAddress().toString();
+  QString logstring = IP + "::xxx";
+  Logger::LogOut(logstring, request);
 }
 
 void AddFriendRequest::PrepareResponse() {
@@ -34,15 +37,22 @@ bool AddFriendRequest::SendResponde() {
   if (response_to_requester_ == (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED) {
     QByteArray b = Parser::Empty_ToByteArray( (quint8)ServerRequests::FRIEND_REQUEST_SUCCEED);
     b.append(Parser::GetUnpossibleSequence());
-    Logger::LogOut(b);
+
+    QString ip = client_socket_->peerAddress().toString();
+    QString logstring_ = ip + "::xxx";
+    Logger::LogOut(logstring_, b);
+
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
     client_socket_->disconnectFromHost();
 
     //sending ADD_FRIEND_REQUEST,//+AddFriendInfo(s->c)I,-FRIEND_REQUEST;    
     QTcpSocket output_socket;
-    output_socket.connectToHost(requested_guy.GetUserIp(), requested_guy.GetUserPort());
-    Logger::LogOut(send_addfriend_info_bytearr);
+    output_socket.connectToHost(requested_guy.GetUserIp(), requested_guy.GetUserPort());    
+    
+    QString Logstring_ =requested_guy.GetUserIp().toString()+ "::" + Logger::ConvertQuint32ToString(requested_guy.GetUserPort());
+    Logger::LogOut(Logstring_, send_addfriend_info_bytearr);
+
     if (output_socket.waitForConnected(5000)) {  // check if can connect if yes -> send add friend     
       output_socket.write(send_addfriend_info_bytearr);
       output_socket.waitForBytesWritten(1000);
@@ -58,7 +68,11 @@ bool AddFriendRequest::SendResponde() {
   } else {
     QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequests::FRIEND_REQUEST_FAILED);
     b.append(Parser::GetUnpossibleSequence());
-    Logger::LogOut(b);
+
+    QString Ip = client_socket_->peerAddress().toString();
+    QString logstrin = Ip + "::" + Logger::ConvertQuint32ToString(sender_guy.GetUserPort());
+    Logger::LogOut(logstrin, b);
+
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
     client_socket_->disconnectFromHost();

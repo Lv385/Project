@@ -115,7 +115,7 @@ void Client::RemovePendingNotification(Client &cl) {
 }
 
 void Client::Set_Pending_Noification(QVector<unsigned int>r) {
-  pending_friend_notifications_ = r;
+  pending_requests_ = r;
 }
 
 QVector<unsigned int> Client::Get_Pending_Notifications() { 

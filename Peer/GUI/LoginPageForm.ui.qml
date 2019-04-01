@@ -8,22 +8,39 @@ Page {
     property alias buttonLogIn: buttonLogIn
     property alias buttonRegister: buttonRegister
     property alias loginUsername: loginUsername
+    property alias image: image
+    contentWidth: 0
+    contentHeight: -1
+    focusPolicy: Qt.WheelFocus
+    spacing: 4
 
     background: Rectangle {
         color: backGroundColor
+        Image {
+            id: image
+            anchors.rightMargin: 13
+            anchors.bottomMargin: 0
+            anchors.leftMargin: -13
+            anchors.topMargin: 0
+            anchors.fill: parent
+            source: "qrc:/geometry.jpg"
+        }
     }
 
     Rectangle {
         id: iconRect
         width: parent.width
         height: parent.height / 3
-        color: backGroundColor
+        color: "#593c6c"
+        transformOrigin: Item.Center
 
         Text {
             id: icontext
             width: 390
             height: 160
             text: qsTr("MesX")
+            anchors.verticalCenterOffset: 0
+            anchors.horizontalCenterOffset: 0
             anchors.centerIn: parent
             font.pointSize: 110
             font.family: "Verdana"
@@ -106,9 +123,12 @@ Page {
 
         Button {
             id: buttonLogIn
+            width: 323
             implicitWidth: parent.width
             text: qsTr("Log In")
+            focusPolicy: Qt.StrongFocus
             font.pointSize: 16
+            focus: true
 
             contentItem: Text {
                 font: buttonLogIn.font
@@ -116,6 +136,10 @@ Page {
                 text: "Log In"
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
+            }
+            MouseArea {
+                onClicked: (mouse.button === Qt.LeftButton)
+                           && (mouse.modifiers & Qt.ShiftModifier)
             }
 
             background: Rectangle {
@@ -132,6 +156,9 @@ Page {
             id: buttonRegister
             implicitWidth: parent.width
             text: qsTr("Register")
+            display: AbstractButton.IconOnly
+            font.family: "Courier"
+            focusPolicy: Qt.NoFocus
             Layout.fillWidth: false
             font.pointSize: 16
 

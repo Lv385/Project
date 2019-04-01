@@ -369,17 +369,6 @@ void ServerDB::AddFriend(const unsigned int & user_id, const unsigned int & seco
 	}
 }
 
-void ServerDB::DeleteAllFriends(const unsigned int& user) {
-  query_->prepare(
-      "DELETE FROM friends WHERE first_user_ID = :user_to_delete");
-  query_->bindValue(":user_to_delete", user);
-  if (!query_->exec()) {
-    ErrorInfo();
-  }
-
-}
-
-
 void ServerDB::DeleteAllPendingRequest(const unsigned int& user_id) {
   query_->prepare(
       "DELETE FROM pending_friend_request WHERE user = :user_to_delete");

@@ -7,7 +7,7 @@ User::User(std::shared_ptr<Connect> Connect) : Statement(Connect) {
   notification_obj = std::make_shared<NotificationInfo>(Connect);
 }
 
-User::~User() {}
+	User::~User() {}
 
 void User::GetUser() {
   ExectuteQuery(SelectQuery());

@@ -38,17 +38,6 @@ void DAL::UpdateClient(Client cl) {
       database_.addPendingNotification(cl.GetUserId(), curr_notif_cl.at(i));
     }
   }
-  QVector<unsigned int> curr_friends_cl = cl.GetFriends();
-  QVector<unsigned int> db_friends_cl =
-      database_.GetFriends(cl.GetUserId());
-  if (curr_friends_cl.size() != db_friends_cl.size() ||
-      ((!db_friends_cl.isEmpty()) &&
-       db_friends_cl.last() != curr_friends_cl.last())) {       
-         database_.DeleteAllFriends(cl.GetUserId());
-    for (int i = 0; i < curr_friends_cl.size(); i++) {
-      database_.AddFriend(cl.GetUserId(), curr_friends_cl.at(i));
-    }
-  }
   
 }
 Client DAL::getClient(QString login) {
