@@ -4,7 +4,12 @@ import QtQuick.Controls 2.5
 LoginPageForm {
     id: rect
     buttonLogIn.onClicked: {
+        runIndicator = true
         stackView.push("MainPage.qml")
+    }
+
+    buttonRegister.onClicked: {
+        stackView.push("RegisterPage.qml")
     }
 }
 

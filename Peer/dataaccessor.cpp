@@ -39,7 +39,8 @@ unsigned DataAccessor::get_id_by_login(const QString user_login){
 }*/
 
 QVector<Message> DataAccessor::get_messages(const QString user_login) {
-  QVector<Message> messages = message_->GetMessages(user_login);
+  Friend f = user_->GetFriend(user_login);
+  QVector<Message> messages = message_->GetMessages(f.id);
   return messages;
 }
 

@@ -205,6 +205,8 @@
     <ClCompile Include="dataaccessor.cpp" />
     <ClCompile Include="GUI\frienditem.cpp" />
     <ClCompile Include="GUI\friendmodel.cpp" />
+    <ClCompile Include="GUI\friendrequestitem.cpp" />
+    <ClCompile Include="GUI\friendrequestmodel.cpp" />
     <ClCompile Include="GUI\guimanager.cpp" />
     <ClCompile Include="GUI\messageitem.cpp" />
     <ClCompile Include="GUI\messagemodel.cpp" />
@@ -297,6 +299,15 @@
     </QtMoc>
     <QtMoc Include="GUI\messageitem.h">
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtConcurrent</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtConcurrent</IncludePath>
+    </QtMoc>
+
+    <QtMoc Include="GUI\friendrequestitem.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)DAL2 dont touch\DAL2;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtConcurrent</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtConcurrent</IncludePath>
+    </QtMoc>
+    <QtMoc Include="GUI\friendrequestmodel.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)DAL2 dont touch\DAL2;.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\debug;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtConcurrent</IncludePath>
       <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.\GeneratedFiles\$(ConfigurationName);.\GeneratedFiles;.;$(QTDIR)\include;$(QTDIR)\include\QtWidgets;$(QTDIR)\include\QtGui;$(QTDIR)\include\QtANGLE;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtCore;.\release;\include;$(QTDIR)\mkspecs\win32-msvc;$(QTDIR)\include\QtSql;$(QTDIR)\include\QtQuick;$(QTDIR)\include\QtQml;$(QTDIR)\include\QtConcurrent</IncludePath>
     </QtMoc>
     <ClInclude Include="dataaccessor.h" />

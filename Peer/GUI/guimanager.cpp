@@ -5,7 +5,12 @@ GUIManager::GUIManager(QObject *parent)
       my_id(1) {     //for testing
 
   LoadFriends();
-  loadMessages("markiyan");
+  loadMessages(friend_model_.GetFirstFriend());
+  newFriendRiequest();
+  newFriendRiequest();
+  newFriendRiequest();
+  newFriendRiequest();
+
 }
 
 FriendModel* GUIManager::friend_model() {
@@ -16,8 +21,12 @@ MessageModel* GUIManager::message_model() {
   return &message_model_;
 }
 
-void GUIManager::newFriend() {
-  FriendItem* new_friend = new FriendItem("oleksyk", true);
+FriendRequestModel *GUIManager::friend_request_model() {
+  return &friend_request_model_;
+}
+
+void GUIManager::newFriend(QString new_friend_login) {
+  FriendItem* new_friend = new FriendItem(new_friend_login, qrand() % 2);
   friend_model_.AddFriendToList(new_friend);
 }
 
@@ -34,24 +43,37 @@ void GUIManager::newMessage(QString message) {
 }
 
 void GUIManager::loadMessages(QString friend_login) {
-  message_model_.RemoveAllMessagesFromList();
+  if(friend_login != "") {    //FIXME
+    message_model_.RemoveAllMessagesFromList();
 
-  QString data, time, date;
-  int owner_id;
-  MessageItem* new_message;
+    QString data, time, date;
+    int owner_id;
+    MessageItem* new_message;
 
-  /*QVector<SQLDAL::Messages> history = client_data_.get_messages(friend_login);
-  for(const auto& msg : history) {
-    data = msg.data;
-    time = msg.time.toString("hh:mm");
-    date = msg.date.toString("d MMM");  //FIX date
-    owner_id = msg.owner_id;
-    new_message = new MessageItem(data, time, date, owner_id);
-    message_model_.AddMessageToList(new_message);
-  }*/
+    QVector<Message> history = client_data_.get_messages(friend_login);
+    for(const auto& msg : history) {
+      data = msg.data;
+      time = msg.time.toString("hh:mm");
+      date = msg.date.toString();  //FIX date
+      owner_id = msg.owner_id;
+      new_message = new MessageItem(data, time, date, owner_id);
+      message_model_.AddMessageToList(new_message);
+    }
+  }
 }
 
-void GUIManager::LoadFriends() {
+void GUIManager::deleteFriendRiequest(FriendRequestItem* friend_request_to_delete) {
+  if (!friend_request_to_delete)
+      return;
+  friend_request_model_.RemoveRequestFromList(friend_request_to_delete);
+}
+
+void GUIManager::newFriendRiequest() {
+  FriendRequestItem* new_friend_request = new FriendRequestItem("oleksyk", 7);
+  friend_request_model_.AddRequestToList(new_friend_request);
+}
+
+void GUIManager::LoadFriends() {   //don't forget to load id
   QVector<Friend> friends = client_data_.get_friends();
 
   for (const Friend& i : friends) {
