@@ -1,14 +1,20 @@
 #pragma once
 #include "logger.h" 
+#include <mutex>
 
 // void Logger::WriteLogToFile(QString& filename, QString& text)
 void Logger::WriteLogToFile(QString& text) {
+  std::mutex g_pages_mutex;
+  g_pages_mutex.lock();
+  
   //QFile file(filename);
   QFile file("LOG.txt");
   if (file.open(QIODevice::Append | QIODevice::Text)) {
     QTextStream stream(&file);
     stream << text << endl;
     file.close();
+    
+    g_pages_mutex.unlock();
   }
 }
 
