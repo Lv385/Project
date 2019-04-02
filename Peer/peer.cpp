@@ -140,9 +140,9 @@
 //  QByteArray to_write = Parser::IdPort_ToByteArray(my_id_port);  // pack
 //  to_write.append(Parser::GetUnpossibleSequence());  // append separator
 //
-//  QVector<SQLDAL::Friend> friends = client_data_.get_friends();
+//  QVector<Friend> friends = client_data_.get_friends();
 //
-//  for (const SQLDAL::Friend& i : friends) {
+//  for (const Friend& i : friends) {
 //    update_sender_.writeDatagram(to_write, QHostAddress(i.ip), my_listen_port_);
 //  }
 //  logger_.WriteLog(LogType::INFO, " update sent");

@@ -26,27 +26,12 @@ ClientController::ClientController(QObject *parent)
 
 ClientController::~ClientController() {}
 
-QVector<PeerInfo> ClientController::LoadFriends() {
-  QVector<SQLDAL::Friends> friends = client_data_.get_friends();
-  QVector<PeerInfo> result;
-  PeerInfo info;
-  for (auto a : friends) {
-    info.id = a.id;
-    info.ip = a.ip;
-    info.is_online = a.status;
-    info.port = a.port;
-    info.login = a.login;
-    result.push_back(info);
-  }
-  return result;
+QVector<Friend> ClientController::LoadFriends() {
+  return client_data_.get_friends();
 }
 
-void ClientController::SendMessage(PeerInfo peer_info, QString message,
-                                   QPlainTextEdit *edit) {
+void ClientController::SendMessage(Friend peer_info, QString message) {
   friend_manager_.SendMessage(peer_info, message);
-  /*edit->appendPlainText(QTime::currentTime().toString() + '|' +
-                        "<Me> : " + message);*/
-
 }
 
 void ClientController::LogIn(QString login, QString password) {
@@ -84,9 +69,9 @@ void ClientController::AddFriend(QString login) {
 
 void ClientController::SetAppInfo(ApplicationInfo info) {}
 
-QVector<SQLDAL::Messages> ClientController::LoadMessages(unsigned id) {
+QVector<Message> ClientController::LoadMessages(unsigned id) {
 
-  QVector<SQLDAL::Messages> result = client_data_.get_messages(id);
+  QVector<Message> result = client_data_.get_messages(id);
   return result;
 }
 
