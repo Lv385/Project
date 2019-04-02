@@ -7,7 +7,7 @@ NewUserRequest::NewUserRequest(QByteArray& request, DAL* d, QTcpSocket* s)
     : AbstractRequest(d,s) {
 
 	income_data_ = Parser::ParseAsRegisterInfo(request);
-  QString IP = client_socket_->peerAddress().toString();
+  QString IP = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();
   QString logstring = IP + "::" + Logger::ConvertQuint16ToString(income_data_.port);
   Logger::LogOut(logstring, request);
 	PrepareResponse();
@@ -31,13 +31,13 @@ void NewUserRequest::PrepareResponse()
 
 	}
 	else {
-		outcome_data_ = Parser::Empty_ToByteArray((quint8)ServerRequests::REGISTER_FAILED);
+		outcome_data_ = Parser::Empty_ToByteArray((quint8)ServerRequest::REGISTER_FAILED);
 		outcome_data_.append(Parser::GetUnpossibleSequence());
 	}
 }
 bool NewUserRequest::SendResponde()
 {
-  QString Ip = client_socket_->peerAddress().toString();
+  QString Ip = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();
   QString Logstring = Ip + "::" + Logger::ConvertQuint16ToString(income_data_.port);
   Logger::LogOut(Logstring, outcome_data_);
   
