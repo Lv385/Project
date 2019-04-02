@@ -10,7 +10,7 @@
 #include "GUI/friendrequestitem.h"
 #include "GUI/friendrequestmodel.h"
 
-#include "dalmanager.h"
+#include "dataaccessor.h"
 
 
 class GUIManager : public QObject
@@ -51,6 +51,7 @@ private:
 
   //ClientController* controller_;
 
-  DALManager client_dal_;        //for testing
+  DataAccessor client_data_;  //for testing
+
 };
 #endif

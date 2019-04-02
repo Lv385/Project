@@ -1,22 +1,43 @@
 #include "user.h"
 namespace SQLDAL {
 User::User(std::shared_ptr<Connect> Connect) : Statement(Connect) {
-  Connect_->Open(SERVER_DB);  // Path
+  connection_->Open(SERVER_DB);  // Path
+  friend_obj = std::make_shared<FriendInfo>(Connect);
+  request_obj = std::make_shared<RequestInfo>(Connect);
+  notification_obj = std::make_shared<NotificationInfo>(Connect);
 }
 
-User::~User() {}
+	User::~User() {}
 
-void User::GetUser() {
-  ExectuteQuery(SelectQuery());
-  query_.first();
-  id = query_.value(0).toInt();
-  login = query_.value(1).toString();
-  password = query_.value(2).toString();
-  ip = query_.value(3).toString();
-  port = query_.value(4).toInt();
+	void User::GetUser(const unsigned int& user_id) {
+		ExectuteQuery(SelectQuery(user_id));
+		query_.first();
+		id = query_.value(0).toInt();
+		login = query_.value(1).toString();
+		password = query_.value(2).toString();
+		ip = query_.value(3).toString();
+		port = query_.value(4).toInt();
 
-  query_.finish();
-}
+		query_.finish();
+		GetFriends();
+		GetFriendsRequest();
+		GetFriendsNotification();
+	}
+
+	void User::GetUser(const QString& user_login) {
+		ExectuteQuery(SelectQuery(user_login));
+		query_.first();
+		id = query_.value(0).toInt();
+		login = query_.value(1).toString();
+		password = query_.value(2).toString();
+		ip = query_.value(3).toString();
+		port = query_.value(4).toInt();
+
+		query_.finish();
+		GetFriends();
+		GetFriendsRequest();
+		GetFriendsNotification();
+	}
 
 void User::UpdateUser() {
   ExectuteQuery(UpdateQuery());
@@ -31,12 +52,69 @@ void User::AddNewUser() {
 void User::DeleteUser() {
   ExectuteQuery(DeleteQuery());
   query_.finish();
-  // query_.clear();
 }
 
-QString User::SelectQuery() {
-  return QString("select * from users where user_login = '" + login +
-                 "' or user_id = " + QString::number(id));
+void User::GetFriends() { friends = friend_obj->Get(id); }
+
+void User::GetFriendsRequest() { requests = request_obj->Get(id); }
+
+void User::GetFriendsNotification() {
+  notification = notification_obj->Get(id);
+}
+
+void User::AddFriend(unsigned int user_id) {
+  UsersID users_id;
+  users_id.first_user_id = id;
+  users_id.second_user_id = user_id;
+  friend_obj->Add(users_id);
+  GetFriends();
+}
+
+void User::AddFriendRequest(unsigned int user_id) {
+  UsersID users_id;
+  users_id.second_user_id = id;
+  users_id.first_user_id = user_id;
+  request_obj->Add(users_id);
+  GetFriendsRequest();
+}
+
+void User::AddFriendNotification(unsigned int user_id) {
+  UsersID users_id;
+  users_id.second_user_id = id;
+  users_id.first_user_id = user_id;
+  notification_obj->Add(users_id);
+  GetFriendsNotification();
+}
+
+void User::DeleteFriend(unsigned int user_id) {
+  UsersID users_id;
+  users_id.first_user_id = id;
+  users_id.second_user_id = user_id;
+  friend_obj->Delete(users_id);
+  GetFriends();
+}
+
+void User::DeleteFriendRequest(unsigned int user_id) {
+  UsersID users_id;
+  users_id.second_user_id = id;
+  users_id.first_user_id = user_id;
+  request_obj->Delete(users_id);
+  GetFriendsRequest();
+}
+
+void User::DeleteFriendNotification(unsigned int user_id) {
+  UsersID users_id;
+  users_id.second_user_id = id;
+  users_id.first_user_id = user_id;
+  notification_obj->Delete(users_id);
+  GetFriendsNotification();
+}
+
+QString User::SelectQuery(unsigned int user_id) {
+	return QString("select * from users where user_id = " + QString::number(user_id));
+}
+QString User::SelectQuery(QString user_login) {
+	return QString("select * from users where user_login = '" + login + "'");
 }
 
 QString User::InsertQuery() {

@@ -50,15 +50,14 @@ void GUIManager::loadMessages(QString friend_login) {
     int owner_id;
     MessageItem* new_message;
 
-    QVector<ClientDAL::Message> history = client_dal_.GetMessages(friend_login);
-    for(const auto& msg : history) {
-      data = msg.data;
-      time = msg.time.toString("hh:mm");
-      date = msg.date.toString("d MMM");  //FIX date
-      owner_id = msg.owner_id;
-      new_message = new MessageItem(data, time, date, owner_id);
-      message_model_.AddMessageToList(new_message);
-    }
+  QVector<SQLDAL::Messages> history = client_data_.get_messages(friend_login);
+  for(const auto& msg : history) {
+    data = msg.data;
+    time = msg.time.toString("hh:mm");
+    date = msg.date.toString("d MMM");  //FIX date
+    owner_id = msg.owner_id;
+    new_message = new MessageItem(data, time, date, owner_id);
+    message_model_.AddMessageToList(new_message);
   }
 }
 
@@ -74,11 +73,11 @@ void GUIManager::newFriendRiequest() {
 }
 
 void GUIManager::LoadFriends() {   //don't forget to load id
-  QVector<QString> friends = client_dal_.GetFriendsLogin();
+  QVector<SQLDAL::Friends> friends = client_data_.get_friends();
 
-  for(const QString& friend_login : friends) {
-    bool status = client_dal_.GetFriendStatus(client_dal_.GetIDByLogin(friend_login));  // just for test
-    FriendItem* friend_item = new FriendItem(friend_login, status);
+  for (const SQLDAL::Friends& i : friends) {
+    bool status = client_data_.get_friends_status(i.id);  // just for test
+    FriendItem* friend_item = new FriendItem(i.login, status);
     friend_model_.AddFriendToList(friend_item);
   }
 }

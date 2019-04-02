@@ -32,7 +32,7 @@ class Logger {
    static QString Log_RegisterInfo(RegisterInfo&out);
    static QString Log_FriendRequestInfo(FriendRequestInfo &out);   
    static QString Log_NewFriendInfo(NewFriendInfo &out);
-   static void RemoveShit(QString &stringd);
+  
    
    //static std::map<quint8, QString> m;
 

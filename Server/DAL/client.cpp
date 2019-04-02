@@ -11,6 +11,8 @@ Client::Client(QString log, QString pas, QHostAddress i, quint16 p):
 {
 }
 
+
+
 QString Client::GetUserName() const
 {
 	return user_name;
@@ -87,7 +89,8 @@ void Client::RemoveFriend(Client & cl)
 		if (friends[i] == cl.GetUserId()) {
             friends.remove(i);
 		}
-	}	
+	}
+	
 }
 
 void Client::SetFriends(QVector<unsigned int> f)
@@ -112,7 +115,7 @@ void Client::RemovePendingNotification(Client &cl) {
 }
 
 void Client::Set_Pending_Noification(QVector<unsigned int>r) {
-  pending_friend_notifications_ = r;
+  pending_requests_ = r;
 }
 
 QVector<unsigned int> Client::Get_Pending_Notifications() { 

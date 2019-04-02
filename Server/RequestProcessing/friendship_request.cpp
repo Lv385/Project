@@ -7,8 +7,8 @@ FriendshipRequest::FriendshipRequest(QByteArray &request, DAL *d, QTcpSocket *s)
 
   PrepareResponse();
 
-  QString IP = client_socket_->peerAddress().toString();
-  QString logstring = IP + ":: No port";
+  QString IP = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();
+  QString logstring = IP + "::xxx";
   Logger::LogOut(logstring, request);
 }
 void FriendshipRequest::PrepareResponse() {
@@ -30,7 +30,7 @@ void FriendshipRequest::PrepareResponse() {
       outcome_for_new_friend_.ip = requester_.GetUserIp();
       outcome_for_new_friend_.login = requester_.GetUserName();
       outcome_for_new_friend_.port = requester_.GetUserPort();
-      doNothing_ = false;
+
     } catch (UserNotFound &e) {
       doNothing_ = true;
       qDebug() << e.what();
@@ -46,7 +46,7 @@ bool FriendshipRequest::SendResponde() {
     outcome_data_ =
         Parser::NewFriendInfo_ToByteArray(outcome_for_requester_);
 
-    QString Ip = client_socket_->peerAddress().toString();
+    QString Ip = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();
     QString Logstring = Ip + "::" + Logger::ConvertQuint16ToString(requester_.GetUserPort());
     Logger::LogOut(Logstring, outcome_data_);
 
@@ -63,7 +63,7 @@ bool FriendshipRequest::SendResponde() {
 
     if (output_socket.waitForConnected(5000)) { // check if can connect if yes -> send friend_update
       
-      QString ip = output_socket.peerAddress().toString();
+      QString ip = QHostAddress(output_socket.peerAddress().toIPv4Address(false)).toString();
       QString Logstring_ = ip + "::" + Logger::ConvertQuint16ToString(requester_.GetUserPort());
       Logger::LogOut(Logstring_, outcome_data_);
 
