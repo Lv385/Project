@@ -12,8 +12,6 @@ MainWindow::MainWindow(QWidget* parent)
   
   client_controller_ = new ClientController(this);
 
-
-
   SignalRedirector::get_instance().set_controller(client_controller_);
 
   SetIpValidator();
@@ -24,8 +22,8 @@ MainWindow::MainWindow(QWidget* parent)
   logger_->set_log_level(
       LogLevel::HIGH);  // u can switch levels of logging(NOLOG, LOW, HIGH)
 
-  QVector<SQLDAL::Friends> friends = client_data_.get_friends();
-  for (const SQLDAL::Friends& i : friends) {
+  friends_ = client_controller_->LoadFriends();
+  for (auto i : friends_) {
     ui_->combo_box_friends->addItem(i.login);
   }
 
@@ -52,14 +50,14 @@ MainWindow::MainWindow(QWidget* parent)
 
   connect(client_controller_, SIGNAL(MessageRecieved(unsigned)), this,
           SLOT(OnMessageRecieved(unsigned)));
+  connect(client_controller_, SIGNAL(MessageSent(unsigned,bool)), this,
+          SLOT(OnMessageSent(unsigned, bool)));
   // CLIENT CONTROLLER
   // connect(client_controller_, SIGNAL(SendMessageToUI(QString)),
            //              this, SLOT(AppendMessage(QString)));
 
   connect(logger_, SIGNAL(DisplayLog(const char*, QString)), 
              this, SLOT(AppendLogMessage(const char*, QString)));
-
-  friends_ = client_controller_->LoadFriends();
 }
 
 void MainWindow::OnPbStartClicked() {
@@ -90,9 +88,9 @@ void MainWindow::SetIpValidator() {
   ui_->le_ip->setValidator(ip_validator);
 }
 
-void MainWindow::AppendMessage(QString message) {
+/*void MainWindow::AppendMessage(QString message) {
   ui_->plainTextEdit->appendPlainText(message);  // username by id + message
-}
+}*/
 
 void MainWindow::AppendHistory(QString login) {
   unsigned id = client_data_.get_id_by_login(login);
@@ -107,11 +105,11 @@ void MainWindow::OnPbSendClicked() {
   QString selected_login = ui_->combo_box_friends->currentText();
   // peer_->SendRequest(client_client_data_.get_id_by_login(selected_login),
   //     ui_->le_message->text());  // id + mes  zzz
-  // PeerInfo
+  // 
+
   for (auto a : friends_)
     if (a.login == selected_login)
       client_controller_->SendMessage(a, ui_->le_message->text());
-  ui_->plainTextEdit->appendPlainText("->: " + ui_->le_message->text());
 }
 
 void MainWindow::AppendLogMessage(const char* value, QString message) {
@@ -147,7 +145,7 @@ void MainWindow::OnRbSimpleClicked() {
 }
 void MainWindow::OnMessageRecieved(unsigned id) {
   ui_->plainTextEdit->clear();
-  QVector<SQLDAL::Messages> history = client_controller_->LoadMessages(id);
+  QVector<Message> history = client_controller_->LoadMessages(id);
   
   for (auto i : history) {
     if (client_controller_->app_info_.my_login != client_data_.get_login_by_id(i.owner_id)) {
@@ -156,6 +154,11 @@ void MainWindow::OnMessageRecieved(unsigned id) {
     } else {
       ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + "<Me> : " + i.data);
     }
+  }
+}
+void MainWindow::OnMessageSent(unsigned id, bool is_sent) { 
+  if(is_sent){
+    OnMessageRecieved(id);
   }
 }
 void MainWindow::OnRbEngineeringClicked() {

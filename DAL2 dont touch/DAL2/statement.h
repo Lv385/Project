@@ -9,6 +9,8 @@
 #define CLIENT_DB "../DAL2 dont touch/DAL2/Client"
 #define SERVER_DB "../DAL2 dont touch/DAL2/Server"
 
+#include "client_data_types.h"
+
 namespace SQLDAL {
 	class Statement {
 	public:
@@ -17,7 +19,6 @@ namespace SQLDAL {
 		~Statement();
 
 	protected:
-
 
 		void SetQuery(QSqlDatabase database);
 		void ExectuteQuery(QString query);

@@ -1,7 +1,7 @@
 #ifndef WORKHELPER_H
 #define WORKHELPER_H
 
-#include "peerinfo.h"
+ 
 #include "abstractstrategy.h"
 
 #include <QByteArray>
@@ -20,14 +20,14 @@ class WorkHelper : public QObject {
   ~WorkHelper();
 
  signals:
-  void WorkDefined(quint8, PeerInfo*, QByteArray*, QTcpSocket*);
+  void WorkDefined(quint8, Friend*, QByteArray*, QTcpSocket*);
 
  private slots:
   void OnReadyRead();
   AbstractStrategy* GetWork();
 
  private:
-  std::shared_ptr<PeerInfo> peer_info;
+  std::shared_ptr<Friend> peer_info;
   QByteArray* data_;
   QTcpSocket* socket_;
   AbstractStrategy* work_;

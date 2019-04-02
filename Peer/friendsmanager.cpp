@@ -9,10 +9,10 @@ FriendsManager::FriendsManager(ApplicationInfo& info)
 
 FriendsManager::~FriendsManager() {}
 
-void FriendsManager::SendMessage(PeerInfo peer_info, QString message) { 
+void FriendsManager::SendMessage(Friend peer_info, QString message) { 
   unsigned id = peer_info.id;
   QString log = QString::number(id) + peer_info.login + 
-" " + peer_info.ip.toString() + " " + QString::number(peer_info.port);
+" " + peer_info.ip + " " + QString::number(peer_info.port);
   
   if(connecting_workers_.find(id) != connecting_workers_.end()) {
     logger_->WriteLog(INFO, "Still connecting to " + log);

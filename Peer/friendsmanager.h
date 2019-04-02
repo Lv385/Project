@@ -4,7 +4,7 @@
 #include "../Parser&Structs/parser.h"
 #include "abstractstrategy.h"
 #include "messagestrategy.h"
-#include "peerinfo.h"
+ 
 #include "worker.h"
 #include "application_info.h"
 #include "clientlogger.h"
@@ -21,7 +21,7 @@ class FriendsManager : public QObject {
  public:
   FriendsManager(ApplicationInfo& info);
   ~FriendsManager();
-  void SendMessage(PeerInfo peer_info, QString message);
+  void SendMessage(Friend peer_info, QString message);
 
  private slots:
   void OnFirstRequestRecieved();
