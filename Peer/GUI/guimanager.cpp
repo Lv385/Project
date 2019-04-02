@@ -50,14 +50,15 @@ void GUIManager::loadMessages(QString friend_login) {
     int owner_id;
     MessageItem* new_message;
 
-  QVector<SQLDAL::Messages> history = client_data_.get_messages(friend_login);
-  for(const auto& msg : history) {
-    data = msg.data;
-    time = msg.time.toString("hh:mm");
-    date = msg.date.toString("d MMM");  //FIX date
-    owner_id = msg.owner_id;
-    new_message = new MessageItem(data, time, date, owner_id);
-    message_model_.AddMessageToList(new_message);
+    QVector<SQLDAL::Messages> history = client_data_.get_messages(friend_login);
+    for(const auto& msg : history) {
+      data = msg.data;
+      time = msg.time.toString("hh:mm");
+      date = msg.date.toString();  //FIX date
+      owner_id = msg.owner_id;
+      new_message = new MessageItem(data, time, date, owner_id);
+      message_model_.AddMessageToList(new_message);
+    }
   }
 }
 

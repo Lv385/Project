@@ -38,7 +38,8 @@ unsigned DataAccessor::get_id_by_login(const QString user_login){
 }*/
 
 QVector<SQLDAL::Messages> DataAccessor::get_messages(const QString user_login) {
-  QVector<SQLDAL::Messages> messages = message_->GetMessages(user_login);
+  SQLDAL::Friends f = user_->GetFriend(user_login);
+  QVector<SQLDAL::Messages> messages = message_->GetMessages(f.id);
   return messages;
 }
 
@@ -67,6 +68,8 @@ void DataAccessor::AddMessageToDB(const QString msg, const unsigned user_id,
   message.data = msg;
   message.date = QDate::currentDate();
   message.time = QTime::currentTime();
+  qDebug() << message.date << "   " << message.date.toString();
+  auto s = message.date.toString("yyyy-MM-dd");
   message_->AddNewMessage(message);
 }
 
