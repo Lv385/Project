@@ -4,8 +4,8 @@ std::atomic<ClientLogger*> ClientLogger::logger_ = nullptr;
 std::mutex ClientLogger::mutex_;
 
 ClientLogger* ClientLogger::Instance() {
+  std::lock_guard<std::mutex> lock(mutex_);
   if(logger_ == nullptr){
-    std::lock_guard<std::mutex> lock(mutex_);
     if(logger_ == nullptr){
       logger_ = new ClientLogger();
     }

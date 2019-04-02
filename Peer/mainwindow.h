@@ -26,7 +26,7 @@ class MainWindow : public QMainWindow {
   ~MainWindow();
 
  private slots:
-  void AppendMessage(QString);
+  //void AppendMessage(QString);
   void AppendHistory(QString);
   void AppendLogMessage(const char*, QString);
 
@@ -41,6 +41,7 @@ class MainWindow : public QMainWindow {
   void OnRbEngineeringClicked();
 
   void OnMessageRecieved(unsigned id);
+  void OnMessageSent(unsigned, bool);
 
  private:
   Ui::MainWindow* ui_;
