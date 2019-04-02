@@ -50,7 +50,7 @@ void GUIManager::loadMessages(QString friend_login) {
     int owner_id;
     MessageItem* new_message;
 
-    QVector<SQLDAL::Messages> history = client_data_.get_messages(friend_login);
+    QVector<Message> history = client_data_.get_messages(friend_login);
     for(const auto& msg : history) {
       data = msg.data;
       time = msg.time.toString("hh:mm");
@@ -74,9 +74,9 @@ void GUIManager::newFriendRiequest() {
 }
 
 void GUIManager::LoadFriends() {   //don't forget to load id
-  QVector<SQLDAL::Friends> friends = client_data_.get_friends();
+  QVector<Friend> friends = client_data_.get_friends();
 
-  for (const SQLDAL::Friends& i : friends) {
+  for (const Friend& i : friends) {
     bool status = client_data_.get_friends_status(i.id);  // just for test
     FriendItem* friend_item = new FriendItem(i.login, status);
     friend_model_.AddFriendToList(friend_item);
