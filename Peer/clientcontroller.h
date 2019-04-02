@@ -9,7 +9,6 @@
 #include "peerinfo.h"
 #include "servermanager.h"
 
-#include <qplaintextedit.h>
 #include <QByteArray>
 #include <QNetworkInterface>
 #include <QObject>
@@ -25,9 +24,8 @@ class ClientController : public QObject {
   ClientController(QObject* parent);
   ~ClientController();
 
-  QVector<PeerInfo> LoadFriends();
 
-  void SendMessage(PeerInfo peer_info, QString message, QPlainTextEdit* edit);
+  void SendMessage(PeerInfo peer_info, QString message);
   void LogIn(QString login, QString password);
   void Register(QString login, QString password);
   void AddFriend(QString login);
@@ -36,6 +34,7 @@ class ClientController : public QObject {
   void SetAppInfo(ApplicationInfo info);
   //QString GetMessage(unsigned);
   QVector<SQLDAL::Messages> LoadMessages(unsigned id);
+  QVector<PeerInfo> LoadFriends();
 
  signals:
 
@@ -46,7 +45,6 @@ class ClientController : public QObject {
   void MessageRecieved(unsigned id);
   void StatusChanged(quint32 id, bool status);
 
- private:
  private slots:
   void OnNewConnection(QTcpSocket* socket);
   void OnFriendRequestRecieved();

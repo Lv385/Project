@@ -22,7 +22,9 @@ QPair<QString, int> DataAccessor::get_ip_port(const unsigned user_id){
 QVector<SQLDAL::Friends> DataAccessor::get_friends() { 
   QVector<SQLDAL::Friends> client_friend = user_->GetFriends();
   return client_friend;
+
 }
+
 
 unsigned DataAccessor::get_id_by_login(const QString user_login){
   SQLDAL::Friends client_friend = user_->GetFriend(user_login);

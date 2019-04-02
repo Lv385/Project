@@ -41,8 +41,7 @@ QVector<PeerInfo> ClientController::LoadFriends() {
   return result;
 }
 
-void ClientController::SendMessage(PeerInfo peer_info, QString message,
-                                   QPlainTextEdit *edit) {
+void ClientController::SendMessage(PeerInfo peer_info, QString message) {
   friend_manager_.SendMessage(peer_info, message);
   /*edit->appendPlainText(QTime::currentTime().toString() + '|' +
                         "<Me> : " + message);*/

@@ -18,7 +18,6 @@ namespace SQLDAL {
 
 	protected:
 
-
 		void SetQuery(QSqlDatabase database);
 		void ExectuteQuery(QString query);
 		void ErrorInfo();

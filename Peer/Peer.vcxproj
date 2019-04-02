@@ -190,7 +190,6 @@
     </QtRcc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    
     <ClCompile Include="..\Parser&amp;Structs\parser.cpp" />
     <ClCompile Include="blockreader.cpp" />
     <ClCompile Include="blockwriter.cpp" />
@@ -355,6 +354,9 @@
     <QtRcc Include="GUI\qml.qrc" />
   </ItemGroup>
   <ItemGroup>
+    <ProjectReference Include="..\Common\Common.vcxproj">
+      <Project>{9bf7b0d9-de5b-4410-93c8-419c4a75c6eb}</Project>
+    </ProjectReference>
     <ProjectReference Include="..\DAL2 dont touch\DAL2\DAL2.vcxproj">
       <Project>{3f4a82b1-4157-400a-82d0-e6516372e8d2}</Project>
     </ProjectReference>

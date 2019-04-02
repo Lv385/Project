@@ -5,8 +5,6 @@
 #include <QString>
 #include <memory>
 
-//typedef std::shared_ptr<PeerInfo>  PeerInfoPtr;
-
 struct PeerInfo {
   quint32 id;
   QString login;

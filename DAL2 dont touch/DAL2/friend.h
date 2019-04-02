@@ -10,7 +10,7 @@ namespace SQLDAL {
   // This is our entity from database
   struct Friends {
 	unsigned int id;
-	QString		 ip;
+	QString		   ip;
 	unsigned int port;
 	QString      login;
 	QString      name;
