@@ -23,7 +23,7 @@ class Worker : public QObject {
 
  public:
   Worker(BlockReader* reader, unsigned user_id, unsigned my_id);
-  Worker(PeerInfo peer_info, QString message, unsigned my_id);
+  Worker(Friend peer_info, QString message, unsigned my_id);
   ~Worker();
   void DoWork();
   void SetStrategy(StrategyType strategy_type);
@@ -51,7 +51,7 @@ class Worker : public QObject {
   unsigned my_id_;
   AbstractStrategy* strategy_;
   DataAccessor client_data_;
-  PeerInfo peer_info_;
+  Friend peer_info_;
   QString message_;
   QTcpSocket* socket_;
   BlockReader* reader_;

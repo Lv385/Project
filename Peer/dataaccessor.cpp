@@ -22,7 +22,6 @@ QPair<QString, int> DataAccessor::get_ip_port(const unsigned user_id){
 QVector<Friend> DataAccessor::get_friends() { 
   QVector<Friend> client_friend = user_->GetFriends();
   return client_friend;
-
 }
 
 

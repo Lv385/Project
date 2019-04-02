@@ -105,7 +105,8 @@ void MainWindow::OnPbSendClicked() {
   QString selected_login = ui_->combo_box_friends->currentText();
   // peer_->SendRequest(client_client_data_.get_id_by_login(selected_login),
   //     ui_->le_message->text());  // id + mes  zzz
-  // PeerInfo
+  // 
+
   for (auto a : friends_)
     if (a.login == selected_login)
       client_controller_->SendMessage(a, ui_->le_message->text());

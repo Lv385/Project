@@ -1,6 +1,6 @@
 #include "messagestrategy.h"
 
-SendMessageStrategy::SendMessageStrategy(PeerInfo peer_info,
+SendMessageStrategy::SendMessageStrategy(Friend peer_info,
                                  QTcpSocket* socket, QByteArray data)
     : AbstractStrategy(data), 
       writer_(socket){

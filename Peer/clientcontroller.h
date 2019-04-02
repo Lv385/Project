@@ -6,7 +6,7 @@
 #include "friendsmanager.h"
 #include "friendsupdatemanager.h"
 #include "localserver.h"
-#include "peerinfo.h"
+ 
 #include "servermanager.h"
 
 #include <QByteArray>
@@ -25,7 +25,7 @@ class ClientController : public QObject {
   ~ClientController();
 
 
-  void SendMessage(PeerInfo peer_info, QString message);
+  void SendMessage(Friend peer_info, QString message);
   void LogIn(QString login, QString password);
   void Register(QString login, QString password);
   void AddFriend(QString login);
@@ -34,11 +34,11 @@ class ClientController : public QObject {
   void SetAppInfo(ApplicationInfo info);
   //QString GetMessage(unsigned);
   QVector<Message> LoadMessages(unsigned id);
-  QVector<PeerInfo> LoadFriends();
+  QVector<Friend> LoadFriends();
 
  signals:
 
-  void messageReceived(PeerInfo info, QString message);
+  void messageReceived(Friend info, QString message);
   void MessageSent(unsigned, bool);
   void LoginResult(bool);
   void RegisterResult(quint32 id);
@@ -55,8 +55,8 @@ class ClientController : public QObject {
  private:
   FriendsUpdateManager* friendsupdate_manager;
   CacheData& cache_data_;
-  PeerInfo my_info;
-  QHash<unsigned, PeerInfo> friends_cache;
+  Friend my_info;
+  QHash<unsigned, Friend> friends_cache;
 
   LocalServer local_server_;
 

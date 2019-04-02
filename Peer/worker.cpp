@@ -17,7 +17,7 @@ Worker::Worker(BlockReader* reader, unsigned user_id, unsigned my_id)
                      new RecieveMessageStrategy());
 }
 
-Worker::Worker(PeerInfo peer_info, QString message, unsigned my_id)
+Worker::Worker(Friend peer_info, QString message, unsigned my_id)
     : message_(message), peer_info_(peer_info), 
       my_id_(my_id),
       logger_(ClientLogger::Instance()),
@@ -98,7 +98,7 @@ void Worker::OnReadyReadBlock() {
     data = reader_->ReadNextBlock();
     quint8 type = Parser::getRequestType(data);
     strategy_ = strategies_[type];
-    PeerInfo info;
+    Friend info;
     strategy_->set_data(data);
     strategy_->set_peer_info(peer_info_);
     strategy_->set_my_id(my_id_);

@@ -26,26 +26,12 @@ ClientController::ClientController(QObject *parent)
 
 ClientController::~ClientController() {}
 
-QVector<PeerInfo> ClientController::LoadFriends() {
-  QVector<Friend> friends = client_data_.get_friends();
-  QVector<PeerInfo> result;
-  PeerInfo info;
-  for (auto a : friends) {
-    info.id = a.id;
-    info.ip = a.ip;
-    info.is_online = a.status;
-    info.port = a.port;
-    info.login = a.login;
-    result.push_back(info);
-  }
-  return result;
+QVector<Friend> ClientController::LoadFriends() {
+  return client_data_.get_friends();
 }
 
-void ClientController::SendMessage(PeerInfo peer_info, QString message) {
+void ClientController::SendMessage(Friend peer_info, QString message) {
   friend_manager_.SendMessage(peer_info, message);
-  /*edit->appendPlainText(QTime::currentTime().toString() + '|' +
-                        "<Me> : " + message);*/
-
 }
 
 void ClientController::LogIn(QString login, QString password) {
