@@ -7,18 +7,6 @@
 
 namespace SQLDAL {
 
-  // This is our entity from database
-  struct Friend {
-	unsigned int id;
-	QString		   ip;
-	unsigned int port;
-	QString      login;
-	QString      name;
-	QString      surname;
-	bool         status;
-	// IMAGE photo  //in progress
-  };
-
   class Friends : public Statement {
    public:
 	Friends(std::shared_ptr<Connect> Connect);

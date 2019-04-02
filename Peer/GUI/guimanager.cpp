@@ -52,9 +52,9 @@ void GUIManager::loadMessages(QString friend_login) {
 }
 
 void GUIManager::LoadFriends() {
-  QVector<SQLDAL::Friend> friends = client_data_.get_friends();
+  QVector<Friend> friends = client_data_.get_friends();
 
-  for (const SQLDAL::Friend& i : friends) {
+  for (const Friend& i : friends) {
     bool status = client_data_.get_friends_status(i.id);  // just for test
     FriendItem* friend_item = new FriendItem(i.login, status);
     friend_model_.AddFriendToList(friend_item);

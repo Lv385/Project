@@ -10,16 +10,6 @@
 
 namespace SQLDAL {
 
-struct Message {
-  unsigned int id;
-  unsigned int chat_id;
-  unsigned int owner_id;
-  QString data;
-  QDate date;
-  QTime time;
-  bool status;
-};
-
 class Messages : public Statement {
  public:
   Messages(std::shared_ptr<Connect> Connect);

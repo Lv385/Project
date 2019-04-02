@@ -2,6 +2,7 @@
 #define DATAACCESSOR_H
 
 #include "sqldal.h"
+#include "client_data_types.h"
 
 class DataAccessor {
  public:
@@ -10,9 +11,9 @@ class DataAccessor {
 
   QString get_login_by_id(const unsigned user_id);
   QPair<QString, int> get_ip_port(const unsigned user_id);
-  QVector<SQLDAL::Friend> get_friends();
-  QVector<SQLDAL::Message> get_messages(const QString user_login);
-  QVector<SQLDAL::Message> get_messages(unsigned user_id);
+  QVector<Friend> get_friends();
+  QVector<Message> get_messages(const QString user_login);
+  QVector<Message> get_messages(unsigned user_id);
 
   unsigned get_id_by_login(const QString user_login);
   //unsigned get_id_by_ip_port(const QString ip, const unsigned port);

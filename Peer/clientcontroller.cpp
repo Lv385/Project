@@ -27,7 +27,7 @@ ClientController::ClientController(QObject *parent)
 ClientController::~ClientController() {}
 
 QVector<PeerInfo> ClientController::LoadFriends() {
-  QVector<SQLDAL::Friend> friends = client_data_.get_friends();
+  QVector<Friend> friends = client_data_.get_friends();
   QVector<PeerInfo> result;
   PeerInfo info;
   for (auto a : friends) {
@@ -83,9 +83,9 @@ void ClientController::AddFriend(QString login) {
 
 void ClientController::SetAppInfo(ApplicationInfo info) {}
 
-QVector<SQLDAL::Message> ClientController::LoadMessages(unsigned id) {
+QVector<Message> ClientController::LoadMessages(unsigned id) {
 
-  QVector<SQLDAL::Message> result = client_data_.get_messages(id);
+  QVector<Message> result = client_data_.get_messages(id);
   return result;
 }
 
