@@ -1,44 +1,46 @@
 #ifndef MESSAGE_H
 #define MESSAGE_H
 
+#include <qsqlrecord.h>
+#include <qvector.h>
 #include <QDate>
 #include <QString>
 #include <QTime>
-#include <qsqlrecord.h>
-#include <qvector.h>
 #include "statement.h"
 
 namespace SQLDAL {
 
-  struct Messages {
-	unsigned int id;
-	unsigned int chat_id;
-	unsigned int owner_id;
-	QString	   data;
-	QDate		   date;
-	QTime		   time;
-	bool		   status;
-  };
+struct Message {
+  unsigned int id;
+  unsigned int chat_id;
+  unsigned int owner_id;
+  QString data;
+  QDate date;
+  QTime time;
+  bool status;
+};
 
-  class Message : public Statement {
-   public:
-	Message(std::shared_ptr<Connect> Connect);
-	Message();
+class Messages : public Statement {
+ public:
+  Messages(std::shared_ptr<Connect> Connect);
+  Messages();
 
-	QVector<Messages>	GetMessages(unsigned int chat_id);  // Select All Info About One Chat
-	QVector<Messages>	GetMessages(QString user_login);    // Select All Info About One Chat
-	void				AddNewMessage(const Messages& message);
-	void				DeleteMessage(const Messages& message);
-	void				UpdateMessage(const Messages& message);
+  QVector<Message> GetMessages(
+      unsigned int chat_id);  // Select All Info About One Chat
+  QVector<Message> GetMessages(
+      QString user_login);  // Select All Info About One Chat
+  void AddNewMessage(const Message& message);
+  void DeleteMessage(const Message& message);
+  void UpdateMessage(const Message& message);
 
-   private:
-	QString			UpdateQuery(const Messages& message);
-	QString			SelectQuery(unsigned int chat_id);
-	QString			SelectQuery(QString user_login);
-	QString			InsertQuery(const Messages& message);
-	QString			DeleteQuery(const Messages& message);
-	QString			CreateQueryCountOfMessages(unsigned int chat_id);
-	QString			CreateQueryCountOfMessages(QString user_login);
-  };
+ private:
+  QString UpdateQuery(const Message& message);
+  QString SelectQuery(unsigned int chat_id);
+  QString SelectQuery(QString user_login);
+  QString InsertQuery(const Message& message);
+  QString DeleteQuery(const Message& message);
+  QString CreateQueryCountOfMessages(unsigned int chat_id);
+  QString CreateQueryCountOfMessages(QString user_login);
+};
 }  // namespace SQLDAL
 #endif  // MESSAGE_H

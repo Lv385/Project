@@ -13,8 +13,8 @@ class Parser {
   static QByteArray ConnectInfo_ToByteArray(ConnectInfo& connect_info);
   static ConnectInfo ParseAsConnectInfo(QByteArray& data);
 
-  static QByteArray Message_ToByteArray(Message& message);
-  static Message ParseAsMessage(QByteArray& data);
+  static QByteArray Message_ToByteArray(MessageInfo& message);
+  static MessageInfo ParseAsMessage(QByteArray& data);
 
   static QByteArray RegisterInfo_ToByteArray(RegisterInfo& register_info);
   static RegisterInfo ParseAsRegisterInfo(QByteArray& data);

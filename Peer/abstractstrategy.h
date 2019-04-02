@@ -1,8 +1,8 @@
 #ifndef ABSTRACTSTRATEGY_H
 #define ABSTRACTSTRATEGY_H
 
-#include "cachedata.h"
 #include "blockwriter.h"
+#include "cachedata.h"
 #include "dataaccessor.h"
 #include "peerinfo.h"
 
@@ -11,6 +11,8 @@
 #include <QTcpSocket>
 
 #include "../Parser&Structs/parser.h"
+
+#include "client_data_types.h"
 
 class SignalRedirector;
 

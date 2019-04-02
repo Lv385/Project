@@ -18,6 +18,6 @@ class RecieveMessageStrategy : public AbstractStrategy {
   void MessageRecieved(unsigned);
 
  protected:
-  Message message_;
+  MessageInfo message_;
 };
 #endif  // !RECIEVEMESSAGESTRATEGY_H

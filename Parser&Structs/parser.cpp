@@ -184,7 +184,7 @@ NewFriendInfo Parser::ParseAsNewFriendInfo(QByteArray& data) {
   return result;
 }
 
-QByteArray Parser::Message_ToByteArray(Message& message) {
+QByteArray Parser::Message_ToByteArray(MessageInfo& message) {
   QByteArray result;
   QDataStream out(&result, QIODevice::WriteOnly);
   out << quint8(ClientClientRequest::MESSAGE);    // type
@@ -192,8 +192,8 @@ QByteArray Parser::Message_ToByteArray(Message& message) {
   return result;
 }
 
-Message Parser::ParseAsMessage(QByteArray& data) {
-  Message result;
+MessageInfo Parser::ParseAsMessage(QByteArray& data) {
+  MessageInfo result;
   QDataStream in(&data, QIODevice::ReadOnly);
   quint8 type;
   in >> type;                                     // type

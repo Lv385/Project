@@ -10,7 +10,7 @@ SendMessageStrategy::SendMessageStrategy(PeerInfo peer_info,
 SendMessageStrategy::~SendMessageStrategy() {}
 
 void SendMessageStrategy::SendMessage() {
-  Message mes = Parser::ParseAsMessage(data_);
+  MessageInfo mes = Parser::ParseAsMessage(data_);
 //  QByteArray to_write = Parser::Message_ToByteArray();
  //ocket_->write(to_write);
   //timer_.start(kMsecConnectionDuration_);

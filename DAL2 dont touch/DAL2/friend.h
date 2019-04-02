@@ -8,7 +8,7 @@
 namespace SQLDAL {
 
   // This is our entity from database
-  struct Friends {
+  struct Friend {
 	unsigned int id;
 	QString		   ip;
 	unsigned int port;
@@ -19,25 +19,25 @@ namespace SQLDAL {
 	// IMAGE photo  //in progress
   };
 
-  class Friend : public Statement {
+  class Friends : public Statement {
    public:
-	Friend(std::shared_ptr<Connect> Connect);
-	Friend();
+	Friends(std::shared_ptr<Connect> Connect);
+	Friends();
 
-	QVector<Friends>	GetFriends();  // Getting all users
-	Friends				GetFriend(const unsigned int id);
-	Friends				GetFriend(const QString& login);
-	void				UpdateFriend(const Friends& _friend);
-	void				AddNewFriend(const Friends& _friend);
-	void				DeleteFriend(const Friends& _friend);
+	QVector<Friend>	GetFriends();  // Getting all users
+	Friend				GetFriend(const unsigned int id);
+	Friend				GetFriend(const QString& login);
+	void				UpdateFriend(const Friend& _friend);
+	void				AddNewFriend(const Friend& _friend);
+	void				DeleteFriend(const Friend& _friend);
 
    private:
 	QString CreateQuerySelectAll();
-    QString UpdateQuery(const Friends& _friend);
+    QString UpdateQuery(const Friend& _friend);
 	QString SelectQuery(const unsigned int id);
 	QString SelectQuery(const QString& login);
-    QString InsertQuery(const Friends& _friend);
-	QString DeleteQuery(const Friends& _friend);
+    QString InsertQuery(const Friend& _friend);
+	QString DeleteQuery(const Friend& _friend);
 	QString CreateQueryCountOfFriends();
   };
 }  // namespace SQLDAL

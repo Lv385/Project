@@ -61,7 +61,7 @@ void Worker::set_my_id(unsigned id) {
 
 void Worker::SendMessage() {
   timer_.start(k_msc);
-  Message mes = {message_};
+  MessageInfo mes = {message_};
   QByteArray data = Parser::Message_ToByteArray(mes);
   client_data_.AddMessageToDB(message_, peer_info_.id, my_id_);
   emit MessageSent(peer_info_.id, true);

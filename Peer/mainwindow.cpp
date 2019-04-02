@@ -144,7 +144,7 @@ void MainWindow::OnRbSimpleClicked() {
 }
 void MainWindow::OnMessageRecieved(unsigned id) {
   ui_->plainTextEdit->clear();
-  QVector<SQLDAL::Messages> history = client_controller_->LoadMessages(id);
+  QVector<SQLDAL::Message> history = client_controller_->LoadMessages(id);
   
   for (auto i : history) {
     if (client_controller_->app_info_.my_login != client_data_.get_login_by_id(i.owner_id)) {
