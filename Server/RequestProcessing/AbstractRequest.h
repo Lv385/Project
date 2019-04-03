@@ -5,7 +5,7 @@
 #include  <time.h>
 #include <QByteArray>
 #include <QTcpSocket>
-#include "../DAL/Server/serverdb.h"
+//#include "../DAL/Server/serverdb.h"
 #include "../DAL/dal.h"
 #include "../Logger/logger.h"
 #include "../Parser&Structs/parser.h"

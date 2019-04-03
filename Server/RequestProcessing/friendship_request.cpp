@@ -14,7 +14,7 @@ FriendshipRequest::FriendshipRequest(QByteArray &request, DAL *d, QTcpSocket *s)
 void FriendshipRequest::PrepareResponse() {
   if (request_type_ == (quint8)ClientRequest::FRIENDSHIP_ACCEPTED) {
     try {
-      requester_ = database_->getClient(income_data_.id);
+     /* requester_ = database_->getClient(income_data_.id);
       new_friend_ = database_->getClient(income_data_.other_login);
       requester_.AddFriend(new_friend_);
       new_friend_.AddFriend(requester_);
@@ -29,7 +29,7 @@ void FriendshipRequest::PrepareResponse() {
       outcome_for_new_friend_.id = requester_.GetUserId();
       outcome_for_new_friend_.ip = requester_.GetUserIp();
       outcome_for_new_friend_.login = requester_.GetUserName();
-      outcome_for_new_friend_.port = requester_.GetUserPort();
+      outcome_for_new_friend_.port = requester_.GetUserPort();*/
 
     } catch (UserNotFound &e) {
       doNothing_ = true;
@@ -73,7 +73,7 @@ bool FriendshipRequest::SendResponde() {
     } else {
       // go and write  info about this request into db
       new_friend_.AddPendingNotifiacation(requester_);
-      database_->UpdateClient(new_friend_);
+     // database_->UpdateClient(new_friend_);
     }
     output_socket.close();
     return true;

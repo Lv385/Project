@@ -200,9 +200,9 @@ QString Logger::Log_NewFriendInfo(NewFriendInfo& out) {
 
 
 
-QString Logger::Log_User(Client& cl) {
+QString Logger::Log_User(User& cl) {
   QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
-  return "User Login" + cl.GetUserName() + " ID:" + cl.GetUserId() +
-         " IP:" + cl.GetUserIp().toString() + " Port:" + cl.GetUserPort() +
+  return "User Login: " + cl.login + " ID: " + cl.id +
+         " IP: " + cl.ip + " Port: " + cl.port +
          "\n";
 }
