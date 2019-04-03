@@ -67,7 +67,7 @@ QString Messages::SelectQuery(unsigned int chat_id) {
 
 QString Messages::SelectQuery(QString user_login)
 {
-	return QString("select * from Messages where user_login = '" +user_login+ "'");
+	return QString("select * from Messages where user_ID = (select user_id from friend where user_login = '" + user_login + "')");
 		
 }
 
