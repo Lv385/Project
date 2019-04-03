@@ -57,7 +57,8 @@ MainPageForm {
 
     messageField.onEditingFinished: {
         if(messageField.text != "") {
-            guiManager.newMessage(messageField.text)
+			guiManager.SendMessage(messageField.text)
+            guiManager.newMessage(messageField.text)  //FIXME
             messageField.text = "";
         }
     }

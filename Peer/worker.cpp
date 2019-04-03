@@ -83,8 +83,9 @@ void Worker::OnTimedOut() {
 
 void Worker::OnConnected() {
   timer_.start(k_msc);
-  connect(&timer_, SIGNAL(timeout()), 
-          this, SLOT(OnTimedOut));
+  //FIXME
+  //connect(&timer_, SIGNAL(timeout()), 
+  //        this, SLOT(OnTimedOut()));
   unsigned id = peer_info_.id;
   emit Connected(id);
   ConnectInfo connect_info = {my_id_};
@@ -108,6 +109,6 @@ void Worker::OnReadyReadBlock() {
 
 Worker::~Worker() {
   writer_;
-  delete reader_;
+  delete reader_; 
   delete socket_;
 }
