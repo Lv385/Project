@@ -3,7 +3,6 @@
 
 #include "clientcontroller.h"
 #include "clientlogger.h"
-#include "dataaccessor.h"
 #include "peer.h"
 #include "signalredirector.h"
 #include <QComboBox>
@@ -11,6 +10,8 @@
 #include <QRegExpValidator>
 #include <QShortcut>
 #include <QVector>
+
+#include "client_data_types.h"
 
 namespace Ui {
 class MainWindow;
@@ -26,7 +27,7 @@ class MainWindow : public QMainWindow {
   ~MainWindow();
 
  private slots:
-  void AppendMessage(QString);
+  //void AppendMessage(QString);
   void AppendHistory(QString);
   void AppendLogMessage(const char*, QString);
 
@@ -41,6 +42,7 @@ class MainWindow : public QMainWindow {
   void OnRbEngineeringClicked();
 
   void OnMessageRecieved(unsigned id);
+  void OnMessageSent(unsigned, bool);
 
  private:
   Ui::MainWindow* ui_;
@@ -48,7 +50,7 @@ class MainWindow : public QMainWindow {
   DataAccessor client_data_;
   ClientLogger* logger_;
   ClientController* client_controller_;
-  QVector<PeerInfo> friends_;
+  QVector<Friend> friends_;
 };
 
 #endif  // MAINWINDOW_H

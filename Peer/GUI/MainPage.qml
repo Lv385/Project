@@ -13,7 +13,6 @@ MainPageForm {
     FriendListDelegateModel {
         id: friendModel
         visualModel.model: guiManager.friend_model
-        list: friendList
     }
 
     MessageListDelegateModel {
@@ -21,13 +20,18 @@ MainPageForm {
         visualModel.model: guiManager.message_model
     }
 
+    FriendRequestListDelegateModel {
+        id: friendRequestModel
+        visualModel.model: guiManager.friend_request_model
+    }
+
+
     Component {
         id: highlightBar
         Rectangle {
             width: friendList.width; height: 40
             color: friendMouseAreaColor
             y: friendList.currentItem.y;
-            //Behavior on y { SpringAnimation { spring: 2; damping: 0.1 } }
         }
     }
 
@@ -35,17 +39,27 @@ MainPageForm {
     friendList.highlight: highlightBar
     friendList.highlightFollowsCurrentItem: false
 
-
     friendList.model: friendModel.visualModel
 
     messageList.model: messageModel.visualModel
     messageList.spacing: 10
 
+    friendRequestList.model: friendRequestModel.visualModel
 
+    findButton.onClicked: {
+        guiManager.newFriend(findUserField.text)
+        findUserField.text = ""
+    }
 
-    sendButton.onClicked: {
-        guiManager.newMessage(messageField.text)
-        messageField.text = "";
+    buttonRequests.onClicked: {
+        friendRequestDialog.open()
+    }
+
+    messageField.onEditingFinished: {
+        if(messageField.text != "") {
+            guiManager.newMessage(messageField.text)
+            messageField.text = "";
+        }
     }
 }
 

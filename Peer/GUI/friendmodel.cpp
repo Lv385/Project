@@ -1,14 +1,16 @@
 #include "friendmodel.h"
 #include "rolesenum.h"
 
-#include <memory>
-#include <QMetaType>
-#include <QDebug>
-
-Q_DECLARE_SMART_POINTER_METATYPE(std::shared_ptr)
-
 FriendModel::FriendModel(QObject *parent)
   : QAbstractListModel(parent) {
+}
+
+QString FriendModel::GetFirstFriend() const {
+  if (!friends_list_.isEmpty()) {
+    return friends_list_[0]->login();
+  } else {
+    return "";    //FIXME
+  }
 }
 
 int FriendModel::rowCount(const QModelIndex &parent) const {

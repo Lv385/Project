@@ -10,7 +10,7 @@ class SendMessageStrategy : public AbstractStrategy{
   Q_OBJECT
 
 public:
-  SendMessageStrategy(PeerInfo peer_info, 
+  SendMessageStrategy(Friend peer_info, 
                       QTcpSocket* socket, QByteArray data);
  ~SendMessageStrategy();
  public slots:
@@ -24,7 +24,7 @@ public:
 private:
 
   QTimer timer_;
-  PeerInfo peer_info_;
+  Friend peer_info_;
   BlockWriter writer_;
 };
 

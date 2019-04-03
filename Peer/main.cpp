@@ -10,7 +10,7 @@
 #include "GUI/friendmodel.h"
 #include "GUI/frienditem.h"
 
-static const bool kSetQML = 0;
+static const bool kSetQML = 1;
 
 
 int main(int argc, char* argv[]) {
