@@ -67,7 +67,7 @@ struct ConnectInfo {
   quint32 id;
 };
 
-struct Message {
+struct MessageInfo {
   QString message;
 };
 

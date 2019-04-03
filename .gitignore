@@ -20,7 +20,7 @@
 **/*.autosave
 
 #databases
-DAL/Server/Server
+
 DAL/Client/Client
 Server/DAL/Client
 DAL2 dont touch/DAL2/Client
@@ -28,6 +28,6 @@ DAL2 dont touch/DAL2/Server
 **/*.txt
 
 #other files
-
+**/.gitattributes
 **/GeneratedFiles
 **/build-Peer-Desktop_Qt_5_12_0_MSVC2017_64bit-Debug/

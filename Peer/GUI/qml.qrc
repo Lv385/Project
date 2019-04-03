@@ -8,6 +8,8 @@
         <file>MainPageForm.ui.qml</file>
         <file>FriendListDelegateModel.qml</file>
         <file>MessageListDelegateModel.qml</file>
-        <file>geometry.jpg</file>
+        <file>RegisterPage.qml</file>
+        <file>RegisterPageForm.ui.qml</file>
+        <file>FriendRequestListDelegateModel.qml</file>
     </qresource>
 </RCC>

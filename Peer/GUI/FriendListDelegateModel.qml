@@ -5,14 +5,11 @@ import QtQuick.Controls 2.5
 
 Item {
     property alias visualModel: visualFriendModel
-    property ListView list
 
     DelegateModel {
         id: visualFriendModel
         delegate: friendDelegate
     }
-
-
 
     Component {
         id: friendDelegate
@@ -49,7 +46,10 @@ Item {
                 id: friendFieldMouseArea
                 anchors.fill: parent
                 hoverEnabled: true
-                onClicked: friendField.ListView.view.currentIndex = index
+                onClicked: {
+                    friendField.ListView.view.currentIndex = index
+                    guiManager.loadMessages(friend.login)
+                }
             }
 
 
@@ -70,8 +70,7 @@ Item {
                 width: height
                 onClicked: guiManager.deleteFriend(friend)
             }
-
-
         }
     }
 }
+

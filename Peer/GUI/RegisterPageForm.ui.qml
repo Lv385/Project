@@ -1,63 +1,48 @@
-import QtQuick 2.12
-import QtQuick.Controls 2.5
-import QtQuick.Layouts 1.12
+import QtQuick 2.7
+import QtQuick.Controls 2.0
+import QtQuick.Layouts 1.1
 
 Page {
-    id: loginPage
+    id: registerPage
 
-    property bool runIndicator
-    property alias buttonLogIn: buttonLogIn
-    property alias buttonRegister: buttonRegister
-    property alias loginUsername: loginUsername
-    contentWidth: 0
-    contentHeight: -1
-    focusPolicy: Qt.WheelFocus
-    spacing: 4
+    property string uname: ""
+    property string pword: ""
+    property alias buttonSignUp: buttonSignUp
+    property alias buttonCancel: buttonCancel
 
     background: Rectangle {
         color: backGroundColor
     }
 
-    Rectangle {
-        id: iconRect
-        width: parent.width
-        height: parent.height / 3
-        color: topLoginPageColor
-        border.width: 0
-        transformOrigin: Item.Center
-
-        Text {
-            id: icontext
-            width: 390
-            height: 160
-            text: qsTr("MesX")
-            anchors.verticalCenterOffset: 0
-            anchors.horizontalCenterOffset: 0
-            anchors.centerIn: parent
-            font.pointSize: 110
-            font.family: "Verdana"
-            color: mainAppColor
-        }
+    Text {
+        id: signupText
+        text: qsTr("Sign Up")
+        font.pointSize: 24
+        anchors.top: parent.top
+        anchors.topMargin: 30
+        anchors.horizontalCenter: parent.horizontalCenter
+        color: mainTextCOlor
     }
 
     ColumnLayout {
-        id: columnLogin
+        anchors.top: signupText.bottom
+        anchors.topMargin: 30
         width: 320
         anchors.horizontalCenterOffset: 0
         anchors.horizontalCenter: parent.horizontalCenter
-        anchors.top: iconRect.bottom
         spacing: 10
 
         TextField {
-            id: loginUsername
-            width: parent.width
+            id: registerUsername
             placeholderText: qsTr("User name")
+            Layout.preferredWidth: parent.width - 20
+            Layout.alignment: Qt.AlignHCenter
             color: mainTextCOlor
             font.pointSize: 14
             font.family: "fontawesome"
-            leftPadding: 20
+            leftPadding: 30
             background: Rectangle {
-                implicitWidth: columnLogin.width
+                implicitWidth: 200
                 implicitHeight: 50
                 radius: implicitHeight / 2
                 color: "transparent"
@@ -69,6 +54,7 @@ Page {
                     color: mainAppColor
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
+                    leftPadding: 10
                 }
 
                 Rectangle {
@@ -82,17 +68,19 @@ Page {
         }
 
         TextField {
-            id: loginPassword
-            width: parent.width
+            id: registerPassword
             placeholderText: qsTr("Password")
+            Layout.preferredWidth: parent.width - 20
+            Layout.alignment: Qt.AlignHCenter
             color: mainTextCOlor
             font.pointSize: 14
             font.family: "fontawesome"
-            leftPadding: 20
-            echoMode: TextInput.Password
+            leftPadding: 30
+            echoMode: TextField.PasswordEchoOnEdit
             background: Rectangle {
-                implicitWidth: columnLogin.width
+                implicitWidth: 200
                 implicitHeight: 50
+                radius: implicitHeight / 2
                 color: "transparent"
                 Text {
                     text: "\uf023"
@@ -101,6 +89,42 @@ Page {
                     color: mainAppColor
                     anchors.left: parent.left
                     anchors.verticalCenter: parent.verticalCenter
+                    leftPadding: 10
+                }
+
+                Rectangle {
+                    width: parent.width - 10
+                    height: 1
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    anchors.bottom: parent.bottom
+                    color: mainAppColor
+                }
+            }
+        }
+
+        TextField {
+            id: registerPassword2
+            placeholderText: qsTr("Confirm Password")
+            Layout.preferredWidth: parent.width - 20
+            Layout.alignment: Qt.AlignHCenter
+            color: mainTextCOlor
+            font.pointSize: 14
+            font.family: "fontawesome"
+            leftPadding: 30
+            echoMode: TextField.PasswordEchoOnEdit
+            background: Rectangle {
+                implicitWidth: 200
+                implicitHeight: 50
+                radius: implicitHeight / 2
+                color: "transparent"
+                Text {
+                    text: "\uf023"
+                    font.pointSize: 14
+                    font.family: "fontawesome"
+                    color: mainAppColor
+                    anchors.left: parent.left
+                    anchors.verticalCenter: parent.verticalCenter
+                    leftPadding: 10
                 }
 
                 Rectangle {
@@ -114,50 +138,44 @@ Page {
         }
 
         Button {
-            id: buttonLogIn
+            id: buttonSignUp
             width: 323
             implicitWidth: parent.width
-            text: qsTr("Log In")
+            text: qsTr("Sign Up")
             focusPolicy: Qt.StrongFocus
             font.pointSize: 16
-            font.family: "fontawesome"
             focus: true
 
             contentItem: Text {
-                font: buttonLogIn.font
+                font: buttonSignUp.font
                 color: "#ffffff"
-                text: "Log In"
+                text: buttonSignUp.text
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
-            }
-            MouseArea {
-                onClicked: (mouse.button === Qt.LeftButton)
-                           && (mouse.modifiers & Qt.ShiftModifier)
             }
 
             background: Rectangle {
                 implicitWidth: 100
                 implicitHeight: 50
                 color: mainAppColor
-                opacity: buttonLogIn.down ? 0.7 : 1
+                opacity: buttonSignUp.down ? 0.7 : 1
                 radius: height / 3
                 border.color: mainAppColor
             }
         }
 
         Button {
-            id: buttonRegister
+            id: buttonCancel
             implicitWidth: parent.width
-            text: qsTr("Register")
+            text: qsTr("Cancel")
             display: AbstractButton.IconOnly
             focusPolicy: Qt.NoFocus
             Layout.fillWidth: false
             font.pointSize: 16
-            font.family: "fontawesome"
 
             contentItem: Text {
-                text: buttonRegister.text
-                font: buttonRegister.font
+                text: buttonCancel.text
+                font: buttonCancel.font
                 color: "#ffffff"
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
@@ -167,16 +185,10 @@ Page {
                 implicitWidth: 100
                 implicitHeight: 50
                 color: "transparent" //"#6fda9c"
-                opacity: buttonRegister.down ? 0.7 : 1
+                opacity: buttonCancel.down ? 0.7 : 1
                 radius: height / 3
                 border.color: mainAppColor
             }
-        }
-
-        BusyIndicator {
-            Layout.alignment: Qt.AlignHCenter
-            Layout.topMargin: -760
-            running: runIndicator
         }
     }
 }

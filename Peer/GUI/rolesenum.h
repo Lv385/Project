@@ -5,6 +5,7 @@
 
 enum Roles {
   FRIEND_ROLE = Qt::UserRole,
-  MESSAGE_ROLE
+  MESSAGE_ROLE,
+  FRIEND_REQUEST_ROLE
 };
 #endif // ROLESENUM_H

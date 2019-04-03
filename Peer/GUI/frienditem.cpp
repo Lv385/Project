@@ -29,3 +29,17 @@ void FriendItem::set_status(bool status) {
   status_ = status;
   emit StatusChanged();
 }
+
+unsigned FriendItem::id() const
+{
+  return id_;
+}
+
+void FriendItem::set_id(unsigned id)
+{
+  if (id_ == id)
+      return;
+
+  id_ = id;
+  emit IdChanged();
+}
