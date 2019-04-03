@@ -27,4 +27,22 @@ struct Message {
   bool status;
 };
 //
+struct UsersID {
+	unsigned int first_user_id;
+	unsigned int second_user_id;
+};
+//
+struct User {
+	unsigned int id;
+	QString	login;
+	QString	password;
+	QString	ip;
+	unsigned int port;
+
+	QVector<UsersID> friends;
+	QVector<UsersID> requests;
+	QVector<UsersID> notification;
+};
+//
+
 #endif  // !1CLIENT_DATA_TYPES_H

@@ -5,51 +5,42 @@
 #include "sqldal.h"
 namespace SQLDAL {
 
-  class User : public Statement {
+  class Users : public Statement {
   public:
-	  User(std::shared_ptr<Connect> Connect);
-	  ~User();
-      /*Columns from table */
-	  unsigned int	    id;
-	  QString			login;
-	  QString			password;
-	  QString			ip;
-	  unsigned int		port;
+	  Users(std::shared_ptr<Connect> Connect);
+	  ~Users();
 
-      /* Vectors to show our relations */
-	  QVector<UsersID> friends; 
-	  QVector<UsersID> requests;
-	  QVector<UsersID> notification;
+	  
 
-	  void			 GetUser(const unsigned int& user_id);
-	  void			 GetUser(const QString& user_login);// Select
-	  void			 UpdateUser();          // Update
-	  void			 AddNewUser();          // Insert
-	  void			 DeleteUser();          // Delete
+	  User			 GetUser(const unsigned int& user_id);
+	  User			 GetUser(const QString& user_login);// Select
+	  void			 UpdateUser(User user);          // Update
+	  void			 AddNewUser(User user);          // Insert
+	  void			 DeleteUser(User user);          // Delete
 
-	  void			 GetFriends();
-	  void			 GetFriendsRequest();
-	  void			 GetFriendsNotification();
+	  QVector<UsersID>			 GetFriends(const unsigned int id);
+	  QVector<UsersID>			 GetFriendsRequest(const unsigned int id);
+	  QVector<UsersID>			 GetFriendsNotification(const unsigned int id);
 
-	  void			 AddFriend(unsigned int user_id);
-	  void			 AddFriendRequest(unsigned int user_id);
-	  void			 AddFriendNotification(unsigned int user_id);
-	  void           DeleteFriend(unsigned int user_id);
-	  void			 DeleteFriendRequest(unsigned int user_id);
-	  void			 DeleteFriendNotification(unsigned int user_id);
+	  void			 AddFriend(const UsersID& ids);
+	  void			 AddFriendRequest(const UsersID& ids);
+	  void			 AddFriendNotification(const UsersID& ids);
+
+	  void           DeleteFriend(const UsersID& ids);
+	  void			 DeleteFriendRequest(const UsersID& ids);
+	  void			 DeleteFriendNotification(const UsersID& ids);
  
   private:
 	  std::shared_ptr<FriendInfo>       friend_obj;
 	  std::shared_ptr<RequestInfo>      request_obj;
 	  std::shared_ptr<NotificationInfo> notification_obj;
 
-	  QString							  UpdateQuery();
+	  QString							  UpdateQuery(User user);
 	  QString							  SelectQuery(unsigned int user_id);
 	  QString							  SelectQuery(QString user_login);
-	  QString							  InsertQuery();
-	  QString							  DeleteQuery();
-	  QString							  CountOfFriends();
-	  QString							  CountOfFriendsRequest();
+	  QString							  InsertQuery(User user);
+	  QString							  DeleteQuery(User user);
+
   };
 
 }
