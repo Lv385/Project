@@ -20,6 +20,7 @@ namespace SQLDAL {
 	void				DeleteFriend(const Friend& _friend);
 
    private:
+	void FillStructure(Friend& _friend);
 	QString CreateQuerySelectAll();
     QString UpdateQuery(const Friend& _friend);
 	QString SelectQuery(const unsigned int id);

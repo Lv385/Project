@@ -7,9 +7,9 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Peer", "Peer\Peer.vcxproj",
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Server", "Server\Server.vcxproj", "{B12702AD-ABFB-343A-A199-8E24837244A3}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DAL2", "DAL2 dont touch\DAL2\DAL2.vcxproj", "{3F4A82B1-4157-400A-82D0-E6516372E8D2}"
-EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcxproj", "{9BF7B0D9-DE5B-4410-93C8-419C4A75C6EB}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DAL", "DAL\DAL.vcxproj", "{3F4A82B1-4157-400A-82D0-E6516372E8D2}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -24,14 +24,14 @@ Global
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Debug|x64.ActiveCfg = Debug|x64
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x64.ActiveCfg = Release|x64
 		{B12702AD-ABFB-343A-A199-8E24837244A3}.Release|x64.Build.0 = Release|x64
-		{3F4A82B1-4157-400A-82D0-E6516372E8D2}.Debug|x64.ActiveCfg = Debug|x64
-		{3F4A82B1-4157-400A-82D0-E6516372E8D2}.Debug|x64.Build.0 = Debug|x64
-		{3F4A82B1-4157-400A-82D0-E6516372E8D2}.Release|x64.ActiveCfg = Release|x64
-		{3F4A82B1-4157-400A-82D0-E6516372E8D2}.Release|x64.Build.0 = Release|x64
 		{9BF7B0D9-DE5B-4410-93C8-419C4A75C6EB}.Debug|x64.ActiveCfg = Debug|x64
 		{9BF7B0D9-DE5B-4410-93C8-419C4A75C6EB}.Debug|x64.Build.0 = Debug|x64
 		{9BF7B0D9-DE5B-4410-93C8-419C4A75C6EB}.Release|x64.ActiveCfg = Release|x64
 		{9BF7B0D9-DE5B-4410-93C8-419C4A75C6EB}.Release|x64.Build.0 = Release|x64
+		{3F4A82B1-4157-400A-82D0-E6516372E8D2}.Debug|x64.ActiveCfg = Debug|x64
+		{3F4A82B1-4157-400A-82D0-E6516372E8D2}.Debug|x64.Build.0 = Debug|x64
+		{3F4A82B1-4157-400A-82D0-E6516372E8D2}.Release|x64.ActiveCfg = Release|x64
+		{3F4A82B1-4157-400A-82D0-E6516372E8D2}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
