@@ -14,13 +14,13 @@ void FriendInfo::Add(const UsersID& users_id) {
 QVector<UsersID> FriendInfo::Get(const unsigned int id) {
   QVector<UsersID> result;
   ExectuteQuery(GetQuery(id));
-
+  UsersID user_ids;
+  user_ids.first_user_id = id;
   while (query_.next()) {
-    UsersID a;
-    a.first_user_id = id;
-    a.second_user_id = query_.record().value(0).toUInt();
 
-    result.push_back(a);
+	  user_ids.second_user_id = query_.record().value(0).toUInt();
+
+    result.push_back(user_ids);
   }
   query_.finish();
   return result;

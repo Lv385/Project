@@ -14,13 +14,8 @@ QVector<Message> Messages::GetMessages(unsigned int chat_id) {
   ExectuteQuery(SelectQuery(chat_id));
   int counter = 0;
   while (query_.next()) {
-    messages[counter].id = query_.record().value(0).toInt();
-    messages[counter].chat_id = query_.record().value(1).toInt();
-    messages[counter].owner_id = query_.record().value(2).toInt();
-    messages[counter].data = query_.record().value(3).toString();
-    messages[counter].date = query_.record().value(4).toDate();
-    messages[counter].time = query_.record().value(5).toTime();
-    messages[counter++].status = query_.record().value(6).toInt();
+	  FillStructure(messages[counter]);
+	  counter++;
   }
   return messages;
 }
@@ -34,13 +29,8 @@ QVector<Message> Messages::GetMessages(QString user_login)
 	ExectuteQuery(SelectQuery(user_login));
 	int counter = 0;
 	while (query_.next()) {
-		messages[counter].id = query_.record().value(0).toInt();
-		messages[counter].chat_id = query_.record().value(1).toInt();
-		messages[counter].owner_id = query_.record().value(2).toInt();
-		messages[counter].data = query_.record().value(3).toString();
-		messages[counter].date = query_.record().value(4).toDate();
-		messages[counter].time = query_.record().value(5).toTime();
-		messages[counter++].status = query_.record().value(6).toInt();
+		FillStructure(messages[counter]);
+		counter++;
 	}
 	return messages;
 }
@@ -81,6 +71,17 @@ QString Messages::InsertQuery(const Message& messages) {
       messages.time.toString() +  // FIX DATE
       "', " +
       QString::number(messages.status) + ")");
+}
+
+void Messages::FillStructure(Message & message)
+{
+	message.id = query_.record().value(0).toInt();
+	message.chat_id = query_.record().value(1).toInt();
+	message.owner_id = query_.record().value(2).toInt();
+	message.data = query_.record().value(3).toString();
+	message.date = query_.record().value(4).toDate();
+	message.time = query_.record().value(5).toTime();
+	message.status = query_.record().value(6).toInt();
 }
 
 QString Messages::UpdateQuery(const Message& message) {
