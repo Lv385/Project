@@ -15,13 +15,13 @@ void DAL::CreateNew(User cl) {
   users->AddNewUser(cl);
 }
 //done
-void DAL::UpdateClient(User cl) {
+void DAL::UpdateClient(User cl) { //maybe projob
   //form ->change ->update
-  //get ->change -> update                               // first_user_id is user && second_user_id is pending users
+  //get ->change -> update                               // first_user_id is is pending users && second_user_id user
   QVector<UsersID> curr_pend_cl = cl.requests;
   QVector<UsersID> db_pend_cl = users->GetFriendsRequest(cl.id);
   if (curr_pend_cl.size() != db_pend_cl.size() ||
-    ((!curr_pend_cl.isEmpty()) && db_pend_cl.last().second_user_id != curr_pend_cl.last().second_user_id)) {//???
+    ((!curr_pend_cl.isEmpty()) && db_pend_cl.last().first_user_id != curr_pend_cl.last().first_user_id)) {//???
     for(int i=0;i<db_pend_cl.size();++i){
       users->DeleteFriendRequest(db_pend_cl[i]); //questionable  all update whould be tested
     }
@@ -63,19 +63,27 @@ User DAL::getClient(quint32 i) {
 
 
 bool DAL::Check_If_Client_exists_In_Db(User cl) {
-  //if (database_.GetIDByLogin(cl.GetUserName()) == 0) {  // If login don't exist return id = 0
-  //  return false;  // login dont exist
 
-  //} else {
-  //  return true;  // login exist
-  //}
-  return true;
-
+  User user = users->GetUser(cl.login);
+  if (user.login == cl.login)
+  {
+    return true;
+  }else{
+    return false;
+  }
 }
 
 bool DAL::Check_If_Client_exists_In_Db(QString login) {
   //return !(database_.GetIDByLogin(login) == 0); // according to mentor recomendations
-  return true;
+  User user = users->GetUser(login);
+  /*if (user.login == login)
+  {
+    return true;
+  }
+  else {
+    return false;
+  }*/
+  return user.login == login;
 }
 //DONe
 int DAL::GetClientId(User cl) {

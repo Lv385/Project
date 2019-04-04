@@ -199,7 +199,7 @@ QString Logger::Log_NewFriendInfo(NewFriendInfo& out) {
 } 
 
 
-
+//add logging vectors of reqs and notifications
 QString Logger::Log_User(User& cl) {
   QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
   return "User Login: " + cl.login + " ID: " + cl.id +

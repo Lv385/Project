@@ -1,6 +1,6 @@
 #include "LoginRequest.h"
 
-// need to add  notifiying loginned user
+
 LoginRequest::LoginRequest(QByteArray& A, DAL* d, QTcpSocket* s)
     : AbstractRequest(d, s) {
   incoming_structure_ = Parser::ParseAsLoginInfo(A);
@@ -10,7 +10,7 @@ LoginRequest::LoginRequest(QByteArray& A, DAL* d, QTcpSocket* s)
   Logger::LogOut(logstring, A);
 }
 
-
+//done with nuanses means that need to test update under friends requests 
 void LoginRequest::PrepareResponse() {
   // check user in db  and set t or f
   try {
@@ -44,8 +44,8 @@ bool LoginRequest::SendResponde() {
 
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
-    SendingPendingFriendRequests();
-    SendingPendingNotifications();
+    SendingPendingFriendRequests(); // done
+    SendingPendingNotifications();// dont working
     client_socket_->disconnectFromHost();
 
     // sending FriendUpdateInfo to all friends
@@ -76,10 +76,10 @@ bool LoginRequest::SendResponde() {
   }
   return true;
 }
-
+//DONe
 bool LoginRequest::SendToFriend(QTcpSocket& output_socket, QByteArray raw_data, 
-                                unsigned int id) {
-  //Client tempClient = database_->getClient(id);
+                                unsigned int id) { 
+ 
   User tempClient = database_->getClient(id);
   qDebug()<<Logger::Log_User(tempClient)<<"\n";
   output_socket.connectToHost(tempClient.ip, tempClient.port);
@@ -96,46 +96,45 @@ bool LoginRequest::SendToFriend(QTcpSocket& output_socket, QByteArray raw_data,
 
   return false;
 }
-
+//test (response sending is okay)
 void LoginRequest::SendingPendingFriendRequests() {
-  //// this function should send to requester pending requests and pending
-  //// notifications
-  //// QTcpSocket notifiying_requester;
-  //QVector<uint> pendsreqs =
-  //    requester_.Get_Pending_Requests();  // theese guys want to be friends
-  //QByteArray raw_data;
+  // this function should send to requester pending requests and pending
+  // notifications
+  // QTcpSocket notifiying_requester;
+  QVector<UsersID> pendsreqs = requester_.requests;  // theese guys want to be friends
+  QByteArray raw_data;
 
-  //for (int i = 0; i < pendsreqs.size(); i++) {
-  //  AddFriendInfo possible_friend;
-  //  Client tmp = database_->getClient(pendsreqs[i]);
-  //  possible_friend.requester_login = tmp.GetUserName();
-  //  possible_friend.requester_id = tmp.GetUserId();
-  //  raw_data = Parser::AddFriendInfo_ToByteArray(possible_friend);
-  //  raw_data.append(Parser::GetUnpossibleSequence());
+  for (int i = 0; i < pendsreqs.size(); i++) {
+    AddFriendInfo possible_friend;
+    User tmp = database_->getClient(pendsreqs[i].first_user_id); //taking possible friend
+    possible_friend.requester_login = tmp.login;
+    possible_friend.requester_id = tmp.id;
+    raw_data = Parser::AddFriendInfo_ToByteArray(possible_friend);
+    raw_data.append(Parser::GetUnpossibleSequence());
 
-  //  QString ip__ = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();    
-  //  QString logstring__ = ip__ + "::" + Logger::ConvertQuint16ToString(incoming_structure_.port);
-  //  Logger::LogOut(logstring__,raw_data);
-
-  //  client_socket_->write(raw_data);
-  //  client_socket_->waitForBytesWritten(1000);
-  //}
+    QString ip__ = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();    
+    QString logstring__ = ip__ + "::" + Logger::ConvertQuint16ToString(incoming_structure_.port);
+    Logger::LogOut(logstring__,raw_data);
+   
+    client_socket_->write(raw_data);
+    client_socket_->waitForBytesWritten(1000);
+  }
 }
-
+//test
 void LoginRequest::SendingPendingNotifications() {
   // fetch data about that users, construct
   // FRIEND_UPDATE_INFO//+FriendUpdateInfo out of them and send it to currently
   // connected client
-  /*QVector<uint> pend_notif = requester_.Get_Pending_Notifications();
+  QVector<UsersID> pend_notif = requester_.notification;
   QByteArray raw_data;
 
   for (int i = 0; i < pend_notif.size(); i++) {
     NewFriendInfo from_new_friend;
-    Client tmp = database_->getClient(pend_notif[i]);
-    from_new_friend.id = tmp.GetUserId();
-    from_new_friend.ip = tmp.GetUserIp();
-    from_new_friend.login = tmp.GetUserName();
-    from_new_friend.port = tmp.GetUserPort();
+    User tmp = database_->getClient(pend_notif[i].second_user_id);
+    from_new_friend.id = tmp.id;
+    from_new_friend.ip = tmp.ip;
+    from_new_friend.login = tmp.login;
+    from_new_friend.port = tmp.port;
     raw_data = Parser::NewFriendInfo_ToByteArray(from_new_friend);
     raw_data.append(Parser::GetUnpossibleSequence());
 
@@ -145,5 +144,5 @@ void LoginRequest::SendingPendingNotifications() {
 
     client_socket_->write(raw_data);
     client_socket_->waitForBytesWritten(1000);
-  }*/
+  }
 }
