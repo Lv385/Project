@@ -2,7 +2,7 @@
 
 GUIManager::GUIManager(QObject *parent)
     : QObject(parent),
-      my_id_(1),
+      my_id_(2),
       logger_(ClientLogger::Instance()) {     //for testing
   controller_ = new ClientController(this);
   logger_->set_log_level(LogLevel::HIGH);
@@ -10,6 +10,8 @@ GUIManager::GUIManager(QObject *parent)
   newFriendRiequest();
   newFriendRiequest();
   newFriendRiequest();
+
+  SignalRedirector::get_instance().set_controller(controller_);
 
   connect(this, SIGNAL(SelectedFriendIdChanged(unsigned)), this, SLOT(LoadMessages(unsigned)));
   connect(controller_, SIGNAL(MessageRecieved(unsigned)), this, SLOT(LoadMessages(unsigned)));
