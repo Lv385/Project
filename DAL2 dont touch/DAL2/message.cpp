@@ -61,13 +61,13 @@ void Messages::UpdateMessage(const Message& message) {
 }
 
 QString Messages::SelectQuery(unsigned int chat_id) {
-  return QString("select * from Messages where user_ID = " +
+  return QString("select message_ID, user_ID, owner_ID, message_data, strftime('%Y-%m-%d', message_date), message_tima, message_status from Messages where user_ID = " +
                  QString::number(chat_id));
 }
 
 QString Messages::SelectQuery(QString user_login)
 {
-	return QString("select * from Messages where user_login = '" +user_login+ "'");
+	return QString("select message_ID, user_ID, owner_ID, message_data, strftime('%Y-%m-%d', message_date), message_tima, message_status from Messages where user_ID = (select user_id from friend where user_login = '" + user_login + "')");
 		
 }
 

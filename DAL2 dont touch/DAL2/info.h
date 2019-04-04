@@ -4,10 +4,6 @@
 
 namespace SQLDAL {
 
-struct UsersID {
-  unsigned int first_user_id;
-  unsigned int second_user_id;
-};
 
 class Info : public Statement {
  public:
