@@ -67,7 +67,7 @@ void DataAccessor::AddMessageToDB(const QString msg, const unsigned user_id,
   message.chat_id = user_id;
   message.owner_id = owner_id;
   message.data = msg;
-  message.date = QDate::currentDate().toString("yyyy-MM-dd");
+  message.date = QDate::currentDate();
   message.time = QTime::currentTime();
   message_->AddNewMessage(message);
 }

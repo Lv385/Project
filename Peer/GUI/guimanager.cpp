@@ -60,8 +60,7 @@ void GUIManager::LoadMessages(unsigned friend_id) {
   if (friend_id) {
     message_model_.RemoveAllMessagesFromList();
 
-    QString data, time;
-    QDate date;
+    QString data, time, date;
     int owner_id;
     MessageItem* new_message;
 
@@ -69,9 +68,9 @@ void GUIManager::LoadMessages(unsigned friend_id) {
     for (const auto& msg : history) {
       data = msg.data;
       time = msg.time.toString("hh:mm");
-      date = QDate::fromString(msg.date, "yyyy-MM-dd");  // FIX date
+      date = msg.date.toString("d MMM");  // FIX date
       owner_id = msg.owner_id;
-      new_message = new MessageItem(data, time, date.toString("d MMM"), owner_id);
+      new_message = new MessageItem(data, time, date, owner_id);
       message_model_.AddMessageToList(new_message);
     }
   }
