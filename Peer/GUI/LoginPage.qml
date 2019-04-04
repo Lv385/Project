@@ -5,6 +5,7 @@ LoginPageForm {
     id: rect
     buttonLogIn.onClicked: {
         runIndicator = true
+		guiManager.LogIn(loginUsername.text)
         stackView.push("MainPage.qml")
     }
 

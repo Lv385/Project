@@ -1,9 +1,10 @@
 #include "frienditem.h"
 
 
-FriendItem::FriendItem(QString login, bool status, QObject *parent) : QObject(parent)
+FriendItem::FriendItem(QString login, bool status, unsigned id, QObject *parent) : QObject(parent)
     ,login_(login)
-    ,status_(status) {
+    ,status_(status)
+    ,id_(id){
 }
 
 QString FriendItem::login() const {
