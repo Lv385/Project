@@ -2,7 +2,7 @@
 
 GUIManager::GUIManager(QObject *parent)
     : QObject(parent),
-      my_id_(1),
+      my_id_(2),
       logger_(ClientLogger::Instance()) {     //for testing
   controller_ = new ClientController(this);
   logger_->set_log_level(LogLevel::HIGH);
@@ -10,6 +10,8 @@ GUIManager::GUIManager(QObject *parent)
   newFriendRiequest();
   newFriendRiequest();
   newFriendRiequest();
+
+  SignalRedirector::get_instance().set_controller(controller_);
 
   connect(this, SIGNAL(SelectedFriendIdChanged(unsigned)), this, SLOT(LoadMessages(unsigned)));
   connect(controller_, SIGNAL(MessageRecieved(unsigned)), this, SLOT(LoadMessages(unsigned)));
@@ -60,8 +62,7 @@ void GUIManager::LoadMessages(unsigned friend_id) {
   if (friend_id) {
     message_model_.RemoveAllMessagesFromList();
 
-    QString data, time;
-    QDate date;
+    QString data, time, date;
     int owner_id;
     MessageItem* new_message;
 
@@ -69,9 +70,9 @@ void GUIManager::LoadMessages(unsigned friend_id) {
     for (const auto& msg : history) {
       data = msg.data;
       time = msg.time.toString("hh:mm");
-      date = QDate::fromString(msg.date, "yyyy-MM-dd");  // FIX date
+      date = msg.date.toString("d MMM");  // FIX date
       owner_id = msg.owner_id;
-      new_message = new MessageItem(data, time, date.toString("d MMM"), owner_id);
+      new_message = new MessageItem(data, time, date, owner_id);
       message_model_.AddMessageToList(new_message);
     }
   }

@@ -22,7 +22,7 @@ struct Message {
   unsigned int chat_id;
   unsigned int owner_id;
   QString data;
-  QString date;
+  QDate date;
   QTime time;
   bool status;
 };

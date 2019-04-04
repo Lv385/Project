@@ -12,6 +12,7 @@
 
 #include "dataaccessor.h"
 #include "clientcontroller.h"
+#include "signalredirector.h"
 
 class GUIManager : public QObject {
   Q_OBJECT

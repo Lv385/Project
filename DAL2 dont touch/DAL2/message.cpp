@@ -18,7 +18,7 @@ QVector<Message> Messages::GetMessages(unsigned int chat_id) {
     messages[counter].chat_id = query_.record().value(1).toInt();
     messages[counter].owner_id = query_.record().value(2).toInt();
     messages[counter].data = query_.record().value(3).toString();
-    messages[counter].date = query_.record().value(4).toString();
+    messages[counter].date = query_.record().value(4).toDate();
     messages[counter].time = query_.record().value(5).toTime();
     messages[counter++].status = query_.record().value(6).toInt();
   }
@@ -38,7 +38,7 @@ QVector<Message> Messages::GetMessages(QString user_login)
 		messages[counter].chat_id = query_.record().value(1).toInt();
 		messages[counter].owner_id = query_.record().value(2).toInt();
 		messages[counter].data = query_.record().value(3).toString();
-		messages[counter].date = query_.record().value(4).toString();
+    messages[counter].date = query_.record().value(4).toDate();
 		messages[counter].time = query_.record().value(5).toTime();
 		messages[counter++].status = query_.record().value(6).toInt();
 	}
@@ -77,7 +77,7 @@ QString Messages::InsertQuery(const Message& messages) {
       "message_tima, message_status) values (" +
       QString::number(messages.chat_id) + ", " +
       QString::number(messages.owner_id) + ", '" + messages.data + "', '" +
-      messages.date + "', '" +
+      QString::number(messages.date.toJulianDay()) + "', '" +
       messages.time.toString() +  // FIX DATE
       "', " +
       QString::number(messages.status) + ")");
