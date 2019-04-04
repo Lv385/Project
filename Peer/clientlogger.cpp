@@ -5,11 +5,9 @@ std::mutex ClientLogger::mutex_;
 
 ClientLogger* ClientLogger::Instance() {
   std::lock_guard<std::mutex> lock(mutex_);
-  if(logger_ == nullptr){
     if(logger_ == nullptr){
       logger_ = new ClientLogger();
     }
-  }
   return logger_;
 }
 const char* ErrorValueNames[] = {GET_NAME(ERROR), GET_NAME(SUCCESS),
@@ -40,7 +38,7 @@ void ClientLogger::WriteLog(LogType type, const QString& msg) {
   }else{
     text = tr("[%1] %2 ").arg(ErrorValueNames[type]).arg(log);
   }
-  
+  std::lock_guard<std::mutex> lock(mutex_);
   QTextStream out(file_);
   if (file_) {
     out << text;

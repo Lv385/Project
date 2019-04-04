@@ -2,7 +2,7 @@
 
 GUIManager::GUIManager(QObject *parent)
     : QObject(parent),
-      my_id_(2),
+      my_id_(1),
       logger_(ClientLogger::Instance()) {     //for testing
   controller_ = new ClientController(this);
   logger_->set_log_level(LogLevel::HIGH);
