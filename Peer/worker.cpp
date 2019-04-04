@@ -26,10 +26,7 @@ Worker::Worker(Friend peer_info, QString message, unsigned my_id)
   writer_ = new BlockWriter(socket_);
   reader_ = new BlockReader(socket_);
   redirector_.ConnectToMessageSent(this);
- // int a = receivers(SIGNAL(MessageSent(unsigned id, bool result)));
-
   redirector_.ConnectToMessageRecieved(this);
-  //int b = receivers(SIGNAL(MessageRecieved(unsigned id)));
 
   connect(reader_, SIGNAL(ReadyReadBlock()), this, SLOT(OnReadyReadBlock()));
   this->dumpObjectInfo();
@@ -83,8 +80,9 @@ void Worker::OnTimedOut() {
 
 void Worker::OnConnected() {
   timer_.start(k_msc);
-  connect(&timer_, SIGNAL(timeout()), 
-          this, SLOT(OnTimedOut));
+  //FIXME
+  //connect(&timer_, SIGNAL(timeout()), 
+  //        this, SLOT(OnTimedOut()));
   unsigned id = peer_info_.id;
   emit Connected(id);
   ConnectInfo connect_info = {my_id_};
@@ -108,6 +106,6 @@ void Worker::OnReadyReadBlock() {
 
 Worker::~Worker() {
   writer_;
-  delete reader_;
+  delete reader_; 
   delete socket_;
 }
