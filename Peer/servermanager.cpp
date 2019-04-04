@@ -50,7 +50,7 @@ void ServerManager::OnReadyReadBlock() {
   while (reader_->HasPendingBlock())
   {
     data = reader_->ReadNextBlock();
-    quint8 type = Parser::getRequestType(data);
+    ServerRequest type = static_cast<ServerRequest>(Parser::getRequestType(data));
     strategy_ = strategies_[type];
     strategy_->set_data(data);
     DoWork();
