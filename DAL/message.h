@@ -24,6 +24,7 @@ class Messages : public Statement {
   void UpdateMessage(const Message& message);
 
  private:
+  void FillStructure(Message& message);
   QString UpdateQuery(const Message& message);
   QString SelectQuery(unsigned int chat_id);
   QString SelectQuery(QString user_login);
