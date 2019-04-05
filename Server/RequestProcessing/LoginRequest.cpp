@@ -45,7 +45,7 @@ bool LoginRequest::SendResponde() {
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
     SendingPendingFriendRequests(); // done
-    SendingPendingNotifications();// dont working
+    SendingPendingNotifications();//  done
     client_socket_->disconnectFromHost();
 
     // sending FriendUpdateInfo to all friends
@@ -125,7 +125,7 @@ void LoginRequest::SendingPendingNotifications() {
   // fetch data about that users, construct
   // FRIEND_UPDATE_INFO//+FriendUpdateInfo out of them and send it to currently
   // connected client
-  QVector<UsersID> pend_notif = requester_.notification; //is 0 why?
+  QVector<UsersID> pend_notif = requester_.notification; 
   QByteArray raw_data;
 
   for (int i = 0; i < pend_notif.size(); i++) {
