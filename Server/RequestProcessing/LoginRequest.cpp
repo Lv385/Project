@@ -45,7 +45,7 @@ bool LoginRequest::SendResponde() {
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
     SendingPendingFriendRequests(); // done
-    SendingPendingNotifications();//  done
+    SendingPendingNotifications();  // done
     client_socket_->disconnectFromHost();
 
     // sending FriendUpdateInfo to all friends
@@ -76,7 +76,7 @@ bool LoginRequest::SendResponde() {
   }
   return true;
 }
-//DONe
+//DONE
 bool LoginRequest::SendToFriend(QTcpSocket& output_socket, QByteArray raw_data, 
                                 unsigned int id) { 
  
@@ -96,10 +96,8 @@ bool LoginRequest::SendToFriend(QTcpSocket& output_socket, QByteArray raw_data,
 
   return false;
 }
-//test (response sending is okay)
+//DONE  // had trouble 
 void LoginRequest::SendingPendingFriendRequests() {
-  // this function should send to requester pending requests and pending
-  // notifications
   // QTcpSocket notifiying_requester;
   QVector<UsersID> pendsreqs = requester_.requests;  // theese guys want to be friends
   QByteArray raw_data;
