@@ -1,6 +1,6 @@
 #include "requestinfo.h"
 
-namespace SQLDAL {
+namespace dal {
 RequestInfo::RequestInfo(std::shared_ptr<Connect> Connect) : Info(Connect) {
   connection_->Open(SERVER_DB);
 }
@@ -13,13 +13,11 @@ void RequestInfo::Add(const UsersID& users_id) {
 QVector<UsersID> RequestInfo::Get(const unsigned int id) {
   QVector<UsersID> result;
   ExectuteQuery(GetQuery(id));
-
+  UsersID user_ids;
+  user_ids.second_user_id = id;
   while (query_.next()) {
-    UsersID a;
-    a.second_user_id = id;
-    a.first_user_id = query_.record().value(0).toUInt();
-
-    result.push_back(a);
+	user_ids.first_user_id = query_.record().value(0).toUInt();
+    result.push_back(user_ids);
   }
   query_.finish();
   return result;
@@ -50,4 +48,4 @@ QString RequestInfo::DeleteQuery(const UsersID& users_id) {
       " and second_user_ID = " + QString::number(users_id.second_user_id));
 }
 
-}  // namespace SQLDAL
+}  // namespace dal

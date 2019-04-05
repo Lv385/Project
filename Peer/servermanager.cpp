@@ -12,11 +12,11 @@ ServerManager::ServerManager(QTcpSocket *socket, ApplicationInfo& info)
   AbstractStrategy* reg = new RegisterResponseStrategy();
   AbstractStrategy* friend_update = new FriendUpdateStrategy();
 
-  strategies_.insert(static_cast<quint8>(ServerRequest::LOGIN_SUCCEED), login);
-  strategies_.insert(static_cast<quint8>(ServerRequest::LOGIN_FAILED), login);
-  strategies_.insert(static_cast<quint8>(ServerRequest::REGISTER_SUCCEED), reg);
-  strategies_.insert(static_cast<quint8>(ServerRequest::REGISTER_FAILED), reg);
-  strategies_.insert(static_cast<quint8>(ServerRequest::FRIEND_UPDATE_INFO), friend_update);
+  strategies_.insert(ServerRequest::LOGIN_SUCCEED, login);
+  strategies_.insert(ServerRequest::LOGIN_FAILED, login);
+  strategies_.insert(ServerRequest::REGISTER_SUCCEED, reg);
+  strategies_.insert(ServerRequest::REGISTER_FAILED, reg);
+  strategies_.insert(ServerRequest::FRIEND_UPDATE_INFO, friend_update);
 }
 
 ServerManager::~ServerManager() {}
@@ -50,7 +50,7 @@ void ServerManager::OnReadyReadBlock() {
   while (reader_->HasPendingBlock())
   {
     data = reader_->ReadNextBlock();
-    quint8 type = Parser::getRequestType(data);
+    ServerRequest type = static_cast<ServerRequest>(Parser::getRequestType(data));
     strategy_ = strategies_[type];
     strategy_->set_data(data);
     DoWork();

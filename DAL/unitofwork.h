@@ -5,7 +5,7 @@
 #include <atomic>
 #include "statement.h"
 
-namespace SQLDAL {
+namespace dal {
 
   class UnitOfWork {
    public:
@@ -27,5 +27,5 @@ namespace SQLDAL {
 	return std::make_shared<T>(connection_);
   }
 
-}  // namespace SQLDAL
+}  // namespace dal
 #endif  // !UNITOFWORK_H
