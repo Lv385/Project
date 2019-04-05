@@ -1,5 +1,5 @@
 #include "message.h"
-namespace SQLDAL {
+namespace dal {
 Messages::Messages(std::shared_ptr<Connect> Connect) : Statement(Connect) {
   connection_->Open(CLIENT_DB);
 }
@@ -103,4 +103,4 @@ QString Messages::CreateQueryCountOfMessages(QString user_login)
 {
 	return QString("SELECT COUNT(user_ID) FROM Messages WHERE user_login = '" + user_login +"'");
 }
-}  // namespace SQLDAL
+}  // namespace dal

@@ -2,8 +2,8 @@
 
 DataAccessor::DataAccessor(){
   db_.GenerateUniqueConnection();
-  user_ = db_.GetEntity<SQLDAL::Friends>();
-  message_ = db_.GetEntity<SQLDAL::Messages>();
+  user_ = db_.GetEntity<dal::Friends>();
+  message_ = db_.GetEntity<dal::Messages>();
 }
 
 DataAccessor::~DataAccessor(){}

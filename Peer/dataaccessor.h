@@ -25,8 +25,8 @@ class DataAccessor {
   void UpdateIPPort(const unsigned user_id, const QString new_ip, const unsigned new_port);
 
  private:
-  SQLDAL::UnitOfWork db_;
-  std::shared_ptr<SQLDAL::Friends> user_;
-  std::shared_ptr<SQLDAL::Messages> message_;
+  dal::UnitOfWork db_;
+  std::shared_ptr<dal::Friends> user_;
+  std::shared_ptr<dal::Messages> message_;
 };
 #endif

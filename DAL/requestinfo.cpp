@@ -1,6 +1,6 @@
 #include "requestinfo.h"
 
-namespace SQLDAL {
+namespace dal {
 RequestInfo::RequestInfo(std::shared_ptr<Connect> Connect) : Info(Connect) {
   connection_->Open(SERVER_DB);
 }
@@ -48,4 +48,4 @@ QString RequestInfo::DeleteQuery(const UsersID& users_id) {
       " and second_user_ID = " + QString::number(users_id.second_user_id));
 }
 
-}  // namespace SQLDAL
+}  // namespace dal

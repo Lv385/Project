@@ -2,7 +2,7 @@
 #define FRIEND_INFO_H
 
 #include "info.h"
-namespace SQLDAL {
+namespace dal {
   class FriendInfo : public Info {
    public:
 	FriendInfo(std::shared_ptr<Connect> Connect);
@@ -16,6 +16,6 @@ namespace SQLDAL {
 	QString				GetQuery(const unsigned int id);
 	QString				DeleteQuery(const UsersID& users_id);
   };
-}  // namespace SQLDAL
+}  // namespace dal
 
 #endif  // !FRIEND_INFO_H

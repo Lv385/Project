@@ -1,5 +1,5 @@
 #include "notificationinfo.h"
-namespace SQLDAL {
+namespace dal {
 	NotificationInfo::NotificationInfo(std::shared_ptr<Connect> Connect) :Info(Connect) {
 		connection_->Open(SERVER_DB);
 	}
