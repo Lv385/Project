@@ -78,8 +78,7 @@ QString Messages::InsertQuery(const Message& messages) {
       QString::number(messages.chat_id) + ", " +
       QString::number(messages.owner_id) + ", '" + messages.data + "', '" +
       QString::number(messages.date.toJulianDay()) + "', '" +
-      messages.time.toString() +  // FIX DATE
-      "', " +
+      messages.time.toString() + "', " +
       QString::number(messages.status) + ")");
 }
 

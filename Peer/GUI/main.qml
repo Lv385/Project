@@ -3,6 +3,7 @@ import QtQuick.Controls 2.5
 import QtQuick.Layouts 1.12
 import QtQuick.LocalStorage 2.12
 
+import "validator.js" as Validator
 
 ApplicationWindow {
     id: rootWindow
@@ -21,6 +22,8 @@ ApplicationWindow {
     property color onlineFriendColor: "#AED581"
     property color offlineFriendColor: "#FFAB91"
     property color borderColor: "#FFB74D"
+	
+	property bool runIndicator
 
 
     FontLoader {
@@ -59,7 +62,10 @@ ApplicationWindow {
             font.pointSize: 12
             color: mainTextCOlor
         }
-        onOpened: popupClose.start()
+        onOpened: {
+			popupClose.start()
+			runIndicator = false
+		}
     }
 
     // Popup will be closed automatically in 2 seconds after its opened
@@ -67,5 +73,36 @@ ApplicationWindow {
         id: popupClose
         interval: 2000
         onTriggered: popup.close()
+    }
+	
+	function loginUser(uname, pword) {
+        var ret  = Validator.validateUserCredentials(uname, pword)
+        var message = ""
+        if(ret) {
+            message = "Missing credentials!"
+            popup.popMessage = message
+            popup.open()
+            return
+        }
+		guiManager.LogIn(uname, pword)
+    }
+	
+	function registerNewUser(uname, pword, pword2) {
+        var ret  = Validator.validateRegisterCredentials(uname, pword, pword2)
+        var message = ""
+        switch(ret) {
+        case 1: message = "Missing credentials!"
+            break;
+        case 2: message = "Password does not match!"
+            break;
+		default:
+			break;
+        }
+		
+        if(ret) {
+            popup.popMessage = message
+            popup.open()
+            return
+        }
     }
 }

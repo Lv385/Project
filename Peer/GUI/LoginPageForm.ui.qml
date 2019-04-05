@@ -5,10 +5,10 @@ import QtQuick.Layouts 1.12
 Page {
     id: loginPage
 
-    property bool runIndicator
     property alias buttonLogIn: buttonLogIn
     property alias buttonRegister: buttonRegister
     property alias loginUsername: loginUsername
+	property alias loginPassword: loginPassword
     contentWidth: 0
     contentHeight: -1
     focusPolicy: Qt.WheelFocus

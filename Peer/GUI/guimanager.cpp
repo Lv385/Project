@@ -2,7 +2,7 @@
 
 GUIManager::GUIManager(QObject *parent)
     : QObject(parent),
-      my_id_(2),
+      my_id_(1),
       logger_(ClientLogger::Instance()) {     //for testing
   controller_ = new ClientController(this);
   logger_->set_log_level(LogLevel::HIGH);
@@ -15,7 +15,7 @@ GUIManager::GUIManager(QObject *parent)
 
   connect(this, SIGNAL(SelectedFriendIdChanged(unsigned)), this, SLOT(LoadMessages(unsigned)));
   connect(controller_, SIGNAL(MessageRecieved(unsigned)), this, SLOT(LoadMessages(unsigned)));
-  this->dumpObjectInfo();
+  connect(controller_, SIGNAL(LoginResult(bool)), this, SLOT(OnLoginResult(bool)));
 }
 
 FriendModel* GUIManager::friend_model() {
@@ -90,17 +90,34 @@ void GUIManager::newFriendRiequest() {
   friend_request_model_.AddRequestToList(new_friend_request);
 }
 
-void GUIManager::LogIn(QString user_login) { 
+void GUIManager::LogIn(QString user_login, QString user_password) { 
+  controller_->app_info_.remote_server_ip = "192.168.103.55";
+  controller_->app_info_.remote_server_port = 8888;
   controller_->app_info_.my_port = 8989;  //FIXME
   controller_->app_info_.my_login = user_login;
+  controller_->app_info_.my_password = user_password;
   controller_->app_info_.my_id = client_data_.get_id_by_login(user_login);
   logger_->WriteLog(LogType::SUCCESS, user_login);
   controller_->Start();
+  controller_->LogIn(user_login, user_password);
 
-  friends_ = controller_->LoadFriends();
-  LoadFriends();
+  OnLoginResult(true);
+}
 
-  LoadMessages(friend_model_.GetFirstFriend());
+void GUIManager::OnLoginResult(bool logged_in) {
+  // stop busy indicator
+  if (logged_in) {
+    friends_ = controller_->LoadFriends();
+    LoadFriends();
+
+    LoadMessages(friend_model_.GetFirstFriend());
+    //signal to ui
+    emit test();
+  }
+  else {
+    controller_->Stop();
+    //show popup FAILED
+  }
 }
 
 void GUIManager::SendMessage(QString message) { 

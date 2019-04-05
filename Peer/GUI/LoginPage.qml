@@ -5,8 +5,14 @@ LoginPageForm {
     id: rect
     buttonLogIn.onClicked: {
         runIndicator = true
-		guiManager.LogIn(loginUsername.text)
-        stackView.push("MainPage.qml")
+		loginUser(loginUsername.text, loginPassword.text)        
+    }
+	
+    Connections{
+        target: guiManager
+        onTest: {
+            stackView.push("MainPage.qml")
+        }
     }
 
     buttonRegister.onClicked: {
