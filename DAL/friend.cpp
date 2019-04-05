@@ -1,5 +1,5 @@
 #include "friend.h"
-namespace SQLDAL {
+namespace dal {
 Friends::Friends(std::shared_ptr<Connect> Connect) : Statement(Connect) {
   connection_->Open(CLIENT_DB);
 }
@@ -117,4 +117,4 @@ QString Friends::DeleteQuery(const Friend& _friend) {
 QString Friends::CreateQueryCountOfFriends() {
   return QString("SELECT COUNT(user_id) FROM friends");
 }
-}  // namespace SQLDAL
+}  // namespace dal

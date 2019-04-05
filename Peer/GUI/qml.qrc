@@ -11,5 +11,6 @@
         <file>RegisterPage.qml</file>
         <file>RegisterPageForm.ui.qml</file>
         <file>FriendRequestListDelegateModel.qml</file>
+        <file>validator.js</file>
     </qresource>
 </RCC>

@@ -1,5 +1,5 @@
 #include "statement.h"
-namespace SQLDAL {
+namespace dal {
 Statement::Statement(std::shared_ptr<Connect> connection)
     : connection_(connection) {
   SetQuery(connection_->GetDB());
@@ -22,4 +22,4 @@ void Statement::ErrorInfo() {
   qDebug() << query_.lastError().databaseText();
   qDebug() << query_.lastError().driverText();
 }
-}  // namespace SQLDAL
+}  // namespace dal

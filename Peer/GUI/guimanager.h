@@ -45,9 +45,12 @@ class GUIManager : public QObject {
 
 signals:
   void SelectedFriendIdChanged(unsigned id);
+  void openMainPage();
+  void logInFailed();
 
 public slots:
-  void LogIn(QString user_login);  //only starting socket, should implement LOGIN
+  void LogIn(QString user_login, QString user_password);  //only starting socket, should implement LOGIN
+  void OnLoginResult(bool);
   void SendMessage(QString message);
   void LoadMessages(unsigned id);  // temporary implementation(for testing)
 

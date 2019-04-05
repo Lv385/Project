@@ -5,10 +5,10 @@ import QtQuick.Layouts 1.12
 Page {
     id: loginPage
 
-    property bool runIndicator
     property alias buttonLogIn: buttonLogIn
     property alias buttonRegister: buttonRegister
     property alias loginUsername: loginUsername
+	property alias loginPassword: loginPassword
     contentWidth: 0
     contentHeight: -1
     focusPolicy: Qt.WheelFocus
@@ -50,6 +50,7 @@ Page {
 
         TextField {
             id: loginUsername
+			text: "oleksa"
             width: parent.width
             placeholderText: qsTr("User name")
             color: mainTextCOlor
@@ -83,6 +84,7 @@ Page {
 
         TextField {
             id: loginPassword
+			text: "password"
             width: parent.width
             placeholderText: qsTr("Password")
             color: mainTextCOlor
