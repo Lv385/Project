@@ -30,6 +30,6 @@ class DAL {
  private:
   ServerDB database_;
   QString connection_name_;
-  //SQLDAL::UnitOfWork database;
+  //dal::UnitOfWork database;
   // std::map<QString, Client> database;
 };

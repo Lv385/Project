@@ -3,7 +3,7 @@
 #include <QString>
 #include "statement.h"
 #include "sqldal.h"
-namespace SQLDAL {
+namespace dal {
 
   class Users : public Statement {
   public:
