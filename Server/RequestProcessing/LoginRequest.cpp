@@ -125,12 +125,12 @@ void LoginRequest::SendingPendingNotifications() {
   // fetch data about that users, construct
   // FRIEND_UPDATE_INFO//+FriendUpdateInfo out of them and send it to currently
   // connected client
-  QVector<UsersID> pend_notif = requester_.notification;
+  QVector<UsersID> pend_notif = requester_.notification; //is 0 why?
   QByteArray raw_data;
 
   for (int i = 0; i < pend_notif.size(); i++) {
     NewFriendInfo from_new_friend;
-    User tmp = database_->getClient(pend_notif[i].second_user_id);
+    User tmp = database_->getClient(pend_notif[i].first_user_id);
     from_new_friend.id = tmp.id;
     from_new_friend.ip = tmp.ip;
     from_new_friend.login = tmp.login;
