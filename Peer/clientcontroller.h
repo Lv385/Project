@@ -38,12 +38,11 @@ class ClientController : public QObject {
 
  signals:
 
-  void messageReceived(Friend info, QString message);
   void MessageSent(unsigned, bool);
   void LoginResult(bool);
   void RegisterResult(quint32 id);
   void MessageRecieved(unsigned id);
-  void StatusChanged(quint32 id, bool status);
+  void StatusChanged(unsigned id, bool status);
 
  private slots:
   void OnNewConnection(QTcpSocket* socket);

@@ -47,8 +47,7 @@ void ServerManager::DoWork() {
 
 void ServerManager::OnReadyReadBlock() { 
   QByteArray data; 
-  while (reader_->HasPendingBlock())
-  {
+  while (reader_->HasPendingBlock()) {
     data = reader_->ReadNextBlock();
     ServerRequest type = static_cast<ServerRequest>(Parser::getRequestType(data));
     strategy_ = strategies_[type];
@@ -57,6 +56,6 @@ void ServerManager::OnReadyReadBlock() {
   }
 }
 
-void ServerManager::OnConnected() { 
+void ServerManager::OnConnected() {
   writer_->WriteBlock(data_);
 }
