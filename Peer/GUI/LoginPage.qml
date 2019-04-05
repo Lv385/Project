@@ -10,9 +10,14 @@ LoginPageForm {
 	
     Connections{
         target: guiManager
-        onTest: {
+        onOpenMainPage: {
+			runIndicator = false
             stackView.push("MainPage.qml")
         }
+		onLogInFailed: {
+            popup.popMessage = "Log in failed!"
+            popup.open()
+		}
     }
 
     buttonRegister.onClicked: {

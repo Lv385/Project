@@ -104,5 +104,7 @@ ApplicationWindow {
             popup.open()
             return
         }
+		stackView.replace("MainPage.qml")
+		//guiManager.register
     }
 }

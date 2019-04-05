@@ -11,8 +11,6 @@ GUIManager::GUIManager(QObject *parent)
   newFriendRiequest();
   newFriendRiequest();
 
-  SignalRedirector::get_instance().set_controller(controller_);
-
   connect(this, SIGNAL(SelectedFriendIdChanged(unsigned)), this, SLOT(LoadMessages(unsigned)));
   connect(controller_, SIGNAL(MessageRecieved(unsigned)), this, SLOT(LoadMessages(unsigned)));
   connect(controller_, SIGNAL(LoginResult(bool)), this, SLOT(OnLoginResult(bool)));
@@ -91,7 +89,7 @@ void GUIManager::newFriendRiequest() {
 }
 
 void GUIManager::LogIn(QString user_login, QString user_password) { 
-  controller_->app_info_.remote_server_ip = "192.168.103.55";
+  controller_->app_info_.remote_server_ip = "192.168.103.121";
   controller_->app_info_.remote_server_port = 8888;
   controller_->app_info_.my_port = 8989;  //FIXME
   controller_->app_info_.my_login = user_login;
@@ -101,22 +99,19 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   controller_->Start();
   controller_->LogIn(user_login, user_password);
 
-  OnLoginResult(true);
 }
 
 void GUIManager::OnLoginResult(bool logged_in) {
-  // stop busy indicator
   if (logged_in) {
     friends_ = controller_->LoadFriends();
     LoadFriends();
 
     LoadMessages(friend_model_.GetFirstFriend());
-    //signal to ui
-    emit test();
+    emit openMainPage();
   }
   else {
     controller_->Stop();
-    //show popup FAILED
+    emit logInFailed();
   }
 }
 
