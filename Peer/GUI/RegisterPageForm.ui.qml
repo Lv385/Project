@@ -9,6 +9,9 @@ Page {
     property string pword: ""
     property alias buttonSignUp: buttonSignUp
     property alias buttonCancel: buttonCancel
+	property alias registerUsername: registerUsername 
+	property alias registerPassword: registerPassword 
+	property alias registerPassword2: registerPassword2
 
     background: Rectangle {
         color: backGroundColor

@@ -17,6 +17,8 @@
 
 #include "../Parser&Structs/request_types.h"
 
+class SignalRedirector;
+
 class ClientController : public QObject {
   Q_OBJECT
 
@@ -58,9 +60,9 @@ class ClientController : public QObject {
   QHash<unsigned, Friend> friends_cache;
 
   LocalServer local_server_;
-
+  SignalRedirector& redirector_;
   FriendsManager friend_manager_;
-  ServerManager server_manager_;
+  ServerManager* server_manager_;
 
   DataAccessor client_data_;
 };

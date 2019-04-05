@@ -17,6 +17,6 @@ void RegisterResponseStrategy::DoWork() {
     emit RegisterResult(info.id);
   }
   if (type == static_cast<quint8>(ServerRequest::REGISTER_FAILED)) {
-    emit RegisterResult(-1);
+    emit RegisterResult(0);
   }
 }

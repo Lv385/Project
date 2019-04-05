@@ -2,7 +2,7 @@
 #define INFO_H
 #include "statement.h"
 
-namespace SQLDAL {
+namespace dal {
 
 
 class Info : public Statement {
@@ -19,5 +19,5 @@ class Info : public Statement {
   virtual QString		   GetQuery(const unsigned int id) = 0;
   virtual QString		   DeleteQuery(const UsersID& users_id) = 0;
 };
-}  // namespace SQLDAL
+}  // namespace dal
 #endif  // !INFO_H

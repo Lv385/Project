@@ -1,7 +1,7 @@
 #include "friendinfo.h"
 #include "info.h"
 
-namespace SQLDAL {
+namespace dal {
 FriendInfo::FriendInfo(std::shared_ptr<Connect> Connect) : Info(Connect) {
   connection_->Open(SERVER_DB);
 }
@@ -50,4 +50,4 @@ QString FriendInfo::DeleteQuery(const UsersID& users_id) {
       " and second_user_ID = " + QString::number(users_id.second_user_id));
 }
 
-}  // namespace SQLDAL
+}  // namespace dal
