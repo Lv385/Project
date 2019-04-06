@@ -46,26 +46,31 @@ void DAL::UpdateClient(User cl) { //maybe projob
 }
 //DONe
 User DAL::getClient(QString login) {
-  /*if (id == 0) {
-    throw UserNotFound();
-  }*/
+
   User usr = users->GetUser(login);
-  return usr;
+  if (Check_If_Client_exists_In_Db(usr)==false) {
+    throw UserNotFound();
+  }
+  else {
+    return usr;
+  }
 }
 //DONe
 User DAL::getClient(quint32 i) {
-  /*if (id == 0) {
-    throw UserNotFound();
-  }*/
   User u = users->GetUser(i);
-  return u;
+  if (Check_If_Client_exists_In_Db(u)==false) {
+    throw UserNotFound();
+  }
+  else {
+    return u;
+  }
 }
 
 
 bool DAL::Check_If_Client_exists_In_Db(User cl) {
 
   User user = users->GetUser(cl.login);
-  if (user.login == cl.login)
+  if (user.id != 0)
   {
     return true;
   }else{
@@ -74,16 +79,14 @@ bool DAL::Check_If_Client_exists_In_Db(User cl) {
 }
 
 bool DAL::Check_If_Client_exists_In_Db(QString login) {
-  //return !(database_.GetIDByLogin(login) == 0); // according to mentor recomendations
   User user = users->GetUser(login);
-  /*if (user.login == login)
+  if (user.id != 0)
   {
     return true;
   }
   else {
     return false;
-  }*/
-  return user.login == login;
+  }
 }
 //DONe
 int DAL::GetClientId(User cl) {

@@ -84,7 +84,6 @@ bool LoginRequest::SendToFriend(QTcpSocket& output_socket, QByteArray raw_data,
                                 unsigned int id) { 
  
   User tempClient = database_->getClient(id);
-  qDebug()<<Logger::Log_User(tempClient)<<"\n";
   output_socket.connectToHost(tempClient.ip, tempClient.port);
   if (output_socket.waitForConnected(5000)) { // default is 5000 but this thing is makes bigger time of login req execution 
     

@@ -8,7 +8,7 @@ AddFriendRequest::AddFriendRequest(QByteArray &request, DAL *d, QTcpSocket *s)
   QString logstring = IP + "::xxx";
   Logger::LogOut(logstring, request);
 }
-
+//DONe
 void AddFriendRequest::PrepareResponse() {
   // FriendRequestInfo ;
   // other_login
@@ -33,6 +33,7 @@ void AddFriendRequest::PrepareResponse() {
     qDebug() << e.what();
   }
 }
+
 bool AddFriendRequest::SendResponde() {
   if (response_to_requester_ == (quint8)ServerRequest::FRIEND_REQUEST_SUCCEED) {
     QByteArray b = Parser::Empty_ToByteArray( (quint8)ServerRequest::FRIEND_REQUEST_SUCCEED);
@@ -61,8 +62,8 @@ bool AddFriendRequest::SendResponde() {
     } else {
       // go and write  info about this request into db
       UsersID pair;
-      pair.first_user_id  = sender_guy.id; //from sender
-      pair.second_user_id = requested_guy.id; // to requested
+      pair.first_user_id  = sender_guy.id; //from sender (хто) 
+      pair.second_user_id = requested_guy.id; // to requested  (нa кого)
       requested_guy.requests.push_back(pair);
       database_->UpdateClient(requested_guy);
     }
