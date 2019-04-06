@@ -16,14 +16,13 @@ void DAL::CreateNew(User cl) {
 }
 //done
 void DAL::UpdateClient(User cl) { //maybe projob
-  //form ->change ->update
-  //get ->change -> update                               // first_user_id is is pending users && second_user_id user
+                            // first_user_id is is pending users && second_user_id user
   QVector<UsersID> curr_pend_cl = cl.requests;
   QVector<UsersID> db_pend_cl = users->GetFriendsRequest(cl.id);
   if (curr_pend_cl.size() != db_pend_cl.size() ||
     ((!curr_pend_cl.isEmpty()) && db_pend_cl.last().first_user_id != curr_pend_cl.last().first_user_id)) {//???
     for(int i=0;i<db_pend_cl.size();++i){
-      users->DeleteFriendRequest(db_pend_cl[i]); //questionable  all update whould be tested
+      users->DeleteFriendRequest(db_pend_cl[i]); 
     }
     for (int i = 0; i < curr_pend_cl.size(); i++) {
       users->AddFriendRequest(curr_pend_cl.at(i));
@@ -33,15 +32,26 @@ void DAL::UpdateClient(User cl) { //maybe projob
   QVector<UsersID> db_notif_cl = users->GetFriendsNotification(cl.id);
   if (curr_notif_cl.size() != db_notif_cl.size() ||
     ((!curr_notif_cl.isEmpty()) &&
-      db_notif_cl.last().second_user_id != curr_notif_cl.last().second_user_id)) { //?
+      db_notif_cl.last().second_user_id != curr_notif_cl.last().second_user_id)) { //??
     for (int i = 0; i < db_notif_cl.size(); ++i) {
-      users->DeleteFriendNotification(db_notif_cl[i]);//questionable  all update whould be tested
+      users->DeleteFriendNotification(db_notif_cl[i]);
     }
     for (int i = 0; i < curr_notif_cl.size(); i++) {
       users->AddFriendNotification(curr_notif_cl.at(i));
     }
   }
-
+    //test stage
+    QVector<UsersID>curr_friends_cl = cl.friends;
+    QVector<UsersID>db_friends_cl = users->GetFriends(cl.id);
+    if(curr_friends_cl.size() != db_friends_cl.size()||((!curr_friends_cl.isEmpty())
+      &&(db_friends_cl.last().second_user_id!=curr_friends_cl.last().second_user_id))) {
+      for (int i = 0; i < db_friends_cl.size(); ++i) {
+        users->DeleteFriend(db_friends_cl[i]);
+      }
+      for (int i = 0; i < curr_friends_cl.size(); i++) {
+        users->AddFriend(curr_friends_cl.at(i));
+      }
+    }
   users->UpdateUser(cl);
 }
 //DONe
