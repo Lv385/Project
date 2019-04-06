@@ -46,6 +46,9 @@ bool LoginRequest::SendResponde() {
     client_socket_->waitForBytesWritten(3000);
     SendingPendingFriendRequests(); // done
     SendingPendingNotifications();  // done
+    SendingPendingFriendRequests();
+    SendingPendingNotifications();
+    database_->UpdateClient(requester_);
     client_socket_->disconnectFromHost();
 
     // sending FriendUpdateInfo to all friends
@@ -96,7 +99,7 @@ bool LoginRequest::SendToFriend(QTcpSocket& output_socket, QByteArray raw_data,
 
   return false;
 }
-//DONE  // had trouble 
+//DONE  
 void LoginRequest::SendingPendingFriendRequests() {
   // QTcpSocket notifiying_requester;
   QVector<UsersID> pendsreqs = requester_.requests;  // theese guys want to be friends
@@ -116,6 +119,15 @@ void LoginRequest::SendingPendingFriendRequests() {
    
     client_socket_->write(raw_data);
     client_socket_->waitForBytesWritten(1000);
+
+    for (int i = 0; i < requester_.requests.size(); i++)
+    {
+      if (requester_.requests[i].second_user_id == requester_.id)
+      {
+        requester_.requests.remove(i);
+      }
+    }
+    //and than update requester_ in db by updateClient outside of this func
   }
 }
 //test
@@ -142,5 +154,13 @@ void LoginRequest::SendingPendingNotifications() {
 
     client_socket_->write(raw_data);
     client_socket_->waitForBytesWritten(1000);
+
+    for (int i = 0; i < requester_.notification.size(); i++)
+    {
+      if (requester_.notification[i].second_user_id == requester_.id)
+      {
+        requester_.notification.remove(i);
+      }
+    }
   }
 }
