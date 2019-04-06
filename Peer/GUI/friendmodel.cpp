@@ -5,11 +5,11 @@ FriendModel::FriendModel(QObject *parent)
   : QAbstractListModel(parent) {
 }
 
-QString FriendModel::GetFirstFriend() const {
+unsigned FriendModel::GetFirstFriend() const {
   if (!friends_list_.isEmpty()) {
-    return friends_list_[0]->login();
+    return friends_list_[0]->id();
   } else {
-    return "";    //FIXME
+    return 0;    //FIXME
   }
 }
 

@@ -1,5 +1,5 @@
 #include "connect.h"
-namespace SQLDAL {
+namespace dal {
 Connect::Connect(const QString& connection_name)
     : connection_name_(connection_name) {
   const QString driver_name = "QSQLITE";
@@ -22,4 +22,4 @@ void Connect::Close() {
 }
 
 QSqlDatabase Connect::GetDB() { return data_base_; }
-}  // namespace SQLDAL
+}  // namespace dal

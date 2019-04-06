@@ -5,7 +5,19 @@ LoginPageForm {
     id: rect
     buttonLogIn.onClicked: {
         runIndicator = true
-        stackView.push("MainPage.qml")
+		loginUser(loginUsername.text, loginPassword.text)        
+    }
+	
+    Connections{
+        target: guiManager
+        onOpenMainPage: {
+			runIndicator = false
+            stackView.push("MainPage.qml")
+        }
+		onLogInFailed: {
+            popup.popMessage = "Log in failed!"
+            popup.open()
+		}
     }
 
     buttonRegister.onClicked: {

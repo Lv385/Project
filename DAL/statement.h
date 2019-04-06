@@ -6,12 +6,12 @@
 #include <memory>
 #include "Connection/connect.h"
 
-#define CLIENT_DB "../DAL2 dont touch/DAL2/Client"
-#define SERVER_DB "../DAL2 dont touch/DAL2/Server"
+#define CLIENT_DB "../DAL/Client"
+#define SERVER_DB "../DAL/Server"
 
 #include "client_data_types.h"
 
-namespace SQLDAL {
+namespace dal {
 	class Statement {
 	public:
 		Statement(std::shared_ptr<Connect> connection);

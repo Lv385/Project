@@ -9,7 +9,7 @@
 #include <QTcpSocket>
 #include <QIODevice>
 #include "../Parser&Structs/parser.h"
-#include "DAL/Client.h"
+#include "../Server/DAL/Client.h"
 #include "sqldal.h"
 
 #define stringify( name ) # name

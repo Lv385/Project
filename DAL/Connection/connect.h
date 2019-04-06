@@ -8,7 +8,7 @@
 #include <QtSql/QSqlQuery>
 #include <QtSql/QSqlTableModel>
 
-namespace SQLDAL {
+namespace dal {
   class Connect {
   public:
 	  explicit			Connect(const QString &connection_name);

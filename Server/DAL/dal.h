@@ -26,6 +26,6 @@ class DAL {
 
  private:
 
-  SQLDAL::UnitOfWork database_;
-  std::shared_ptr<SQLDAL::Users> users;
+  dal::UnitOfWork database_;
+  std::shared_ptr<dal::Users> users;
 };

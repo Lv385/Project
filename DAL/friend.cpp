@@ -1,5 +1,5 @@
 #include "friend.h"
-namespace SQLDAL {
+namespace dal {
 Friends::Friends(std::shared_ptr<Connect> Connect) : Statement(Connect) {
   connection_->Open(CLIENT_DB);
 }
@@ -14,13 +14,8 @@ QVector<Friend> Friends::GetFriends() {
   ExectuteQuery(CreateQuerySelectAll());
   unsigned int counter = 0;
   while (query_.next()) {
-    friends[counter].id = query_.record().value(0).toInt();
-    friends[counter].name = query_.record().value(1).toString();
-    friends[counter].surname = query_.record().value(2).toString();
-    friends[counter].ip = query_.record().value(3).toString();
-    friends[counter].port = query_.record().value(4).toInt();
-    friends[counter].login = query_.record().value(5).toString();
-    friends[counter++].status = query_.record().value(6).toBool();
+	  FillStructure(friends[counter]);
+	  counter++;
   }
   return friends;
 }
@@ -29,13 +24,7 @@ Friend Friends::GetFriend(const unsigned int id) {
   ExectuteQuery(SelectQuery(id));
   query_.first();
   Friend _friend;
-  _friend.id = query_.value(0).toInt();
-  _friend.name = query_.value(1).toString();
-  _friend.surname = query_.value(2).toString();
-  _friend.ip = query_.value(3).toString();
-  _friend.port = query_.value(4).toInt();
-  _friend.login = query_.value(5).toString();
-  _friend.status = query_.value(6).toBool();
+  FillStructure(_friend);
 
   query_.finish();
   return _friend;
@@ -46,13 +35,7 @@ Friend Friends::GetFriend(const QString & login)
 	ExectuteQuery(SelectQuery(login));
 	query_.first();
 	Friend _friend;
-	_friend.id = query_.value(0).toInt();
-	_friend.name = query_.value(1).toString();
-	_friend.surname = query_.value(2).toString();
-	_friend.ip = query_.value(3).toString();
-	_friend.port = query_.value(4).toInt();
-	_friend.login = query_.value(5).toString();
-	_friend.status = query_.value(6).toBool();
+	FillStructure(_friend);
 
 	query_.finish();
 	return _friend;
@@ -71,6 +54,18 @@ void Friends::AddNewFriend(const Friend& _friend) {
 void Friends::DeleteFriend(const Friend& _friend) {
   ExectuteQuery(DeleteQuery(_friend));
   query_.finish();
+}
+
+void Friends::FillStructure(Friend & _friend)
+{
+	_friend.id = query_.value(0).toInt();
+	_friend.name = query_.value(1).toString();
+	_friend.surname = query_.value(2).toString();
+	_friend.ip = query_.value(3).toString();
+	_friend.port = query_.value(4).toInt();
+	_friend.login = query_.value(5).toString();
+	_friend.status = query_.value(6).toBool();
+	
 }
 
 QString Friends::CreateQuerySelectAll() {
@@ -122,4 +117,4 @@ QString Friends::DeleteQuery(const Friend& _friend) {
 QString Friends::CreateQueryCountOfFriends() {
   return QString("SELECT COUNT(user_id) FROM friends");
 }
-}  // namespace SQLDAL
+}  // namespace dal

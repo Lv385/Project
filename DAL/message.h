@@ -8,7 +8,7 @@
 #include <QTime>
 #include "statement.h"
 
-namespace SQLDAL {
+namespace dal {
 
 class Messages : public Statement {
  public:
@@ -24,6 +24,7 @@ class Messages : public Statement {
   void UpdateMessage(const Message& message);
 
  private:
+  void FillStructure(Message& message);
   QString UpdateQuery(const Message& message);
   QString SelectQuery(unsigned int chat_id);
   QString SelectQuery(QString user_login);
@@ -32,5 +33,5 @@ class Messages : public Statement {
   QString CreateQueryCountOfMessages(unsigned int chat_id);
   QString CreateQueryCountOfMessages(QString user_login);
 };
-}  // namespace SQLDAL
+}  // namespace dal
 #endif  // MESSAGE_H

@@ -2,8 +2,8 @@
 
 DataAccessor::DataAccessor(){
   db_.GenerateUniqueConnection();
-  user_ = db_.GetEntity<SQLDAL::Friends>();
-  message_ = db_.GetEntity<SQLDAL::Messages>();
+  user_ = db_.GetEntity<dal::Friends>();
+  message_ = db_.GetEntity<dal::Messages>();
 }
 
 DataAccessor::~DataAccessor(){}
@@ -39,8 +39,7 @@ unsigned DataAccessor::get_id_by_login(const QString user_login){
 }*/
 
 QVector<Message> DataAccessor::get_messages(const QString user_login) {
-  Friend f = user_->GetFriend(user_login);
-  QVector<Message> messages = message_->GetMessages(f.id);
+  QVector<Message> messages = message_->GetMessages(user_login);
   return messages;
 }
 

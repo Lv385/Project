@@ -2,7 +2,7 @@
 //done
 DAL::DAL() {
   database_.GenerateUniqueConnection();
-  users = database_.GetEntity<SQLDAL::Users>();
+  users = database_.GetEntity<dal::Users>();
 }
 //DONE
 DAL::~DAL() {
