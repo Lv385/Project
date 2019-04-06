@@ -30,6 +30,6 @@ private:
 
 	LoginInfo incoming_structure_;	
 	FriendUpdateInfo send_to_friends_;  
-	Client requester_; 
+	User requester_; 
 	quint8 response_to_requester_;  
 };

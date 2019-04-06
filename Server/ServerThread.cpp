@@ -54,5 +54,5 @@ void ServerThread::SetRequest(quint8 type, QTcpSocket* connection)
 
 ServerThread::~ServerThread()
 {
-	delete request_;
+	delete request_; 
 }
