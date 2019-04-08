@@ -17,6 +17,8 @@
 class GUIManager : public QObject {
   Q_OBJECT
 
+  Q_PROPERTY(int my_id READ my_id CONSTANT)
+
   Q_PROPERTY(QObject* friend_model READ friend_model CONSTANT)
   Q_PROPERTY(QObject* message_model READ message_model CONSTANT)
   Q_PROPERTY(QObject* friend_request_model READ friend_request_model CONSTANT)
@@ -29,6 +31,7 @@ class GUIManager : public QObject {
   GUIManager(const GUIManager&) = delete;
   GUIManager& operator=(const GUIManager&) = delete;
 
+  int my_id() const;
   FriendModel* friend_model();
   MessageModel* message_model();
   FriendRequestModel* friend_request_model();
@@ -45,9 +48,13 @@ class GUIManager : public QObject {
 
 signals:
   void SelectedFriendIdChanged(unsigned id);
+  void openMainPage();
+  void logInFailed();
 
 public slots:
-  void LogIn(QString user_login);  //only starting socket, should implement LOGIN
+  void LogIn(QString user_login, QString user_password); 
+  void Register(QString user_login, QString user_password);
+  void OnLoginResult(bool);
   void SendMessage(QString message);
   void LoadMessages(unsigned id);  // temporary implementation(for testing)
 
@@ -64,7 +71,7 @@ public slots:
   MessageModel message_model_;
   FriendRequestModel friend_request_model_;
 
-  QVector<Friend> friends_;   //FIXME: use id insted of Friend obj in sendMessage
+ // QVector<Friend> friends_;   //FIXME: use id insted of Friend obj in sendMessage
   ClientController* controller_;
   ClientLogger* logger_;
 

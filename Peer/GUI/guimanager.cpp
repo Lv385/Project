@@ -11,11 +11,13 @@ GUIManager::GUIManager(QObject *parent)
   newFriendRiequest();
   newFriendRiequest();
 
-  SignalRedirector::get_instance().set_controller(controller_);
-
   connect(this, SIGNAL(SelectedFriendIdChanged(unsigned)), this, SLOT(LoadMessages(unsigned)));
   connect(controller_, SIGNAL(MessageRecieved(unsigned)), this, SLOT(LoadMessages(unsigned)));
-  this->dumpObjectInfo();
+  connect(controller_, SIGNAL(LoginResult(bool)), this, SLOT(OnLoginResult(bool)));
+}
+
+int GUIManager::my_id() const { 
+  return controller_->app_info_.my_id;
 }
 
 FriendModel* GUIManager::friend_model() {
@@ -90,31 +92,44 @@ void GUIManager::newFriendRiequest() {
   friend_request_model_.AddRequestToList(new_friend_request);
 }
 
-void GUIManager::LogIn(QString user_login) { 
+void GUIManager::LogIn(QString user_login, QString user_password) { 
+  controller_->app_info_.remote_server_ip = "192.168.103.121";
+  controller_->app_info_.remote_server_port = 8888;
   controller_->app_info_.my_port = 8989;  //FIXME
   controller_->app_info_.my_login = user_login;
+  controller_->app_info_.my_password = user_password;
   controller_->app_info_.my_id = client_data_.get_id_by_login(user_login);
   logger_->WriteLog(LogType::SUCCESS, user_login);
   controller_->Start();
+  controller_->LogIn(user_login, user_password);
 
-  friends_ = controller_->LoadFriends();
-  LoadFriends();
+}
 
-  LoadMessages(friend_model_.GetFirstFriend());
+void GUIManager::Register(QString user_login, QString user_password) {
+
+}
+
+void GUIManager::OnLoginResult(bool logged_in) {
+  if (logged_in) {
+    LoadFriends();
+
+    LoadMessages(friend_model_.GetFirstFriend());
+    emit openMainPage();
+  }
+  else {
+    controller_->Stop();
+    emit logInFailed();
+  }
 }
 
 void GUIManager::SendMessage(QString message) { 
-  for (auto user : friends_)
-    if (user.id == selected_friend_id_) 
-      controller_->SendMessage(user, message);
+      controller_->SendMessage(selected_friend_id_, message);
 
 }
 
 void GUIManager::LoadFriends() {   //don't forget to load id
-
-  for (const Friend& i : friends_) {
-    bool status = client_data_.get_friends_status(i.id);  // just for test
-    FriendItem* friend_item = new FriendItem(i.login, status, i.id);
+  for (const Friend& i : controller_->LoadFriends()) {
+    FriendItem* friend_item = new FriendItem(i.login, false, i.id);
     friend_model_.AddFriendToList(friend_item);
   }
 }

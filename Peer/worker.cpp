@@ -105,7 +105,7 @@ void Worker::OnReadyReadBlock() {
 }
 
 Worker::~Worker() {
-  writer_;
+  delete writer_;
   delete reader_; 
-  delete socket_;
+  socket_->deleteLater(); 
 }

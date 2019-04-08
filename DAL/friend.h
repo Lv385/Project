@@ -5,7 +5,7 @@
 #include <qsqlrecord.h>
 #include "statement.h"
 
-namespace SQLDAL {
+namespace dal {
 
   class Friends : public Statement {
    public:
@@ -29,5 +29,5 @@ namespace SQLDAL {
 	QString DeleteQuery(const Friend& _friend);
 	QString CreateQueryCountOfFriends();
   };
-}  // namespace SQLDAL
+}  // namespace dal
 #endif  // FRIEND_H

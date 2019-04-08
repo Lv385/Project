@@ -11,7 +11,7 @@
 
 #include "..\Common\client_data_types.h"
 
-namespace SQLDAL {
+namespace dal {
 	class Statement {
 	public:
 		Statement(std::shared_ptr<Connect> connection);

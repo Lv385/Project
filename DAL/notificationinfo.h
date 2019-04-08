@@ -2,7 +2,7 @@
 #define NOTIFICATION_INFO_H
 
 #include "info.h"
-namespace SQLDAL {
+namespace dal {
   class NotificationInfo : public Info {
    public:
 	NotificationInfo(std::shared_ptr<Connect> Connect);

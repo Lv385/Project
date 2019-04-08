@@ -17,6 +17,8 @@
 
 #include "../Parser&Structs/request_types.h"
 
+class SignalRedirector;
+
 class ClientController : public QObject {
   Q_OBJECT
 
@@ -25,7 +27,7 @@ class ClientController : public QObject {
   ~ClientController();
 
 
-  void SendMessage(Friend peer_info, QString message);
+  void SendMessage(unsigned id, QString message);
   void LogIn(QString login, QString password);
   void Register(QString login, QString password);
   void AddFriend(QString login);
@@ -38,12 +40,11 @@ class ClientController : public QObject {
 
  signals:
 
-  void messageReceived(Friend info, QString message);
   void MessageSent(unsigned, bool);
   void LoginResult(bool);
   void RegisterResult(quint32 id);
   void MessageRecieved(unsigned id);
-  void StatusChanged(quint32 id, bool status);
+  void StatusChanged(unsigned id, bool status);
 
  private slots:
   void OnNewConnection(QTcpSocket* socket);
@@ -59,9 +60,9 @@ class ClientController : public QObject {
   QHash<unsigned, Friend> friends_cache;
 
   LocalServer local_server_;
-
+  SignalRedirector& redirector_;
   FriendsManager friend_manager_;
-  ServerManager server_manager_;
+  ServerManager* server_manager_;
 
   DataAccessor client_data_;
 };
