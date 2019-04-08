@@ -64,7 +64,6 @@ public slots:
  private:
   void LoadFriends();  // temporary implementation(for testing)
 
-  int my_id_;
   unsigned selected_friend_id_;
 
   FriendModel friend_model_;

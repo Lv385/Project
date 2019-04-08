@@ -2,7 +2,6 @@
 
 GUIManager::GUIManager(QObject *parent)
     : QObject(parent),
-      my_id_(1),
       logger_(ClientLogger::Instance()) {     //for testing
   controller_ = new ClientController(this);
   logger_->set_log_level(LogLevel::HIGH);
@@ -56,7 +55,7 @@ void GUIManager::deleteFriend(FriendItem* friend_to_delete) {
 
 void GUIManager::newMessage(QString message) {
   MessageItem* new_message = new MessageItem(message, QTime::currentTime().toString("hh:mm"),
-                                             QDate::currentDate().toString("d MMM"), my_id_);
+                                             QDate::currentDate().toString("d MMM"), my_id());
   message_model_.AddMessageToList(new_message);
 }
 
@@ -98,8 +97,7 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   controller_->app_info_.my_port = 8989;  //FIXME
   controller_->app_info_.my_login = user_login;
   controller_->app_info_.my_password = user_password;
-  controller_->app_info_.my_id = client_data_.get_id_by_login(user_login);
-  logger_->WriteLog(LogType::SUCCESS, user_login);
+  controller_->app_info_.my_id = client_data_.get_id_by_login(user_login); //FIXME:
   controller_->Start();
   controller_->LogIn(user_login, user_password);
 
@@ -114,6 +112,7 @@ void GUIManager::OnLoginResult(bool logged_in) {
     LoadFriends();
 
     LoadMessages(friend_model_.GetFirstFriend());
+    logger_->WriteLog(LogType::SUCCESS, controller_->app_info_.my_login);
     emit openMainPage();
   }
   else {
@@ -124,12 +123,11 @@ void GUIManager::OnLoginResult(bool logged_in) {
 
 void GUIManager::SendMessage(QString message) { 
       controller_->SendMessage(selected_friend_id_, message);
-
 }
 
 void GUIManager::LoadFriends() {   //don't forget to load id
   for (const Friend& i : controller_->LoadFriends()) {
-    FriendItem* friend_item = new FriendItem(i.login, false, i.id);
+    FriendItem* friend_item = new FriendItem(i.login, true, i.id);
     friend_model_.AddFriendToList(friend_item);
   }
 }

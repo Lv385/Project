@@ -40,7 +40,7 @@ void ClientController::SendMessage(unsigned id, QString message) {
 
 void ClientController::LogIn(QString login, QString password) {
   LoginInfo info;
-  info.id = client_data_.get_id_by_login(login);
+  info.id = client_data_.get_id_by_login(login);   //FIXME: LogIn should work by login(not id)
   info.password = password;
   info.port = app_info_.my_port;
 
