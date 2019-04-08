@@ -26,6 +26,7 @@ class ServerManager : public QObject {
   void SendRequest(QByteArray data);
 
  private slots:
+  //void OnNewConnection();
   void DoWork();
   void OnReadyReadBlock();
   void OnConnected();

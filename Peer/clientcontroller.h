@@ -27,7 +27,7 @@ class ClientController : public QObject {
   ~ClientController();
 
 
-  void SendMessage(Friend peer_info, QString message);
+  void SendMessage(unsigned id, QString message);
   void LogIn(QString login, QString password);
   void Register(QString login, QString password);
   void AddFriend(QString login);
@@ -40,12 +40,11 @@ class ClientController : public QObject {
 
  signals:
 
-  void messageReceived(Friend info, QString message);
   void MessageSent(unsigned, bool);
   void LoginResult(bool);
   void RegisterResult(quint32 id);
   void MessageRecieved(unsigned id);
-  void StatusChanged(quint32 id, bool status);
+  void StatusChanged(unsigned id, bool status);
 
  private slots:
   void OnNewConnection(QTcpSocket* socket);

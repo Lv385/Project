@@ -36,8 +36,10 @@ QVector<Friend> ClientController::LoadFriends() {
   return client_data_.get_friends();
 }
 
-void ClientController::SendMessage(Friend peer_info, QString message) {
-  friend_manager_.SendMessage(peer_info, message);
+void ClientController::SendMessage(unsigned id, QString message) {
+  //to do
+  Friend friend_info = client_data_.get_friend(id);
+  friend_manager_.SendMessage(friend_info, message);
 }
 
 void ClientController::LogIn(QString login, QString password) {
@@ -85,7 +87,7 @@ void ClientController::OnFriendRequestRecieved() {}
 void ClientController::OnNewConnection(QTcpSocket *socket) {
   if (socket->peerAddress().isEqual(app_info_.remote_server_ip,
                                     QHostAddress::TolerantConversion)) {
-    server_manager_;
+    server_manager_->set_socket(socket);
   } else {
     BlockReader *reader = new BlockReader(socket);
     connect(reader, SIGNAL(ReadyReadBlock()), &friend_manager_,
