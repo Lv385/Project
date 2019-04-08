@@ -37,7 +37,6 @@ QVector<Friend> ClientController::LoadFriends() {
 }
 
 void ClientController::SendMessage(unsigned id, QString message) {
-  //to do
   Friend friend_info = client_data_.get_friend(id);
   friend_manager_.SendMessage(friend_info, message);
 }

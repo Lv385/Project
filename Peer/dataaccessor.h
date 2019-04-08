@@ -28,5 +28,7 @@ class DataAccessor {
   dal::UnitOfWork db_;
   std::shared_ptr<dal::Friends> user_;
   std::shared_ptr<dal::Messages> message_;
+  std::shared_ptr<dal::FriendRequests> friend_requests_;
+
 };
 #endif
