@@ -96,6 +96,7 @@
     <ClCompile Include="Connection\connect.cpp" />
     <ClCompile Include="friend.cpp" />
     <ClCompile Include="friendinfo.cpp" />
+    <ClCompile Include="friendrequest.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="message.cpp" />
     <ClCompile Include="notificationinfo.cpp" />
@@ -108,6 +109,7 @@
     <ClInclude Include="Connection\connect.h" />
     <ClInclude Include="friend.h" />
     <ClInclude Include="friendinfo.h" />
+    <ClInclude Include="friendrequest.h" />
     <ClInclude Include="info.h" />
     <ClInclude Include="message.h" />
     <ClInclude Include="notificationinfo.h" />
