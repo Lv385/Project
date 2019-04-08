@@ -50,7 +50,7 @@ bool AddFriendRequest::SendResponde() {
     //sending ADD_FRIEND_REQUEST,//+AddFriendInfo(s->c)I,-FRIEND_REQUEST;    
     QTcpSocket output_socket;
     output_socket.connectToHost(requested_guy.ip, requested_guy.port);    
-    //huinia in logger
+    
     QString Logstring_ = QHostAddress(QHostAddress(requested_guy.ip).toIPv4Address(false)).toString()+ "::" 
                                              + Logger::ConvertQuint32ToString(requested_guy.port);
     Logger::LogOut(Logstring_, send_addfriend_info_bytearr);
@@ -62,8 +62,8 @@ bool AddFriendRequest::SendResponde() {
     } else {
       // go and write  info about this request into db
       UsersID pair;
-      pair.first_user_id  = sender_guy.id; //from sender (хто) 
-      pair.second_user_id = requested_guy.id; // to requested  (нa кого)
+      pair.first_user_id  = sender_guy.id; //from sender (who) 
+      pair.second_user_id = requested_guy.id; // to requested  (on whom)
       requested_guy.requests.push_back(pair);
       database_->UpdateClient(requested_guy);
     }

@@ -1,26 +1,26 @@
 #include "dal.h"
-//done
+
 DAL::DAL() {
   database_.GenerateUniqueConnection();
   users = database_.GetEntity<dal::Users>();
 }
-//DONE
+
 DAL::~DAL() {
    // if db connection is closing automatically
    // this destructor useless
   // if no it need to be not empty
 }
-//Done
+
 void DAL::CreateNew(User cl) {
   users->AddNewUser(cl);
 }
-//done
-void DAL::UpdateClient(User cl) { //maybe projob
+
+void DAL::UpdateClient(User cl) { 
                             // first_user_id is is pending users && second_user_id user
   QVector<UsersID> curr_pend_cl = cl.requests;
   QVector<UsersID> db_pend_cl = users->GetFriendsRequest(cl.id);
   if (curr_pend_cl.size() != db_pend_cl.size() ||
-    ((!curr_pend_cl.isEmpty()) && db_pend_cl.last().first_user_id != curr_pend_cl.last().first_user_id)) {//???
+    ((!curr_pend_cl.isEmpty()) && db_pend_cl.last().first_user_id != curr_pend_cl.last().first_user_id)) {
     for(int i=0;i<db_pend_cl.size();++i){
       users->DeleteFriendRequest(db_pend_cl[i]); 
     }
@@ -32,7 +32,7 @@ void DAL::UpdateClient(User cl) { //maybe projob
   QVector<UsersID> db_notif_cl = users->GetFriendsNotification(cl.id);
   if (curr_notif_cl.size() != db_notif_cl.size() ||
     ((!curr_notif_cl.isEmpty()) &&
-      db_notif_cl.last().second_user_id != curr_notif_cl.last().second_user_id)) { //??
+      db_notif_cl.last().second_user_id != curr_notif_cl.last().second_user_id)) { 
     for (int i = 0; i < db_notif_cl.size(); ++i) {
       users->DeleteFriendNotification(db_notif_cl[i]);
     }
@@ -40,7 +40,7 @@ void DAL::UpdateClient(User cl) { //maybe projob
       users->AddFriendNotification(curr_notif_cl.at(i));
     }
   }
-    //test stage
+    
     QVector<UsersID>curr_friends_cl = cl.friends;
     QVector<UsersID>db_friends_cl = users->GetFriends(cl.id);
     if(curr_friends_cl.size() != db_friends_cl.size()||((!curr_friends_cl.isEmpty())
@@ -54,7 +54,7 @@ void DAL::UpdateClient(User cl) { //maybe projob
     }
   users->UpdateUser(cl);
 }
-//DONe
+
 User DAL::getClient(QString login) {
 
   User usr = users->GetUser(login);
@@ -65,7 +65,7 @@ User DAL::getClient(QString login) {
     return usr;
   }
 }
-//DONe
+
 User DAL::getClient(quint32 i) {
   User u = users->GetUser(i);
   if (Check_If_Client_exists_In_Db(u)==false) {
@@ -78,27 +78,15 @@ User DAL::getClient(quint32 i) {
 
 
 bool DAL::Check_If_Client_exists_In_Db(User cl) {
-
   User user = users->GetUser(cl.login);
-  if (user.id != 0)
-  {
-    return true;
-  }else{
-    return false;
-  }
+  return user.id != 0;
 }
 
 bool DAL::Check_If_Client_exists_In_Db(QString login) {
   User user = users->GetUser(login);
-  if (user.id != 0)
-  {
-    return true;
-  }
-  else {
-    return false;
-  }
+  return user.id != 0;
 }
-//DONe
+
 int DAL::GetClientId(User cl) {
   User u = users->GetUser(cl.login);
   return u.id;
