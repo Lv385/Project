@@ -69,7 +69,7 @@ QByteArray Parser::NewFriendInfo_ToByteArray(
   NewFriendInfo& friend_update_info) {
   QByteArray result;
   QDataStream out(&result, QIODevice::WriteOnly);
-  out << quint8(ServerRequest::FRIEND_UPDATE_INFO);  // type
+  out << quint8(ServerRequest::NEW_FRIEND_INFO);  // type
   out << friend_update_info.ip.toIPv4Address();       // ip
   out << friend_update_info.port;                     // port
   out << friend_update_info.id;                       // id

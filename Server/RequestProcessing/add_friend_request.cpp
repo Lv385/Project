@@ -8,20 +8,20 @@ AddFriendRequest::AddFriendRequest(QByteArray &request, DAL *d, QTcpSocket *s)
   QString logstring = IP + "::xxx";
   Logger::LogOut(logstring, request);
 }
-
+//DONe
 void AddFriendRequest::PrepareResponse() {
   // FriendRequestInfo ;
   // other_login
   // id
   // password
   try {
-    // he actually loginned so uptodated data is in db
-    sender_guy = database_->getClient(income_data_.id);  
+     //he actually loginned so uptodated data is in db
+   sender_guy = database_->getClient(income_data_.id);  
     //TODO: check if parties are not friends allready!!!!!
-    if (QString::compare(sender_guy.GetUserPassword(), income_data_.password) == 0) {
+    if (QString::compare(sender_guy.password, income_data_.password) == 0) {
       requested_guy = database_->getClient(income_data_.other_login);
-      info_to_send.requester_id = sender_guy.GetUserId();
-      info_to_send.requester_login = sender_guy.GetUserName();
+      info_to_send.requester_id = sender_guy.id;
+      info_to_send.requester_login = sender_guy.login;
       send_addfriend_info_bytearr = Parser::AddFriendInfo_ToByteArray(info_to_send);
       response_to_requester_ = (quint8)ServerRequest::FRIEND_REQUEST_SUCCEED;
     } else {
@@ -33,6 +33,7 @@ void AddFriendRequest::PrepareResponse() {
     qDebug() << e.what();
   }
 }
+
 bool AddFriendRequest::SendResponde() {
   if (response_to_requester_ == (quint8)ServerRequest::FRIEND_REQUEST_SUCCEED) {
     QByteArray b = Parser::Empty_ToByteArray( (quint8)ServerRequest::FRIEND_REQUEST_SUCCEED);
@@ -48,9 +49,10 @@ bool AddFriendRequest::SendResponde() {
 
     //sending ADD_FRIEND_REQUEST,//+AddFriendInfo(s->c)I,-FRIEND_REQUEST;    
     QTcpSocket output_socket;
-    output_socket.connectToHost(requested_guy.GetUserIp(), requested_guy.GetUserPort());    
-    
-    QString Logstring_ = QHostAddress(requested_guy.GetUserIp().toIPv4Address(false)).toString()+ "::" + Logger::ConvertQuint32ToString(requested_guy.GetUserPort());
+    output_socket.connectToHost(requested_guy.ip, requested_guy.port);    
+    //huinia in logger
+    QString Logstring_ = QHostAddress(QHostAddress(requested_guy.ip).toIPv4Address(false)).toString()+ "::" 
+                                             + Logger::ConvertQuint32ToString(requested_guy.port);
     Logger::LogOut(Logstring_, send_addfriend_info_bytearr);
 
     if (output_socket.waitForConnected(5000)) {  // check if can connect if yes -> send add friend     
@@ -59,23 +61,25 @@ bool AddFriendRequest::SendResponde() {
       output_socket.disconnectFromHost();
     } else {
       // go and write  info about this request into db
-      requested_guy.AddPendingFriendRequest(sender_guy);
+      UsersID pair;
+      pair.first_user_id  = sender_guy.id; //from sender (хто) 
+      pair.second_user_id = requested_guy.id; // to requested  (нa кого)
+      requested_guy.requests.push_back(pair);
       database_->UpdateClient(requested_guy);
     }
     output_socket.close();
-    // IMPORTANT!!!!   Dopilit login with checking  if user had any issues to
-    // him
+   
   } else {
     QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequest::FRIEND_REQUEST_FAILED);
     b.append(Parser::GetUnpossibleSequence());
 
     QString Ip = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();
-    QString logstrin = Ip + "::" + Logger::ConvertQuint32ToString(sender_guy.GetUserPort());
+    QString logstrin = Ip + "::" + Logger::ConvertQuint32ToString(sender_guy.port);
     Logger::LogOut(logstrin, b);
 
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
     client_socket_->disconnectFromHost();
   }
-    return false;
+   return false;
 }

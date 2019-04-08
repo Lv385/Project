@@ -17,7 +17,7 @@ void AbstractStrategy::set_data(QByteArray data) {
   data_ = data; 
 }
 
-void AbstractStrategy::set_peer_info(Friend info) { 
+void  AbstractStrategy::set_peer_info(Friend info) { 
   peer_info_ = info; 
 }
 
@@ -25,5 +25,6 @@ void AbstractStrategy::set_my_id(unsigned my_id) {
   my_id_ = my_id; 
 }
 
-AbstractStrategy::~AbstractStrategy() {}
+AbstractStrategy::~AbstractStrategy() {
+}
 

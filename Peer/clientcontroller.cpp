@@ -12,8 +12,7 @@ ClientController::ClientController(QObject *parent)
           SLOT(OnNewConnection(QTcpSocket *)));
   redirector_.set_controller(this);
   server_manager_ = new ServerManager(nullptr, app_info_);
-  QList<QHostAddress> ipAddressesList =
-          QNetworkInterface::allAddresses();
+  QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
   // use the first non-localhost IPv4 address
   for (int i = 0; i < ipAddressesList.size(); ++i) {
     if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
@@ -35,8 +34,8 @@ QVector<Friend> ClientController::LoadFriends() {
 
 void ClientController::SendMessage(unsigned id, QString message) {
   //to do
-  Friend info;//  = client_data_.get_friend_by_id;
-  friend_manager_.SendMessage(info, message);
+  Friend friend_info = client_data_.get_friend(id);
+  friend_manager_.SendMessage(friend_info, message);
 }
 
 void ClientController::LogIn(QString login, QString password) {
@@ -84,7 +83,7 @@ void ClientController::OnFriendRequestRecieved() {}
 void ClientController::OnNewConnection(QTcpSocket *socket) {
   if (socket->peerAddress().isEqual(app_info_.remote_server_ip,
                                     QHostAddress::TolerantConversion)) {
-    server_manager_;
+    server_manager_->set_socket(socket);
   } else {
     BlockReader *reader = new BlockReader(socket);
     connect(reader, SIGNAL(ReadyReadBlock()), &friend_manager_,

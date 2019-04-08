@@ -40,7 +40,7 @@ enum class ClientRequest : quint8 {
   LOGIN,//+LoginInfo(c->s)I,-user,-prc LoginRequest
   REGISTER,//+RegisterInfo(c->s)I,-user, -prc NewUserRequest
   FRIEND_REQUEST,//+FriendRequestInfo(c->s)I,-user, -prc add_friend_request
-  FRIENDSHIP_REJECTED,//+FriendRequestInfo_(c->s)ADD_FRIEND_REQUEST^, -prc friendship_request
+  FRIENDSHIP_REJECTED,//+FriendRequestInfo(c->s)ADD_FRIEND_REQUEST^, -prc friendship_request
   FRIENDSHIP_ACCEPTED,//+FriendRequestInfo(c->s)ADD_FRIEND_REQUEST^, -prc friendship_request
   ONLINE_UPDATE,
 };
@@ -56,7 +56,7 @@ enum class ServerRequest : quint8 {
   //requested login - not found
   FRIEND_REQUEST_FAILED,//empty(s->c)FRIEND_REQUEST;   
   FRIEND_REQUEST_SUCCEED,//empty(s->c)FRIEND_REQUEST;
-  ADD_FRIEND_REQUEST,//+AddFriendInfo(s->c)I,-FRIEND_REQUEST ; 
+  ADD_FRIEND_REQUEST,//+AddFriendInfo(s->c)I,-FRIEND_REQUEST; 
 
   // sending to all friends on peer logined
   FRIEND_UPDATE_INFO,  //+FriendUpdateInfo(s->c)I,-LOGIN ;
