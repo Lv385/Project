@@ -16,6 +16,10 @@ GUIManager::GUIManager(QObject *parent)
   connect(controller_, SIGNAL(LoginResult(bool)), this, SLOT(OnLoginResult(bool)));
 }
 
+int GUIManager::my_id() const { 
+  return controller_->app_info_.my_id;
+}
+
 FriendModel* GUIManager::friend_model() {
   return  &friend_model_;
 }
@@ -96,37 +100,36 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   controller_->app_info_.my_password = user_password;
   controller_->app_info_.my_id = client_data_.get_id_by_login(user_login);
   logger_->WriteLog(LogType::SUCCESS, user_login);
-  controller_->Start();
+ // controller_->Start();
   controller_->LogIn(user_login, user_password);
+  //OnLoginResult(true);
+
+}
+
+void GUIManager::Register(QString user_login, QString user_password) {
 
 }
 
 void GUIManager::OnLoginResult(bool logged_in) {
   if (logged_in) {
-    friends_ = controller_->LoadFriends();
     LoadFriends();
 
     LoadMessages(friend_model_.GetFirstFriend());
     emit openMainPage();
   }
   else {
-    controller_->Stop();
+    //controller_->Stop();
     emit logInFailed();
   }
 }
 
 void GUIManager::SendMessage(QString message) { 
-  for (auto user : friends_)
-    if (user.id == selected_friend_id_) 
-      controller_->SendMessage(user, message);
-
+  controller_->SendMessage(selected_friend_id_, message);
 }
 
 void GUIManager::LoadFriends() {   //don't forget to load id
-
-  for (const Friend& i : friends_) {
-    bool status = client_data_.get_friends_status(i.id);  // just for test
-    FriendItem* friend_item = new FriendItem(i.login, status, i.id);
+  for (const Friend& i : controller_->LoadFriends()) {
+    FriendItem* friend_item = new FriendItem(i.login, false, i.id);
     friend_model_.AddFriendToList(friend_item);
   }
 }

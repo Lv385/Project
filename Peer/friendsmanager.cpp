@@ -79,6 +79,7 @@ void FriendsManager::OnFirstRequestRecieved() {
             SLOT(OnDisconnected(unsigned id)));
     disconnect(reader, SIGNAL(ReadyReadBlock()), this,
                SLOT(OnFirstRequestRecieved()));
+    worker->dumpObjectInfo();
   } 
 }
 

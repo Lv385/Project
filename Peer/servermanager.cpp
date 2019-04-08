@@ -17,6 +17,8 @@ ServerManager::ServerManager(QTcpSocket *socket, ApplicationInfo& info)
   strategies_.insert(ServerRequest::REGISTER_SUCCEED, reg);
   strategies_.insert(ServerRequest::REGISTER_FAILED, reg);
   strategies_.insert(ServerRequest::FRIEND_UPDATE_INFO, friend_update);
+  //to do  
+  ServerRequest::ADD_FRIEND_REQUEST;
 }
 
 ServerManager::~ServerManager() {}
@@ -47,8 +49,7 @@ void ServerManager::DoWork() {
 
 void ServerManager::OnReadyReadBlock() { 
   QByteArray data; 
-  while (reader_->HasPendingBlock())
-  {
+  while (reader_->HasPendingBlock()) {
     data = reader_->ReadNextBlock();
     ServerRequest type = static_cast<ServerRequest>(Parser::getRequestType(data));
     strategy_ = strategies_[type];
@@ -57,6 +58,6 @@ void ServerManager::OnReadyReadBlock() {
   }
 }
 
-void ServerManager::OnConnected() { 
+void ServerManager::OnConnected() {
   writer_->WriteBlock(data_);
 }

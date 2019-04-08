@@ -2,12 +2,11 @@
 #include "signalredirector.h"
 
 RecieveMessageStrategy::RecieveMessageStrategy()
-    : AbstractStrategy(){
+    : AbstractStrategy() {
   redirector_.ConnectToMessageRecieved(this);
 }
 
-RecieveMessageStrategy::~RecieveMessageStrategy()
-{
+RecieveMessageStrategy::~RecieveMessageStrategy(){
 
 }
 
