@@ -2,10 +2,8 @@
 #include <iostream>
 #include <map>
 #include <string>
-#include "../DAL/Server/serverdb.h"
 #include "../Server/Exceptions/user_not_found.h"
 
-#include <QUuid>
 #include "client.h"
 #include "sqldal.h"
 // using namespace std;
@@ -15,21 +13,19 @@ class DAL {
   DAL();
   ~DAL();
   // interface associated with database access will be placed here
-  void CreateNew(Client);
+  void CreateNew(User);
   // call this each time some changes to client are performed
-  void UpdateClient(Client);
-  Client getClient(QString);
-  Client getClient(quint32);
-
-  bool Check_If_Client_exists_In_Db(Client);
+  void UpdateClient(User);
+  User getClient(QString);
+  User getClient(quint32);
+  bool Check_If_Client_exists_In_Db(User);
   bool Check_If_Client_exists_In_Db(QString);
 
-  int GetClientId(Client);
+  int GetClientId(User);
   
 
  private:
-  ServerDB database_;
-  QString connection_name_;
-  //dal::UnitOfWork database;
-  // std::map<QString, Client> database;
+
+  dal::UnitOfWork database_;
+  std::shared_ptr<dal::Users> users;
 };

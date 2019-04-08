@@ -26,7 +26,7 @@ private:
   FriendRequestInfo income_data_;
   QByteArray send_addfriend_info_bytearr;
   AddFriendInfo info_to_send;
-  Client sender_guy;
+  User sender_guy;
   quint8 response_to_requester_;
-  Client requested_guy;
+  User requested_guy;
 };
