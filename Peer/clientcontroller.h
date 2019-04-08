@@ -55,11 +55,10 @@ class ClientController : public QObject {
   ApplicationInfo app_info_;
 
  private:
-  FriendsUpdateManager* friendsupdate_manager;
+  FriendsUpdateManager* friends_update_manager_;
   CacheData& cache_data_;
   Friend my_info;
   QHash<unsigned, Friend> friends_cache;
-
   LocalServer local_server_;
   SignalRedirector& redirector_;
   FriendsManager friend_manager_;

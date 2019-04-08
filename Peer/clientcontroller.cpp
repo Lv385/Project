@@ -8,12 +8,15 @@ ClientController::ClientController(QObject *parent)
       redirector_(SignalRedirector::get_instance()),
       server_manager_(nullptr),
       cache_data_(CacheData::get_instance()) {
+
   connect(&local_server_, SIGNAL(NewConnection(QTcpSocket *)), this,
           SLOT(OnNewConnection(QTcpSocket *)));
   redirector_.set_controller(this);
+
   server_manager_ = new ServerManager(nullptr, app_info_);
-  QList<QHostAddress> ipAddressesList =
-          QNetworkInterface::allAddresses();
+  friends_update_manager_ = new FriendsUpdateManager(app_info_);
+
+  QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
   // use the first non-localhost IPv4 address
   for (int i = 0; i < ipAddressesList.size(); ++i) {
     if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
@@ -90,6 +93,9 @@ void ClientController::OnNewConnection(QTcpSocket *socket) {
   }
 }
 
-void ClientController::Start() { local_server_.Start(); }
+void ClientController::Start() { 
+  local_server_.Start();
+  friends_update_manager_->Start();
+}
 
 void ClientController::Stop() { local_server_.Stop(); }

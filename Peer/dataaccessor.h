@@ -16,7 +16,6 @@ class DataAccessor {
   QVector<Message> get_messages(unsigned user_id);
 
   unsigned get_id_by_login(const QString user_login);
-  //unsigned get_id_by_ip_port(const QString ip, const unsigned port);
   bool get_friends_status(const unsigned user_id);
 
   void set_friend_status(const unsigned user_id, const bool status);

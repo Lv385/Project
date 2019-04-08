@@ -13,7 +13,7 @@ GUIManager::GUIManager(QObject *parent)
 
   connect(this, SIGNAL(SelectedFriendIdChanged(unsigned)), this, SLOT(LoadMessages(unsigned)));
   connect(controller_, SIGNAL(MessageRecieved(unsigned)), this, SLOT(LoadMessages(unsigned)));
-  connect(controller_, SIGNAL(LoginResult(bool)), this, SLOT(OnLoginResult(bool)));
+  //connect(controller_, SIGNAL(LoginResult(bool)), this, SLOT(OnLoginResult(bool)));
 }
 
 FriendModel* GUIManager::friend_model() {
@@ -98,6 +98,7 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   logger_->WriteLog(LogType::SUCCESS, user_login);
   controller_->Start();
   controller_->LogIn(user_login, user_password);
+  OnLoginResult(true);
 
 }
 
