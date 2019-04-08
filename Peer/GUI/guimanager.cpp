@@ -97,9 +97,10 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   controller_->app_info_.my_port = 8989;  //FIXME
   controller_->app_info_.my_login = user_login;
   controller_->app_info_.my_password = user_password;
-  controller_->app_info_.my_id = client_data_.get_id_by_login(user_login); //FIXME:
-  controller_->Start();
+  controller_->app_info_.my_id = client_data_.get_id_by_login(user_login);
+  //controller_->Start();
   controller_->LogIn(user_login, user_password);
+  //OnLoginResult(true);
 
 }
 
@@ -116,18 +117,18 @@ void GUIManager::OnLoginResult(bool logged_in) {
     emit openMainPage();
   }
   else {
-    controller_->Stop();
+    //controller_->Stop();
     emit logInFailed();
   }
 }
 
 void GUIManager::SendMessage(QString message) { 
-      controller_->SendMessage(selected_friend_id_, message);
+  controller_->SendMessage(selected_friend_id_, message);
 }
 
 void GUIManager::LoadFriends() {   //don't forget to load id
   for (const Friend& i : controller_->LoadFriends()) {
-    FriendItem* friend_item = new FriendItem(i.login, true, i.id);
+    FriendItem* friend_item = new FriendItem(i.login, false, i.id);
     friend_model_.AddFriendToList(friend_item);
   }
 }
