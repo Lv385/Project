@@ -33,8 +33,10 @@ QVector<Friend> ClientController::LoadFriends() {
   return client_data_.get_friends();
 }
 
-void ClientController::SendMessage(Friend peer_info, QString message) {
-  friend_manager_.SendMessage(peer_info, message);
+void ClientController::SendMessage(unsigned id, QString message) {
+  //to do
+  Friend info;//  = client_data_.get_friend_by_id;
+  friend_manager_.SendMessage(info, message);
 }
 
 void ClientController::LogIn(QString login, QString password) {

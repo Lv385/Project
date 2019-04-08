@@ -27,7 +27,7 @@ class ClientController : public QObject {
   ~ClientController();
 
 
-  void SendMessage(Friend peer_info, QString message);
+  void SendMessage(unsigned id, QString message);
   void LogIn(QString login, QString password);
   void Register(QString login, QString password);
   void AddFriend(QString login);
