@@ -21,8 +21,9 @@ class FriendsUpdateManager : public QObject {
   FriendsUpdateManager(ApplicationInfo& app_info);
   ~FriendsUpdateManager();
 
-  void Start();
-  void Stop();
+  void StartUpdateReceiver();
+  void StopUpdateListening();
+  void StartUpdateSender();
 
  private slots:
   void SendUpdateInfo();

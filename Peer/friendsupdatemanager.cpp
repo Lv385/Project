@@ -15,16 +15,21 @@ FriendsUpdateManager::FriendsUpdateManager(ApplicationInfo& app_info)
 FriendsUpdateManager::~FriendsUpdateManager(){
 }
 
-void FriendsUpdateManager::Start() {
-
-  update_sender_.bind(QHostAddress(QHostAddress::AnyIPv4), 0);
+void FriendsUpdateManager::StartUpdateReceiver() {
   update_receiver_.bind(QHostAddress::AnyIPv4, app_info_.my_port,
                         QUdpSocket::ShareAddress);
-  update_info_timer_.start(3000);
-  logger_->WriteLog(LogType::SUCCESS, "friend manager started");
 }
 
-void FriendsUpdateManager::Stop(){
+void FriendsUpdateManager::StopUpdateListening() {
+  update_sender_.close();
+  update_receiver_.close();
+  update_info_timer_.stop();
+}
+
+void FriendsUpdateManager::StartUpdateSender() {
+    update_sender_.bind(QHostAddress(QHostAddress::AnyIPv4), 0);
+    update_info_timer_.start(3000);  
+    logger_->WriteLog(LogType::SUCCESS, "friend manager started");
 }
 
 void FriendsUpdateManager::SendUpdateInfo() { 

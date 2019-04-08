@@ -11,6 +11,10 @@ ClientController::ClientController(QObject *parent)
 
   connect(&local_server_, SIGNAL(NewConnection(QTcpSocket *)), this,
           SLOT(OnNewConnection(QTcpSocket *)));
+
+  connect(this, SIGNAL(LoginResult(bool)), this,
+          SLOT(OnLogin(bool)));
+
   redirector_.set_controller(this);
 
   server_manager_ = new ServerManager(nullptr, app_info_);
@@ -48,7 +52,7 @@ void ClientController::LogIn(QString login, QString password) {
   info.port = app_info_.my_port;
 
   QByteArray data = Parser::LoginInfo_ToByteArray(info);
-
+  this->Start();
   server_manager_->SendRequest(data);
 }
 
@@ -83,6 +87,16 @@ QVector<Message> ClientController::LoadMessages(unsigned id) {
 
 void ClientController::OnFriendRequestRecieved() {}
 
+void ClientController::OnLogin(bool logged_in) {
+  if(logged_in){
+    friends_update_manager_->StartUpdateReceiver();
+    friends_update_manager_->StartUpdateSender();
+  } else{
+    this->Stop();
+    friends_update_manager_->StopUpdateListening();
+  }
+}
+
 void ClientController::OnNewConnection(QTcpSocket *socket) {
   if (socket->peerAddress().isEqual(app_info_.remote_server_ip,
                                     QHostAddress::TolerantConversion)) {
@@ -96,7 +110,6 @@ void ClientController::OnNewConnection(QTcpSocket *socket) {
 
 void ClientController::Start() { 
   local_server_.Start();
-  friends_update_manager_->Start();
 }
 
 void ClientController::Stop() { local_server_.Stop(); }
