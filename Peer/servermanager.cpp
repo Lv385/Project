@@ -17,6 +17,8 @@ ServerManager::ServerManager(QTcpSocket *socket, ApplicationInfo& info)
   strategies_.insert(ServerRequest::REGISTER_SUCCEED, reg);
   strategies_.insert(ServerRequest::REGISTER_FAILED, reg);
   strategies_.insert(ServerRequest::FRIEND_UPDATE_INFO, friend_update);
+  //to do  
+  ServerRequest::ADD_FRIEND_REQUEST;
 }
 
 ServerManager::~ServerManager() {}

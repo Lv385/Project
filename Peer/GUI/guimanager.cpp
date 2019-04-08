@@ -119,7 +119,6 @@ void GUIManager::SendMessage(QString message) {
   for (auto user : friends_)
     if (user.id == selected_friend_id_) 
       controller_->SendMessage(user, message);
-
 }
 
 void GUIManager::LoadFriends() {   //don't forget to load id
