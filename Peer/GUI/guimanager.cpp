@@ -13,6 +13,8 @@ GUIManager::GUIManager(QObject *parent)
   connect(this, SIGNAL(SelectedFriendIdChanged(unsigned)), this, SLOT(ShowMessages(unsigned)));
   connect(controller_, SIGNAL(MessageRecieved(unsigned)), this, SLOT(ShowMessages(unsigned)));
   connect(controller_, SIGNAL(LoginResult(bool)), this, SLOT(OnLoginResult(bool)));
+  connect(controller_, SIGNAL(StatusChanged(unsigned, bool)), this,
+          SLOT(OnStatusChanged(unsigned, bool)));
 }
 
 int GUIManager::my_id() const { 
@@ -79,7 +81,6 @@ void GUIManager::ShowMessages(unsigned friend_id) {
   }
 }
 
-
 void GUIManager::deleteFriendRiequest(FriendRequestItem* friend_request_to_delete) {
   if (!friend_request_to_delete)
       return;
@@ -98,6 +99,7 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   controller_->app_info_.my_login = user_login;
   controller_->app_info_.my_password = user_password;
   controller_->app_info_.my_id = client_data_.get_id_by_login(user_login);
+  logger_->WriteLog(LogType::SUCCESS, user_login);
   controller_->LogIn(user_login, user_password);
   //OnLoginResult(true);
 }
@@ -119,6 +121,10 @@ void GUIManager::OnLoginResult(bool logged_in) {
   else {
     emit logInFailed();
   }
+}
+
+void GUIManager::OnStatusChanged(unsigned id, bool status) {
+  friend_model_.SetStatus(id, status);
 }
 
 void GUIManager::SendMessage(QString message) { 

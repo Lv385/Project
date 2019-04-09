@@ -2,6 +2,7 @@
 #define FRIENDITEM_H
 
 #include <QObject>
+#include "../DAL/sqldal.h"
 
 class FriendItem : public QObject
 {

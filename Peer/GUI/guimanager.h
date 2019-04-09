@@ -56,8 +56,9 @@ public slots:
   void Register(QString user_login, QString user_password);
   void OnLoginResult(bool);
   void SendMessage(QString message);
-  void ShowMessages(unsigned id);  // temporary implementation(for testing)
-  //void LoadMessages(unsigned id);
+  void LoadMessages(unsigned id);  // temporary implementation(for testing)
+  void OnStatusChanged(unsigned id, bool status);
+//void LoadMessages(unsigned id);
 
   // void UserEntered();
 

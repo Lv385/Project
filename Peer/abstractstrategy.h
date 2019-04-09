@@ -10,9 +10,10 @@
 #include <QObject>
 #include <QTcpSocket>
 
-#include "../Parser&Structs/parser.h"
 
-#include "client_data_types.h"
+#include "..\Common\client_data_types.h"
+#include "..\Parser&Structs\parser.h"
+
 
 class SignalRedirector;
 
