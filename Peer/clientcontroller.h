@@ -31,8 +31,7 @@ class ClientController : public QObject {
   void LogIn(QString login, QString password);
   void Register(QString login, QString password);
   void AddFriend(QString login);
-  void Start();
-  void Stop();
+ 
   void SetAppInfo(ApplicationInfo info);
   //QString GetMessage(unsigned);
   QVector<Message> LoadMessages(unsigned id);
@@ -49,16 +48,20 @@ class ClientController : public QObject {
  private slots:
   void OnNewConnection(QTcpSocket* socket);
   void OnFriendRequestRecieved();
+  void OnLogin(bool);
+
+ private:
+  void Start();
+  void Stop();
 
  public:
   ApplicationInfo app_info_;
 
  private:
-  FriendsUpdateManager* friendsupdate_manager;
+  FriendsUpdateManager* friends_update_manager_;
   CacheData& cache_data_;
   Friend my_info;
   QHash<unsigned, Friend> friends_cache;
-
   LocalServer local_server_;
   SignalRedirector& redirector_;
   FriendsManager friend_manager_;

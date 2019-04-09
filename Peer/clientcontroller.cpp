@@ -8,10 +8,21 @@ ClientController::ClientController(QObject *parent)
       redirector_(SignalRedirector::get_instance()),
       server_manager_(nullptr),
       cache_data_(CacheData::get_instance()) {
+
   connect(&local_server_, SIGNAL(NewConnection(QTcpSocket *)), this,
           SLOT(OnNewConnection(QTcpSocket *)));
+
+  connect(this, SIGNAL(LoginResult(bool)), this,
+          SLOT(OnLogin(bool)));
+
   redirector_.set_controller(this);
+
   server_manager_ = new ServerManager(nullptr, app_info_);
+  friends_update_manager_ = new FriendsUpdateManager(app_info_);
+
+  connect(friends_update_manager_, SIGNAL(StatusChanged(unsigned, bool)), this,
+          SIGNAL(StatusChanged(unsigned, bool)));
+
   QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
   // use the first non-localhost IPv4 address
   for (int i = 0; i < ipAddressesList.size(); ++i) {
@@ -46,7 +57,7 @@ void ClientController::LogIn(QString login, QString password) {
   info.port = app_info_.my_port;
 
   QByteArray data = Parser::LoginInfo_ToByteArray(info);
-
+  this->Start();
   server_manager_->SendRequest(data);
 }
 
@@ -81,6 +92,16 @@ QVector<Message> ClientController::LoadMessages(unsigned id) {
 
 void ClientController::OnFriendRequestRecieved() {}
 
+void ClientController::OnLogin(bool logged_in) {
+  if(logged_in){
+    friends_update_manager_->SetUpdateReceiver();
+    friends_update_manager_->SetUpdateSender();
+  } else{
+    this->Stop();
+    friends_update_manager_->StopUpdateListening();
+  }
+}
+
 void ClientController::OnNewConnection(QTcpSocket *socket) {
   if (socket->peerAddress().isEqual(app_info_.remote_server_ip,
                                     QHostAddress::TolerantConversion)) {
@@ -92,6 +113,8 @@ void ClientController::OnNewConnection(QTcpSocket *socket) {
   }
 }
 
-void ClientController::Start() { local_server_.Start(); }
+void ClientController::Start() { 
+  local_server_.Start();
+}
 
 void ClientController::Stop() { local_server_.Stop(); }
