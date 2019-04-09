@@ -37,7 +37,9 @@ ClientController::ClientController(QObject *parent)
     app_info_.my_ip = QHostAddress(QHostAddress::LocalHost);
 }
 
-ClientController::~ClientController() { server_manager_->deleteLater(); }
+ClientController::~ClientController() { 
+  server_manager_->deleteLater();
+}
 
 QVector<Friend> ClientController::LoadFriends() {
   return client_data_.get_friends();

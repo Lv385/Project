@@ -102,10 +102,11 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   logger_->WriteLog(LogType::SUCCESS, user_login);
   controller_->LogIn(user_login, user_password);
   //OnLoginResult(true);
+
 }
 
 void GUIManager::Register(QString user_login, QString user_password) {
-
+   
 }
 
 void GUIManager::OnLoginResult(bool logged_in) {
