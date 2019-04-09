@@ -93,7 +93,7 @@ void GUIManager::newFriendRiequest() {
 }
 
 void GUIManager::LogIn(QString user_login, QString user_password) { 
-  controller_->app_info_.remote_server_ip = "192.168.103.121";
+  controller_->app_info_.remote_server_ip = "192.168.195.144";
   controller_->app_info_.remote_server_port = 8888;
   controller_->app_info_.my_port = 8989;  //FIXME
   controller_->app_info_.my_login = user_login;
@@ -102,7 +102,6 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   logger_->WriteLog(LogType::SUCCESS, user_login);
  // controller_->Start();
   controller_->LogIn(user_login, user_password);
-  //OnLoginResult(true);
 
 }
 
@@ -124,7 +123,8 @@ void GUIManager::OnLoginResult(bool logged_in) {
 }
 
 void GUIManager::SendMessage(QString message) { 
-  controller_->SendMessage(selected_friend_id_, message);
+      controller_->SendMessage(selected_friend_id_, message);
+
 }
 
 void GUIManager::LoadFriends() {   //don't forget to load id

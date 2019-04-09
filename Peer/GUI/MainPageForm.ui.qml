@@ -3,6 +3,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
 Page {
+id: page
     property alias friendList: friendList
     property alias messageList: messageList
     property alias messageField: messageField
@@ -22,10 +23,10 @@ Page {
 
         Rectangle {
             id: rectangle
-            x: -12
-            y: -12
-            width: 283
-            height: 54
+            x: pane1.x-12
+            y: pane1.y-12
+            width: pane1.width
+            height: pane1.height
             color: friendMouseAreaColor
 
             TextArea {
@@ -64,7 +65,7 @@ Page {
         x: 0
         y: 54
         width: 283
-        height: 582
+        height: parent.height
         highlightRangeMode: ListView.ApplyRange
         flickableDirection: Flickable.VerticalFlick
         boundsBehavior: Flickable.StopAtBounds
@@ -75,23 +76,21 @@ Page {
         id: columnLayout
         x: 283
         y: 100
-        width: 520
-        height: 465
+        width: parent.width-283
+        height: parent.height-120
 
         ListView {
             id: messageList
             x: 0
             y: 0
-            width: 519
-            height: 470
+            width: columnLayout.width
+            height: columnLayout.height
             highlightRangeMode: ListView.ApplyRange
             orientation: ListView.Vertical
             cacheBuffer: 318
             Layout.fillWidth: true
             Layout.fillHeight: true
             Layout.margins: pane.leftPadding + messageField.leftPadding
-            displayMarginBeginning: 40
-            displayMarginEnd: 40
             verticalLayoutDirection: ListView.BottomToTop
             spacing: 12
 
@@ -102,28 +101,24 @@ Page {
 
         Pane {
             id: pane
-            y: 536
-            width: 519
-            height: 100
+            y: 540
+            width: parent.width+25
+            height: 80
             Layout.fillWidth: true
 
-            Rectangle {
-                x: -12
-                y: -35
-                width: 519
-                height: 90
-                color: friendMouseAreaColor
-            }
 
             TextField {
                 id: messageField
-                x: 5
-                y: -20
-                width: 480
-                height: 52
-                Layout.fillWidth: false
+                x: -12
+                y: -12
+                width: pane.width
+                height: 70
+                Layout.fillWidth: true
                 placeholderText: qsTr("Compose message")
                 wrapMode: TextArea.Wrap
+				background: Rectangle {
+				color: friendMouseAreaColor
+				}
             }
         }
     }
@@ -141,7 +136,7 @@ Page {
         Text {
             text: "\uf007"
             anchors.right: parent.right
-            font.pointSize: 14
+            font.pointSize: 18
             font.family: "fontawesome"
             color: friendListColor
         }
