@@ -370,6 +370,18 @@
       <Project>{3f4a82b1-4157-400a-82d0-e6516372e8d2}</Project>
     </ProjectReference>
   </ItemGroup>
+  <ItemGroup>
+    <None Include="GUI\FriendListDelegateModel.qml" />
+    <None Include="GUI\FriendRequestListDelegateModel.qml" />
+    <None Include="GUI\LoginPage.qml" />
+    <None Include="GUI\LoginPageForm.ui.qml" />
+    <None Include="GUI\main.qml" />
+    <None Include="GUI\MainPage.qml" />
+    <None Include="GUI\MainPageForm.ui.qml" />
+    <None Include="GUI\MessageListDelegateModel.qml" />
+    <None Include="GUI\RegisterPage.qml" />
+    <None Include="GUI\RegisterPageForm.ui.qml" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

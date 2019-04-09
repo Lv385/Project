@@ -11,7 +11,7 @@
 #include <QShortcut>
 #include <QVector>
 
-#include "client_data_types.h"
+#include "..\Common\client_data_types.h"
 
 namespace Ui {
 class MainWindow;
