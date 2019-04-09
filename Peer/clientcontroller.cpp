@@ -26,14 +26,15 @@ ClientController::ClientController(QObject *parent)
     app_info_.my_ip = QHostAddress(QHostAddress::LocalHost);
 }
 
-ClientController::~ClientController() { server_manager_->deleteLater(); }
+ClientController::~ClientController() { 
+  server_manager_->deleteLater();
+}
 
 QVector<Friend> ClientController::LoadFriends() {
   return client_data_.get_friends();
 }
 
 void ClientController::SendMessage(unsigned id, QString message) {
-  //to do
   Friend friend_info = client_data_.get_friend(id);
   friend_manager_.SendMessage(friend_info, message);
 }

@@ -16,15 +16,6 @@
 
 class SignalRedirector;
 
-enum StrategyType : quint8 {
-  SEND_MESSAGE,
-  RECEIVE_MESSAGE,
-  LOGIN,
-  REGISTER,
-  FIND_FRIEND,
-  ADD_FRIEND
-};
-
 class AbstractStrategy : public QObject {
   Q_OBJECT
 

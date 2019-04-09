@@ -63,8 +63,18 @@ bool DataAccessor::get_friends_status(const unsigned user_id){
   return client_friend.status;
 }
 
-void DataAccessor::AddMessageToDB(const QString msg, const unsigned user_id,
-                                const unsigned owner_id) {
+void DataAccessor::AddFriend(const Friend& friend_info) {
+  user_->AddNewFriend(friend_info);
+}
+
+void DataAccessor::AddFriend(const unsigned& user_id, const QString& login,
+                             const QString& ip, const unsigned& port,
+                             const QString& name, const QString& surname) {
+  user_->AddNewFriend(Friend{user_id, login, ip, port, name, surname});
+}
+
+void DataAccessor::AddMessageToDB(const QString& msg, const unsigned& user_id,
+                                  const unsigned& owner_id) {
   Message message;
 
   message.chat_id = user_id;

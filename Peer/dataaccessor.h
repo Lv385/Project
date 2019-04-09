@@ -22,7 +22,15 @@ class DataAccessor {
 
   void set_friend_status(const unsigned user_id, const bool status);
 
-  void AddMessageToDB(const QString msg, const unsigned user_id, const unsigned owner_id);
+  void AddFriend(const Friend& friend_info);
+  void AddFriend(const unsigned& user_id, const QString& login,
+                 const QString& ip = 0, const unsigned& port = 0,
+                 const QString& name = 0, const QString& surname = 0);
+  void AddMessageToDB(const QString& msg, const unsigned& user_id, const unsigned& owner_id);
+  void AddMessageToDB(const Message& message) {
+    message_->AddNewMessage(message);
+ }
+
   void UpdateIPPort(const unsigned user_id, const QString new_ip, const unsigned new_port);
 
  private:
