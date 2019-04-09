@@ -71,11 +71,11 @@ void MainWindow::OnPbStartClicked() {
   logger_->WriteLog(SUCCESS,
       "my id: " + QString::number(client_controller_->app_info_.my_id));
 
-  client_controller_->Start();
+  //client_controller_->Start();
 }
 
 void MainWindow::OnPbStopClicked() { 
-  client_controller_->Stop(); 
+  //client_controller_->Stop(); 
 }
 
 MainWindow::~MainWindow() { delete ui_; }

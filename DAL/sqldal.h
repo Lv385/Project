@@ -1,8 +1,8 @@
-#include "unitofwork.h"
-#include "user.h"
 #include "friend.h"
-#include "message.h"
 #include "friendinfo.h"
+#include "message.h"
 #include "notificationinfo.h"
 #include "requestinfo.h"
-
+#include "unitofwork.h"
+#include "user.h"
+#include "friendrequest.h"
