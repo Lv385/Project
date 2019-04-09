@@ -9,7 +9,7 @@ class FriendModel : public QAbstractListModel
   Q_OBJECT
 
 public:
-  explicit FriendModel(QObject *parent = nullptr);
+  explicit FriendModel(QObject* parent = nullptr);
   unsigned GetFirstFriend() const;    //for loading on startup
 
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
@@ -18,6 +18,7 @@ public:
 
   void AddFriendToList(FriendItem*);
   bool RemoveFriendFromList(FriendItem*);
+  void SetStatus(unsigned id, bool status);
 
 private:
   QList<FriendItem*> friends_list_;

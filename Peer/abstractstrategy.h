@@ -10,20 +10,12 @@
 #include <QObject>
 #include <QTcpSocket>
 
-#include "../Parser&Structs/parser.h"
 
-#include "client_data_types.h"
+#include "..\Common\client_data_types.h"
+#include "..\Parser&Structs\parser.h"
+
 
 class SignalRedirector;
-
-enum StrategyType : quint8 {
-  SEND_MESSAGE,
-  RECEIVE_MESSAGE,
-  LOGIN,
-  REGISTER,
-  FIND_FRIEND,
-  ADD_FRIEND
-};
 
 class AbstractStrategy : public QObject {
   Q_OBJECT

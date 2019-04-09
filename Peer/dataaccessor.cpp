@@ -4,6 +4,7 @@ DataAccessor::DataAccessor(){
   db_.GenerateUniqueConnection();
   user_ = db_.GetEntity<dal::Friends>();
   message_ = db_.GetEntity<dal::Messages>();
+  friend_requests_ = db_.GetEntity<dal::FriendRequests>();
 }
 
 DataAccessor::~DataAccessor(){}
@@ -25,18 +26,14 @@ QVector<Friend> DataAccessor::get_friends() {
 }
 
 
-unsigned DataAccessor::get_id_by_login(const QString user_login){
+Friend DataAccessor::get_friend(const unsigned user_id) {
+  return user_->GetFriend(user_id);
+}
+
+unsigned DataAccessor::get_id_by_login(const QString user_login) {
   Friend client_friend = user_->GetFriend(user_login);
   return client_friend.id;
 }
-/*unsigned DataAccessor::get_id_by_ip_port(const QString ip, const unsigned port) {
-  user_->id = 0;
-  user_->login = "";
-  user_->ip = ip;
-  user_->port = port;
-  user_->GetFriend();
-  return user_->id;
-}*/
 
 QVector<Message> DataAccessor::get_messages(const QString user_login) {
   QVector<Message> messages = message_->GetMessages(user_login);
@@ -59,8 +56,18 @@ bool DataAccessor::get_friends_status(const unsigned user_id){
   return client_friend.status;
 }
 
-void DataAccessor::AddMessageToDB(const QString msg, const unsigned user_id,
-                                const unsigned owner_id) {
+void DataAccessor::AddFriend(const Friend& friend_info) {
+  user_->AddNewFriend(friend_info);
+}
+
+void DataAccessor::AddFriend(const unsigned& user_id, const QString& login,
+                             const QString& ip, const unsigned& port,
+                             const QString& name, const QString& surname) {
+  user_->AddNewFriend(Friend{user_id, login, ip, port, name, surname});
+}
+
+void DataAccessor::AddMessageToDB(const QString& msg, const unsigned& user_id,
+                                  const unsigned& owner_id) {
   Message message;
 
   message.chat_id = user_id;

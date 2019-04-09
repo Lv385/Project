@@ -13,7 +13,7 @@ Worker::Worker(BlockReader* reader, unsigned user_id, unsigned my_id)
   redirector_.ConnectToMessageRecieved(this);
   connect(socket_, SIGNAL(disconnected()), this, SLOT(OnDisconnected()));
   connect(reader_, SIGNAL(ReadyReadBlock()), this, SLOT(OnReadyReadBlock()));
-  strategies_.insert(static_cast<quint8>(ClientClientRequest::MESSAGE),
+  strategies_.insert(ClientClientRequest::MESSAGE,
                      new RecieveMessageStrategy());
 }
 
@@ -36,7 +36,7 @@ Worker::Worker(Friend peer_info, QString message, unsigned my_id)
   connect(socket_, SIGNAL(error(QAbstractSocket::SocketError)), this,
           SLOT(OnError(QAbstractSocket::SocketError)));
   socket_->connectToHost(peer_info_.ip, peer_info_.port);
-  strategies_.insert(static_cast<quint8>(ClientClientRequest::MESSAGE),
+  strategies_.insert(ClientClientRequest::MESSAGE, 
                      new RecieveMessageStrategy());
 }
 
@@ -44,8 +44,8 @@ void Worker::DoWork() {
   strategy_->DoWork();
 }
 
-void Worker::SetStrategy(StrategyType strategy_type) {
-  strategy_ = strategies_[strategy_type];
+void Worker::SetStrategy(ClientClientRequest request) {
+  strategy_ = strategies_[request];
 }
 
 void Worker::set_message(QString message) { 
@@ -95,7 +95,7 @@ void Worker::OnReadyReadBlock() {
   while (reader_->HasPendingBlock()) {
     data = reader_->ReadNextBlock();
     quint8 type = Parser::getRequestType(data);
-    strategy_ = strategies_[type];
+    strategy_ = strategies_[static_cast<ClientClientRequest>(type)];
     Friend info;
     strategy_->set_data(data);
     strategy_->set_peer_info(peer_info_);
@@ -105,7 +105,7 @@ void Worker::OnReadyReadBlock() {
 }
 
 Worker::~Worker() {
-  writer_;
+  delete writer_;
   delete reader_; 
-  delete socket_;
+  socket_->deleteLater(); 
 }

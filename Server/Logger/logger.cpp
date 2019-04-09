@@ -1,14 +1,20 @@
 #pragma once
 #include "logger.h" 
+#include <mutex>
 
 // void Logger::WriteLogToFile(QString& filename, QString& text)
 void Logger::WriteLogToFile(QString& text) {
+  std::mutex g_pages_mutex;
+  g_pages_mutex.lock();
+  
   //QFile file(filename);
   QFile file("LOG.txt");
   if (file.open(QIODevice::Append | QIODevice::Text)) {
     QTextStream stream(&file);
     stream << text << endl;
     file.close();
+    
+    g_pages_mutex.unlock();
   }
 }
 
@@ -193,10 +199,10 @@ QString Logger::Log_NewFriendInfo(NewFriendInfo& out) {
 } 
 
 
-
-QString Logger::Log_User(Client& cl) {
+//add logging vectors of reqs and notifications
+QString Logger::Log_User(User& cl) {
   QString txt = QDateTime::currentDateTime().toString("dd:MM:yyyy hh:mm:ss ");
-  return "User Login" + cl.GetUserName() + " ID:" + cl.GetUserId() +
-         " IP:" + cl.GetUserIp().toString() + " Port:" + cl.GetUserPort() +
+  return "User Login: " + cl.login + " ID: " + cl.id +
+         " IP: " + cl.ip + " Port: " + cl.port +
          "\n";
 }

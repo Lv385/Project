@@ -18,7 +18,7 @@ Item {
             anchors.right: sentByMe ? parent.right : undefined
             spacing: 6
 
-            readonly property bool sentByMe: message.owner_id === 1    //FIXME
+            readonly property bool sentByMe: message.owner_id === guiManager.my_id   
 
             Rectangle {
                 anchors.right: sentByMe ? parent.right : undefined

@@ -37,8 +37,9 @@ void FriendsManager::SendMessage(Friend peer_info, QString message) {
 
 void FriendsManager::OnDisconnected(unsigned id) {
   if (workers_.find(id) != workers_.end()) {
-    delete workers_[id];
+    Worker* to_delete = workers_[id];
     workers_.remove(id);
+    delete to_delete; 
   }
 }
 
@@ -51,12 +52,14 @@ void FriendsManager::OnError(unsigned id) {
   logger_->WriteLog(ERROR, "Failed on to" + QString::number(id));
 
   if (connecting_workers_.find(id) != connecting_workers_.end()) {
-    delete connecting_workers_[id];
+    Worker* to_delete = connecting_workers_[id];
     connecting_workers_.remove(id);
+    delete to_delete;
   }
   if (workers_.find(id) != workers_.end()) {
-    delete workers_[id];
+    Worker* to_delete = workers_[id];
     workers_.remove(id);
+    delete to_delete;
   }
 }
 
@@ -76,6 +79,7 @@ void FriendsManager::OnFirstRequestRecieved() {
             SLOT(OnDisconnected(unsigned id)));
     disconnect(reader, SIGNAL(ReadyReadBlock()), this,
                SLOT(OnFirstRequestRecieved()));
+    worker->dumpObjectInfo();
   } 
 }
 

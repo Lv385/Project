@@ -1,79 +1,105 @@
 #include "dal.h"
-
+//done
 DAL::DAL() {
-  QUuid uuid;
-  connection_name_ = uuid.createUuid().toString();
-  database_.NewConnection(connection_name_);
+  database_.GenerateUniqueConnection();
+  users = database_.GetEntity<dal::Users>();
 }
-
-DAL::~DAL() { database_.CloseConncetion(connection_name_); }
-
-void DAL::CreateNew(Client cl) {
-  // this function is only for new user request (register)
-  database_.AddNewUser(cl.GetUserName(), cl.GetUserPassword());
-  database_.UpdateIPPort(cl.GetUserName(), cl.GetUserIp().toString(),
-                         (int)cl.GetUserPort());
+//DONE
+DAL::~DAL() {
+   // if db connection is closing automatically
+   // this destructor useless
+  // if no it need to be not empty
 }
-
-
-void DAL::UpdateClient(Client cl) {
-  //  this is used when login   and MAYBE  when adding to friend
-  database_.UpdateIPPort(cl.GetUserName(), cl.GetUserIp().toString(),(int)cl.GetUserPort());  
-  QVector<unsigned int> curr_pend_cl = cl.Get_Pending_Requests();
-  QVector<unsigned int> db_pend_cl = database_.GetPendingFriendRequests(cl.GetUserId());
+//Done
+void DAL::CreateNew(User cl) {
+  users->AddNewUser(cl);
+}
+//done
+void DAL::UpdateClient(User cl) { //maybe projob
+                            // first_user_id is is pending users && second_user_id user
+  QVector<UsersID> curr_pend_cl = cl.requests;
+  QVector<UsersID> db_pend_cl = users->GetFriendsRequest(cl.id);
   if (curr_pend_cl.size() != db_pend_cl.size() ||
-      ((!curr_pend_cl.isEmpty()) && db_pend_cl.last() != curr_pend_cl.last())) {
-    database_.DeleteAllPendingRequest(cl.GetUserId());
+    ((!curr_pend_cl.isEmpty()) && db_pend_cl.last().first_user_id != curr_pend_cl.last().first_user_id)) {//???
+    for(int i=0;i<db_pend_cl.size();++i){
+      users->DeleteFriendRequest(db_pend_cl[i]); 
+    }
     for (int i = 0; i < curr_pend_cl.size(); i++) {
-      database_.addPendingFriendRequest(cl.GetUserId(), curr_pend_cl.at(i));
+      users->AddFriendRequest(curr_pend_cl.at(i));
     }
   }
-  QVector<unsigned int> curr_notif_cl = cl.Get_Pending_Notifications();
-  QVector<unsigned int> db_notif_cl = database_.GetPendingNotification(cl.GetUserId());
+  QVector<UsersID> curr_notif_cl=cl.notification;
+  QVector<UsersID> db_notif_cl = users->GetFriendsNotification(cl.id);
   if (curr_notif_cl.size() != db_notif_cl.size() ||
-      ((!curr_notif_cl.isEmpty()) &&
-       db_notif_cl.last() != curr_notif_cl.last())) {
-    database_.DeleteAllPendingNotifications(cl.GetUserId());
+    ((!curr_notif_cl.isEmpty()) &&
+      db_notif_cl.last().second_user_id != curr_notif_cl.last().second_user_id)) { //??
+    for (int i = 0; i < db_notif_cl.size(); ++i) {
+      users->DeleteFriendNotification(db_notif_cl[i]);
+    }
     for (int i = 0; i < curr_notif_cl.size(); i++) {
-      database_.addPendingNotification(cl.GetUserId(), curr_notif_cl.at(i));
+      users->AddFriendNotification(curr_notif_cl.at(i));
     }
   }
-  
+    //test stage
+    QVector<UsersID>curr_friends_cl = cl.friends;
+    QVector<UsersID>db_friends_cl = users->GetFriends(cl.id);
+    if(curr_friends_cl.size() != db_friends_cl.size()||((!curr_friends_cl.isEmpty())
+      &&(db_friends_cl.last().second_user_id!=curr_friends_cl.last().second_user_id))) {
+      for (int i = 0; i < db_friends_cl.size(); ++i) {
+        users->DeleteFriend(db_friends_cl[i]);
+      }
+      for (int i = 0; i < curr_friends_cl.size(); i++) {
+        users->AddFriend(curr_friends_cl.at(i));
+      }
+    }
+  users->UpdateUser(cl);
 }
-Client DAL::getClient(QString login) {
-  unsigned int id = database_.GetIDByLogin(login);
-  if (id == 0) {
+//DONe
+User DAL::getClient(QString login) {
+
+  User usr = users->GetUser(login);
+  if (Check_If_Client_exists_In_Db(usr)==false) {
     throw UserNotFound();
   }
-  Client toReturn;
-  toReturn.SetUserId(id);
-  toReturn.SetUserIp(QHostAddress(database_.GetIPPort(id).first));
-  toReturn.SetUserPort((quint16)database_.GetIPPort(id).second);
-  toReturn.SetUserName(database_.GetLoginByID(id));
-  toReturn.SetUserPassword(database_.GetPasswordById(id));
-  toReturn.SetFriends(database_.GetFriends(id));
-  toReturn.Set_Pending_Request(database_.GetPendingFriendRequests(id));
-  toReturn.Set_Pending_Noification(database_.GetPendingNotification(id));
-  return toReturn;
+  else {
+    return usr;
+  }
+}
+//DONe
+User DAL::getClient(quint32 i) {
+  User u = users->GetUser(i);
+  if (Check_If_Client_exists_In_Db(u)==false) {
+    throw UserNotFound();
+  }
+  else {
+    return u;
+  }
 }
 
-Client DAL::getClient(quint32 i) {
-  return getClient(database_.GetLoginByID(i));
-}
 
-bool DAL::Check_If_Client_exists_In_Db(Client cl) {
-  if (database_.GetIDByLogin(cl.GetUserName()) == 0) {  // If login don't exist return id = 0
-    return false;  // login dont exist
+bool DAL::Check_If_Client_exists_In_Db(User cl) {
 
-  } else {
-    return true;  // login exist
+  User user = users->GetUser(cl.login);
+  if (user.id != 0)
+  {
+    return true;
+  }else{
+    return false;
   }
 }
 
 bool DAL::Check_If_Client_exists_In_Db(QString login) {
-  return !(database_.GetIDByLogin(login) == 0); // according to mentor recomendations
+  User user = users->GetUser(login);
+  if (user.id != 0)
+  {
+    return true;
+  }
+  else {
+    return false;
+  }
 }
-
-int DAL::GetClientId(Client cl) {
-  return database_.GetIDByLogin(cl.GetUserName());
+//DONe
+int DAL::GetClientId(User cl) {
+  User u = users->GetUser(cl.login);
+  return u.id;
 }
