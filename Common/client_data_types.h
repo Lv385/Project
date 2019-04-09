@@ -44,5 +44,15 @@ struct User {
 	QVector<UsersID> notification;
 };
 //
-
+enum  RequestType
+{
+	MyRequest,
+	RequestForMe
+};
+//
+struct FriendRequest {
+	QString	login;
+	bool type;
+};
+//
 #endif  // !1CLIENT_DATA_TYPES_H
