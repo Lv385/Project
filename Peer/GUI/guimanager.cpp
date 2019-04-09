@@ -10,8 +10,8 @@ GUIManager::GUIManager(QObject *parent)
   newFriendRiequest();
   newFriendRiequest();
 
-  connect(this, SIGNAL(SelectedFriendIdChanged(unsigned)), this, SLOT(LoadMessages(unsigned)));
-  connect(controller_, SIGNAL(MessageRecieved(unsigned)), this, SLOT(LoadMessages(unsigned)));
+  connect(this, SIGNAL(SelectedFriendIdChanged(unsigned)), this, SLOT(ShowMessages(unsigned)));
+  connect(controller_, SIGNAL(MessageRecieved(unsigned)), this, SLOT(ShowMessages(unsigned)));
   connect(controller_, SIGNAL(LoginResult(bool)), this, SLOT(OnLoginResult(bool)));
 }
 
@@ -59,7 +59,7 @@ void GUIManager::newMessage(QString message) {
   message_model_.AddMessageToList(new_message);
 }
 
-void GUIManager::LoadMessages(unsigned friend_id) {
+void GUIManager::ShowMessages(unsigned friend_id) {
   if (friend_id) {
     message_model_.RemoveAllMessagesFromList();
 
@@ -92,16 +92,14 @@ void GUIManager::newFriendRiequest() {
 }
 
 void GUIManager::LogIn(QString user_login, QString user_password) { 
-  controller_->app_info_.remote_server_ip = "192.168.103.121";
+  controller_->app_info_.remote_server_ip = "192.168.195.144";
   controller_->app_info_.remote_server_port = 8888;
   controller_->app_info_.my_port = 8989;  //FIXME
   controller_->app_info_.my_login = user_login;
   controller_->app_info_.my_password = user_password;
   controller_->app_info_.my_id = client_data_.get_id_by_login(user_login);
-  //controller_->Start();
   controller_->LogIn(user_login, user_password);
   //OnLoginResult(true);
-
 }
 
 void GUIManager::Register(QString user_login, QString user_password) {
@@ -112,18 +110,21 @@ void GUIManager::OnLoginResult(bool logged_in) {
   if (logged_in) {
     LoadFriends();
 
-    LoadMessages(friend_model_.GetFirstFriend());
+    ShowMessages(friend_model_.GetFirstFriendId());
+    selected_friend_id_ = friend_model_.GetFirstFriendId();
+
     logger_->WriteLog(LogType::SUCCESS, controller_->app_info_.my_login);
     emit openMainPage();
   }
   else {
-    //controller_->Stop();
     emit logInFailed();
   }
 }
 
 void GUIManager::SendMessage(QString message) { 
-  controller_->SendMessage(selected_friend_id_, message);
+  if (selected_friend_id_) {
+    controller_->SendMessage(selected_friend_id_, message);  
+  }
 }
 
 void GUIManager::LoadFriends() {   //don't forget to load id

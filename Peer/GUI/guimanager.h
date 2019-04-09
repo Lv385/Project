@@ -56,8 +56,8 @@ public slots:
   void Register(QString user_login, QString user_password);
   void OnLoginResult(bool);
   void SendMessage(QString message);
-  void LoadMessages(unsigned id);  // temporary implementation(for testing)
-
+  void ShowMessages(unsigned id);  // temporary implementation(for testing)
+  //void LoadMessages(unsigned id);
 
   // void UserEntered();
 
@@ -69,6 +69,8 @@ public slots:
   FriendModel friend_model_;
   MessageModel message_model_;
   FriendRequestModel friend_request_model_;
+
+  QMap<unsigned, QList<MessageItem> > messages_cache;
 
  // QVector<Friend> friends_;   //FIXME: use id insted of Friend obj in sendMessage
   ClientController* controller_;

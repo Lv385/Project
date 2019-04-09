@@ -10,7 +10,7 @@ class FriendModel : public QAbstractListModel
 
 public:
   explicit FriendModel(QObject* parent = nullptr);
-  unsigned GetFirstFriend() const;    //for loading on startup
+  unsigned GetFirstFriendId() const;    //for loading on startup
 
   int rowCount(const QModelIndex &parent = QModelIndex()) const override;
   QVariant data(const QModelIndex &index, int role = Qt::DisplayRole) const override;
