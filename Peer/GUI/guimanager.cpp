@@ -11,7 +11,7 @@ GUIManager::GUIManager(QObject *parent)
   newFriendRiequest();
 
   connect(this, SIGNAL(SelectedFriendIdChanged(unsigned)), this, SLOT(ShowMessages(unsigned)));
-  connect(controller_, SIGNAL(MessageRecieved(unsigned)), this, SLOT(ShowMessages(unsigned)));
+  connect(controller_, SIGNAL(MessageRecieved(Message*)), this, SLOT(LoadMessage(Message*)));
   connect(controller_, SIGNAL(LoginResult(bool)), this, SLOT(OnLoginResult(bool)));
   connect(controller_, SIGNAL(StatusChanged(unsigned, bool)), this,
           SLOT(OnStatusChanged(unsigned, bool)));
@@ -56,8 +56,9 @@ void GUIManager::deleteFriend(FriendItem* friend_to_delete) {
 }
 
 void GUIManager::newMessage(QString message) {
-  MessageItem* new_message = new MessageItem(message, QTime::currentTime().toString("hh:mm"),
-                                             QDate::currentDate().toString("d MMM"), my_id());
+  Message* temp = new Message{0, selected_friend_id_, controller_->app_info_.my_id, message,
+                              QDate::currentDate(), QTime::currentTime()};
+  MessageItem* new_message = new MessageItem(temp);
   message_model_.AddMessageToList(new_message);
 }
 
@@ -69,15 +70,35 @@ void GUIManager::ShowMessages(unsigned friend_id) {
     int owner_id;
     MessageItem* new_message;
 
-    QVector<Message> history = client_data_.get_messages(friend_id);
-    for (const auto& msg : history) {
-      data = msg.data;
-      time = msg.time.toString("hh:mm");
-      date = msg.date.toString("d MMM");  // FIX date
-      owner_id = msg.owner_id;
-      new_message = new MessageItem(data, time, date, owner_id);
+    if (messages_cache_.find(friend_id) == messages_cache_.end()) {
+      LoadAllMessages(friend_id);
+    }
+
+    for (Message* msg : messages_cache_[friend_id]) {
+      new_message = new MessageItem(msg);
       message_model_.AddMessageToList(new_message);
     }
+  }
+}
+
+void GUIManager::LoadAllMessages(unsigned friend_id) {
+  Message* temp;
+  QList<Message*> messages;
+  QVector<Message> history = client_data_.get_messages(friend_id);  //use controller's func
+  for (const auto& msg : history) {
+    temp = new Message(msg);
+    messages.push_back(temp);
+  }
+  messages_cache_[friend_id] = messages;
+}
+
+void GUIManager::LoadMessage(Message* msg) {
+  MessageItem* new_message;
+
+  messages_cache_[msg->chat_id].push_back(msg);
+  if (selected_friend_id_ == msg->chat_id) {
+    new_message = new MessageItem(msg);
+    message_model_.AddMessageToList(new_message);
   }
 }
 
@@ -102,7 +123,6 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   logger_->WriteLog(LogType::SUCCESS, user_login);
   controller_->LogIn(user_login, user_password);
   //OnLoginResult(true);
-
 }
 
 void GUIManager::Register(QString user_login, QString user_password) {

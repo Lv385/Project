@@ -4,6 +4,7 @@
 #include <QString>
 #include <QDate>
 #include <QTime>
+#include <QVector>
 //
 //// This is our entity from database
 struct Friend {
