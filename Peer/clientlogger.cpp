@@ -40,7 +40,10 @@ void ClientLogger::WriteLog(LogType type, const QString& msg) {
   }
   std::lock_guard<std::mutex> lock(mutex_);
   QTextStream out(file_);
-  if (file_) {
+  if (file_ && file_->size() < kMaxFileSize) {
+    out << text;
+  } else{
+    file_->resize(0);
     out << text;
   }
   emit DisplayLog(ErrorValueNames[type], msg);
