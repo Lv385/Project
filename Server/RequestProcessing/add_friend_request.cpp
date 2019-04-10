@@ -8,7 +8,7 @@ AddFriendRequest::AddFriendRequest(QByteArray &request, DAL *d, QTcpSocket *s)
   QString logstring = IP + "::xxx";
   Logger::LogOut(logstring, request);
 }
-//DONe
+
 void AddFriendRequest::PrepareResponse() {
   // FriendRequestInfo ;
   // other_login
@@ -20,10 +20,14 @@ void AddFriendRequest::PrepareResponse() {
     //TODO: check if parties are not friends allready!!!!!
     if (QString::compare(sender_guy.password, income_data_.password) == 0) {
       requested_guy = database_->getClient(income_data_.other_login);
-      info_to_send.requester_id = sender_guy.id;
-      info_to_send.requester_login = sender_guy.login;
-      send_addfriend_info_bytearr = Parser::AddFriendInfo_ToByteArray(info_to_send);
-      response_to_requester_ = (quint8)ServerRequest::FRIEND_REQUEST_SUCCEED;
+       if (!database_->CheckIfFriends(sender_guy, requested_guy)) {
+        info_to_send.requester_id = sender_guy.id;
+        info_to_send.requester_login = sender_guy.login;
+        send_addfriend_info_bytearr = Parser::AddFriendInfo_ToByteArray(info_to_send);
+        response_to_requester_ = (quint8)ServerRequest::FRIEND_REQUEST_SUCCEED;
+      }else { 
+         response_to_requester_ = (quint8)ServerRequest::FRIEND_REQUEST_FAILED;
+      }
     } else {
       response_to_requester_ = (quint8)ServerRequest::FRIEND_REQUEST_FAILED;
       // because password is incorrect

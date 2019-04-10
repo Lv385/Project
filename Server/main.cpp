@@ -2,7 +2,7 @@
 #include "AsyncServer.h"
 #include <iostream>
 //#include <windows.h>
- // ALL COMMeNTS Below IS FOR HIDING CONSOLe WINDOW THAT FOR FUTURe SO DONT Touch
+ // ALL COMMENTS Below IS FOR HIDING CONSOLE WINDOW THAT FOR FUTURe SO DONT Touch
 int main(int argc, char *argv[]) {
   QCoreApplication a(argc, argv);
 	AsyncServer async_server; // run server
