@@ -88,7 +88,7 @@ QVector<Message> ClientController::LoadMessages(unsigned id) {
   return result;
 }
 
-void ClientController::OnFriendRequestRecieved() {}
+void ClientController::OnFriendRequestRecieved() {} //TO DO: sent to server your answer(check request_types)
 
 void ClientController::OnLogin(bool logged_in) {
   if(logged_in){

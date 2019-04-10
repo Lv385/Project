@@ -10,14 +10,12 @@ SignalRedirector &SignalRedirector::get_instance() {
 void SignalRedirector::ConnectToMessageSent(QObject *object) {
     connect(object, SIGNAL(MessageSent(unsigned, bool)), 
  clientController_, SIGNAL(MessageSent(unsigned, bool)));
-
 }
 
 void SignalRedirector::ConnectToMessageRecieved(QObject *object) {
   connect(object, SIGNAL(MessageRecieved(unsigned)), clientController_,
           SIGNAL(MessageRecieved(unsigned)));
 }
-
 
 void SignalRedirector::ConnectToLoginResult(QObject *object) {
   connect(object, SIGNAL(LoginResult(bool)), clientController_,
@@ -32,6 +30,11 @@ void SignalRedirector::ConnectToRegisterResult(QObject *object) {
 void SignalRedirector::ConnectToStatusChanged(QObject *object) {
   connect(object, SIGNAL(StatusChanged(unsigned, bool)), clientController_,
           SIGNAL(StatusChanged(unsigned, bool)));
+}
+
+void SignalRedirector::ConnectToFriendRequestResult(QObject *object) {
+  connect(object, SIGNAL(FriendRequestResult(bool)), clientController_, 
+    SIGNAL(FriendRequestResult(bool)));
 }
 
 void SignalRedirector::set_controller(ClientController * controller) {

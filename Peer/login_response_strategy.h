@@ -1,5 +1,6 @@
 #ifndef LOGINRESPONSESTRATEGY_H
 #define LOGINRESPONSESTRATEGY_H
+
 #include <QObject>
 #include "abstractstrategy.h"
 

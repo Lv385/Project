@@ -44,6 +44,7 @@ class ClientController : public QObject {
   void RegisterResult(quint32 id);
   void MessageRecieved(unsigned id);
   void StatusChanged(unsigned id, bool status);
+  void FriendRequestResult(bool);
 
  private slots:
   void OnNewConnection(QTcpSocket* socket);

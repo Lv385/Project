@@ -11,12 +11,15 @@ ServerManager::ServerManager(QTcpSocket *socket, ApplicationInfo& info)
   AbstractStrategy* login = new LoginResponseStrategy();
   AbstractStrategy* reg = new RegisterResponseStrategy();
   AbstractStrategy* friend_update = new FriendUpdateStrategy();
+  AbstractStrategy* friend_request = new FriendRequestResponseStrategy();
 
   strategies_.insert(ServerRequest::LOGIN_SUCCEED, login);
   strategies_.insert(ServerRequest::LOGIN_FAILED, login);
   strategies_.insert(ServerRequest::REGISTER_SUCCEED, reg);
   strategies_.insert(ServerRequest::REGISTER_FAILED, reg);
   strategies_.insert(ServerRequest::FRIEND_UPDATE_INFO, friend_update);
+  strategies_.insert(ServerRequest::FRIEND_REQUEST_SUCCEED, friend_request);
+  strategies_.insert(ServerRequest::FRIEND_REQUEST_FAILED, friend_request);
   //to do  
   ServerRequest::ADD_FRIEND_REQUEST;
 }

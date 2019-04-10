@@ -18,7 +18,6 @@ ClientLogger::ClientLogger()
   file_->open(QIODevice::Append | QIODevice::Text);
   specific_log_ = false;
   log_level_ = LogLevel::NOLOG;
-  
 }
 void ClientLogger::WriteLog(LogType type, const QString& msg) { 
   QString text;
@@ -46,7 +45,6 @@ void ClientLogger::WriteLog(LogType type, const QString& msg) {
     file_->resize(0);
     out << text;
   }
-  emit DisplayLog(ErrorValueNames[type], msg);
 }
 
 void ClientLogger::set_specific_log(LogType specific_type) {
