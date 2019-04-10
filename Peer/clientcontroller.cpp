@@ -20,6 +20,9 @@ ClientController::ClientController(QObject *parent)
   server_manager_ = new ServerManager(nullptr, app_info_);
   friends_update_manager_ = new FriendsUpdateManager(app_info_);
 
+  connect(friends_update_manager_, SIGNAL(StatusChanged(unsigned, bool)), this,
+          SIGNAL(StatusChanged(unsigned, bool)));
+
   QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
   // use the first non-localhost IPv4 address
   for (int i = 0; i < ipAddressesList.size(); ++i) {
@@ -89,8 +92,8 @@ void ClientController::OnFriendRequestRecieved() {}
 
 void ClientController::OnLogin(bool logged_in) {
   if(logged_in){
-    friends_update_manager_->StartUpdateReceiver();
-    friends_update_manager_->StartUpdateSender();
+    friends_update_manager_->SetUpdateReceiver();
+    friends_update_manager_->SetUpdateSender();
   } else{
     this->Stop();
     friends_update_manager_->StopUpdateListening();

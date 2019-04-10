@@ -12,8 +12,6 @@
 #include "clientlogger.h"
 #include "application_info.h"
 
-
-
 class FriendsUpdateManager : public QObject {
   Q_OBJECT
 
@@ -21,9 +19,12 @@ class FriendsUpdateManager : public QObject {
   FriendsUpdateManager(ApplicationInfo& app_info);
   ~FriendsUpdateManager();
 
-  void StartUpdateReceiver();
+  void SetUpdateReceiver();
   void StopUpdateListening();
-  void StartUpdateSender();
+  void SetUpdateSender();
+
+signals:
+  void StatusChanged(unsigned id, bool status);
 
  private slots:
   void SendUpdateInfo();
@@ -41,6 +42,7 @@ class FriendsUpdateManager : public QObject {
   QUdpSocket update_receiver_;
   QTimer update_info_timer_;
   QMap<unsigned, QTimer*> check_timers_;
+
 };
 
 #endif  // !FRIENDSUPDATEMANAGER_H

@@ -8,7 +8,7 @@
 #include <QObject>
 #include <QTextStream>
 #include <mutex>
-#include "D:\Projects\Project\Parser&Structs\parser.h"
+#include "..\Parser&Structs\parser.h"
 
 enum LogType { ERROR = 0, SUCCESS, INFO, WARNING, DEBUG };
 enum LogLevel { NOLOG = 0, LOW, HIGH };

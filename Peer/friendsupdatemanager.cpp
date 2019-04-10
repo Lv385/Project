@@ -3,7 +3,7 @@
 FriendsUpdateManager::FriendsUpdateManager(ApplicationInfo& app_info)
     : app_info_(app_info),
   logger_(ClientLogger::Instance()) {
-
+  
   logger_->set_log_level(LogLevel::HIGH);
 
   connect(&update_info_timer_, SIGNAL(timeout()), this, 
@@ -15,7 +15,7 @@ FriendsUpdateManager::FriendsUpdateManager(ApplicationInfo& app_info)
 FriendsUpdateManager::~FriendsUpdateManager(){
 }
 
-void FriendsUpdateManager::StartUpdateReceiver() {
+void FriendsUpdateManager::SetUpdateReceiver() {
   update_receiver_.bind(QHostAddress::AnyIPv4, app_info_.my_port,
                         QUdpSocket::ShareAddress);
 }
@@ -26,7 +26,7 @@ void FriendsUpdateManager::StopUpdateListening() {
   update_info_timer_.stop();
 }
 
-void FriendsUpdateManager::StartUpdateSender() {
+void FriendsUpdateManager::SetUpdateSender() {
     update_sender_.bind(QHostAddress(QHostAddress::AnyIPv4), 0);
     update_info_timer_.start(3000);  
     logger_->WriteLog(LogType::SUCCESS, "friend manager started");
@@ -61,6 +61,8 @@ void FriendsUpdateManager::UpdateFriendsInfo() {
   if (check_timers_.find(updated_friend_info.id) == check_timers_.end()) {
     client_data_.set_friend_status(updated_friend_info.id, true);
 
+    emit StatusChanged(updated_friend_info.id, true);
+
     QTimer* timer = new QTimer();
     timer->start(10000);
     check_timers_[updated_friend_info.id] = timer;
@@ -72,7 +74,6 @@ void FriendsUpdateManager::UpdateFriendsInfo() {
 
   client_data_.UpdateIPPort(updated_friend_info.id,
   peer_address.toString(), updated_friend_info.port);
-
   logger_->WriteLog(LogType::INFO, " updated " + client_data_.get_login_by_id(updated_friend_info.id) 
     + "'s info");
   }
@@ -82,6 +83,9 @@ void FriendsUpdateManager::SetOfflineStatus() {
   QTimer* to_delete = static_cast<QTimer*>(QObject::sender());  // get user id that came offline
   unsigned id = check_timers_.key(to_delete);
   client_data_.set_friend_status(id, false);
+
+  emit StatusChanged(id, false);
+
   logger_->WriteLog(LogType::INFO, " set " + client_data_.get_login_by_id(id)
     + " offline status");
   check_timers_.remove(id);
