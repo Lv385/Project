@@ -15,13 +15,13 @@ Key::Key()
 
 int Key::SetNewPow()
 {
-  my_pow = int(rand()%5000);
+  my_pow = int(rand()%5000); // our a should fix
   return my_pow;
 }
 
 void Key::SetNewMyCode()
 {
-  my_code = int(pow(p, my_pow)) % g;
+  my_code = int(pow(g, my_pow)) % p;
 }
 
 void Key::SetFriendCode(int B)
