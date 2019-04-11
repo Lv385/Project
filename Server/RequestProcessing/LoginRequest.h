@@ -18,8 +18,7 @@
 class LoginRequest : public AbstractRequest {
 public:
 	
-	LoginRequest(QByteArray& A, DAL*, QTcpSocket*);
-  ~LoginRequest();
+	LoginRequest(QByteArray& A, DAL*, QTcpSocket*);  
 	bool SendResponde();
   bool SendToFriend(QTcpSocket &output_socket, QByteArray raw_data, unsigned int id);
 protected:
@@ -31,7 +30,6 @@ private:
 
 	LoginInfo incoming_structure_;	
 	FriendUpdateInfo send_to_friends_;  
-	Client requester_; 
-	quint8 response_to_requester_;
-  clock_t  start = clock(); //TEMPORARY!// this is for debugging and checking how many time login request takes to execute
+	User requester_; 
+	quint8 response_to_requester_;  
 };

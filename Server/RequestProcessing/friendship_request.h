@@ -31,9 +31,9 @@ class FriendshipRequest : public AbstractRequest {
   NewFriendInfo outcome_for_requester_;
   NewFriendInfo outcome_for_new_friend_;
   QByteArray outcome_data_;
-  Client requester_;
-  Client new_friend_;
+  User requester_;
+  User new_friend_;
   quint8 request_type_;
-  bool doNothing_;
+  bool doNothing_= false;
   ;
 };

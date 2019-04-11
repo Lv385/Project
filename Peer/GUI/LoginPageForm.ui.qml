@@ -8,6 +8,11 @@ Page {
     property alias buttonLogIn: buttonLogIn
     property alias buttonRegister: buttonRegister
     property alias loginUsername: loginUsername
+	property alias loginPassword: loginPassword
+    contentWidth: 0
+    contentHeight: -1
+    focusPolicy: Qt.WheelFocus
+    spacing: 4
 
     background: Rectangle {
         color: backGroundColor
@@ -17,13 +22,17 @@ Page {
         id: iconRect
         width: parent.width
         height: parent.height / 3
-        color: backGroundColor
+        color: topLoginPageColor
+        border.width: 0
+        transformOrigin: Item.Center
 
         Text {
             id: icontext
             width: 390
             height: 160
             text: qsTr("MesX")
+            anchors.verticalCenterOffset: 0
+            anchors.horizontalCenterOffset: 0
             anchors.centerIn: parent
             font.pointSize: 110
             font.family: "Verdana"
@@ -41,6 +50,7 @@ Page {
 
         TextField {
             id: loginUsername
+			text: "oleksa"
             width: parent.width
             placeholderText: qsTr("User name")
             color: mainTextCOlor
@@ -74,6 +84,7 @@ Page {
 
         TextField {
             id: loginPassword
+			text: "password"
             width: parent.width
             placeholderText: qsTr("Password")
             color: mainTextCOlor
@@ -106,9 +117,13 @@ Page {
 
         Button {
             id: buttonLogIn
+            width: 323
             implicitWidth: parent.width
             text: qsTr("Log In")
+            focusPolicy: Qt.StrongFocus
             font.pointSize: 16
+            font.family: "fontawesome"
+            focus: true
 
             contentItem: Text {
                 font: buttonLogIn.font
@@ -116,6 +131,10 @@ Page {
                 text: "Log In"
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
+            }
+            MouseArea {
+                onClicked: (mouse.button === Qt.LeftButton)
+                           && (mouse.modifiers & Qt.ShiftModifier)
             }
 
             background: Rectangle {
@@ -132,8 +151,11 @@ Page {
             id: buttonRegister
             implicitWidth: parent.width
             text: qsTr("Register")
+            display: AbstractButton.IconOnly
+            focusPolicy: Qt.NoFocus
             Layout.fillWidth: false
             font.pointSize: 16
+            font.family: "fontawesome"
 
             contentItem: Text {
                 text: buttonRegister.text
@@ -151,6 +173,12 @@ Page {
                 radius: height / 3
                 border.color: mainAppColor
             }
+        }
+
+        BusyIndicator {
+            Layout.alignment: Qt.AlignHCenter
+            Layout.topMargin: -760
+            running: runIndicator
         }
     }
 }

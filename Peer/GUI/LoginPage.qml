@@ -4,8 +4,24 @@ import QtQuick.Controls 2.5
 LoginPageForm {
     id: rect
     buttonLogIn.onClicked: {
-        guiManager.logIn2()
-        stackView.push("MainPage.qml")
+        runIndicator = true
+		loginUser(loginUsername.text, loginPassword.text)        
+    }
+	
+    Connections{
+        target: guiManager
+        onOpenMainPage: {
+			runIndicator = false
+            stackView.push("MainPage.qml")
+        }
+		onLogInFailed: {
+            popup.popMessage = "Log in failed!"
+            popup.open()
+		}
+    }
+
+    buttonRegister.onClicked: {
+        stackView.push("RegisterPage.qml")
     }
 }
 

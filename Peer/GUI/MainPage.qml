@@ -2,27 +2,65 @@ import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQml.Models 2.12
 
-import Friends 1.0
 
 MainPageForm {
 
     background: Rectangle {
         color: backGroundColor
+
     }
 
     FriendListDelegateModel {
-        id: delegateModelId
-        visualModel.model: guiManager.friendModel
-        listView: parent.listView
-        //deleteFriendButton.onClicked: guiManager.deleteFriend(object)
+        id: friendModel
+        visualModel.model: guiManager.friend_model
     }
 
-    friendList.model: delegateModelId.visualModel
-    friendList.spacing: 5
+    MessageListDelegateModel {
+        id: messageModel
+        visualModel.model: guiManager.message_model
+    }
+
+    FriendRequestListDelegateModel {
+        id: friendRequestModel
+        visualModel.model: guiManager.friend_request_model
+    }
 
 
-    addButton.onClicked: {
-        guiManager.newFriend()
+    Component {
+        id: highlightBar
+        Rectangle {
+            width: friendList.width; height: 40
+            color: friendMouseAreaColor
+            y: friendList.currentItem.y;
+        }
+    }
+
+    friendList.focus: true
+    friendList.highlight: highlightBar
+    friendList.highlightFollowsCurrentItem: false
+
+    friendList.model: friendModel.visualModel
+
+    messageList.model: messageModel.visualModel
+    messageList.spacing: 10
+
+    friendRequestList.model: friendRequestModel.visualModel
+
+    findButton.onClicked: {
+        guiManager.newFriend(findUserField.text)
+        findUserField.text = ""
+    }
+
+    buttonRequests.onClicked: {
+        friendRequestDialog.open()
+    }
+
+    messageField.onEditingFinished: {
+        if(messageField.text != "") {
+			guiManager.SendMessage(messageField.text)
+            guiManager.newMessage(messageField.text)  //FIXME
+            messageField.text = "";
+        }
     }
 }
 

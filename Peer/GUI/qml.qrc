@@ -7,5 +7,10 @@
         <file>MainPage.qml</file>
         <file>MainPageForm.ui.qml</file>
         <file>FriendListDelegateModel.qml</file>
+        <file>MessageListDelegateModel.qml</file>
+        <file>RegisterPage.qml</file>
+        <file>RegisterPageForm.ui.qml</file>
+        <file>FriendRequestListDelegateModel.qml</file>
+        <file>validator.js</file>
     </qresource>
 </RCC>

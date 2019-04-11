@@ -2,7 +2,6 @@
 #include "ServerThread.h"
 #include <QNetworkInterface>
 #include <QUuid>
-#include <string>
 
 //Registration reg;
 //reg.port = 5896;

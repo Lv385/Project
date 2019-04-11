@@ -57,7 +57,7 @@
       <Optimization>Disabled</Optimization>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
       <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
-      <AdditionalIncludeDirectories>$(SolutionDir)DAL2 dont touch\DAL2;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(SolutionDir)Common;$(SolutionDir)DAL;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <TreatWChar_tAsBuiltInType>true</TreatWChar_tAsBuiltInType>
     </ClCompile>
     <Link>
@@ -69,7 +69,7 @@
     </Link>
     <QtMoc>
       <Define>QT_QML_DEBUG;UNICODE;_UNICODE;WIN32;_ENABLE_EXTENDED_ALIGNED_STORAGE;WIN64;QT_DLL;QT_CORE_LIB;QT_NETWORK_LIB;QT_SQL_LIB;%(PreprocessorDefinitions)</Define>
-      <IncludePath>$(SolutionDir)DAL2 dont touch\DAL2;.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;%(AdditionalIncludeDirectories)</IncludePath>
+      <IncludePath>$(SolutionDir)Common;$(SolutionDir)DAL;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql;%(AdditionalIncludeDirectories)</IncludePath>
       <OutputFile>.\GeneratedFiles\$(ConfigurationName)\moc_%(Filename).cpp</OutputFile>
       <ExecutionDescription>Moc'ing %(Identity)...</ExecutionDescription>
     </QtMoc>
@@ -98,7 +98,6 @@
     </QtMoc>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <ClCompile Include="..\DAL\Server\serverdb.cpp" />
     <ClCompile Include="..\Parser&amp;Structs\parser.cpp" />
     <ClCompile Include="AsyncServer.cpp" />
     <ClCompile Include="DAL\client.cpp" />
@@ -119,7 +118,6 @@
     <QtMoc Include="ServerThread.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\DAL\Server\serverdb.h" />
     <ClInclude Include="..\Parser&amp;Structs\parser.h" />
     <ClInclude Include="..\Parser&amp;Structs\request_types.h" />
     <ClInclude Include="DAL\Client.h" />
@@ -133,7 +131,10 @@
     <ClInclude Include="RequestProcessing\NewUserRequest.h" />
   </ItemGroup>
   <ItemGroup>
-    <ProjectReference Include="..\DAL2 dont touch\DAL2\DAL2.vcxproj">
+    <ProjectReference Include="..\Common\Common.vcxproj">
+      <Project>{9bf7b0d9-de5b-4410-93c8-419c4a75c6eb}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\DAL\DAL.vcxproj">
       <Project>{3f4a82b1-4157-400a-82d0-e6516372e8d2}</Project>
     </ProjectReference>
   </ItemGroup>

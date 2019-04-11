@@ -1,19 +1,23 @@
 #include "clientlogger.h"
 
+std::atomic<ClientLogger*> ClientLogger::logger_ = nullptr;
+std::mutex ClientLogger::mutex_;
+
 ClientLogger* ClientLogger::Instance() {
-  static ClientLogger logger_; 
-    return &logger_;
+  std::lock_guard<std::mutex> lock(mutex_);
+    if(logger_ == nullptr){
+      logger_ = new ClientLogger();
+    }
+  return logger_;
 }
 const char* ErrorValueNames[] = {GET_NAME(ERROR), GET_NAME(SUCCESS),
                                  GET_NAME(INFO), GET_NAME(WARNING), GET_NAME(DEBUG)};
 
-ClientLogger::ClientLogger() {
+ClientLogger::ClientLogger()
+  : file_(new QFile("Log.txt")){
+  file_->open(QIODevice::Append | QIODevice::Text);
   specific_log_ = false;
   log_level_ = LogLevel::NOLOG;
-  if (!file_) {
-    file_ = new QFile("Log.txt");
-    file_->open(QIODevice::Append | QIODevice::Text);
-  }
 }
 void ClientLogger::WriteLog(LogType type, const QString& msg) { 
   QString text;
@@ -33,19 +37,22 @@ void ClientLogger::WriteLog(LogType type, const QString& msg) {
   }else{
     text = tr("[%1] %2 ").arg(ErrorValueNames[type]).arg(log);
   }
+  std::lock_guard<std::mutex> lock(mutex_);
   QTextStream out(file_);
-  if (file_) {
+  if (file_ && file_->size() < kMaxFileSize) {
+    out << text;
+  } else{
+    file_->resize(0);
     out << text;
   }
-  emit DisplayLog(ErrorValueNames[type], msg);
 }
 
-void ClientLogger::SetSpecificLog(LogType specific_type) {
+void ClientLogger::set_specific_log(LogType specific_type) {
   specific_log_ = true;
   specific_type_ = specific_type;
 }
 
-void ClientLogger::SetLogLevel(LogLevel log_level) { 
+void ClientLogger::set_log_level(LogLevel log_level) { 
   log_level_ = log_level; 
 }
 
