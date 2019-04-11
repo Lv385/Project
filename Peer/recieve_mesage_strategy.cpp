@@ -12,8 +12,9 @@ RecieveMessageStrategy::~RecieveMessageStrategy(){
 
 void RecieveMessageStrategy::DoWork() {
   unsigned id = peer_info_.id;
-  message_ = Parser::ParseAsMessage(data_);
-  
-  client_data_.AddMessageToDB(message_.message, id, id);
-  emit MessageRecieved(id);
+  message_info_ = Parser::ParseAsMessage(data_);
+  Message* message = new Message{0, id, id, message_info_.message, //no way to know message id:) #tofix
+                      QDate::currentDate(), QTime::currentTime()};
+  client_data_.AddMessageToDB(*message);
+  emit MessageRecieved(message);
 }

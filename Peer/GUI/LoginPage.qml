@@ -22,8 +22,8 @@ LoginPageForm {
 			runIndicator = false
             stackView.push("MainPage.qml")
         }
-		onLogInFailed: {
-            popup.popMessage = "Log in failed!"
+		onOpenFailed: {
+            popup.popMessage = text + " failed!"
             popup.open()
 		}
     }

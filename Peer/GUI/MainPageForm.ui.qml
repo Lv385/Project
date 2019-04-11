@@ -48,7 +48,7 @@ id: page
                 width: 70
                 height: 25
                 text: qsTr("Add friend")
-                focusPolicy: Qt.WheelFocus
+                //focusPolicy: Qt.WheelFocus
                 enabled: findUserField.length > 0
             }
         }
@@ -108,6 +108,7 @@ id: page
             width: parent.width+25
             height: 80
             Layout.fillWidth: true
+			focus: true
 
 
             TextField {

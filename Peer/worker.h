@@ -10,13 +10,13 @@
 #include "messagestrategy.h"
 
 #include <QByteArray>
+#include <QMap>
 #include <QObject>
 #include <QTimer>
 
 #include "../Parser&Structs/parser.h"
 
 class SignalRedirector;
-
 
 class Worker : public QObject {
   Q_OBJECT
@@ -25,8 +25,9 @@ class Worker : public QObject {
   Worker(BlockReader* reader, unsigned user_id, unsigned my_id);
   Worker(Friend peer_info, QString message, unsigned my_id);
   ~Worker();
+
   void DoWork();
-  void SetStrategy(StrategyType strategy_type);
+  void SetStrategy(ClientClientRequest request);
   void set_message(QString message);
   void set_my_id(unsigned id);
 
@@ -35,7 +36,7 @@ class Worker : public QObject {
   void Connected(unsigned id);
   void Error(unsigned id);
   void MessageSent(unsigned id, bool result);
-  void MessageRecieved(unsigned id);
+  void MessageRecieved(Message* message);
 
  public slots:
   void SendMessage();
@@ -56,7 +57,7 @@ class Worker : public QObject {
   QTcpSocket* socket_;
   BlockReader* reader_;
   BlockWriter* writer_;
-  QHash<quint8, AbstractStrategy*> strategies_;
+  QMap<ClientClientRequest, AbstractStrategy*> strategies_;
   SignalRedirector& redirector_;
   ClientLogger* logger_;
   QTimer timer_;
