@@ -22,7 +22,7 @@ void NewUserRequest::PrepareResponse()
 	newClient.ip=client_socket_->peerAddress().toString();
 	
 	
-	if (database_->Check_If_Client_exists_In_Db(newClient) == false) { // if client not exist
+	if (database_->CheckIfClientExistsInDb(newClient) == false) { // if client not exist
 		    database_->CreateNew(newClient);
         RegisterSuccessInfo register_success_info;
         register_success_info.id = database_->GetClientId(newClient);

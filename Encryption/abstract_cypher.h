@@ -7,9 +7,9 @@
 class AbstractCypher
 {
    public:
-    //  virtual QByteArray Encrypt(QByteArray) = 0;
-     // virtual QByteArray Decrypt(QByteArray) = 0;
+    virtual void Encrypt(QByteArray& plain_text, QString key) = 0;
+    virtual void Decrypt(QByteArray& cypher_text, QString key) = 0;
    //protected:
-    static QString HashString(QString); // should be protected
+    static QString HashString(QString); 
 
 };

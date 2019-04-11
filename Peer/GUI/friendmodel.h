@@ -18,6 +18,7 @@ public:
 
   void AddFriendToList(FriendItem*);
   bool RemoveFriendFromList(FriendItem*);
+  void SetStatus(unsigned id, bool status);
 
 private:
   QList<FriendItem*> friends_list_;

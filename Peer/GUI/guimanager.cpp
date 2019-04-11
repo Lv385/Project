@@ -14,6 +14,12 @@ GUIManager::GUIManager(QObject *parent)
   connect(this, SIGNAL(SelectedFriendIdChanged(unsigned)), this, SLOT(LoadMessages(unsigned)));
   connect(controller_, SIGNAL(MessageRecieved(unsigned)), this, SLOT(LoadMessages(unsigned)));
   connect(controller_, SIGNAL(LoginResult(bool)), this, SLOT(OnLoginResult(bool)));
+  connect(controller_, SIGNAL(StatusChanged(unsigned, bool)), this,
+          SLOT(OnStatusChanged(unsigned, bool)));
+  connect(controller_, SIGNAL(FriendRequestResult(bool)), this,
+          SLOT(OnFriendRequestResult(bool)));
+  connect(controller_, SIGNAL(AddFriendRequestInfo(QString)), this, 
+    SLOT(OnAddFriendRequest(QString)));
 }
 
 int GUIManager::my_id() const { 
@@ -44,8 +50,9 @@ void GUIManager::set_selected_friend_id(unsigned selected_id) {
 }
 
 void GUIManager::newFriend(QString new_friend_login) {
-  FriendItem* new_friend = new FriendItem(new_friend_login, qrand() % 2, 9);
-  friend_model_.AddFriendToList(new_friend);
+  //FriendItem* new_friend = new FriendItem(new_friend_login, qrand() % 2, 9);
+  //friend_model_.AddFriendToList(new_friend);
+  controller_->AddFriend(new_friend_login);
 }
 
 void GUIManager::deleteFriend(FriendItem* friend_to_delete) {
@@ -80,7 +87,6 @@ void GUIManager::LoadMessages(unsigned friend_id) {
   }
 }
 
-
 void GUIManager::deleteFriendRiequest(FriendRequestItem* friend_request_to_delete) {
   if (!friend_request_to_delete)
       return;
@@ -100,9 +106,8 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   controller_->app_info_.my_password = user_password;
   controller_->app_info_.my_id = client_data_.get_id_by_login(user_login);
   logger_->WriteLog(LogType::SUCCESS, user_login);
- // controller_->Start();
   controller_->LogIn(user_login, user_password);
-
+  //OnLoginResult(true);
 }
 
 void GUIManager::Register(QString user_login, QString user_password) {
@@ -117,18 +122,39 @@ void GUIManager::OnLoginResult(bool logged_in) {
     emit openMainPage();
   }
   else {
-    //controller_->Stop();
     emit logInFailed();
   }
 }
 
-void GUIManager::SendMessage(QString message) { 
-      controller_->SendMessage(selected_friend_id_, message);
+void GUIManager::OnStatusChanged(unsigned id, bool status) {
+  friend_model_.SetStatus(id, status);
+}
 
+void GUIManager::OnFriendRequestResult(bool request_result) {
+  if(request_result){
+    logger_->WriteLog(LogType::SUCCESS, "Good requst");
+  } else {
+    logger_->WriteLog(LogType::ERROR, "Bad requst");
+  }
+}
+
+void GUIManager::OnAddFriendRequest(QString login) {
+  if(true){
+    controller_->FriendRequestAccepted(login);
+  } else{
+    controller_->FriendRequestRejected(login);
+  }
+}
+
+
+
+void GUIManager::SendMessage(QString message) { 
+  controller_->SendMessage(selected_friend_id_, message);
 }
 
 void GUIManager::LoadFriends() {   //don't forget to load id
   for (const Friend& i : controller_->LoadFriends()) {
+    if (i.id == controller_->app_info_.my_id) continue;
     FriendItem* friend_item = new FriendItem(i.login, false, i.id);
     friend_model_.AddFriendToList(friend_item);
   }
