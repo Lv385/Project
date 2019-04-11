@@ -15,6 +15,9 @@ ClientController::ClientController(QObject *parent)
   connect(this, SIGNAL(LoginResult(bool)), this,
           SLOT(OnLogin(bool)));
 
+  //connect(this, SIGNAL(AddFriendRequestInfo(QString)), this,
+          //SLOT(OnFriendRequestAccepted(QString)));
+
   redirector_.set_controller(this);
 
   server_manager_ = new ServerManager(nullptr, app_info_);
@@ -90,7 +93,27 @@ QVector<Message> ClientController::LoadMessages(unsigned id) {
   return result;
 }
 
-void ClientController::OnFriendRequestRecieved() {}
+void ClientController::FriendRequestAccepted(QString login) {
+  FriendRequestInfo info;
+  info.id = app_info_.my_id;
+  info.other_login = login;
+  info.password = app_info_.my_password;
+
+  QByteArray data = Parser::FriendRequestInfo_ToByteArray(
+      info, static_cast<quint8>(ClientRequest::FRIENDSHIP_ACCEPTED));
+  server_manager_->SendRequest(data);
+}  
+
+void ClientController::FriendRequestRejected(QString login) {
+  FriendRequestInfo info;
+  info.id = app_info_.my_id;
+  info.other_login = login;
+  info.password = app_info_.my_password;
+
+  QByteArray data = Parser::FriendRequestInfo_ToByteArray(
+      info, static_cast<quint8>(ClientRequest::FRIENDSHIP_REJECTED));
+  server_manager_->SendRequest(data);
+}
 
 void ClientController::OnLogin(bool logged_in) {
   if(logged_in){

@@ -63,6 +63,8 @@ public slots:
   void LoadAllMessages(unsigned id);
   void LoadMessage(Message* msg);
   void OnStatusChanged(unsigned id, bool status);
+  void OnFriendRequestResult(bool);
+  void OnAddFriendRequest(QString);
 
   // void UserEntered();
 

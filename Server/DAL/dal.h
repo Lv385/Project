@@ -18,9 +18,9 @@ class DAL {
   void UpdateClient(User);
   User getClient(QString);
   User getClient(quint32);
-  bool Check_If_Client_exists_In_Db(User);
-  bool Check_If_Client_exists_In_Db(QString);
-
+  bool CheckIfClientExistsInDb(User);
+  bool CheckIfClientExistsInDb(QString);
+  bool CheckIfFriends(User user1, User user2);
   int GetClientId(User);
   
 

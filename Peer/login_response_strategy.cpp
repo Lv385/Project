@@ -4,7 +4,6 @@
 LoginResponseStrategy::LoginResponseStrategy()
   : AbstractStrategy(){
   redirector_.ConnectToLoginResult(this);
-  this->dumpObjectInfo();
 }
 
 LoginResponseStrategy::~LoginResponseStrategy() {}
