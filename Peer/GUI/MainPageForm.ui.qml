@@ -28,6 +28,8 @@ id: page
             width: pane1.width
             height: pane1.height
             color: friendMouseAreaColor
+			border.color: "black"
+			border.width: 1
 
             TextArea {
                 id: findUserField
@@ -94,10 +96,11 @@ id: page
             verticalLayoutDirection: ListView.BottomToTop
             spacing: 12
 
+
             ScrollBar.vertical: ScrollBar {
-                anchors.left: parent.right
+            anchors.left: parent.right
             }
-        }
+	}
 
         Pane {
             id: pane
@@ -113,6 +116,7 @@ id: page
                 y: -12
                 width: pane.width
                 height: 70
+				focus: true
                 Layout.fillWidth: true
                 placeholderText: qsTr("Compose message")
                 wrapMode: TextArea.Wrap
