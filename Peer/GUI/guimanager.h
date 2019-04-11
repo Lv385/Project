@@ -58,7 +58,8 @@ public slots:
   void SendMessage(QString message);
   void LoadMessages(unsigned id);  // temporary implementation(for testing)
   void OnStatusChanged(unsigned id, bool status);
-
+  void OnFriendRequestResult(bool);
+  void OnAddFriendRequest(QString);
 
   // void UserEntered();
 
