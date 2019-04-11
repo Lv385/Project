@@ -2,6 +2,7 @@
 #include "ServerThread.h"
 #include <QNetworkInterface>
 #include <QUuid>
+#include <string>
 
 //Registration reg;
 //reg.port = 5896;
@@ -33,17 +34,7 @@ AsyncServer::AsyncServer(QObject *parent) :QTcpServer ()
 			ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
 
 		qDebug() << "Server are listening: " << ipAddress << ":" << this->serverPort();
-	}
-        /*
-	DAL dal_;
-	//database testing        
-	Client cl = dal_.getClient(4);
-	Client cl2 = dal_.getClient(8);       
-  cl.AddPendingFriendRequest(cl2);
-  dal_.UpdateClient(cl);
-  Client cl3 = dal_.getClient(4);
-	
-  */
+	}      
 	
 }
 
