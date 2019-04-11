@@ -17,6 +17,7 @@ class SignalRedirector : public QObject {
   void ConnectToRegisterResult(QObject* object);
   void ConnectToStatusChanged(QObject* object);
   void ConnectToFriendRequestResult(QObject* object);
+  void ConnectToAddFriendRequestInfo(QObject* object);
 
   void set_controller(ClientController*);
 

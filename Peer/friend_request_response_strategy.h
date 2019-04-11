@@ -15,5 +15,6 @@ class FriendRequestResponseStrategy : public AbstractStrategy {
 
 signals:
   void FriendRequestResult(bool);
+  void AddFriendRequestInfo(QString);
 };
 #endif

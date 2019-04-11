@@ -18,6 +18,8 @@ GUIManager::GUIManager(QObject *parent)
           SLOT(OnStatusChanged(unsigned, bool)));
   connect(controller_, SIGNAL(FriendRequestResult(bool)), this,
           SLOT(OnFriendRequestResult(bool)));
+  connect(controller_, SIGNAL(AddFriendRequestInfo(QString)), this, 
+    SLOT(OnAddFriendRequest(QString)));
 }
 
 int GUIManager::my_id() const { 
@@ -135,6 +137,16 @@ void GUIManager::OnFriendRequestResult(bool request_result) {
     logger_->WriteLog(LogType::ERROR, "Bad requst");
   }
 }
+
+void GUIManager::OnAddFriendRequest(QString login) {
+  if(true){
+    controller_->FriendRequestAccepted(login);
+  } else{
+    controller_->FriendRequestRejected(login);
+  }
+}
+
+
 
 void GUIManager::SendMessage(QString message) { 
   controller_->SendMessage(selected_friend_id_, message);
