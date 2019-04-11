@@ -51,12 +51,13 @@ class GUIManager : public QObject {
 signals:
   void SelectedFriendIdChanged(unsigned id);
   void openMainPage();
-  void logInFailed();
+  void openFailed(QString text);
 
 public slots:
   void LogIn(QString user_login, QString user_password); 
   void Register(QString user_login, QString user_password);
   void OnLoginResult(bool);
+  void OnRegisterResult(quint32);
   void SendMessage(QString message);
   void ShowMessages(unsigned id);  // temporary implementation(for testing)
   void LoadAllMessages(unsigned id);

@@ -61,8 +61,8 @@ void Worker::SendMessage() {
   MessageInfo mes = {message_};
   QByteArray data = Parser::Message_ToByteArray(mes);
   client_data_.AddMessageToDB(message_, peer_info_.id, my_id_);
-  emit MessageSent(peer_info_.id, true);
   writer_->WriteBlock(data);
+  emit MessageSent(peer_info_.id, true);
 }
 
 void Worker::OnDisconnected() {
