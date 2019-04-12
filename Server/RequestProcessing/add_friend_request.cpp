@@ -24,6 +24,8 @@ void AddFriendRequest::PrepareResponse() {
         info_to_send.requester_id = sender_guy.id;
         info_to_send.requester_login = sender_guy.login;
         send_addfriend_info_bytearr = Parser::AddFriendInfo_ToByteArray(info_to_send);
+        send_addfriend_info_bytearr.append(Parser::GetUnpossibleSequence());
+
         response_to_requester_ = (quint8)ServerRequest::FRIEND_REQUEST_SUCCEED;
       }else { 
          response_to_requester_ = (quint8)ServerRequest::FRIEND_REQUEST_FAILED;
