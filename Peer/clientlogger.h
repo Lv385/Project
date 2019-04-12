@@ -8,10 +8,11 @@
 #include <QObject>
 #include <QTextStream>
 #include <mutex>
-#include "..\Parser&Structs\parser.h"
 
 enum LogType { ERROR = 0, SUCCESS, INFO, WARNING, DEBUG };
 enum LogLevel { NOLOG = 0, LOW, HIGH };
+
+const quint64 kMaxFileSize = 1073741824;
 
 class ClientLogger : public QObject {
   Q_OBJECT
