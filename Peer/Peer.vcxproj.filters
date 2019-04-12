@@ -32,6 +32,7 @@
     <ClCompile Include="servermanager.cpp" />
     <ClCompile Include="worker.cpp" />
     <ClCompile Include="workhelper.cpp" />
+    <ClCompile Include="friend_request_response_strategy.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="peer.h" />
@@ -74,6 +75,7 @@
     <QtMoc Include="login_response_strategy.h" />
     <QtMoc Include="signalredirector.h" />
     <QtMoc Include="register_response_strategy.h" />
+    <QtMoc Include="friend_request_response_strategy.h" />
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="GUI\qml.qrc" />
@@ -119,5 +121,10 @@
     <QtUic Include="mainwindow.ui">
       <Filter>QML</Filter>
     </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <Image Include="GUI\menu_icon.png">
+      <Filter>QML</Filter>
+    </Image>
   </ItemGroup>
 </Project>

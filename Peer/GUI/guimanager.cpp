@@ -106,13 +106,15 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   controller_->app_info_.my_password = user_password;
   controller_->app_info_.my_id = client_data_.get_id_by_login(user_login);
   logger_->WriteLog(LogType::SUCCESS, user_login);
-  controller_->LogIn(user_login, user_password);
-  //OnLoginResult(true);
+ // controller_->LogIn(user_login, user_password);
+  OnLoginResult(true);
 }
 
 void GUIManager::Register(QString user_login, QString user_password) {
 
+
 }
+
 
 void GUIManager::OnLoginResult(bool logged_in) {
   if (logged_in) {
