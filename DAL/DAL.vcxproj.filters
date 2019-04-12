@@ -1,0 +1,37 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <ClCompile Include="Connection\connect.cpp" />
+    <ClCompile Include="friend.cpp" />
+    <ClCompile Include="friendinfo.cpp" />
+    <ClCompile Include="main.cpp" />
+    <ClCompile Include="message.cpp" />
+    <ClCompile Include="notificationinfo.cpp" />
+    <ClCompile Include="requestinfo.cpp" />
+    <ClCompile Include="statement.cpp" />
+    <ClCompile Include="user.cpp" />
+    <ClCompile Include="unitofwork.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Connection\connect.h" />
+    <ClInclude Include="friend.h" />
+    <ClInclude Include="friendinfo.h" />
+    <ClInclude Include="info.h" />
+    <ClInclude Include="message.h" />
+    <ClInclude Include="notificationinfo.h" />
+    <ClInclude Include="requestinfo.h" />
+    <ClInclude Include="sqldal.h" />
+    <ClInclude Include="statement.h" />
+    <ClInclude Include="unitofwork.h" />
+    <ClInclude Include="user.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+  </ItemGroup>
+</Project>
