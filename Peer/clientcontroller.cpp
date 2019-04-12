@@ -122,6 +122,7 @@ void ClientController::OnLogin(bool logged_in) {
   }
 }
 
+
 void ClientController::OnNewConnection(QTcpSocket *socket) {
   if (socket->peerAddress().isEqual(app_info_.remote_server_ip,
                                     QHostAddress::TolerantConversion)) {
