@@ -71,5 +71,5 @@ void ServerManager::OnConnected() {
                     "connected to : " + app_info_.remote_server_ip.toString() +
                         "  " + QString::number(app_info_.remote_server_port));
   writer_->WriteBlock(data_);
-
 }
+

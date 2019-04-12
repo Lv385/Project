@@ -3,13 +3,14 @@
 BlockReader::BlockReader(QTcpSocket* socket)
     : socket_(socket),
       unpossible_sequence_(Parser::GetUnpossibleSequence()) {
-  connect(socket_, SIGNAL(readyRead()), this, SLOT(OnReadyRead()));
+  //connect(socket_, SIGNAL(readyRead()), this, SLOT(OnReadyRead()));
 }
 
 BlockReader::~BlockReader() {}
 
 void BlockReader::set_socket(QTcpSocket* socket) { 
-  if(socket_->state() == QAbstractSocket::ConnectedState){
+  if(socket_){
+    socket_->disconnectFromHost();
     disconnect(socket_, SIGNAL(readyRead()), this, SLOT(OnReadyRead()));
   }
   socket_ = socket; 
