@@ -5,7 +5,7 @@ FriendModel::FriendModel(QObject *parent)
   : QAbstractListModel(parent) {
 }
 
-unsigned FriendModel::GetFirstFriend() const {
+unsigned FriendModel::GetFirstFriendId() const {
   if (!friends_list_.isEmpty()) {
     return friends_list_[0]->id();
   } else {
@@ -46,7 +46,7 @@ bool FriendModel::RemoveFriendFromList(FriendItem* friend_to_delete) {
     const int index = friends_list_.indexOf(friend_to_delete);
 
     beginRemoveRows(QModelIndex(), index, index);
-    //friends_list_[index]->deleteLater();
+    friends_list_[index]->deleteLater();
     friends_list_.removeAt(index);
     endRemoveRows();
 

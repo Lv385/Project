@@ -98,7 +98,6 @@ import Qt.labs.settings 1.0
     messageField.onEditingFinished: {
         if(messageField.text != "") {
 			guiManager.SendMessage(messageField.text)
-            guiManager.newMessage(messageField.text)  //FIXME
             messageField.text = "";
         }
     }

@@ -4,6 +4,7 @@
 #include <QString>
 #include <qsqlrecord.h>
 #include "statement.h"
+#include <qbytearray.h>
 
 namespace dal {
 

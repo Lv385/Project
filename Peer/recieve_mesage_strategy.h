@@ -15,9 +15,9 @@ class RecieveMessageStrategy : public AbstractStrategy {
   virtual void DoWork() override;
 
  signals:
-  void MessageRecieved(unsigned);
+  void MessageRecieved(Message* message);
 
  protected:
-  MessageInfo message_;
+  MessageInfo message_info_;
 };
 #endif  // !RECIEVEMESSAGESTRATEGY_H
