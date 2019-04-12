@@ -46,8 +46,6 @@ bool LoginRequest::SendResponde() {
     client_socket_->waitForBytesWritten(3000);
     SendingPendingFriendRequests(); 
     SendingPendingNotifications();  
-    SendingPendingFriendRequests();
-    SendingPendingNotifications();
     database_->UpdateClient(requester_);
     client_socket_->disconnectFromHost();
 
