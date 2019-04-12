@@ -11,7 +11,7 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "Common", "Common\Common.vcx
 EndProject
 Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DAL", "DAL\DAL.vcxproj", "{3F4A82B1-4157-400A-82D0-E6516372E8D2}"
 EndProject
-Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JWT", "JWT\JWT\JWT.vcxproj", "{486D77C0-A717-4FCB-8757-3640225D6025}"
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "JWebToken", "JWebToken\JWebToken\JWebToken.vcxproj", "{73CA9B97-11DA-4112-8CB7-E6EC663E8896}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -44,14 +44,12 @@ Global
 		{3F4A82B1-4157-400A-82D0-E6516372E8D2}.Release|x64.ActiveCfg = Release|x64
 		{3F4A82B1-4157-400A-82D0-E6516372E8D2}.Release|x64.Build.0 = Release|x64
 		{3F4A82B1-4157-400A-82D0-E6516372E8D2}.Release|x86.ActiveCfg = Release|x64
-		{486D77C0-A717-4FCB-8757-3640225D6025}.Debug|x64.ActiveCfg = Debug|x64
-		{486D77C0-A717-4FCB-8757-3640225D6025}.Debug|x64.Build.0 = Debug|x64
-		{486D77C0-A717-4FCB-8757-3640225D6025}.Debug|x86.ActiveCfg = Debug|Win32
-		{486D77C0-A717-4FCB-8757-3640225D6025}.Debug|x86.Build.0 = Debug|Win32
-		{486D77C0-A717-4FCB-8757-3640225D6025}.Release|x64.ActiveCfg = Release|x64
-		{486D77C0-A717-4FCB-8757-3640225D6025}.Release|x64.Build.0 = Release|x64
-		{486D77C0-A717-4FCB-8757-3640225D6025}.Release|x86.ActiveCfg = Release|Win32
-		{486D77C0-A717-4FCB-8757-3640225D6025}.Release|x86.Build.0 = Release|Win32
+		{73CA9B97-11DA-4112-8CB7-E6EC663E8896}.Debug|x64.ActiveCfg = Debug|x64
+		{73CA9B97-11DA-4112-8CB7-E6EC663E8896}.Debug|x64.Build.0 = Debug|x64
+		{73CA9B97-11DA-4112-8CB7-E6EC663E8896}.Debug|x86.ActiveCfg = Debug|x64
+		{73CA9B97-11DA-4112-8CB7-E6EC663E8896}.Release|x64.ActiveCfg = Release|x64
+		{73CA9B97-11DA-4112-8CB7-E6EC663E8896}.Release|x64.Build.0 = Release|x64
+		{73CA9B97-11DA-4112-8CB7-E6EC663E8896}.Release|x86.ActiveCfg = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
