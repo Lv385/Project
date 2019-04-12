@@ -2,6 +2,7 @@
 #define FRIENDITEM_H
 
 #include <QObject>
+#include "../DAL/sqldal.h"
 
 class FriendItem : public QObject
 {
@@ -12,7 +13,7 @@ class FriendItem : public QObject
   Q_PROPERTY(unsigned id READ id WRITE set_id NOTIFY IdChanged)
 
 public:
-  FriendItem(QString login, bool status, QObject *parent = nullptr);
+  FriendItem(QString login, bool status, unsigned id, QObject *parent = nullptr);
 
   QString login() const;
   void set_login(QString);

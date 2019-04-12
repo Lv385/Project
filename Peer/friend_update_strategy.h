@@ -11,6 +11,9 @@ class FriendUpdateStrategy : public AbstractStrategy {
 
   virtual void DoWork() override;
 
+signals:
+  void StatusChanged(unsigned id, bool status);
+
   private:
   FriendUpdateInfo info_;
 };

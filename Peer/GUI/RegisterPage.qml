@@ -4,7 +4,7 @@ RegisterPageForm {
 
 
     buttonSignUp.onClicked: {
-        stackView.replace("MainPage.qml")
+		registerNewUser(registerUsername.text, registerPassword.text, registerPassword2.text)
     }
 
     buttonCancel.onClicked: {

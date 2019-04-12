@@ -5,11 +5,9 @@ std::mutex ClientLogger::mutex_;
 
 ClientLogger* ClientLogger::Instance() {
   std::lock_guard<std::mutex> lock(mutex_);
-  if(logger_ == nullptr){
     if(logger_ == nullptr){
       logger_ = new ClientLogger();
     }
-  }
   return logger_;
 }
 const char* ErrorValueNames[] = {GET_NAME(ERROR), GET_NAME(SUCCESS),
@@ -20,7 +18,6 @@ ClientLogger::ClientLogger()
   file_->open(QIODevice::Append | QIODevice::Text);
   specific_log_ = false;
   log_level_ = LogLevel::NOLOG;
-  
 }
 void ClientLogger::WriteLog(LogType type, const QString& msg) { 
   QString text;
@@ -40,12 +37,14 @@ void ClientLogger::WriteLog(LogType type, const QString& msg) {
   }else{
     text = tr("[%1] %2 ").arg(ErrorValueNames[type]).arg(log);
   }
-  
+  std::lock_guard<std::mutex> lock(mutex_);
   QTextStream out(file_);
-  if (file_) {
+  if (file_ && file_->size() < kMaxFileSize) {
+    out << text;
+  } else{
+    file_->resize(0);
     out << text;
   }
-  emit DisplayLog(ErrorValueNames[type], msg);
 }
 
 void ClientLogger::set_specific_log(LogType specific_type) {

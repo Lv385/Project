@@ -1,8 +1,8 @@
 #ifndef DATAACCESSOR_H
 #define DATAACCESSOR_H
 
-#include "sqldal.h"
-#include "client_data_types.h"
+#include "..\DAL\sqldal.h"
+#include "..\Common\client_data_types.h"
 
 class DataAccessor {
  public:
@@ -15,8 +15,8 @@ class DataAccessor {
   QVector<Message> get_messages(const QString user_login);
   QVector<Message> get_messages(unsigned user_id);
 
+  Friend get_friend(const unsigned user_id);
   unsigned get_id_by_login(const QString user_login);
-  //unsigned get_id_by_ip_port(const QString ip, const unsigned port);
   bool get_friends_status(const unsigned user_id);
 
   void set_friend_status(const unsigned user_id, const bool status);
@@ -25,8 +25,10 @@ class DataAccessor {
   void UpdateIPPort(const unsigned user_id, const QString new_ip, const unsigned new_port);
 
  private:
-  SQLDAL::UnitOfWork db_;
-  std::shared_ptr<SQLDAL::Friends> user_;
-  std::shared_ptr<SQLDAL::Messages> message_;
+  dal::UnitOfWork db_;
+  std::shared_ptr<dal::Friends> user_;
+  std::shared_ptr<dal::Messages> message_;
+  std::shared_ptr<dal::FriendRequests> friend_requests_;
+
 };
 #endif

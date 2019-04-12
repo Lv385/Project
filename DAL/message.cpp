@@ -1,5 +1,5 @@
 #include "message.h"
-namespace SQLDAL {
+namespace dal {
 Messages::Messages(std::shared_ptr<Connect> Connect) : Statement(Connect) {
   connection_->Open(CLIENT_DB);
 }
@@ -68,8 +68,7 @@ QString Messages::InsertQuery(const Message& messages) {
       QString::number(messages.chat_id) + ", " +
       QString::number(messages.owner_id) + ", '" + messages.data + "', '" +
       QString::number(messages.date.toJulianDay()) + "', '" +
-      messages.time.toString() +  // FIX DATE
-      "', " +
+      messages.time.toString() + "', " +
       QString::number(messages.status) + ")");
 }
 
@@ -103,4 +102,4 @@ QString Messages::CreateQueryCountOfMessages(QString user_login)
 {
 	return QString("SELECT COUNT(user_ID) FROM Messages WHERE user_login = '" + user_login +"'");
 }
-}  // namespace SQLDAL
+}  // namespace dal

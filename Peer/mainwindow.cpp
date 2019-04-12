@@ -71,11 +71,11 @@ void MainWindow::OnPbStartClicked() {
   logger_->WriteLog(SUCCESS,
       "my id: " + QString::number(client_controller_->app_info_.my_id));
 
-  client_controller_->Start();
+  //client_controller_->Start();
 }
 
 void MainWindow::OnPbStopClicked() { 
-  client_controller_->Stop(); 
+  //client_controller_->Stop(); 
 }
 
 MainWindow::~MainWindow() { delete ui_; }
@@ -109,7 +109,7 @@ void MainWindow::OnPbSendClicked() {
 
   for (auto a : friends_)
     if (a.login == selected_login)
-      client_controller_->SendMessage(a, ui_->le_message->text());
+      client_controller_->SendMessage(a.id, ui_->le_message->text());
 }
 
 void MainWindow::AppendLogMessage(const char* value, QString message) {

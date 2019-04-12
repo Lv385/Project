@@ -1,5 +1,5 @@
 #include "user.h"
-namespace SQLDAL {
+namespace dal {
 Users::Users(std::shared_ptr<Connect> Connect) : Statement(Connect) {
   connection_->Open(SERVER_DB);  // Path
   friend_obj = std::make_shared<FriendInfo>(Connect);
@@ -127,4 +127,4 @@ QString Users::DeleteQuery(User user) {
 }
 
 
-}  // namespace SQLDAL
+}  // namespace dal

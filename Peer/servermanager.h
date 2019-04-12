@@ -10,8 +10,10 @@
 #include "login_response_strategy.h"
 #include "messagestrategy.h"
 #include "register_response_strategy.h"
+#include "friend_request_response_strategy.h"
 #include "application_info.h"
 #include <QObject>
+#include <QMap>
 #include <memory>
 #
 class ServerManager : public QObject {
@@ -25,6 +27,7 @@ class ServerManager : public QObject {
   void SendRequest(QByteArray data);
 
  private slots:
+  //void OnNewConnection();
   void DoWork();
   void OnReadyReadBlock();
   void OnConnected();
@@ -33,7 +36,7 @@ class ServerManager : public QObject {
   QByteArray data_;
   ApplicationInfo& app_info_;
   AbstractStrategy* strategy_;
-  QHash<quint8, AbstractStrategy*> strategies_;
+  QMap<ServerRequest, AbstractStrategy*> strategies_;
   BlockWriter* writer_;
   BlockReader* reader_;
   QTcpSocket* socket_;

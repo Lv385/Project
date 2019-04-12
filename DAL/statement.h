@@ -9,9 +9,9 @@
 #define CLIENT_DB "../DAL/Client"
 #define SERVER_DB "../DAL/Server"
 
-#include "client_data_types.h"
+#include "..\Common\client_data_types.h"
 
-namespace SQLDAL {
+namespace dal {
 	class Statement {
 	public:
 		Statement(std::shared_ptr<Connect> connection);

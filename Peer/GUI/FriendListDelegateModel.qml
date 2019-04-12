@@ -48,7 +48,7 @@ Item {
                 hoverEnabled: true
                 onClicked: {
                     friendField.ListView.view.currentIndex = index
-                    guiManager.loadMessages(friend.login)
+					guiManager.selected_friend_id = friend.id
                 }
             }
 

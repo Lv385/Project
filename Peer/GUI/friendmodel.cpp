@@ -5,11 +5,11 @@ FriendModel::FriendModel(QObject *parent)
   : QAbstractListModel(parent) {
 }
 
-QString FriendModel::GetFirstFriend() const {
+unsigned FriendModel::GetFirstFriend() const {
   if (!friends_list_.isEmpty()) {
-    return friends_list_[0]->login();
+    return friends_list_[0]->id();
   } else {
-    return "";    //FIXME
+    return 0;    //FIXME
   }
 }
 
@@ -53,5 +53,14 @@ bool FriendModel::RemoveFriendFromList(FriendItem* friend_to_delete) {
     return true;
   } else {
       return false;
+  }
+}
+
+void FriendModel::SetStatus(unsigned id, bool status) {
+  for(auto &a : friends_list_){
+    if (a->id() == id) {
+        a->set_status(status);
+      break;
+    }
   }
 }

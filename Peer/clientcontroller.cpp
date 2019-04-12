@@ -1,16 +1,32 @@
 #include "clientcontroller.h"
+#include "signalredirector.h"
 
 ClientController::ClientController(QObject *parent)
-    : QObject(parent), 
-      local_server_(app_info_), 
+    : QObject(parent),
+      local_server_(app_info_),
       friend_manager_(app_info_),
-      server_manager_(nullptr, app_info_),
-      cache_data_(CacheData::get_instance())
-{
-  connect(&local_server_, SIGNAL(NewConnection(QTcpSocket* )), this,
-          SLOT(OnNewConnection(QTcpSocket *)));
-  QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
+      redirector_(SignalRedirector::get_instance()),
+      server_manager_(nullptr),
+      cache_data_(CacheData::get_instance()) {
 
+  connect(&local_server_, SIGNAL(NewConnection(QTcpSocket *)), this,
+          SLOT(OnNewConnection(QTcpSocket *)));
+
+  connect(this, SIGNAL(LoginResult(bool)), this,
+          SLOT(OnLogin(bool)));
+
+  //connect(this, SIGNAL(AddFriendRequestInfo(QString)), this,
+          //SLOT(OnFriendRequestAccepted(QString)));
+
+  redirector_.set_controller(this);
+
+  server_manager_ = new ServerManager(nullptr, app_info_);
+  friends_update_manager_ = new FriendsUpdateManager(app_info_);
+
+  connect(friends_update_manager_, SIGNAL(StatusChanged(unsigned, bool)), this,
+          SIGNAL(StatusChanged(unsigned, bool)));
+
+  QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
   // use the first non-localhost IPv4 address
   for (int i = 0; i < ipAddressesList.size(); ++i) {
     if (ipAddressesList.at(i) != QHostAddress::LocalHost &&
@@ -24,14 +40,15 @@ ClientController::ClientController(QObject *parent)
     app_info_.my_ip = QHostAddress(QHostAddress::LocalHost);
 }
 
-ClientController::~ClientController() {}
+ClientController::~ClientController() { server_manager_->deleteLater(); }
 
 QVector<Friend> ClientController::LoadFriends() {
   return client_data_.get_friends();
 }
 
-void ClientController::SendMessage(Friend peer_info, QString message) {
-  friend_manager_.SendMessage(peer_info, message);
+void ClientController::SendMessage(unsigned id, QString message) {
+  Friend friend_info = client_data_.get_friend(id);
+  friend_manager_.SendMessage(friend_info, message);
 }
 
 void ClientController::LogIn(QString login, QString password) {
@@ -41,8 +58,8 @@ void ClientController::LogIn(QString login, QString password) {
   info.port = app_info_.my_port;
 
   QByteArray data = Parser::LoginInfo_ToByteArray(info);
-
-  server_manager_.SendRequest(data);
+  this->Start();
+  server_manager_->SendRequest(data);
 }
 
 void ClientController::Register(QString login, QString password) {
@@ -53,7 +70,7 @@ void ClientController::Register(QString login, QString password) {
 
   QByteArray data = Parser::RegisterInfo_ToByteArray(info);
 
-  server_manager_.SendRequest(data);
+  server_manager_->SendRequest(data);
 }
 
 void ClientController::AddFriend(QString login) {
@@ -64,22 +81,52 @@ void ClientController::AddFriend(QString login) {
 
   QByteArray data = Parser::FriendRequestInfo_ToByteArray(
       info, static_cast<quint8>(ClientRequest::FRIEND_REQUEST));
-  server_manager_.SendRequest(data);
+  server_manager_->SendRequest(data);
 }
 
 void ClientController::SetAppInfo(ApplicationInfo info) {}
 
 QVector<Message> ClientController::LoadMessages(unsigned id) {
-
   QVector<Message> result = client_data_.get_messages(id);
   return result;
 }
 
-void ClientController::OnFriendRequestRecieved() {}
+void ClientController::FriendRequestAccepted(QString login) {
+  FriendRequestInfo info;
+  info.id = app_info_.my_id;
+  info.other_login = login;
+  info.password = app_info_.my_password;
+
+  QByteArray data = Parser::FriendRequestInfo_ToByteArray(
+      info, static_cast<quint8>(ClientRequest::FRIENDSHIP_ACCEPTED));
+  server_manager_->SendRequest(data);
+}  
+
+void ClientController::FriendRequestRejected(QString login) {
+  FriendRequestInfo info;
+  info.id = app_info_.my_id;
+  info.other_login = login;
+  info.password = app_info_.my_password;
+
+  QByteArray data = Parser::FriendRequestInfo_ToByteArray(
+      info, static_cast<quint8>(ClientRequest::FRIENDSHIP_REJECTED));
+  server_manager_->SendRequest(data);
+}
+
+void ClientController::OnLogin(bool logged_in) {
+  if(logged_in){
+    friends_update_manager_->SetUpdateReceiver();
+    friends_update_manager_->SetUpdateSender();
+  } else{
+    this->Stop();
+    friends_update_manager_->StopUpdateListening();
+  }
+}
 
 void ClientController::OnNewConnection(QTcpSocket *socket) {
-  if (socket->peerAddress().isEqual(app_info_.remote_server_ip, QHostAddress::TolerantConversion)) {
-    server_manager_;
+  if (socket->peerAddress().isEqual(app_info_.remote_server_ip,
+                                    QHostAddress::TolerantConversion)) {
+    server_manager_->set_socket(socket);
   } else {
     BlockReader *reader = new BlockReader(socket);
     connect(reader, SIGNAL(ReadyReadBlock()), &friend_manager_,
@@ -88,9 +135,7 @@ void ClientController::OnNewConnection(QTcpSocket *socket) {
 }
 
 void ClientController::Start() { 
-  local_server_.Start(); 
+  local_server_.Start();
 }
 
-void ClientController::Stop() { 
-  local_server_.Stop(); 
-}
+void ClientController::Stop() { local_server_.Stop(); }

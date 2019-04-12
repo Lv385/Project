@@ -4,7 +4,7 @@
 #include "statement.h"
 #include <random>
 #include "sqldal.h"
-namespace SQLDAL {
+namespace dal {
 
   class Users : public Statement {
   public:
