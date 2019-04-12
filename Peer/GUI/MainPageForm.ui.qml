@@ -27,29 +27,46 @@ id: page
             y: pane1.y-12
             width: pane1.width
             height: pane1.height
-            color: friendMouseAreaColor
-			border.color: "black"
-			border.width: 1
+            color: friendListColor
 
-            TextArea {
+
+            TextField {
                 id: findUserField
-                x: 9
-                y: 9
-                width: 180
+                x: 40
+                y: 11
+                width: 230
                 height: 32
                 Layout.fillWidth: true
                 placeholderText: qsTr("Enter user login")
                 wrapMode: TextArea.Wrap
+				background: Rectangle {
+				color: friendMouseAreaColor
+				}
+
             }
+
             Button {
                 id: findButton
-                x: 200
-                y: 13
-                width: 70
-                height: 25
+                x: 241
+                y: 11
+                width: 32
+				height: 32
                 text: qsTr("Add friend")
                 //focusPolicy: Qt.WheelFocus
                 enabled: findUserField.length > 0
+				background: 
+			
+			Rectangle {
+				color: friendListColor
+				}
+				
+				Text {
+            text: "\uf055"
+            anchors.right: parent.right
+            font.pointSize: 20
+            font.family: "fontawesome"
+            color: backGroundColor
+				}
             }
         }
     }
