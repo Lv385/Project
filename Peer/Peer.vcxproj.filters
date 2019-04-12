@@ -140,4 +140,9 @@
       <Filter>QML</Filter>
     </QtUic>
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="GUI\menu_icon.png">
+      <Filter>QML</Filter>
+    </Image>
+  </ItemGroup>
 </Project>

@@ -397,6 +397,9 @@
     <None Include="GUI\RegisterPage.qml" />
     <None Include="GUI\RegisterPageForm.ui.qml" />
   </ItemGroup>
+  <ItemGroup>
+    <Image Include="GUI\menu_icon.png" />
+  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">
     <Import Project="$(QtMsBuild)\qt.targets" />

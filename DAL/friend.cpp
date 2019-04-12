@@ -65,13 +65,14 @@ void Friends::FillStructure(Friend & _friend)
 	_friend.port = query_.value(4).toInt();
 	_friend.login = query_.value(5).toString();
 	_friend.status = query_.value(6).toBool();
+	_friend.photo=query_.value(7).toByteArray();// = loadFromData(query_.value(7).toByteArray());
 	
 }
 
 QString Friends::CreateQuerySelectAll() {
   return QString(
       "SELECT user_id, user_name, user_surname,  user_IP, user_port, "
-      "user_login, user_status FROM friends");
+      "user_login, user_status, user_photo FROM friends");
 }
 
 QString Friends::UpdateQuery(const Friend& _friend) {
@@ -79,14 +80,14 @@ QString Friends::UpdateQuery(const Friend& _friend) {
                  "', user_surname= '" + _friend.surname + "',  user_IP= '" +
                  _friend.ip + "', user_port= " + QString::number(_friend.port) +
                  ", user_status= '" + QString::number(_friend.status) +
-                 "' where user_id = " + QString::number(_friend.id) +
+                 "', user_photo= '"+ _friend.photo +"' where user_id = " + QString::number(_friend.id) +
                  " or user_login = '" + _friend.login + "'");
 }
 
 QString Friends::SelectQuery(const unsigned int id) {
   return QString(
       "SELECT user_id, user_name, user_surname,  user_IP, user_port, "
-      "user_login, user_status FROM friends where user_id = " +
+      "user_login, user_status, user_photo FROM friends where user_id = " +
       QString::number(id));
 }
 
@@ -94,18 +95,18 @@ QString Friends::SelectQuery(const QString & login)
 {
 	return QString(
 		"SELECT user_id, user_name, user_surname,  user_IP, user_port, "
-		"user_login, user_status FROM friends where  user_login = '" + login + "'");
+		"user_login, user_status, user_photo FROM friends where  user_login = '" + login + "'");
 }
 
 QString Friends::InsertQuery(const Friend& _friend) {
   return QString(
       "insert into friends "
       "(user_id,user_IP,user_port,user_login,user_status,user_name,user_"
-      "surname) values (" +
+      "surname, user_photo) values (" +
       QString::number(_friend.id) + ", '" + _friend.ip + "', " +
       QString::number(_friend.port) + ", '" + _friend.login + "', " +
       QString::number(_friend.status) + ", '" + _friend.name + "', '" +
-      _friend.surname + "')");
+      _friend.surname + "', '" + _friend.photo + "')");
 }
 
 QString Friends::DeleteQuery(const Friend& _friend) {

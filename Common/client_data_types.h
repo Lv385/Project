@@ -5,6 +5,8 @@
 #include <QDate>
 #include <QTime>
 #include <QVector>
+#include <qbytearray.h>
+
 //
 //// This is our entity from database
 struct Friend {
@@ -15,7 +17,7 @@ struct Friend {
   QString name;
   QString surname;
   bool status;
-  // IMAGE photo  //in progress
+  QByteArray photo; //in progress
 };
 //
 struct Message {

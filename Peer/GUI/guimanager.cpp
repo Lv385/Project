@@ -75,8 +75,6 @@ void GUIManager::ShowMessages(unsigned friend_id) {
   if (friend_id) {
     message_model_.RemoveAllMessagesFromList();
 
-    QString data, time, date;
-    int owner_id;
     MessageItem* new_message;
 
     if (messages_cache_.find(friend_id) == messages_cache_.end()) {
@@ -87,6 +85,7 @@ void GUIManager::ShowMessages(unsigned friend_id) {
       new_message = new MessageItem(msg);
       message_model_.AddMessageToList(new_message);
     }
+    friend_model_.DeleteUnreadMesgs(friend_id);
   }
 }
 
@@ -108,6 +107,8 @@ void GUIManager::LoadMessage(Message* msg) {
   if (selected_friend_id_ == msg->chat_id) {
     new_message = new MessageItem(msg);
     message_model_.AddMessageToList(new_message);
+  } else {
+    friend_model_.AddUnreadMesg(msg->chat_id);
   }
 }
 
