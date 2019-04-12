@@ -44,20 +44,20 @@ Users::Users(std::shared_ptr<Connect> Connect) : Statement(Connect) {
 		return user;
 	}
 
-void Users::UpdateUser(User user) {
+void Users::UpdateUser(const User& user) {
   ExectuteQuery(UpdateQuery(user));
   query_.finish();
 
 }
 
-void Users::AddNewUser(User user) {
+void Users::AddNewUser(const User& user) {
   ExectuteQuery(InsertQuery(user));
   query_.finish();
 
 
 }
 
-void Users::DeleteUser(User user) {
+void Users::DeleteUser(const User& user) {
   ExectuteQuery(DeleteQuery(user));
   query_.finish();
 }

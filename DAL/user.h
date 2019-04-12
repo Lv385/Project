@@ -2,6 +2,7 @@
 #define USER_H
 #include <QString>
 #include "statement.h"
+#include <random>
 #include "sqldal.h"
 namespace SQLDAL {
 
@@ -14,9 +15,9 @@ namespace SQLDAL {
 
 	  User			 GetUser(const unsigned int& user_id);
 	  User			 GetUser(const QString& user_login);// Select
-	  void			 UpdateUser(User user);          // Update
-	  void			 AddNewUser(User user);          // Insert
-	  void			 DeleteUser(User user);          // Delete
+	  void			 UpdateUser(const User& user);          // Update
+	  void			 AddNewUser(const User& user);          // Insert
+	  void			 DeleteUser(const User& user);          // Delete
 
 	  QVector<UsersID>			 GetFriends(const unsigned int id);
 	  QVector<UsersID>			 GetFriendsRequest(const unsigned int id);
