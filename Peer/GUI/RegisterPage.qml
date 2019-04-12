@@ -10,5 +10,15 @@ RegisterPageForm {
     buttonCancel.onClicked: {
         stackView.pop()
     }
-
+    Connections{
+        target: guiManager
+        onOpenMainPage: {
+			runIndicator = false
+            stackView.push("MainPage.qml")
+        }
+		onOpenFailed: {
+            popup.popMessage = text + " failed!"
+            popup.open()
+		}
+    }
 }

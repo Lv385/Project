@@ -13,7 +13,6 @@
 
 **/*.stash
 **/*.user
-**/*.filters
 **/*.pro
 **/*.pri
 **/*.orig
