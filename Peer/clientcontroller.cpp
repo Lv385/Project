@@ -15,9 +15,6 @@ ClientController::ClientController(QObject *parent)
   connect(this, SIGNAL(LoginResult(bool)), this,
           SLOT(OnLogin(bool)));
 
-  //connect(this, SIGNAL(AddFriendRequestInfo(QString)), this,
-          //SLOT(OnFriendRequestAccepted(QString)));
-
   redirector_.set_controller(this);
 
   server_manager_ = new ServerManager(nullptr, app_info_);
@@ -125,6 +122,7 @@ void ClientController::OnLogin(bool logged_in) {
   }
 }
 
+
 void ClientController::OnNewConnection(QTcpSocket *socket) {
   if (socket->peerAddress().isEqual(app_info_.remote_server_ip,
                                     QHostAddress::TolerantConversion)) {
@@ -133,6 +131,7 @@ void ClientController::OnNewConnection(QTcpSocket *socket) {
     BlockReader *reader = new BlockReader(socket);
     connect(reader, SIGNAL(ReadyReadBlock()), &friend_manager_,
             SLOT(OnFirstRequestRecieved()));
+
   }
 }
 

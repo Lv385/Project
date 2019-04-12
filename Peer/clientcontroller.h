@@ -49,6 +49,7 @@ class ClientController : public QObject {
   void StatusChanged(unsigned id, bool status);
   void FriendRequestResult(bool);
   void AddFriendRequestInfo(QString);
+  void NewFriendRequestResult(QString);
 
 
  private slots:

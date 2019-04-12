@@ -42,6 +42,11 @@ void SignalRedirector::ConnectToAddFriendRequestInfo(QObject *object) {
           SIGNAL(AddFriendRequestInfo(QString)));
 }
 
+void SignalRedirector::ConnectToNewFriendRequestResult(QObject *object) {
+  connect(object, SIGNAL(NewFriendRequestResult(QString)), clientController_,
+          SIGNAL(NewFriendRequestResult(QString)));
+}
+
 void SignalRedirector::set_controller(ClientController * controller) {
   clientController_ = controller;
 }

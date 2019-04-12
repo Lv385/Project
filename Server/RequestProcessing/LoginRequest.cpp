@@ -56,6 +56,7 @@ bool LoginRequest::SendResponde() {
     send_to_friends_.port = requester_.port;
     QByteArray raw_data = Parser::FriendUpdateInfo_ToByteArray(send_to_friends_);
     raw_data.append(Parser::GetUnpossibleSequence());
+
     QVector<UsersID> currentFriends = requester_.friends;
     QTcpSocket output_socket;  // for friends
     for (unsigned i = 0; i < currentFriends.size(); i++) {
@@ -125,6 +126,10 @@ void LoginRequest::SendingPendingFriendRequests() {
       }
     }
     //and than update requester_ in db by updateClient outside of this func
+    /*std::find_if(requester_.requests.begin(), requester_.requests.end(),
+      [requester_](const UsersID& users_id) {
+      return users_id.second_user_id == user2.id;
+    });*/
   }
 }
 

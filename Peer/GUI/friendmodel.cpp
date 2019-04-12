@@ -64,3 +64,21 @@ void FriendModel::SetStatus(unsigned id, bool status) {
     }
   }
 }
+
+void FriendModel::AddUnreadMesg(unsigned id) {
+  for (auto &a : friends_list_) {
+    if (a->id() == id) {
+      a->set_unread_msgs(a->unread_msgs() + 1);
+      break;
+    }
+  }
+}
+
+void FriendModel::DeleteUnreadMesgs(unsigned id) {
+  for (auto &a : friends_list_) {
+    if (a->id() == id) {
+      a->set_unread_msgs(0);
+      break;
+    }
+  }
+}

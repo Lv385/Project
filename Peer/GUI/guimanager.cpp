@@ -19,7 +19,9 @@ GUIManager::GUIManager(QObject *parent)
   connect(controller_, SIGNAL(FriendRequestResult(bool)), this,
           SLOT(OnFriendRequestResult(bool)));
   connect(controller_, SIGNAL(AddFriendRequestInfo(QString)), this, 
-    SLOT(OnAddFriendRequest(QString)));
+          SLOT(OnAddFriendRequest(QString)));
+  connect(controller_, SIGNAL(NewFriendRequestResult(QString)), this,
+          SLOT(OnOnNewFriendInfo(QString)));
 }
 
 int GUIManager::my_id() const { 
@@ -73,8 +75,6 @@ void GUIManager::ShowMessages(unsigned friend_id) {
   if (friend_id) {
     message_model_.RemoveAllMessagesFromList();
 
-    QString data, time, date;
-    int owner_id;
     MessageItem* new_message;
 
     if (messages_cache_.find(friend_id) == messages_cache_.end()) {
@@ -85,6 +85,7 @@ void GUIManager::ShowMessages(unsigned friend_id) {
       new_message = new MessageItem(msg);
       message_model_.AddMessageToList(new_message);
     }
+    friend_model_.DeleteUnreadMesgs(friend_id);
   }
 }
 
@@ -106,6 +107,8 @@ void GUIManager::LoadMessage(Message* msg) {
   if (selected_friend_id_ == msg->chat_id) {
     new_message = new MessageItem(msg);
     message_model_.AddMessageToList(new_message);
+  } else {
+    friend_model_.AddUnreadMesg(msg->chat_id);
   }
 }
 
@@ -184,7 +187,9 @@ void GUIManager::OnAddFriendRequest(QString login) {
   }
 }
 
-
+void GUIManager::OnNewFriendInfo(QString login) {
+  logger_->WriteLog(LogType::SUCCESS, "User with login '" + login + "' added");
+}
 
 void GUIManager::SendMessage(QString message) { 
   if (selected_friend_id_) {

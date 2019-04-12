@@ -12,5 +12,6 @@
         <file>RegisterPageForm.ui.qml</file>
         <file>FriendRequestListDelegateModel.qml</file>
         <file>validator.js</file>
+        <file>menu_icon.png</file>
     </qresource>
 </RCC>

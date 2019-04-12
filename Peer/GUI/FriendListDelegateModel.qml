@@ -25,21 +25,42 @@ Item {
                 id: friendName
                 text: friend.login
                 color: borderColor
-                font.pixelSize: 13
+                font.pointSize: 11
                 anchors.verticalCenter: parent.verticalCenter
                 anchors.left: parent.left
                 anchors.margins: 20
             }
 
+			Text {
+				id: numUnreadMessgs
+				text: friend.unread_msgs ? friend.unread_msgs : ""
+				color: friendListColor
+                font.pointSize: 8
+				anchors.right: parent.right
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.margins: 30
+				clip: false
+				Rectangle {
+					id: unreadMessages
+					z: -1
+					height: parent.height + 5
+					width: (parent.width == 0) ? 0 : (parent.width < parent.height) ? parent.height + 7 : parent.width + 7   //  =)
+					anchors.verticalCenter: parent.verticalCenter
+					anchors.horizontalCenter: parent.horizontalCenter
+					color: borderColor
+					radius: width
+				}
+			}
+
             Rectangle {
                 id: onlineStatus
-                width: 20
-                height: 12
-                anchors.right: parent.right
+                width: 8
+                height: parent.height - 1
+				border.width: 1
+				border.color: "black"
+                anchors.left: parent.left
                 anchors.verticalCenter: parent.verticalCenter
-                anchors.margins: 25
                 color: friend.status ? onlineFriendColor : offlineFriendColor
-                radius: 15
             }
 
             MouseArea {
