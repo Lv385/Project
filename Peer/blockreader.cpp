@@ -9,7 +9,7 @@ BlockReader::BlockReader(QTcpSocket* socket)
 BlockReader::~BlockReader() {}
 
 void BlockReader::set_socket(QTcpSocket* socket) { 
-  disconnect(socket_, SIGNAL(readyRead()), this, SLOT(OnReadyRead()));
+  //disconnect(socket_, SIGNAL(readyRead()), this, SLOT(OnReadyRead()));
   socket_ = socket; 
   connect(socket_, SIGNAL(readyRead()), this, SLOT(OnReadyRead()));
 }

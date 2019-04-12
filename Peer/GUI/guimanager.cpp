@@ -19,7 +19,7 @@ GUIManager::GUIManager(QObject *parent)
   connect(controller_, SIGNAL(FriendRequestResult(bool)), this,
           SLOT(OnFriendRequestResult(bool)));
   connect(controller_, SIGNAL(AddFriendRequestInfo(QString)), this, 
-    SLOT(OnAddFriendRequest(QString)));
+          SLOT(OnAddFriendRequest(QString)));
 }
 
 int GUIManager::my_id() const { 

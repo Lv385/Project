@@ -15,9 +15,6 @@ ClientController::ClientController(QObject *parent)
   connect(this, SIGNAL(LoginResult(bool)), this,
           SLOT(OnLogin(bool)));
 
-  //connect(this, SIGNAL(AddFriendRequestInfo(QString)), this,
-          //SLOT(OnFriendRequestAccepted(QString)));
-
   redirector_.set_controller(this);
 
   server_manager_ = new ServerManager(nullptr, app_info_);

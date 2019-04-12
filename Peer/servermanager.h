@@ -11,6 +11,7 @@
 #include "messagestrategy.h"
 #include "register_response_strategy.h"
 #include "friend_request_response_strategy.h"
+#include "add_friend_request_strategy.h"
 #include "application_info.h"
 #include <QObject>
 #include <QMap>
