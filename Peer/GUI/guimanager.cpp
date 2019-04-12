@@ -184,8 +184,6 @@ void GUIManager::OnAddFriendRequest(QString login) {
   }
 }
 
-
-
 void GUIManager::SendMessage(QString message) { 
   if (selected_friend_id_) {
     controller_->SendMessage(selected_friend_id_, message);

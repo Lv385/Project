@@ -34,11 +34,14 @@ void ServerManager::set_socket(QTcpSocket* socket) {
 }
 
 void ServerManager::SendRequest(QByteArray data) { 
-  if (socket_ == nullptr) {
+  if (socket_ == nullptr || 
+    socket_->state() == QAbstractSocket::ConnectedState) {
     socket_ = new QTcpSocket();
   }
-  socket_->connectToHost(app_info_.remote_server_ip,
-                         app_info_.remote_server_port);
+  if(socket_->state() == QAbstractSocket::UnconnectedState){
+    socket_->connectToHost(app_info_.remote_server_ip,
+                           app_info_.remote_server_port); 
+  }
   logger_->WriteLog(INFO, "trying connect to server on:" +
                               app_info_.remote_server_ip.toString() + "  " +
                               QString::number(app_info_.remote_server_port));
@@ -64,5 +67,9 @@ void ServerManager::OnReadyReadBlock() {
 }
 
 void ServerManager::OnConnected() {
+  logger_->WriteLog(LogType::SUCCESS,
+                    "connected to : " + app_info_.remote_server_ip.toString() +
+                        "  " + QString::number(app_info_.remote_server_port));
   writer_->WriteBlock(data_);
+
 }
