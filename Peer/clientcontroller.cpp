@@ -131,6 +131,7 @@ void ClientController::OnNewConnection(QTcpSocket *socket) {
     BlockReader *reader = new BlockReader(socket);
     connect(reader, SIGNAL(ReadyReadBlock()), &friend_manager_,
             SLOT(OnFirstRequestRecieved()));
+
   }
 }
 

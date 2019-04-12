@@ -3,7 +3,7 @@
 BlockReader::BlockReader(QTcpSocket* socket)
     : socket_(socket),
       unpossible_sequence_(Parser::GetUnpossibleSequence()) {
-  //connect(socket_, SIGNAL(readyRead()), this, SLOT(OnReadyRead()));
+  connect(socket_, SIGNAL(readyRead()), this, SLOT(OnReadyRead()));
 }
 
 BlockReader::~BlockReader() {}
