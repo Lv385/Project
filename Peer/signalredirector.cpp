@@ -13,8 +13,8 @@ void SignalRedirector::ConnectToMessageSent(QObject *object) {
 }
 
 void SignalRedirector::ConnectToMessageRecieved(QObject *object) {
-  connect(object, SIGNAL(MessageRecieved(unsigned)), clientController_,
-          SIGNAL(MessageRecieved(unsigned)));
+  connect(object, SIGNAL(MessageRecieved(Message*)), clientController_,
+          SIGNAL(MessageRecieved(Message*)));
 }
 
 void SignalRedirector::ConnectToLoginResult(QObject *object) {

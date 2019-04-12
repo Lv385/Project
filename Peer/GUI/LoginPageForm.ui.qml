@@ -124,13 +124,14 @@ Page {
             font.pointSize: 16
             font.family: "fontawesome"
             focus: true
-
+		
             contentItem: Text {
                 font: buttonLogIn.font
                 color: "#ffffff"
                 text: "Log In"
                 horizontalAlignment: Text.AlignHCenter
                 verticalAlignment: Text.AlignVCenter
+
             }
             MouseArea {
                 onClicked: (mouse.button === Qt.LeftButton)
@@ -144,6 +145,7 @@ Page {
                 opacity: buttonLogIn.down ? 0.7 : 1
                 radius: height / 3
                 border.color: mainAppColor
+
             }
         }
 

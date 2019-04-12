@@ -45,7 +45,7 @@ class ClientController : public QObject {
   void MessageSent(unsigned, bool);
   void LoginResult(bool);
   void RegisterResult(quint32 id);
-  void MessageRecieved(unsigned id);
+  void MessageRecieved(Message* message);
   void StatusChanged(unsigned id, bool status);
   void FriendRequestResult(bool);
   void AddFriendRequestInfo(QString);

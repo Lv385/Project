@@ -3,7 +3,15 @@ import QtQuick.Controls 2.5
 
 LoginPageForm {
     id: rect
-    buttonLogIn.onClicked: {
+	
+	Keys.onPressed: {
+		if (event.key === Qt.Key_Return) {
+			runIndicator = true
+			loginUser(loginUsername.text, loginPassword.text)
+		}
+	}
+
+	buttonLogIn.onClicked: {
         runIndicator = true
 		loginUser(loginUsername.text, loginPassword.text)        
     }
@@ -14,8 +22,8 @@ LoginPageForm {
 			runIndicator = false
             stackView.push("MainPage.qml")
         }
-		onLogInFailed: {
-            popup.popMessage = "Log in failed!"
+		onOpenFailed: {
+            popup.popMessage = text + " failed!"
             popup.open()
 		}
     }

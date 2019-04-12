@@ -33,7 +33,8 @@ AsyncServer::AsyncServer(QObject *parent) :QTcpServer ()
 			ipAddress = QHostAddress(QHostAddress::LocalHost).toString();
 
 		qDebug() << "Server are listening: " << ipAddress << ":" << this->serverPort();
-	}
+	}      
+	
 }
 
 
