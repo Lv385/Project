@@ -73,8 +73,6 @@ void GUIManager::ShowMessages(unsigned friend_id) {
   if (friend_id) {
     message_model_.RemoveAllMessagesFromList();
 
-    QString data, time, date;
-    int owner_id;
     MessageItem* new_message;
 
     if (messages_cache_.find(friend_id) == messages_cache_.end()) {
@@ -85,6 +83,7 @@ void GUIManager::ShowMessages(unsigned friend_id) {
       new_message = new MessageItem(msg);
       message_model_.AddMessageToList(new_message);
     }
+    friend_model_.DeleteUnreadMesgs(friend_id);
   }
 }
 
@@ -106,6 +105,8 @@ void GUIManager::LoadMessage(Message* msg) {
   if (selected_friend_id_ == msg->chat_id) {
     new_message = new MessageItem(msg);
     message_model_.AddMessageToList(new_message);
+  } else {
+    friend_model_.AddUnreadMesg(msg->chat_id);
   }
 }
 
@@ -128,8 +129,8 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   controller_->app_info_.my_password = user_password;
   controller_->app_info_.my_id = client_data_.get_id_by_login(user_login);  //FIXME
   logger_->WriteLog(LogType::SUCCESS, user_login);
- // controller_->LogIn(user_login, user_password);
-  OnLoginResult(true);
+  controller_->LogIn(user_login, user_password);
+  //OnLoginResult(true);
 }
 
 void GUIManager::Register(QString user_login, QString user_password) {
