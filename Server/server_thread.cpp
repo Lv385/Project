@@ -1,8 +1,8 @@
-#include "ServerThread.h"
+#include "server_thread.h"
 #include <QTcpSocket>
 #include <sstream>
-#include "RequestProcessing/NewUserRequest.h"
-#include "RequestProcessing/LoginRequest.h"
+#include "RequestProcessing/new_user_request.h"
+#include "RequestProcessing/login_request.h"
 #include "RequestProcessing/add_friend_request.h"
 #include "RequestProcessing/friendship_request.h"
 

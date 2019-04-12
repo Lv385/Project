@@ -1,4 +1,4 @@
-#include "LoginRequest.h"
+#include "login_request.h"
 
 
 LoginRequest::LoginRequest(QByteArray& A, DAL* d, QTcpSocket* s)
