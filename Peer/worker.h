@@ -10,9 +10,9 @@
 #include "messagestrategy.h"
 
 #include <QByteArray>
+#include <QMap>
 #include <QObject>
 #include <QTimer>
-#include <QMap>
 
 #include "../Parser&Structs/parser.h"
 
@@ -36,7 +36,7 @@ class Worker : public QObject {
   void Connected(unsigned id);
   void Error(unsigned id);
   void MessageSent(unsigned id, bool result);
-  void MessageRecieved(unsigned id);
+  void MessageRecieved(Message* message);
 
  public slots:
   void SendMessage();

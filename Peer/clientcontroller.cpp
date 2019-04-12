@@ -52,7 +52,7 @@ void ClientController::SendMessage(unsigned id, QString message) {
 
 void ClientController::LogIn(QString login, QString password) {
   LoginInfo info;
-  info.id = client_data_.get_id_by_login(login);
+  info.id = client_data_.get_id_by_login(login);   //FIXME: LogIn should work by login(not id)
   info.password = password;
   info.port = app_info_.my_port;
 
@@ -90,7 +90,27 @@ QVector<Message> ClientController::LoadMessages(unsigned id) {
   return result;
 }
 
-void ClientController::OnFriendRequestRecieved() {}
+void ClientController::FriendRequestAccepted(QString login) {
+  FriendRequestInfo info;
+  info.id = app_info_.my_id;
+  info.other_login = login;
+  info.password = app_info_.my_password;
+
+  QByteArray data = Parser::FriendRequestInfo_ToByteArray(
+      info, static_cast<quint8>(ClientRequest::FRIENDSHIP_ACCEPTED));
+  server_manager_->SendRequest(data);
+}  
+
+void ClientController::FriendRequestRejected(QString login) {
+  FriendRequestInfo info;
+  info.id = app_info_.my_id;
+  info.other_login = login;
+  info.password = app_info_.my_password;
+
+  QByteArray data = Parser::FriendRequestInfo_ToByteArray(
+      info, static_cast<quint8>(ClientRequest::FRIENDSHIP_REJECTED));
+  server_manager_->SendRequest(data);
+}
 
 void ClientController::OnLogin(bool logged_in) {
   if(logged_in){
@@ -102,6 +122,7 @@ void ClientController::OnLogin(bool logged_in) {
   }
 }
 
+
 void ClientController::OnNewConnection(QTcpSocket *socket) {
   if (socket->peerAddress().isEqual(app_info_.remote_server_ip,
                                     QHostAddress::TolerantConversion)) {
@@ -110,6 +131,7 @@ void ClientController::OnNewConnection(QTcpSocket *socket) {
     BlockReader *reader = new BlockReader(socket);
     connect(reader, SIGNAL(ReadyReadBlock()), &friend_manager_,
             SLOT(OnFirstRequestRecieved()));
+
   }
 }
 

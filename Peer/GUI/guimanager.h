@@ -2,6 +2,8 @@
 #define GUIMANAGER_H
 
 #include <QObject>
+#include <QDate>
+#include <QTime>
 
 #include "GUI/frienditem.h"
 #include "GUI/friendmodel.h"
@@ -49,27 +51,33 @@ class GUIManager : public QObject {
 signals:
   void SelectedFriendIdChanged(unsigned id);
   void openMainPage();
-  void logInFailed();
+  void openFailed(QString text);
 
 public slots:
   void LogIn(QString user_login, QString user_password); 
   void Register(QString user_login, QString user_password);
   void OnLoginResult(bool);
+  void OnRegisterResult(quint32);
   void SendMessage(QString message);
-  void LoadMessages(unsigned id);  // temporary implementation(for testing)
+  void ShowMessages(unsigned id);  // temporary implementation(for testing)
+  void LoadAllMessages(unsigned id);
+  void LoadMessage(Message* msg);
   void OnStatusChanged(unsigned id, bool status);
-
+  void OnFriendRequestResult(bool);
+  void OnAddFriendRequest(QString);
+  void OnNewFriendInfo(QString);
 
   // void UserEntered();
 
  private:
   void LoadFriends();  // temporary implementation(for testing)
-
   unsigned selected_friend_id_;
 
   FriendModel friend_model_;
   MessageModel message_model_;
   FriendRequestModel friend_request_model_;
+
+  QMap<unsigned, QList<Message*> > messages_cache_;
 
  // QVector<Friend> friends_;   //FIXME: use id insted of Friend obj in sendMessage
   ClientController* controller_;
