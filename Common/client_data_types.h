@@ -10,7 +10,7 @@
 //
 //// This is our entity from database
 struct Friend {
-  unsigned int id;
+  quint32 id;
   QString login;
   QString ip;
   unsigned int port;

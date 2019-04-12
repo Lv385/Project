@@ -32,7 +32,11 @@
     <ClCompile Include="servermanager.cpp" />
     <ClCompile Include="worker.cpp" />
     <ClCompile Include="workhelper.cpp" />
+    <ClCompile Include="add_friend_request_strategy.cpp" />
     <ClCompile Include="friend_request_response_strategy.cpp" />
+    <ClCompile Include="new_friend_response_strategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="peer.h" />
@@ -76,6 +80,10 @@
     <QtMoc Include="signalredirector.h" />
     <QtMoc Include="register_response_strategy.h" />
     <QtMoc Include="friend_request_response_strategy.h" />
+    <QtMoc Include="add_friend_request_strategy.h" />
+    <QtMoc Include="new_friend_response_strategy.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="GUI\qml.qrc" />
@@ -83,6 +91,16 @@
   <ItemGroup>
     <Filter Include="QML">
       <UniqueIdentifier>{59951566-ba40-46a1-a57c-6714caf7cd1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <ParseFiles>true</ParseFiles>
     </Filter>
   </ItemGroup>
   <ItemGroup>

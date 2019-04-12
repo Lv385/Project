@@ -12,6 +12,8 @@ ServerManager::ServerManager(QTcpSocket *socket, ApplicationInfo& info)
   AbstractStrategy* reg = new RegisterResponseStrategy();
   AbstractStrategy* friend_update = new FriendUpdateStrategy();
   AbstractStrategy* friend_request = new FriendRequestResponseStrategy();
+  AbstractStrategy* add_friend = new AddFriendRequestStrategy();
+  AbstractStrategy* new_friend = new NewFriendResponseStrategy();
 
   strategies_.insert(ServerRequest::LOGIN_SUCCEED, login);
   strategies_.insert(ServerRequest::LOGIN_FAILED, login);
@@ -21,7 +23,8 @@ ServerManager::ServerManager(QTcpSocket *socket, ApplicationInfo& info)
   strategies_.insert(ServerRequest::FRIEND_REQUEST_SUCCEED, friend_request);
   strategies_.insert(ServerRequest::FRIEND_REQUEST_FAILED, friend_request);
   //to do  
-  strategies_.insert(ServerRequest::ADD_FRIEND_REQUEST,friend_request);
+  strategies_.insert(ServerRequest::ADD_FRIEND_REQUEST, add_friend);
+  strategies_.insert(ServerRequest::NEW_FRIEND_INFO, new_friend);
 }
 
 ServerManager::~ServerManager() {}
@@ -33,17 +36,21 @@ void ServerManager::set_socket(QTcpSocket* socket) {
 }
 
 void ServerManager::SendRequest(QByteArray data) { 
-  if (socket_ == nullptr) {
+  if (socket_ == nullptr || 
+    socket_->state() == QAbstractSocket::ConnectedState) {
     socket_ = new QTcpSocket();
   }
+  if(socket_->state() == QAbstractSocket::UnconnectedState){
+    socket_->connectToHost(app_info_.remote_server_ip,
+                           app_info_.remote_server_port); 
+  }
   logger_->WriteLog(INFO, "trying connect to server on:" +
-     app_info_.remote_server_ip.toString() + "  " +QString::number(app_info_.remote_server_port));
-  socket_->connectToHost(app_info_.remote_server_ip,
-                         app_info_.remote_server_port);
-  data_ = data;
-  writer_->set_socket(socket_);
-  reader_->set_socket(socket_);
-  connect(socket_, SIGNAL(connected()), this, SLOT(OnConnected()));
+                              app_info_.remote_server_ip.toString() + "  " +
+                              QString::number(app_info_.remote_server_port));
+    data_ = data;
+    writer_->set_socket(socket_);
+    reader_->set_socket(socket_);
+    connect(socket_, SIGNAL(connected()), this, SLOT(OnConnected()));
 }
 
 void ServerManager::DoWork() { 
@@ -62,5 +69,9 @@ void ServerManager::OnReadyReadBlock() {
 }
 
 void ServerManager::OnConnected() {
+  logger_->WriteLog(LogType::SUCCESS,
+                    "connected to : " + app_info_.remote_server_ip.toString() +
+                        "  " + QString::number(app_info_.remote_server_port));
   writer_->WriteBlock(data_);
 }
+
