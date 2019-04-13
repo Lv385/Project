@@ -1,22 +1,24 @@
 #include "aes_cypher.h"
-QByteArray QAESEncryption::Crypt(QAESEncryption::Aes level, QAESEncryption::Mode mode, const QByteArray &rawText,
-  const QByteArray &key, const QByteArray &iv, QAESEncryption::Padding padding)
+
+
+QByteArray AESCypher::Encrypt(AESCypher::Aes level, AESCypher::Mode mode, const QByteArray &rawText,
+  const QByteArray &key, const QByteArray &iv, AESCypher::Padding padding)
 {
-  return QAESEncryption(level, mode, padding).encode(rawText, key, iv);
+  return AESCypher(level, mode, padding).encode(rawText, key, iv);
 }
 
-QByteArray QAESEncryption::Decrypt(QAESEncryption::Aes level, QAESEncryption::Mode mode, const QByteArray &rawText,
-  const QByteArray &key, const QByteArray &iv, QAESEncryption::Padding padding)
+QByteArray AESCypher::Decrypt(AESCypher::Aes level, AESCypher::Mode mode, const QByteArray &rawText,
+  const QByteArray &key, const QByteArray &iv, AESCypher::Padding padding)
 {
-  return QAESEncryption(level, mode, padding).decode(rawText, key, iv);
+  return AESCypher(level, mode, padding).decode(rawText, key, iv);
 }
 
-QByteArray QAESEncryption::ExpandKey(QAESEncryption::Aes level, QAESEncryption::Mode mode, const QByteArray &key)
+QByteArray AESCypher::ExpandKey(AESCypher::Aes level, AESCypher::Mode mode, const QByteArray &key)
 {
-  return QAESEncryption(level, mode).expandKey(key);
+  return AESCypher(level, mode).expandKey(key);
 }
 
-QByteArray QAESEncryption::RemovePadding(const QByteArray &rawText, QAESEncryption::Padding padding)
+QByteArray AESCypher::RemovePadding(const QByteArray &rawText, AESCypher::Padding padding)
 {
   if (rawText.isEmpty())
     return rawText;
@@ -24,14 +26,6 @@ QByteArray QAESEncryption::RemovePadding(const QByteArray &rawText, QAESEncrypti
   QByteArray ret(rawText);
   switch (padding)
   {
-  case Padding::ZERO:
-    //Works only if the last byte of the decoded array is not zero
-    while (ret.at(ret.length() - 1) == 0x00)
-      ret.remove(ret.length() - 1, 1);
-    break;
-  case Padding::PKCS7:
-    ret.remove(ret.length() - ret.at(ret.length() - 1), ret.at(ret.length() - 1));
-    break;
   case Padding::ISO:
   {
     // Find the last byte which is not zero
@@ -79,7 +73,7 @@ inline quint8 multiply(quint8 x, quint8 y) {
  * */
 
 
-QAESEncryption::QAESEncryption(Aes level, Mode mode,
+AESCypher::AESCypher(Aes level, Mode mode,
   Padding padding)
   : m_nb(4), m_blocklen(16), m_level(level), m_mode(mode), m_padding(padding)
 {
@@ -95,14 +89,6 @@ QAESEncryption::QAESEncryption(Aes level, Mode mode,
     m_expandedKey = aes.expandedKey;
   }
                 break;
-  case AES_192: {
-    AES192 aes;
-    m_nk = aes.nk;
-    m_keyLen = aes.keylen;
-    m_nr = aes.nr;
-    m_expandedKey = aes.expandedKey;
-  }
-                break;
   case AES_256: {
     AES256 aes;
     m_nk = aes.nk;
@@ -111,40 +97,23 @@ QAESEncryption::QAESEncryption(Aes level, Mode mode,
     m_expandedKey = aes.expandedKey;
   }
                 break;
-  default: {
-    AES128 aes;
-    m_nk = aes.nk;
-    m_keyLen = aes.keylen;
-    m_nr = aes.nr;
-    m_expandedKey = aes.expandedKey;
-  }
-           break;
   }
 
 }
-QByteArray QAESEncryption::getPadding(int currSize, int alignment)
+QByteArray AESCypher::getPadding(int currSize, int alignment)
 {
   int size = (alignment - currSize % alignment) % alignment;
   if (size == 0) return QByteArray();
   switch (m_padding)
   {
-  case Padding::ZERO:
-    return QByteArray(size, 0x00);
-    break;
-  case Padding::PKCS7:
-    return QByteArray(size, size);
-    break;
   case Padding::ISO:
     return QByteArray(size - 1, 0x00).prepend(0x80);
-    break;
-  default:
-    return QByteArray(size, 0x00);
     break;
   }
   return QByteArray(size, 0x00);
 }
 
-QByteArray QAESEncryption::expandKey(const QByteArray &key)
+QByteArray AESCypher::expandKey(const QByteArray &key)
 {
   int i, k;
   quint8 tempa[4]; // Used for the column/row operations
@@ -200,16 +169,16 @@ QByteArray QAESEncryption::expandKey(const QByteArray &key)
 
 // This function adds the round key to state.
 // The round key is added to the state by an XOR function.
-void QAESEncryption::addRoundKey(const quint8 round, const QByteArray expKey)
+//understanded
+void AESCypher::addRoundKey(const quint8 round, const QByteArray expKey)
 {
   QByteArray::iterator it = m_state->begin();
   for (int i = 0; i < 16; ++i)
     it[i] = (quint8)it[i] ^ (quint8)expKey.at(round * m_nb * 4 + (i / 4) * m_nb + (i % 4));
 }
 
-// The SubBytes Function Substitutes the values in the
-// state matrix with values in an S-box.
-void QAESEncryption::subBytes()
+//understanded
+void AESCypher::subBytes()
 {
   QByteArray::iterator it = m_state->begin();
   for (int i = 0; i < 16; i++)
@@ -219,7 +188,8 @@ void QAESEncryption::subBytes()
 // The ShiftRows() function shifts the rows in the state to the left.
 // Each row is shifted with different offset.
 // Offset = Row number. So the first row is not shifted.
-void QAESEncryption::shiftRows()
+//understanded
+void AESCypher::shiftRows()
 {
   QByteArray::iterator it = m_state->begin();
   quint8 temp;
@@ -249,8 +219,7 @@ void QAESEncryption::shiftRows()
 }
 
 // MixColumns function mixes the columns of the state matrix
-//optimized!!
-void QAESEncryption::mixColumns()
+void AESCypher::mixColumns()
 {
   QByteArray::iterator it = m_state->begin();
   quint8 tmp, tm, t;
@@ -276,7 +245,7 @@ void QAESEncryption::mixColumns()
 // MixColumns function mixes the columns of the state matrix.
 // The method used to multiply may be difficult to understand for the inexperienced.
 // Please use the references to gain more information.
-void QAESEncryption::invMixColumns()
+void AESCypher::invMixColumns()
 {
   QByteArray::iterator it = m_state->begin();
   quint8 a, b, c, d;
@@ -293,16 +262,15 @@ void QAESEncryption::invMixColumns()
   }
 }
 
-// The SubBytes Function Substitutes the values in the
-// state matrix with values in an S-box.
-void QAESEncryption::invSubBytes()
+// understanded
+void AESCypher::invSubBytes() 
 {
   QByteArray::iterator it = m_state->begin();
   for (int i = 0; i < 16; ++i)
     it[i] = getSBoxInvert((quint8)it[i]);
 }
-
-void QAESEncryption::invShiftRows()
+//understanded
+void AESCypher::invShiftRows()
 {
   QByteArray::iterator it = m_state->begin();
   uint8_t temp;
@@ -331,8 +299,8 @@ void QAESEncryption::invShiftRows()
   it[7] = (quint8)it[11];
   it[11] = (quint8)temp;
 }
-
-QByteArray QAESEncryption::byteXor(const QByteArray &a, const QByteArray &b)
+//understanded
+QByteArray AESCypher::byteXor(const QByteArray &a, const QByteArray &b)
 {
   QByteArray::const_iterator it_a = a.begin();
   QByteArray::const_iterator it_b = b.begin();
@@ -346,10 +314,9 @@ QByteArray QAESEncryption::byteXor(const QByteArray &a, const QByteArray &b)
 }
 
 // Cipher is the main function that encrypts the PlainText.
-QByteArray QAESEncryption::cipher(const QByteArray &expKey, const QByteArray &in)
-{
-
-  //m_state is the input buffer...
+// understand
+QByteArray AESCypher::cipher(const QByteArray &expKey, const QByteArray &in)
+{ 
   QByteArray output(in);
   m_state = &output;
 
@@ -365,7 +332,6 @@ QByteArray QAESEncryption::cipher(const QByteArray &expKey, const QByteArray &in
     mixColumns();
     addRoundKey(round, expKey);
   }
-
   // The last round is given below.
   // The MixColumns function is not here in the last round.
   subBytes();
@@ -374,8 +340,8 @@ QByteArray QAESEncryption::cipher(const QByteArray &expKey, const QByteArray &in
 
   return output;
 }
-
-QByteArray QAESEncryption::invCipher(const QByteArray &expKey, const QByteArray &in)
+ // understand
+QByteArray AESCypher::invCipher(const QByteArray &expKey, const QByteArray &in)
 {
   //m_state is the input buffer.... handle it!
   QByteArray output(in);
@@ -403,8 +369,8 @@ QByteArray QAESEncryption::invCipher(const QByteArray &expKey, const QByteArray 
   return output;
 }
 
-QByteArray QAESEncryption::encode(const QByteArray &rawText, const QByteArray &key, const QByteArray &iv)
-{
+QByteArray AESCypher::encode(const QByteArray &rawText, const QByteArray &key, const QByteArray &iv)
+{ // cbc mode by default
   if (m_mode >= CBC && (iv.isNull() || iv.size() != m_blocklen))
     return QByteArray();
 
@@ -417,43 +383,20 @@ QByteArray QAESEncryption::encode(const QByteArray &rawText, const QByteArray &k
 
   switch (m_mode)
   {
-  case ECB:
-    for (int i = 0; i < alignedText.size(); i += m_blocklen)
-      ret.append(cipher(expandedKey, alignedText.mid(i, m_blocklen)));
-    break;
-  case CBC: {
-    QByteArray ivTemp(iv);
-    for (int i = 0; i < alignedText.size(); i += m_blocklen) {
-      alignedText.replace(i, m_blocklen, byteXor(alignedText.mid(i, m_blocklen), ivTemp));
-      ret.append(cipher(expandedKey, alignedText.mid(i, m_blocklen)));
-      ivTemp = ret.mid(i, m_blocklen);
+   case CBC: {
+     QByteArray ivTemp(iv);
+     for (int i = 0; i < alignedText.size(); i += m_blocklen) {
+        alignedText.replace(i, m_blocklen, byteXor(alignedText.mid(i, m_blocklen), ivTemp));
+        ret.append(cipher(expandedKey, alignedText.mid(i, m_blocklen)));
+        ivTemp = ret.mid(i, m_blocklen);
     }
   }
-            break;
-  case CFB: {
-    ret.append(byteXor(alignedText.left(m_blocklen), cipher(expandedKey, iv)));
-    for (int i = 0; i < alignedText.size(); i += m_blocklen) {
-      if (i + m_blocklen < alignedText.size())
-        ret.append(byteXor(alignedText.mid(i + m_blocklen, m_blocklen),
-          cipher(expandedKey, ret.mid(i, m_blocklen))));
-    }
-  }
-            break;
-  case OFB: {
-    QByteArray ofbTemp;
-    ofbTemp.append(cipher(expandedKey, iv));
-    for (int i = m_blocklen; i < alignedText.size(); i += m_blocklen) {
-      ofbTemp.append(cipher(expandedKey, ofbTemp.right(m_blocklen)));
-    }
-    ret.append(byteXor(alignedText, ofbTemp));
-  }
-            break;
-  default: break;
+  
   }
   return ret;
 }
 
-QByteArray QAESEncryption::decode(const QByteArray &rawText, const QByteArray &key, const QByteArray &iv)
+QByteArray AESCypher::decode(const QByteArray &rawText, const QByteArray &key, const QByteArray &iv)
 {
   if (m_mode >= CBC && (iv.isNull() || iv.size() != m_blocklen))
     return QByteArray();
@@ -463,10 +406,7 @@ QByteArray QAESEncryption::decode(const QByteArray &rawText, const QByteArray &k
 
   switch (m_mode)
   {
-  case ECB:
-    for (int i = 0; i < rawText.size(); i += m_blocklen)
-      ret.append(invCipher(expandedKey, rawText.mid(i, m_blocklen)));
-    break;
+
   case CBC: {
     QByteArray ivTemp(iv);
     for (int i = 0; i < rawText.size(); i += m_blocklen) {
@@ -476,33 +416,11 @@ QByteArray QAESEncryption::decode(const QByteArray &rawText, const QByteArray &k
     }
   }
             break;
-  case CFB: {
-    ret.append(byteXor(rawText.mid(0, m_blocklen), cipher(expandedKey, iv)));
-    for (int i = 0; i < rawText.size(); i += m_blocklen) {
-      if (i + m_blocklen < rawText.size()) {
-        ret.append(byteXor(rawText.mid(i + m_blocklen, m_blocklen),
-          cipher(expandedKey, rawText.mid(i, m_blocklen))));
-      }
-    }
-  }
-            break;
-  case OFB: {
-    QByteArray ofbTemp;
-    ofbTemp.append(cipher(expandedKey, iv));
-    for (int i = m_blocklen; i < rawText.size(); i += m_blocklen) {
-      ofbTemp.append(cipher(expandedKey, ofbTemp.right(m_blocklen)));
-    }
-    ret.append(byteXor(rawText, ofbTemp));
-  }
-            break;
-  default:
-    //do nothing
-    break;
   }
   return ret;
 }
 
-QByteArray QAESEncryption::removePadding(const QByteArray &rawText)
+QByteArray AESCypher::removePadding(const QByteArray &rawText)
 {
   return RemovePadding(rawText, (Padding)m_padding);
 }

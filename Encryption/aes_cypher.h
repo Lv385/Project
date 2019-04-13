@@ -3,47 +3,39 @@
 #include <QObject>
 #include <QByteArray>
 
-class QAESEncryption : public QObject
+class AESCypher 
 {
-  Q_OBJECT
+  
 public:
   enum Aes {
     AES_128,
-    AES_192,
     AES_256
   };
 
   enum Mode {
-    ECB,
     CBC,
-    CFB,
-    OFB
   };
 
   enum Padding {
-    ZERO,
-    PKCS7,
+    
     ISO
   };
 
-  static QByteArray Crypt(QAESEncryption::Aes level, QAESEncryption::Mode mode, const QByteArray &rawText, const QByteArray &key,
-    const QByteArray &iv = NULL, QAESEncryption::Padding padding = QAESEncryption::ISO);
-  static QByteArray Decrypt(QAESEncryption::Aes level, QAESEncryption::Mode mode, const QByteArray &rawText, const QByteArray &key,
-    const QByteArray &iv = NULL, QAESEncryption::Padding padding = QAESEncryption::ISO);
-  static QByteArray ExpandKey(QAESEncryption::Aes level, QAESEncryption::Mode mode, const QByteArray &key);
-  static QByteArray RemovePadding(const QByteArray &rawText, QAESEncryption::Padding padding);
+  static QByteArray Encrypt(AESCypher::Aes level, AESCypher::Mode mode, const QByteArray &rawText, const QByteArray &key,
+    const QByteArray &iv = NULL, AESCypher::Padding padding = AESCypher::ISO);
+  static QByteArray Decrypt(AESCypher::Aes level, AESCypher::Mode mode, const QByteArray &rawText, const QByteArray &key,
+    const QByteArray &iv = NULL, AESCypher::Padding padding = AESCypher::ISO);
+  static QByteArray ExpandKey(AESCypher::Aes level, AESCypher::Mode mode, const QByteArray &key);
+  static QByteArray RemovePadding(const QByteArray &rawText, AESCypher::Padding padding);
 
-  QAESEncryption(QAESEncryption::Aes level, QAESEncryption::Mode mode,
-    QAESEncryption::Padding padding = QAESEncryption::ISO);
+  AESCypher(AESCypher::Aes level, AESCypher::Mode mode,
+    AESCypher::Padding padding = AESCypher::ISO);
 
   QByteArray encode(const QByteArray &rawText, const QByteArray &key, const QByteArray &iv = NULL);
   QByteArray decode(const QByteArray &rawText, const QByteArray &key, const QByteArray &iv = NULL);
   QByteArray removePadding(const QByteArray &rawText);
   QByteArray expandKey(const QByteArray &key);
 
-signals:
-
-public slots:
 
 private:
   int m_nb;
@@ -62,13 +54,6 @@ private:
     int keylen = 32;
     int nr = 14;
     int expandedKey = 240;
-  };
-
-  struct AES192 {
-    int nk = 6;
-    int keylen = 24;
-    int nr = 12;
-    int expandedKey = 209;
   };
 
   struct AES128 {
