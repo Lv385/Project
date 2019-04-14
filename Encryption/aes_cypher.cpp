@@ -1,426 +1,154 @@
 #include "aes_cypher.h"
+//Aes 256 CBS block cyphering  //  actually aes128
 
-
-QByteArray AESCypher::Encrypt(AESCypher::Aes level, AESCypher::Mode mode, const QByteArray &rawText,
-  const QByteArray &key, const QByteArray &iv, AESCypher::Padding padding)
+AESCypher::AESCypher()
 {
-  return AESCypher(level, mode, padding).encode(rawText, key, iv);
+  //aes 128
+  number_of_blocks_ = 4; // possibly blocksnum // check it
+  blocklength_ = 16;
+  number_of_keys_ = 4;
+  keylen_ = 16;
+  rounds_num_ = 10; // rounds number for aes256 is 14
+  expanded_key_ = 176;
+  padding_; //ISO
 }
-
-QByteArray AESCypher::Decrypt(AESCypher::Aes level, AESCypher::Mode mode, const QByteArray &rawText,
-  const QByteArray &key, const QByteArray &iv, AESCypher::Padding padding)
+void AESCypher::swap(char &a, char &b)
 {
-  return AESCypher(level, mode, padding).decode(rawText, key, iv);
-}
+  char tmp = a;
+  a = b;
+  b = tmp;
 
-QByteArray AESCypher::ExpandKey(AESCypher::Aes level, AESCypher::Mode mode, const QByteArray &key)
+}
+void AESCypher::swap(int &a, int &b)
 {
-  return AESCypher(level, mode).expandKey(key);
-}
+  int tmp = a;
+  a = b;
+  b = tmp;
 
-QByteArray AESCypher::RemovePadding(const QByteArray &rawText, AESCypher::Padding padding)
+}
+void AESCypher::Encrypt(QByteArray& plaintext, QByteArray&key)
 {
-  if (rawText.isEmpty())
-    return rawText;
+  AESCypher();
 
-  QByteArray ret(rawText);
-  switch (padding)
-  {
-  case Padding::ISO:
-  {
-    // Find the last byte which is not zero
-    int marker_index = ret.length() - 1;
-    for (; marker_index >= 0; --marker_index)
-    {
-      if (ret.at(marker_index) != 0x00)
-      {
-        break;
-      }
-    }
+  iter_state = &plaintext;
+  //addRoundKey(0, expKey);
+  SubBytes(plaintext);
+  qDebug() << "    " << plaintext << "\n";
+  ShiftRows(plaintext);
+  qDebug() << "  Shifted rows:" << plaintext << "\n";
+  InvShiftRows(plaintext);//problem
+  qDebug() << "  Inv Shifted Rows: " << plaintext << "\n";
+  InvSubBytes(plaintext);
+ 
+  //ShiftRows(QByteArray);
+  //MixColumns(QByteArray);
 
-    // And check if it's the byte for marking padding
-    if (ret.at(marker_index) == static_cast<char>(0x80))
-    {
-      ret.truncate(marker_index);
-    }
-    break;
-  }
-  default:
-    //do nothing
-    break;
-  }
-  return ret;
-}
-/*
- * End Static function declarations
- * */
-
- /*
-  * Inline Functions
-  * */
-
-inline quint8 xTime(quint8 x) {
-  return ((x << 1) ^ (((x >> 7) & 1) * 0x1b));
-}
-
-inline quint8 multiply(quint8 x, quint8 y) {
-  return (((y & 1) * x) ^ ((y >> 1 & 1) * xTime(x)) ^ ((y >> 2 & 1) * xTime(xTime(x))) ^ ((y >> 3 & 1)
-    * xTime(xTime(xTime(x)))) ^ ((y >> 4 & 1) * xTime(xTime(xTime(xTime(x))))));
-}
-
-/*
- * End Inline functions
- * */
-
-
-AESCypher::AESCypher(Aes level, Mode mode,
-  Padding padding)
-  : m_nb(4), m_blocklen(16), m_level(level), m_mode(mode), m_padding(padding)
-{
-  m_state = NULL;
-
-  switch (level)
-  {
-  case AES_128: {
-    AES128 aes;
-    m_nk = aes.nk;
-    m_keyLen = aes.keylen;
-    m_nr = aes.nr;
-    m_expandedKey = aes.expandedKey;
-  }
-                break;
-  case AES_256: {
-    AES256 aes;
-    m_nk = aes.nk;
-    m_keyLen = aes.keylen;
-    m_nr = aes.nr;
-    m_expandedKey = aes.expandedKey;
-  }
-                break;
-  }
+  //for (quint8 round = 1; round < rounds_num_; ++round) {
+  //  SubBytes();
+  //  ShiftRows();
+  //  MixColumns();
+  //  //addRoundKey(round, expKey);
+  //}
+  //SubBytes();
+  //ShiftRows();
+  //addRoundKey(rounds_num_, expKey);
 
 }
-QByteArray AESCypher::getPadding(int currSize, int alignment)
-{
-  int size = (alignment - currSize % alignment) % alignment;
-  if (size == 0) return QByteArray();
-  switch (m_padding)
-  {
-  case Padding::ISO:
-    return QByteArray(size - 1, 0x00).prepend(0x80);
-    break;
-  }
-  return QByteArray(size, 0x00);
-}
-
-QByteArray AESCypher::expandKey(const QByteArray &key)
-{
-  int i, k;
-  quint8 tempa[4]; // Used for the column/row operations
-  QByteArray roundKey(key);
-
-  // The first round key is the key itself.
-  // ...
-
-  // All other round keys are found from the previous round keys.
-  //i == Nk
-  for (i = m_nk; i < m_nb * (m_nr + 1); i++)
-  {
-    tempa[0] = (quint8)roundKey.at((i - 1) * 4 + 0);
-    tempa[1] = (quint8)roundKey.at((i - 1) * 4 + 1);
-    tempa[2] = (quint8)roundKey.at((i - 1) * 4 + 2);
-    tempa[3] = (quint8)roundKey.at((i - 1) * 4 + 3);
-
-    if (i % m_nk == 0)
-    {
-      // This function shifts the 4 bytes in a word to the left once.
-      // [a0,a1,a2,a3] becomes [a1,a2,a3,a0]
-
-      // Function RotWord()
-      k = tempa[0];
-      tempa[0] = tempa[1];
-      tempa[1] = tempa[2];
-      tempa[2] = tempa[3];
-      tempa[3] = k;
-
-      // Function Subword()
-      tempa[0] = getSBoxValue(tempa[0]);
-      tempa[1] = getSBoxValue(tempa[1]);
-      tempa[2] = getSBoxValue(tempa[2]);
-      tempa[3] = getSBoxValue(tempa[3]);
-
-      tempa[0] = tempa[0] ^ Rcon[i / m_nk];
-    }
-    if (m_level == AES_256 && i % m_nk == 4)
-    {
-      // Function Subword()
-      tempa[0] = getSBoxValue(tempa[0]);
-      tempa[1] = getSBoxValue(tempa[1]);
-      tempa[2] = getSBoxValue(tempa[2]);
-      tempa[3] = getSBoxValue(tempa[3]);
-    }
-    roundKey.insert(i * 4 + 0, (quint8)roundKey.at((i - m_nk) * 4 + 0) ^ tempa[0]);
-    roundKey.insert(i * 4 + 1, (quint8)roundKey.at((i - m_nk) * 4 + 1) ^ tempa[1]);
-    roundKey.insert(i * 4 + 2, (quint8)roundKey.at((i - m_nk) * 4 + 2) ^ tempa[2]);
-    roundKey.insert(i * 4 + 3, (quint8)roundKey.at((i - m_nk) * 4 + 3) ^ tempa[3]);
-  }
-  return roundKey;
-}
-
-// This function adds the round key to state.
-// The round key is added to the state by an XOR function.
-//understanded
-void AESCypher::addRoundKey(const quint8 round, const QByteArray expKey)
-{
-  QByteArray::iterator it = m_state->begin();
-  for (int i = 0; i < 16; ++i)
-    it[i] = (quint8)it[i] ^ (quint8)expKey.at(round * m_nb * 4 + (i / 4) * m_nb + (i % 4));
-}
-
-//understanded
-void AESCypher::subBytes()
-{
-  QByteArray::iterator it = m_state->begin();
-  for (int i = 0; i < 16; i++)
-    it[i] = getSBoxValue((quint8)it[i]);
-}
-
-// The ShiftRows() function shifts the rows in the state to the left.
-// Each row is shifted with different offset.
-// Offset = Row number. So the first row is not shifted.
-//understanded
-void AESCypher::shiftRows()
-{
-  QByteArray::iterator it = m_state->begin();
-  quint8 temp;
-  //Keep in mind that QByteArray is column-driven!!
-
-   //Shift 1 to left  // on four bytes
-  temp = (quint8)it[1];
-  it[1] = (quint8)it[5];
-  it[5] = (quint8)it[9];
-  it[9] = (quint8)it[13];
-  it[13] = (quint8)temp;
-
-  //Shift 2 to left  // on eight bytes
-  temp = (quint8)it[2];
-  it[2] = (quint8)it[10];
-  it[10] = (quint8)temp;
-  temp = (quint8)it[6];
-  it[6] = (quint8)it[14];
-  it[14] = (quint8)temp;
-
-  //Shift 3 to left //on 4 bytes
-  temp = (quint8)it[3];
-  it[3] = (quint8)it[15];
-  it[15] = (quint8)it[11];
-  it[11] = (quint8)it[7];
-  it[7] = (quint8)temp;
-}
-
-// MixColumns function mixes the columns of the state matrix
-void AESCypher::mixColumns()
-{
-  QByteArray::iterator it = m_state->begin();
-  quint8 tmp, tm, t;
-
-  for (int i = 0; i < 16; i += 4) {
-    t = (quint8)it[i];
-    tmp = (quint8)it[i] ^ (quint8)it[i + 1] ^ (quint8)it[i + 2] ^ (quint8)it[i + 3];
-
-    tm = xTime((quint8)it[i] ^ (quint8)it[i + 1]);
-    it[i] = (quint8)it[i] ^ (quint8)tm ^ (quint8)tmp;
-
-    tm = xTime((quint8)it[i + 1] ^ (quint8)it[i + 2]);
-    it[i + 1] = (quint8)it[i + 1] ^ (quint8)tm ^ (quint8)tmp;
-
-    tm = xTime((quint8)it[i + 2] ^ (quint8)it[i + 3]);
-    it[i + 2] = (quint8)it[i + 2] ^ (quint8)tm ^ (quint8)tmp;
-
-    tm = xTime((quint8)it[i + 3] ^ (quint8)t);
-    it[i + 3] = (quint8)it[i + 3] ^ (quint8)tm ^ (quint8)tmp;
-  }
-}
-
-// MixColumns function mixes the columns of the state matrix.
-// The method used to multiply may be difficult to understand for the inexperienced.
-// Please use the references to gain more information.
-void AESCypher::invMixColumns()
-{
-  QByteArray::iterator it = m_state->begin();
-  quint8 a, b, c, d;
-  for (int i = 0; i < 16; i += 4) {
-    a = (quint8)it[i];
-    b = (quint8)it[i + 1];
-    c = (quint8)it[i + 2];
-    d = (quint8)it[i + 3];
-
-    it[i] = (quint8)(multiply(a, 0x0e) ^ multiply(b, 0x0b) ^ multiply(c, 0x0d) ^ multiply(d, 0x09));
-    it[i + 1] = (quint8)(multiply(a, 0x09) ^ multiply(b, 0x0e) ^ multiply(c, 0x0b) ^ multiply(d, 0x0d));
-    it[i + 2] = (quint8)(multiply(a, 0x0d) ^ multiply(b, 0x09) ^ multiply(c, 0x0e) ^ multiply(d, 0x0b));
-    it[i + 3] = (quint8)(multiply(a, 0x0b) ^ multiply(b, 0x0d) ^ multiply(c, 0x09) ^ multiply(d, 0x0e));
-  }
-}
-
-// understanded
-void AESCypher::invSubBytes() 
-{
-  QByteArray::iterator it = m_state->begin();
-  for (int i = 0; i < 16; ++i)
-    it[i] = getSBoxInvert((quint8)it[i]);
-}
-//understanded
-void AESCypher::invShiftRows()
-{
-  QByteArray::iterator it = m_state->begin();
-  uint8_t temp;
-
-  //Keep in mind that QByteArray is column-driven!!
-
-  //Shift 1 to right
-  temp = (quint8)it[13];
-  it[13] = (quint8)it[9];
-  it[9] = (quint8)it[5];
-  it[5] = (quint8)it[1];
-  it[1] = (quint8)temp;
-
-  //Shift 2
-  temp = (quint8)it[10];
-  it[10] = (quint8)it[2];
-  it[2] = (quint8)temp;
-  temp = (quint8)it[14];
-  it[14] = (quint8)it[6];
-  it[6] = (quint8)temp;
-
-  //Shift 3
-  temp = (quint8)it[15];
-  it[15] = (quint8)it[3];
-  it[3] = (quint8)it[7];
-  it[7] = (quint8)it[11];
-  it[11] = (quint8)temp;
-}
-//understanded
-QByteArray AESCypher::byteXor(const QByteArray &a, const QByteArray &b)
-{
-  QByteArray::const_iterator it_a = a.begin();
-  QByteArray::const_iterator it_b = b.begin();
-  QByteArray ret;
-
-  //for(int i = 0; i < m_blocklen; i++)
-  for (int i = 0; i < std::min(a.size(), b.size()); i++)
-    ret.insert(i, it_a[i] ^ it_b[i]);
-
-  return ret;
-}
-
-// Cipher is the main function that encrypts the PlainText.
-// understand
-QByteArray AESCypher::cipher(const QByteArray &expKey, const QByteArray &in)
+// done
+void AESCypher::SubBytes(QByteArray&Text)
 { 
-  QByteArray output(in);
-  m_state = &output;
-
-  // Add the First round key to the state before starting the rounds.
-  addRoundKey(0, expKey);
-
-  // There will be Nr rounds.
-  // The first Nr-1 rounds are identical.
-  // These Nr-1 rounds are executed in the loop below.
-  for (quint8 round = 1; round < m_nr; ++round) {
-    subBytes();
-    shiftRows();
-    mixColumns();
-    addRoundKey(round, expKey);
-  }
-  // The last round is given below.
-  // The MixColumns function is not here in the last round.
-  subBytes();
-  shiftRows();
-  addRoundKey(m_nr, expKey);
-
-  return output;
+  // substituting data by values from SBox
+  QByteArray::iterator it = iter_state->begin();
+  for (int i = 0; i < 16; i++)
+    Text[i] = GetSBoxValue((quint8)it[i]);
 }
- // understand
-QByteArray AESCypher::invCipher(const QByteArray &expKey, const QByteArray &in)
+
+void AESCypher::ShiftRows(QByteArray)
 {
-  //m_state is the input buffer.... handle it!
-  QByteArray output(in);
-  m_state = &output;
-
-  // Add the First round key to the state before starting the rounds.
-  addRoundKey(m_nr, expKey);
-
-  // There will be Nr rounds.
-  // The first Nr-1 rounds are identical.
-  // These Nr-1 rounds are executed in the loop below.
-  for (quint8 round = m_nr - 1; round > 0; round--) {
-    invShiftRows();
-    invSubBytes();
-    addRoundKey(round, expKey);
-    invMixColumns();
-  }
-
-  // The last round is given below.
-  // The MixColumns function is not here in the last round.
-  invShiftRows();
-  invSubBytes();
-  addRoundKey(0, expKey);
-
-  return output;
-}
-
-QByteArray AESCypher::encode(const QByteArray &rawText, const QByteArray &key, const QByteArray &iv)
-{ // cbc mode by default
-  if (m_mode >= CBC && (iv.isNull() || iv.size() != m_blocklen))
-    return QByteArray();
-
-  QByteArray ret;
-  QByteArray expandedKey = expandKey(key);
-  QByteArray alignedText(rawText);
-
-  //Fill array with padding
-  alignedText.append(getPadding(rawText.size(), m_blocklen));
-
-  switch (m_mode)
-  {
-   case CBC: {
-     QByteArray ivTemp(iv);
-     for (int i = 0; i < alignedText.size(); i += m_blocklen) {
-        alignedText.replace(i, m_blocklen, byteXor(alignedText.mid(i, m_blocklen), ivTemp));
-        ret.append(cipher(expandedKey, alignedText.mid(i, m_blocklen)));
-        ivTemp = ret.mid(i, m_blocklen);
-    }
-  }
+  // here we swap rows in only us known order
+  QByteArray::iterator it = iter_state->begin();
+ // int it[16]{ 0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15 };
+  swap(it[0] , it[0]); 
+  swap(it[1], it[13]);
+  swap(it[2], it[10]);
+  swap(it[3], it[7]);
   
-  }
-  return ret;
-}
+  swap(it[4], it[4]);
+  swap(it[5], it[1]);
+  swap(it[6],it[14]);
+  swap(it[7],it[11]);
 
-QByteArray AESCypher::decode(const QByteArray &rawText, const QByteArray &key, const QByteArray &iv)
-{
-  if (m_mode >= CBC && (iv.isNull() || iv.size() != m_blocklen))
-    return QByteArray();
+  swap(it[8],it[8]);
+  swap(it[9],it[5]);
+  swap(it[10],it[2]);
+  swap(it[11],it[15]);
 
-  QByteArray ret;
-  QByteArray expandedKey = expandKey(key);
-
-  switch (m_mode)
+  swap(it[12],it[12]);
+  swap(it[9],it[13]);
+  swap(it[14],it[6]);
+  swap(it[15],it[3]);
+  /*for(int i=0;i<16;i++)
   {
-
-  case CBC: {
-    QByteArray ivTemp(iv);
-    for (int i = 0; i < rawText.size(); i += m_blocklen) {
-      ret.append(invCipher(expandedKey, rawText.mid(i, m_blocklen)));
-      ret.replace(i, m_blocklen, byteXor(ret.mid(i, m_blocklen), ivTemp));
-      ivTemp = rawText.mid(i, m_blocklen);
-    }
-  }
-            break;
-  }
-  return ret;
+    qDebug() << it[i]<<" "<< i<<" ";
+  }*/
+  
 }
-
-QByteArray AESCypher::removePadding(const QByteArray &rawText)
+void AESCypher::InvShiftRows(QByteArray)
 {
-  return RemovePadding(rawText, (Padding)m_padding);
+  
+  QByteArray::iterator it = iter_state->begin();
+  //int it[16]{0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15};
+  //int it[16] = {0,5,2,3,4,9,6,11,8,1,10,15,12,13,14,7};
+  
+  swap(it[1], it[5]);
+  swap(it[1],it[9]);
+  swap(it[7], it[11]);
+  swap(it[7],it[15]);
+  /*swap(it[0], it[0]);
+  swap(it[13], it[1]);
+  swap(it[10], it[2]);
+  swap(it[7], it[3]);
+
+  swap(it[4], it[4]);
+  swap(it[1], it[5]);
+  swap(it[14], it[6]);
+  swap(it[11], it[7]);
+
+  swap(it[8], it[8]);
+  swap(it[5], it[9]);
+  swap(it[2], it[10]);
+  swap(it[15], it[11]);
+
+  swap(it[12], it[12]);
+  swap(it[13], it[9]);
+  swap(it[6], it[14]);
+  swap(it[3], it[15]);*/
+  
+  /*for (int i = 0; i < 16; i++)
+  {
+    qDebug() << it[i] << " " << i << " ";
+  }*/
 }
+void AESCypher::MixColumns(QByteArray)
+{
+
+}
+
+void AESCypher::XorRoundKey(QByteArray)
+{
+}
+//done
+void AESCypher::InvSubBytes(QByteArray) 
+{
+  QByteArray::iterator it = iter_state->begin();
+  for (int i = 0; i < 16; i++)
+    it[i] = GetSBoxInvert((quint8)it[i]); // get data from rsbox
+}
+
+
+void AESCypher::InvMixColumns(QByteArray)
+{
+}
+
+
+

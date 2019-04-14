@@ -2,82 +2,39 @@
 #include "abstract_cypher.h"
 #include <QObject>
 #include <QByteArray>
-
+#include <iostream>
+using namespace std;
 class AESCypher 
 {
   
 public:
-  enum Aes {
-    AES_128,
-    AES_256
-  };
-
-  enum Mode {
-    CBC,
-  };
-
-  enum Padding {
-    
-    ISO
-  };
-
-  static QByteArray Encrypt(AESCypher::Aes level, AESCypher::Mode mode, const QByteArray &rawText, const QByteArray &key,
-    const QByteArray &iv = NULL, AESCypher::Padding padding = AESCypher::ISO);
-  static QByteArray Decrypt(AESCypher::Aes level, AESCypher::Mode mode, const QByteArray &rawText, const QByteArray &key,
-    const QByteArray &iv = NULL, AESCypher::Padding padding = AESCypher::ISO);
-  static QByteArray ExpandKey(AESCypher::Aes level, AESCypher::Mode mode, const QByteArray &key);
-  static QByteArray RemovePadding(const QByteArray &rawText, AESCypher::Padding padding);
-
-  AESCypher(AESCypher::Aes level, AESCypher::Mode mode,
-    AESCypher::Padding padding = AESCypher::ISO);
-
-  QByteArray encode(const QByteArray &rawText, const QByteArray &key, const QByteArray &iv = NULL);
-  QByteArray decode(const QByteArray &rawText, const QByteArray &key, const QByteArray &iv = NULL);
-  QByteArray removePadding(const QByteArray &rawText);
-  QByteArray expandKey(const QByteArray &key);
-
+  void Encrypt(QByteArray& plaintext,QByteArray&key);
+  AESCypher();
 
 private:
-  int m_nb;
-  int m_blocklen;
-  int m_level;
-  int m_mode;
-  int m_nk;
-  int m_keyLen;
-  int m_nr;
-  int m_expandedKey;
-  int m_padding;
-  QByteArray* m_state;
+  int number_of_blocks_;// possibly blocks number
+  int blocklength_;
+  int number_of_keys_;
+  int keylen_;
+  int rounds_num_; // rounds number
+  int expanded_key_;
+  int padding_;
+  QByteArray* iter_state;
+  quint8 GetSBoxValue(quint8 num) { return sbox[num]; }
+  quint8 GetSBoxInvert(quint8 num) { return rsbox[num]; }
 
-  struct AES256 {
-    int nk = 8;
-    int keylen = 32;
-    int nr = 14;
-    int expandedKey = 240;
-  };
+  //forward operations
+  void SubBytes(QByteArray&);
+  void ShiftRows(QByteArray);
+  void MixColumns(QByteArray);
+  void XorRoundKey(QByteArray);
 
-  struct AES128 {
-    int nk = 4;
-    int keylen = 16;
-    int nr = 10;
-    int expandedKey = 176;
-  };
-
-  quint8 getSBoxValue(quint8 num) { return sbox[num]; }
-  quint8 getSBoxInvert(quint8 num) { return rsbox[num]; }
-
-  void addRoundKey(const quint8 round, const QByteArray expKey);
-  void subBytes();
-  void shiftRows();
-  void mixColumns();
-  void invMixColumns();
-  void invSubBytes();
-  void invShiftRows();
-  QByteArray getPadding(int currSize, int alignment);
-  QByteArray cipher(const QByteArray &expKey, const QByteArray &plainText);
-  QByteArray invCipher(const QByteArray &expKey, const QByteArray &plainText);
-  QByteArray byteXor(const QByteArray &in, const QByteArray &iv);
-
+  //backward operations
+  void InvSubBytes(QByteArray);
+  void InvShiftRows(QByteArray);
+  void InvMixColumns(QByteArray);
+  void swap(char&,char&);
+  void swap(int &a, int &b);
   const quint8 sbox[256] = {
     //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F
     0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,

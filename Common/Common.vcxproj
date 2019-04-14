@@ -105,7 +105,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Encryption\abstract_cypher.h" />
-    <QtMoc Include="..\Encryption\aes_cypher.h" />
+    <ClInclude Include="..\Encryption\aes_cypher.h" />
     <ClInclude Include="..\Encryption\diffie_hellman.h" />
     <ClInclude Include="..\Encryption\speck_cypher.h" />
     <ClInclude Include="client_data_types.h" />
