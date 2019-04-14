@@ -12,13 +12,11 @@ int main(int argc, char *argv[]) {
 	AsyncServer async_server; // run server
   //HWND hWnd = GetConsoleWindow();
   //ShowWindow(hWnd, SW_HIDE);
-  QString str = "string";
-  QByteArray result;
-  QDataStream out(&result, QIODevice::WriteOnly);
-  out << str;
- 
-  AESCypher cpp;
-  cpp.Encrypt(result,result);
+
+  QString str = "hello";
+  AbstractCypher *cpp;
+  cpp = new AESCypher();
+  cpp->Encrypt(cpp->ConvertStringToByteArr(str),str);
 
 
  return a.exec();

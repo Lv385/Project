@@ -1,14 +1,12 @@
 #pragma once
 #include "abstract_cypher.h"
-#include <QObject>
-#include <QByteArray>
-#include <iostream>
-using namespace std;
-class AESCypher 
+
+class AESCypher : public AbstractCypher
 {
   
 public:
-  void Encrypt(QByteArray& plaintext,QByteArray&key);
+  void Encrypt(QByteArray& plaintext, QString key);
+  void Decrypt(QByteArray& plaintext,QString key);
   AESCypher();
 
 private:
@@ -25,7 +23,7 @@ private:
 
   //forward operations
   void SubBytes(QByteArray&);
-  void ShiftRows(QByteArray);
+  void ShiftRows(QByteArray&);
   void MixColumns(QByteArray);
   void XorRoundKey(QByteArray);
 
@@ -34,7 +32,9 @@ private:
   void InvShiftRows(QByteArray);
   void InvMixColumns(QByteArray);
   void swap(char&,char&);
-  void swap(int &a, int &b);
+  
+
+
   const quint8 sbox[256] = {
     //0     1    2      3     4    5     6     7      8    9     A      B    C     D     E     F
     0x63, 0x7c, 0x77, 0x7b, 0xf2, 0x6b, 0x6f, 0xc5, 0x30, 0x01, 0x67, 0x2b, 0xfe, 0xd7, 0xab, 0x76,
