@@ -34,6 +34,9 @@
     <ClCompile Include="RequestProcessing\abstract_request.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="RequestProcessing\delete__friend_request.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="RequestProcessing\add_friend_request.h">
@@ -61,6 +64,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="RequestProcessing\login_request.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="RequestProcessing\delete_friend_request.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

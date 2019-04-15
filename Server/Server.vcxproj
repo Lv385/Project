@@ -105,6 +105,7 @@
     <ClCompile Include="main.cpp" />
     <ClCompile Include="RequestProcessing\abstract_request.cpp" />
     <ClCompile Include="RequestProcessing\add_friend_request.cpp" />
+    <ClCompile Include="RequestProcessing\delete__friend_request.cpp" />
     <ClCompile Include="RequestProcessing\friendship_request.cpp" />
     <ClCompile Include="RequestProcessing\login_request.cpp" />
     <ClCompile Include="RequestProcessing\new_user_request.cpp" />
@@ -133,6 +134,7 @@
     <ClInclude Include="Exceptions\user_not_found.h" />
     <ClInclude Include="Logger\logger.h" />
     <ClInclude Include="RequestProcessing\add_friend_request.h" />
+    <ClInclude Include="RequestProcessing\delete_friend_request.h" />
     <ClInclude Include="RequestProcessing\friendship_request.h" />
     <ClInclude Include="RequestProcessing\login_request.h" />
     <ClInclude Include="RequestProcessing\new_user_request.h" />

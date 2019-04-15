@@ -14,6 +14,7 @@ ServerManager::ServerManager(QTcpSocket *socket, ApplicationInfo& info)
   AbstractStrategy* friend_request = new FriendRequestResponseStrategy();
   AbstractStrategy* add_friend = new AddFriendRequestStrategy();
   AbstractStrategy* new_friend = new NewFriendResponseStrategy();
+  AbstractStrategy* delete_friend = new DeleteRequestResponseStrategy();
 
   strategies_.insert(ServerRequest::LOGIN_SUCCEED, login);
   strategies_.insert(ServerRequest::LOGIN_FAILED, login);
@@ -22,9 +23,10 @@ ServerManager::ServerManager(QTcpSocket *socket, ApplicationInfo& info)
   strategies_.insert(ServerRequest::FRIEND_UPDATE_INFO, friend_update);
   strategies_.insert(ServerRequest::FRIEND_REQUEST_SUCCEED, friend_request);
   strategies_.insert(ServerRequest::FRIEND_REQUEST_FAILED, friend_request);
-  //to do  
   strategies_.insert(ServerRequest::ADD_FRIEND_REQUEST, add_friend);
   strategies_.insert(ServerRequest::NEW_FRIEND_INFO, new_friend);
+  strategies_.insert(ServerRequest::DELETE_REQUEST_SUCCEED, delete_friend);
+  strategies_.insert(ServerRequest::DELETE_REQUEST_FAILED, delete_friend);
 }
 
 ServerManager::~ServerManager() {}

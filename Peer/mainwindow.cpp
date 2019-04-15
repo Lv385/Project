@@ -107,9 +107,9 @@ void MainWindow::OnPbSendClicked() {
   //     ui_->le_message->text());  // id + mes  zzz
   // 
 
-  for (auto a : friends_)
-    if (a.login == selected_login)
-      client_controller_->SendMessage(a.id, ui_->le_message->text());
+  //for (auto a : friends_)
+    //if (a.login == selected_login)
+      //client_controller_->SendMessage(a.id, ui_->le_message->text());
 }
 
 void MainWindow::AppendLogMessage(const char* value, QString message) {
