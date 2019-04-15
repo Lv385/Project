@@ -12,5 +12,6 @@ class DeleteFriendRequest :public AbstractRequest
     FriendRequestInfo income_data_;
     User requester_;
     User deleted_friend;
+    quint8 response_to_requester_;
 };
 

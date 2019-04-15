@@ -23,19 +23,21 @@ void AESCypher::Encrypt(QByteArray& plaintext, QString key)
 {
   AESCypher();
   iter_state = &plaintext;
+  QVector<char>C_s;
   //addRoundKey(0, expKey);
   qDebug() << "    " << plaintext << "\n";
   for (quint8 round = 1; round < rounds_num_; ++round) {
     SubBytes(plaintext);
     ShiftRows(plaintext);
-   // MixColumns();
+    MixColumns(plaintext,C_s);
     //addRoundKey(round, expKey);
   }
   qDebug() << "  encrypted: " << plaintext << "\n";
+  
   for (quint8 round = 1; round < rounds_num_; ++round) {
     InvShiftRows(plaintext);
     InvSubBytes(plaintext);
-    // MixColumns();
+     InvMixColumns(plaintext,C_s);
      //addRoundKey(round, expKey);
   }
   qDebug() << "  decrypted: " << plaintext << "\n";
@@ -90,7 +92,7 @@ void AESCypher::InvShiftRows(QByteArray)
   swap(it[7], it[11]);
   swap(it[7],it[15]);
 }
-void AESCypher::MixColumns(QByteArray& plaintext)
+void AESCypher::MixColumns(QByteArray& plaintext, QVector<char>&C_s)
 {
   // a(x) polynomial of 4 power 
   //res == a(x)*c(x)
@@ -100,12 +102,15 @@ void AESCypher::MixColumns(QByteArray& plaintext)
  // + is XOR     * is bitwise AND
   
  // possibly working
+
   QByteArray::iterator it = iter_state->begin();
+ 
   for (int i = 0; i < 16; i++)
   {
     char a_x= (it[i] & it[i] & it[i] & it[i]) ^ (it[i] & it[i] & it[i]) ^ (it[i] & it[i]) ^ 1;
     char c_x = (3 & it[i] & it[i] & it[i]) ^ (it[i] & it[i]) ^ (it[i])^2;
-      it[i] = a_x*c_x;
+      it[i] = a_x & c_x;
+      C_s.push_back(c_x);
   }
 }
 
@@ -121,9 +126,24 @@ void AESCypher::InvSubBytes(QByteArray)
 }
 
 
-void AESCypher::InvMixColumns(QByteArray)
+void AESCypher::InvMixColumns(QByteArray & plaintext,QVector<char>&C_S)
 {
   // a(x)=res/c(x)
+  QByteArray::iterator it = iter_state->begin();
+  for (int i = 0; i < 16; i++)
+  {
+    it[i]=(char)gcd(it[i],C_S[i]);
+  }
+
+}
+int AESCypher::gcd(int a, int b) {
+  int t;
+  while (b != 0) {
+    t = b;
+    b = a % b;
+    a = t;
+  }
+  return a;
 }
 
 

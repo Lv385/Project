@@ -17,6 +17,7 @@ void DeleteFriendRequest::PrepareResponse()
   deleted_friend = database_->getClient(income_data_.other_login);
   if(database_->CheckIfFriends(requester_,deleted_friend))
   {
+    response_to_requester_ = (quint8)ServerRequest::DELETE_REQUEST_SUCCEED;
     for(int i=0;i<requester_.friends.size();i++)
     {
       if(requester_.friends[i].second_user_id == deleted_friend.id)
@@ -33,12 +34,33 @@ void DeleteFriendRequest::PrepareResponse()
     }
     database_->UpdateClient(requester_);
     database_->UpdateClient(deleted_friend);
+  } else {
+    response_to_requester_ = (quint8)ServerRequest::DELETE_REQUEST_FAILED;
   }
   
 
 }
 bool DeleteFriendRequest::SendResponde()
 {
+  // should add sending to deleted that he was deleted
+  if(response_to_requester_== (quint8)ServerRequest::DELETE_REQUEST_SUCCEED)
+  {
+    QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequest::DELETE_REQUEST_SUCCEED);
+    b.append(Parser::GetUnpossibleSequence());
+    client_socket_->write(b);
+    client_socket_->waitForBytesWritten(1000);
+    client_socket_->disconnectFromHost();
+
+    QTcpSocket output_socket;
+      
+  } else {
+    QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequest::DELETE_REQUEST_FAILED);
+    b.append(Parser::GetUnpossibleSequence());
+    client_socket_->write(b);
+    client_socket_->waitForBytesWritten(1000);
+    client_socket_->disconnectFromHost();
+  }
+  
 
   return false;
 }
