@@ -30,6 +30,7 @@ class DataAccessor {
    
   void SaveRequest(const FriendRequest& friend_request);
   QVector<FriendRequest> GetRequests();
+  void DeleteRequest(const FriendRequest& friend_request);
 
   void UpdateIPPort(const unsigned& user_id, const QString& new_ip, const unsigned& new_port);
 

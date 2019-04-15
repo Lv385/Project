@@ -91,6 +91,12 @@ QVector<FriendRequest> DataAccessor::GetRequests() {
   return requests;
 }
 
+void DataAccessor::DeleteRequest(const FriendRequest& friend_request) {
+  if(friend_requests_->IsExist(friend_request)){
+    friend_requests_->Delete(friend_request);
+  }
+}
+
 void DataAccessor::UpdateIPPort(const unsigned& user_id, const QString& new_ip,
                                 const unsigned& new_port) {
   Friend client_friend = user_->GetFriend(user_id);
