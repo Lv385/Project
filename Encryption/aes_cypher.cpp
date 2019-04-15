@@ -42,6 +42,7 @@ void AESCypher::Encrypt(QByteArray& plaintext, QString key)
   //SubBytes();
   //ShiftRows();
   //addRoundKey(rounds_num_, expKey);
+  qDebug() << "" << ConvertByteArrayToString( plaintext)<<"\n";
 }
 void AESCypher::Decrypt(QByteArray & plaintext, QString key)
 {
@@ -89,9 +90,23 @@ void AESCypher::InvShiftRows(QByteArray)
   swap(it[7], it[11]);
   swap(it[7],it[15]);
 }
-void AESCypher::MixColumns(QByteArray)
+void AESCypher::MixColumns(QByteArray& plaintext)
 {
-
+  // a(x) polynomial of 4 power 
+  //res == a(x)*c(x)
+  //every column
+  //a(x) =  x*x*x*x + x*x*x + x*x + x +1
+  //c(x) = 3*x*x*x + x*x + x+2
+ // + is XOR     * is bitwise AND
+  
+ // possibly working
+  QByteArray::iterator it = iter_state->begin();
+  for (int i = 0; i < 16; i++)
+  {
+    char a_x= (it[i] & it[i] & it[i] & it[i]) ^ (it[i] & it[i] & it[i]) ^ (it[i] & it[i]) ^ 1;
+    char c_x = (3 & it[i] & it[i] & it[i]) ^ (it[i] & it[i]) ^ (it[i])^2;
+      it[i] = a_x*c_x;
+  }
 }
 
 void AESCypher::XorRoundKey(QByteArray)
@@ -108,6 +123,7 @@ void AESCypher::InvSubBytes(QByteArray)
 
 void AESCypher::InvMixColumns(QByteArray)
 {
+  // a(x)=res/c(x)
 }
 
 

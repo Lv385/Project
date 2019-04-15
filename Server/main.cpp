@@ -13,7 +13,7 @@ int main(int argc, char *argv[]) {
   //HWND hWnd = GetConsoleWindow();
   //ShowWindow(hWnd, SW_HIDE);
 
-  QString str = "hello";
+  QString str = "hello_oleksa_libomyr_marko_jopa";
   AbstractCypher *cpp;
   cpp = new AESCypher();
   cpp->Encrypt(cpp->ConvertStringToByteArr(str),str);
