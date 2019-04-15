@@ -26,11 +26,11 @@ class ClientController : public QObject {
   ClientController(QObject* parent);
   ~ClientController();
 
-
-  void SendMessage(unsigned id, QString message);
-  void LogIn(QString login, QString password);
-  void Register(QString login, QString password);
-  void AddFriend(QString login);
+  void SendMessage(unsigned& id, QString& message);
+  void LogIn(QString& login, QString& password);
+  void Register(QString& login, QString& password);
+  void AddFriend(QString& login);
+  void DeleteFriend(QString& login);
  
   void FriendRequestAccepted(QString);
   void FriendRequestRejected(QString);
@@ -50,6 +50,7 @@ class ClientController : public QObject {
   void FriendRequestResult(bool);
   void AddFriendRequestInfo(QString);
   void NewFriendRequestResult(QString);
+  void DeleteRequestResult(bool);
 
 
  private slots:
