@@ -3,6 +3,7 @@
 
 #include <windows.data.json.h>
 #include <QDataStream>
+#include <iostream>
 #include <string>
 #include "../Encryption/speck_cypher.h"
 #include "base64.h"
@@ -10,18 +11,30 @@
 
 using json = nlohmann::json;
 
+//@This class generate JWT token
+//@All fields of class are private, so if you want to
+//@generate token make next things:
+//Code example:
+//  WebToken wt;
+//  wt.SetHeader("SPEK");
+//  wt.SetPayload(1);
+//  QString token = wt.GetToken("key");
+
 class WebToken {
  public:
-  QString token_;
-  json header;
-  json payload;
-  QString signature;
-  SpeckCypher cypher;
   explicit WebToken() = default;
   virtual ~WebToken() = default;
-  void GenerateToken(const QString& key);
-  void SetPayload(const unsigned int id);
-  void SetHeader(const QString& algorithm_name, const QString& type = "JWT");
+  std::string GetToken(const std::string& key);  // static?
+  void SetPayload(const unsigned int id);//static?
+  void SetHeader(const std::string& algorithm_name,
+                 const std::string& type = "JWT");  // static?
+  std::string signature_;
+ private:
+  std::string token_;
+  json header_;
+  json payload_;
+  
+  SpeckCypher cypher;
 };
 
 #endif  // !WEB_TOKEN

@@ -1,32 +1,25 @@
 #include "WebToken.h"
 
-// void WebToken::GenerateToken() {   }
-
-//WebToken::WebToken(): payload(nullptr),signature(nullptr) {
-//  header["alg"] = "SPECK";
-//  header["typ"] = "JWT";
-//}
-
-void WebToken::GenerateToken(const QString& key) { //TODO 
-  token_ = QString::fromStdString(base64_encode((const unsigned char*)header.dump().c_str(),
-                         header.dump().length()));
+std::string WebToken::GetToken(const std::string& key) {  // TODO
+  token_ = base64_encode(
+      (const unsigned char*)header_.dump().c_str(), header_.dump().length());
   token_ += '.';
-  token_ +=QString::fromStdString(base64_encode((const unsigned char*)payload.dump().c_str(),
-                          payload.dump().length()));
-  QByteArray result;
-  QDataStream out(&result, QIODevice::ReadWrite);
-  out << token_;
-  cypher.Encrypt(result, key);
- // cypher.Decrypt(result, key);
+  token_ += base64_encode(
+      (const unsigned char*)payload_.dump().c_str(), payload_.dump().length());
+  token_ += '.';
+  QByteArray result = QByteArray::fromStdString(token_);
 
-  signature = QString::QString(result);
-  token_ += signature;
+  cypher.Encrypt(result, QString::fromStdString(key));
+
+  signature_ = result.toStdString();
+  token_ += signature_;
+  return token_;
 }
 
-void WebToken::SetPayload(const unsigned int id) { payload["id"] = id; }
+void WebToken::SetPayload(const unsigned int id) { payload_["id"] = id; }
 
-void WebToken::SetHeader(const QString& algorithm_name, const QString& type) {
-    header["alg"] = algorithm_name.toStdString();
-	header["typ"] = type.toStdString();
+void WebToken::SetHeader(const std ::string& algorithm_name,
+                         const std ::string& type) {
+  header_["alg"] = algorithm_name;
+  header_["typ"] = type;
 }
-
