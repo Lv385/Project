@@ -67,7 +67,9 @@ bool FriendRequests::IsExist(const FriendRequest & friend_request)
 
 QString FriendRequests::IsExistQuery(const FriendRequest & friend_request)
 {
-	return QString("select * from friend_request where user_login = '" + friend_request.login +"', and request_type = " + QString::number(friend_request.type));
+  return QString("select * from friend_request where user_login = '" +
+                 friend_request.login + "' and request_type = " +
+                 QString::number(friend_request.type));
 }
 
 QString FriendRequests::AddQuery(const FriendRequest& friend_request)
@@ -90,6 +92,6 @@ QString FriendRequests::GetQuery(const bool & type)
 
 QString FriendRequests::DeleteQuery(const FriendRequest & friend_request)
 {
-	return QString("delete from friend_request where user_login = '" +friend_request.login+"', and request_type = "+QString::number(friend_request.type));
+	return QString("delete from friend_request where user_login = '" +friend_request.login+"' and request_type = "+QString::number(friend_request.type));
 }
 }  // namespace dal

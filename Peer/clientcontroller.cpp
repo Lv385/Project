@@ -99,6 +99,8 @@ void ClientController::FriendRequestAccepted(QString login) {
   QByteArray data = Parser::FriendRequestInfo_ToByteArray(
       info, static_cast<quint8>(ClientRequest::FRIENDSHIP_ACCEPTED));
   server_manager_->SendRequest(data);
+  FriendRequest request_to_delete{login, RequestForMe};
+  client_data_.DeleteRequest(request_to_delete);
 }  
 
 void ClientController::FriendRequestRejected(QString login) {
