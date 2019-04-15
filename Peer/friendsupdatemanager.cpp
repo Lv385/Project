@@ -29,10 +29,10 @@ void FriendsUpdateManager::StopUpdateListening() {
 void FriendsUpdateManager::SetUpdateSender() {
     update_sender_.bind(QHostAddress(QHostAddress::AnyIPv4), 0);
     update_info_timer_.start(3000);  
-    logger_->WriteLog(LogType::SUCCESS, "friend manager started");
 }
 
 void FriendsUpdateManager::SendUpdateInfo() { 
+
   IdPort my_id_port;
   my_id_port.id = app_info_.my_id;
   my_id_port.port = app_info_.my_port;
@@ -41,6 +41,7 @@ void FriendsUpdateManager::SendUpdateInfo() {
   to_write.append(Parser::GetUnpossibleSequence());
 
   QVector<Friend> friends = client_data_.get_friends();
+
   for (const Friend& i : friends) {
     update_sender_.writeDatagram(to_write, QHostAddress(i.ip),
                                  app_info_.my_port);
@@ -51,31 +52,30 @@ void FriendsUpdateManager::SendUpdateInfo() {
 void FriendsUpdateManager::UpdateFriendsInfo() {
 
   while (update_receiver_.hasPendingDatagrams()) {
-  datagram.resize(static_cast<int>(update_receiver_.pendingDatagramSize()));
-  QHostAddress peer_address;
-  update_receiver_.readDatagram(datagram.data(), datagram.size(), &peer_address);
-  updated_friend_info = Parser::ParseAsIdPort(datagram);
-  if (updated_friend_info.id == app_info_.my_id)
-        continue;
+    datagram.resize(static_cast<int>(update_receiver_.pendingDatagramSize()));
+    QHostAddress peer_address;
+    update_receiver_.readDatagram(datagram.data(), datagram.size(), &peer_address);
+    updated_friend_info = Parser::ParseAsIdPort(datagram);
+    if (updated_friend_info.id == app_info_.my_id)
+          continue;
 
-  if (check_timers_.find(updated_friend_info.id) == check_timers_.end()) {
-    client_data_.set_friend_status(updated_friend_info.id, true);
+    if (check_timers_.find(updated_friend_info.id) == check_timers_.end()) {
 
-    emit StatusChanged(updated_friend_info.id, true);
+      emit StatusChanged(updated_friend_info.id, true);
 
-    QTimer* timer = new QTimer();
-    timer->start(10000);
-    check_timers_[updated_friend_info.id] = timer;
+      QTimer* timer = new QTimer();
+      timer->start(10000);
+      check_timers_[updated_friend_info.id] = timer;
 
-    connect(timer, SIGNAL(timeout()), this, SLOT(SetOfflineStatus()));
-  } else {
-    check_timers_[updated_friend_info.id]->start(10000);  // reset timer
-  }
+      logger_->WriteLog(LogType::INFO,
+                        " updated " + QString::number(updated_friend_info.id) + "'s info");
+      client_data_.UpdateIPPort(updated_friend_info.id, peer_address.toString(),
+                                updated_friend_info.port);
 
-  client_data_.UpdateIPPort(updated_friend_info.id,
-  peer_address.toString(), updated_friend_info.port);
-  logger_->WriteLog(LogType::INFO, " updated " + client_data_.get_login_by_id(updated_friend_info.id) 
-    + "'s info");
+      connect(timer, SIGNAL(timeout()), this, SLOT(SetOfflineStatus()));
+    } else {
+      check_timers_[updated_friend_info.id]->start(10000);  // reset timer
+    }
   }
 }
 

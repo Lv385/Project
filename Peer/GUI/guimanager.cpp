@@ -21,7 +21,9 @@ GUIManager::GUIManager(QObject *parent)
   connect(controller_, SIGNAL(AddFriendRequestInfo(QString)), this, 
           SLOT(OnAddFriendRequest(QString)));
   connect(controller_, SIGNAL(NewFriendRequestResult(QString)), this,
-          SLOT(OnOnNewFriendInfo(QString)));
+          SLOT(OnNewFriendInfo(QString)));
+  connect(controller_, SIGNAL(DeleteRequestResult(bool)),this, 
+          SLOT(OnDeleteFriend(bool)));
 }
 
 int GUIManager::my_id() const { 
@@ -189,6 +191,10 @@ void GUIManager::OnAddFriendRequest(QString login) {
 
 void GUIManager::OnNewFriendInfo(QString login) {
   logger_->WriteLog(LogType::SUCCESS, "User with login '" + login + "' added");
+}
+
+void GUIManager::OnDeleteFriend(bool) {
+
 }
 
 void GUIManager::SendMessage(QString message) { 

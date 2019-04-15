@@ -13,6 +13,7 @@
 #include "friend_request_response_strategy.h"
 #include "add_friend_request_strategy.h"
 #include "new_friend_response_strategy.h"
+#include "delete_request_response_strategy.h"
 #include "application_info.h"
 #include <QObject>
 #include <QMap>

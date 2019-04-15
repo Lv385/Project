@@ -45,12 +45,12 @@ QVector<Friend> ClientController::LoadFriends() {
   return client_data_.get_friends();
 }
 
-void ClientController::SendMessage(unsigned id, QString message) {
+void ClientController::SendMessage(unsigned& id, QString& message) {
   Friend friend_info = client_data_.get_friend(id);
   friend_manager_.SendMessage(friend_info, message);
 }
 
-void ClientController::LogIn(QString login, QString password) {
+void ClientController::LogIn(QString& login, QString& password) {
   LoginInfo info;
   info.id = client_data_.get_id_by_login(login);   //FIXME: LogIn should work by login(not id)
   info.password = password;
@@ -61,7 +61,7 @@ void ClientController::LogIn(QString login, QString password) {
   server_manager_->SendRequest(data);
 }
 
-void ClientController::Register(QString login, QString password) {
+void ClientController::Register(QString& login, QString& password) {
   RegisterInfo info;
   info.login = login;
   info.password = password;
@@ -72,7 +72,7 @@ void ClientController::Register(QString login, QString password) {
   server_manager_->SendRequest(data);
 }
 
-void ClientController::AddFriend(QString login) {
+void ClientController::AddFriend(QString& login) {
   FriendRequestInfo info;
   info.id = app_info_.my_id;
   info.other_login = login;
@@ -80,6 +80,17 @@ void ClientController::AddFriend(QString login) {
 
   QByteArray data = Parser::FriendRequestInfo_ToByteArray(
       info, static_cast<quint8>(ClientRequest::FRIEND_REQUEST));
+  server_manager_->SendRequest(data);
+}
+
+void ClientController::DeleteFriend(QString& login) {
+  FriendRequestInfo info;
+  info.id = app_info_.my_id;
+  info.other_login = login;
+  info.password = app_info_.my_password;
+
+  QByteArray data = Parser::FriendRequestInfo_ToByteArray(
+      info, static_cast<quint8>(ClientRequest::DELETE_REQUEST));
   server_manager_->SendRequest(data);
 }
 
@@ -99,6 +110,8 @@ void ClientController::FriendRequestAccepted(QString login) {
   QByteArray data = Parser::FriendRequestInfo_ToByteArray(
       info, static_cast<quint8>(ClientRequest::FRIENDSHIP_ACCEPTED));
   server_manager_->SendRequest(data);
+  FriendRequest request_to_delete{login, RequestForMe};
+  client_data_.DeleteRequest(request_to_delete);
 }  
 
 void ClientController::FriendRequestRejected(QString login) {

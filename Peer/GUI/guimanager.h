@@ -66,6 +66,7 @@ public slots:
   void OnFriendRequestResult(bool);
   void OnAddFriendRequest(QString);
   void OnNewFriendInfo(QString);
+  void OnDeleteFriend(bool);
 
   // void UserEntered();
 
