@@ -19,16 +19,7 @@ int main(int argc, char *argv[]) {
 
   QDataStream in(&text, QIODevice::ReadOnly);
   QString s = text;
- // in >> s;
   std::cout << s.toStdString();
-
-  /*std::string token = wt.GetToken("ab301234aiEr12d4");
-  std::cout << "Signature"<< wt.signature_ << std::endl;
-  std::cout<< "Before:" << token << std::endl;
-  QByteArray result = QByteArray::fromStdString(wt.signature_);
-  sc.Decrypt(result, "ab301234aiEr12d4");
-  wt.signature_ = result.toStdString();
-  std::cout << "After" << wt.signature_;*/
 
   return a.exec();
 }
