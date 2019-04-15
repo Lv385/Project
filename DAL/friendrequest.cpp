@@ -52,7 +52,25 @@ void FriendRequests::Delete(const FriendRequest & friend_request)
 	query_.finish();
 }
 
-QString FriendRequests::AddQuery(const FriendRequest & friend_request)
+bool FriendRequests::IsExist(const FriendRequest & friend_request)
+{
+	ExectuteQuery(IsExistQuery(friend_request));
+	query_.first();
+	FriendRequest value;
+	value.login = query_.record().value(0).toString();
+	value.type = query_.record().value(1).toBool();
+	if ((friend_request.login == value.login) && (friend_request.type == value.type)) {
+		return true;
+	}
+	return false;
+}
+
+QString FriendRequests::IsExistQuery(const FriendRequest & friend_request)
+{
+	return QString("select * from friend_request where user_login = '" + friend_request.login +"', and request_type = " + QString::number(friend_request.type));
+}
+
+QString FriendRequests::AddQuery(const FriendRequest& friend_request)
 {
 	return QString(
 		"insert into friend_request (user_login, request_type) values ('" +
