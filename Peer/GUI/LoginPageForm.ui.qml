@@ -57,6 +57,7 @@ Page {
             font.pointSize: 14
             font.family: "fontawesome"
             leftPadding: 20
+			selectByMouse: true
             background: Rectangle {
                 implicitWidth: columnLogin.width
                 implicitHeight: 50
@@ -91,6 +92,7 @@ Page {
             font.pointSize: 14
             font.family: "fontawesome"
             leftPadding: 20
+			selectByMouse: true
             echoMode: TextInput.Password
             background: Rectangle {
                 implicitWidth: columnLogin.width
