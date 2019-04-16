@@ -43,7 +43,7 @@ enum class ClientRequest : quint8 {
   FRIENDSHIP_REJECTED,//+FriendRequestInfo(c->s)ADD_FRIEND_REQUEST^, -prc friendship_request
   FRIENDSHIP_ACCEPTED,//+FriendRequestInfo(c->s)ADD_FRIEND_REQUEST^, -prc friendship_request
   ONLINE_UPDATE,
-  DELETE_REQUEST
+  DELETE_REQUEST//+FriendRequestInfo(c->s)I,-user
 };
 
 // no more than 64 types

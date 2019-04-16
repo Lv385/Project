@@ -94,7 +94,7 @@ void GUIManager::ShowMessages(unsigned friend_id) {
 void GUIManager::LoadAllMessages(unsigned friend_id) {
   Message* temp;
   QList<Message*> messages;
-  QVector<Message> history = client_data_.get_messages(friend_id);  //use controller's func
+  QVector<Message> history = client_data_.GetMessages(friend_id);  //use controller's func
   for (const auto& msg : history) {
     temp = new Message(msg);
     messages.push_back(temp);
@@ -131,7 +131,7 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   controller_->app_info_.my_port = 8989;  //FIXME
   controller_->app_info_.my_login = user_login;
   controller_->app_info_.my_password = user_password;
-  controller_->app_info_.my_id = client_data_.get_id_by_login(user_login);  //FIXME
+  controller_->app_info_.my_id = client_data_.GetIdByLogin(user_login);  //FIXME
   logger_->WriteLog(LogType::SUCCESS, user_login);
   controller_->LogIn(user_login, user_password);
   //OnLoginResult(true);

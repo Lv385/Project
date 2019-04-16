@@ -40,7 +40,7 @@ void FriendsUpdateManager::SendUpdateInfo() {
   QByteArray to_write = Parser::IdPort_ToByteArray(my_id_port);
   to_write.append(Parser::GetUnpossibleSequence());
 
-  QVector<Friend> friends = client_data_.get_friends();
+  QVector<Friend> friends = client_data_.GetFriends();
 
   for (const Friend& i : friends) {
     update_sender_.writeDatagram(to_write, QHostAddress(i.ip),
@@ -82,11 +82,11 @@ void FriendsUpdateManager::UpdateFriendsInfo() {
 void FriendsUpdateManager::SetOfflineStatus() {
   QTimer* to_delete = static_cast<QTimer*>(QObject::sender());  // get user id that came offline
   unsigned id = check_timers_.key(to_delete);
-  client_data_.set_friend_status(id, false);
+  client_data_.SetFriendStatus(id, false);
 
   emit StatusChanged(id, false);
 
-  logger_->WriteLog(LogType::INFO, " set " + client_data_.get_login_by_id(id)
+  logger_->WriteLog(LogType::INFO, " set " + client_data_.GetLoginById(id)
     + " offline status");
   check_timers_.remove(id);
   to_delete->deleteLater();  

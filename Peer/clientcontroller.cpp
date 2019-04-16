@@ -42,17 +42,17 @@ ClientController::~ClientController() {
 }
 
 QVector<Friend> ClientController::LoadFriends() {
-  return client_data_.get_friends();
+  return client_data_.GetFriends();
 }
 
 void ClientController::SendMessage(const unsigned& id, const QString& message) {
-  Friend friend_info = client_data_.get_friend(id);
+  Friend friend_info = client_data_.GetFriend(id);
   friend_manager_.SendMessage(friend_info, message);
 }
 
 void ClientController::LogIn(const QString& login, const QString& password) {
   LoginInfo info;
-  info.id = client_data_.get_id_by_login(login);   //FIXME: LogIn should work by login(not id)
+  info.id = client_data_.GetIdByLogin(login);   //FIXME: LogIn should work by login(not id)
   info.password = password;
   info.port = app_info_.my_port;
 
@@ -70,6 +70,7 @@ void ClientController::Register(const QString& login,const QString& password) {
   QByteArray data = Parser::RegisterInfo_ToByteArray(info);
 
   server_manager_->SendRequest(data);
+
 }
 
 void ClientController::AddFriend(const QString& login) {
@@ -97,7 +98,7 @@ void ClientController::DeleteFriend(const QString& login) {
 void ClientController::SetAppInfo(ApplicationInfo info) {}
 
 QVector<Message> ClientController::LoadMessages(unsigned id) {
-  QVector<Message> result = client_data_.get_messages(id);
+  QVector<Message> result = client_data_.GetMessages(id);
   return result;
 }
 

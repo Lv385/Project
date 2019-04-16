@@ -9,17 +9,17 @@ class DataAccessor {
   DataAccessor();
   ~DataAccessor();
 
-  QString get_login_by_id(const unsigned& user_id);
-  QPair<QString, int> get_ip_port(const unsigned& user_id);
-  QVector<Friend> get_friends();
-  QVector<Message> get_messages(const QString& user_login);
-  QVector<Message> get_messages(const unsigned& user_id);
+  QString GetLoginById(const unsigned& user_id);
+  QPair<QString, int> GetIpPort(const unsigned& user_id);
+  QVector<Friend> GetFriends();
+  QVector<Message> GetMessages(const QString& user_login);
+  QVector<Message> GetMessages(const unsigned& user_id);
 
-  Friend get_friend(const unsigned& user_id);
-  unsigned get_id_by_login(const QString& user_login);
-  bool get_friends_status(const unsigned& user_id);
+  Friend GetFriend(const unsigned& user_id);
+  unsigned GetIdByLogin(const QString& user_login);
+  bool GetFriendsStatus(const unsigned& user_id);
 
-  void set_friend_status(const unsigned& user_id, const bool& status);
+  void SetFriendStatus(const unsigned& user_id, const bool& status);
 
   void AddFriend(const Friend& friend_info);
   void AddFriend(const unsigned& user_id, const QString& login,
