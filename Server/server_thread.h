@@ -2,7 +2,7 @@
 #include <QThread>
 #include <string>
 #include <vector>
-#include "RequestProcessing/AbstractRequest.h"
+#include "RequestProcessing/abstract_request.h"
 #include "../Parser&Structs/parser.h"
 
 class ServerThread:public QThread

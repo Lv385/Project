@@ -8,3 +8,19 @@ QString AbstractCypher::HashString(QString s)
   QString str = QString::fromUtf8(hashed_arr);
   return str;
 }
+
+QByteArray AbstractCypher::ConvertStringToByteArr(QString string)
+{
+  QByteArray result;
+  QDataStream out(&result, QIODevice::WriteOnly);
+  out << string;
+  return result;
+}
+
+QString AbstractCypher::ConvertByteArrayToString(QByteArray data)
+{
+  QString str;
+  QDataStream in(&data, QIODevice::ReadOnly);
+  in >> str;
+  return str;
+}

@@ -1,10 +1,11 @@
-#include "ServerThread.h"
+#include "server_thread.h"
 #include <QTcpSocket>
 #include <sstream>
-#include "RequestProcessing/NewUserRequest.h"
-#include "RequestProcessing/LoginRequest.h"
+#include "RequestProcessing/new_user_request.h"
+#include "RequestProcessing/login_request.h"
 #include "RequestProcessing/add_friend_request.h"
 #include "RequestProcessing/friendship_request.h"
+#include "RequestProcessing/delete_friend_request.h"
 
 ServerThread::ServerThread(int socket_descriptor, QObject *parent) : QThread(parent),socket_descriptor_(socket_descriptor)
 {
@@ -47,7 +48,12 @@ void ServerThread::SetRequest(quint8 type, QTcpSocket* connection)
   case (quint8)ClientRequest::FRIENDSHIP_REJECTED:
     request_ = new FriendshipRequest(data_, &dal_, connection);
     break;
-
+  case(quint8)ClientRequest::DELETE_REQUEST:
+    request_ = new DeleteFriendRequest(data_, &dal_, connection);
+    break;
+  default:
+    qDebug() << "No such type of request" << "\n";
+    break;
 	}
 }
 
