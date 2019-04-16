@@ -8,18 +8,18 @@ Page {
     property alias messageList: messageList
     property alias messageField: messageField
     property alias rectangleX: rectangle.x
-   //property alias buttonRequests: buttonRequests
+    //property alias buttonRequests: buttonRequests
     property alias friendRequestDialog: friendRequestDialog
     property alias friendRequestList: friendRequestList
     property alias findButton: findButton
     property alias findUserField: findUserField
-	property alias drawer: drawer
-	property alias menuButton: menuButton
-	property alias friendReqMA: friendReqMA
-	property alias editProfileMA: editProfileMA
-	property alias editProfileMenu: editProfileMenu
-	property alias settingsMenu: settingsMenu
-	property alias settingsMA: settingsMA
+    property alias drawer: drawer
+    property alias menuButton: menuButton
+    property alias friendReqMA: friendReqMA
+    property alias editProfileMA: editProfileMA
+    property alias editProfileMenu: editProfileMenu
+    property alias settingsMenu: settingsMenu
+    property alias settingsMA: settingsMA
 
     Pane {
         id: pane1
@@ -75,19 +75,19 @@ Page {
     ToolButton {
         id: menuButton
         y: findUserField.y + 2
-        x: 3
+        x: 2
         z: 1
-        height: findUserField.height + 5
+        height: findUserField.height
         width: height
+        Text {
+            x: 7
+            text: "\uf0c9"
+            font.pointSize: 20
+            font.family: "fontawesome"
+            color: backGroundColor
+        }
         background: Rectangle {
-        color: friendListColor
-
-            Text {
-                text: "\uf0c9"
-                font.pointSize: 20
-                font.family: "fontawesome"
-                color: backGroundColor
-            }
+            color: friendListColor
         }
 
         Drawer {
@@ -95,7 +95,7 @@ Page {
             width: friendList.width
             height: window.height
             background: Rectangle {
-            color: friendListColor
+                color: friendListColor
 
                 Rectangle {
                     x: 0
@@ -125,39 +125,35 @@ Page {
                     }
 
                     MouseArea {
-						id: friendReqMA
+                        id: friendReqMA
                         anchors.fill: parent
                     }
 
-            Dialog {
-            id: friendRequestDialog
-            background: Rectangle {
-                color: friendListColor
-                border.color: friendMouseAreaColor
-				anchors.verticalCenter: window.verticalCenter
-            }
-            height: 300
-            width: 250
-			x: (window.width - width) / 2
-			y: (window.height - height) / 2
-			parent: ApplicationWindow.overlay
+                    Dialog {
+                        id: friendRequestDialog
+                        title: "Friend requests"
+                        background: Rectangle {
+                            color: friendListColor
+                            border.color: friendMouseAreaColor
+                            anchors.verticalCenter: window.verticalCenter
+                        }
+                        modal: true
+                        height: 300
+                        width: 250
+                        x: (window.width - width) / 2
+                        y: (window.height - height) / 2
+                        parent: ApplicationWindow.overlay
 
-            Label {
-                id: friendRequestLabel
-                text: "Friend requests"
-                color: mainTextCOlor
-            }
-
-            ListView {
-                id: friendRequestList
-                anchors.fill: parent
-                highlightRangeMode: ListView.ApplyRange
-                flickableDirection: Flickable.VerticalFlick
-                boundsBehavior: Flickable.StopAtBounds
-                orientation: ListView.Vertical
-            }
-        }
-    }
+                        ListView {
+                            id: friendRequestList
+                            anchors.fill: parent
+                            highlightRangeMode: ListView.ApplyRange
+                            flickableDirection: Flickable.VerticalFlick
+                            boundsBehavior: Flickable.StopAtBounds
+                            orientation: ListView.Vertical
+                        }
+                    }
+                }
                 Rectangle {
                     x: 0
                     y: 350
@@ -185,7 +181,7 @@ Page {
                         anchors.leftMargin: 30
                     }
                     MouseArea {
-						id: editProfileMA
+                        id: editProfileMA
                         anchors.fill: parent
                     }
 
@@ -231,7 +227,7 @@ Page {
                         anchors.leftMargin: 30
                     }
                     MouseArea {
-						id: settingsMA
+                        id: settingsMA
                         anchors.fill: parent
                     }
 
@@ -332,7 +328,8 @@ Page {
         }
     }
 
-  /*  Button {
+
+    /*  Button {
         id: buttonRequests
         x: 601
         anchors.right: parent.right
@@ -352,7 +349,7 @@ Page {
         background: Rectangle {
             color: backGroundColor
         }
-	}*/
+    }*/
 }
 
 

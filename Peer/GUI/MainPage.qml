@@ -60,7 +60,7 @@ import Qt.labs.settings 1.0
 
 	friendReqMA.onClicked: {
 		 friendRequestDialog.open()
-		 drawer.position = 0
+		 drawer.close()
 		 }
 
 	editProfileMA.onClicked: {
