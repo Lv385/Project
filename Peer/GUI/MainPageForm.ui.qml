@@ -8,11 +8,18 @@ Page {
     property alias messageList: messageList
     property alias messageField: messageField
     property alias rectangleX: rectangle.x
-    property alias buttonRequests: buttonRequests
+   //property alias buttonRequests: buttonRequests
     property alias friendRequestDialog: friendRequestDialog
     property alias friendRequestList: friendRequestList
     property alias findButton: findButton
     property alias findUserField: findUserField
+	property alias drawer: drawer
+	property alias menuButton: menuButton
+	property alias friendReqMA: friendReqMA
+	property alias editProfileMA: editProfileMA
+	property alias editProfileMenu: editProfileMenu
+	property alias settingsMenu: settingsMenu
+	property alias settingsMA: settingsMA
 
     Pane {
         id: pane1
@@ -50,7 +57,6 @@ Page {
                 width: 32
                 height: 32
                 text: qsTr("Add friend")
-                //focusPolicy: Qt.WheelFocus
                 enabled: findUserField.length > 0
                 background: Rectangle {
                     color: friendListColor
@@ -63,6 +69,193 @@ Page {
                     font.family: "fontawesome"
                     color: backGroundColor
                 }
+            }
+        }
+    }
+    ToolButton {
+        id: menuButton
+        y: findUserField.y + 2
+        x: 3
+        z: 1
+        height: findUserField.height + 5
+        width: height
+        background: Rectangle {
+        color: friendListColor
+
+            Text {
+                text: "\uf0c9"
+                font.pointSize: 20
+                font.family: "fontawesome"
+                color: backGroundColor
+            }
+        }
+
+        Drawer {
+            id: drawer
+            width: friendList.width
+            height: window.height
+            background: Rectangle {
+            color: friendListColor
+
+                Rectangle {
+                    x: 0
+                    y: 320
+                    width: friendList.width
+                    height: 30
+                    id: friendReqButton
+                    color: friendMouseAreaColor
+
+                    Text {
+                        text: "\uf007"
+                        font.pointSize: 15
+                        font.family: "fontawesome"
+                        color: backGroundColor
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
+                    }
+
+                    Text {
+                        text: "Friend requests"
+                        font.bold: true
+                        color: backGroundColor
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+                    }
+
+                    MouseArea {
+						id: friendReqMA
+                        anchors.fill: parent
+                    }
+
+            Dialog {
+            id: friendRequestDialog
+            background: Rectangle {
+                color: friendListColor
+                border.color: friendMouseAreaColor
+				anchors.verticalCenter: window.verticalCenter
+            }
+            height: 300
+            width: 250
+			x: (window.width - width) / 2
+			y: (window.height - height) / 2
+			parent: ApplicationWindow.overlay
+
+            Label {
+                id: friendRequestLabel
+                text: "Friend requests"
+                color: mainTextCOlor
+            }
+
+            ListView {
+                id: friendRequestList
+                anchors.fill: parent
+                highlightRangeMode: ListView.ApplyRange
+                flickableDirection: Flickable.VerticalFlick
+                boundsBehavior: Flickable.StopAtBounds
+                orientation: ListView.Vertical
+            }
+        }
+    }
+                Rectangle {
+                    x: 0
+                    y: 350
+                    width: friendList.width
+                    id: editProfileButton
+                    height: 30
+                    color: friendMouseAreaColor
+
+                    Text {
+                        text: "\uf013"
+                        font.pointSize: 15
+                        font.family: "fontawesome"
+                        color: backGroundColor
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
+                    }
+
+                    Text {
+                        text: "Edit profile"
+                        font.bold: true
+                        color: backGroundColor
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+                    }
+                    MouseArea {
+						id: editProfileMA
+                        anchors.fill: parent
+                    }
+
+                    Menu {
+                        id: editProfileMenu
+                        y: findButton.height
+
+                        MenuItem {
+                            text: "New..."
+                        }
+                        MenuItem {
+                            text: "Open..."
+                        }
+                        MenuItem {
+                            text: "Save"
+                        }
+                    }
+                }
+                Rectangle {
+                    x: 0
+                    y: 380
+                    width: friendList.width
+                    id: settingsButton
+                    height: 30
+                    color: friendMouseAreaColor
+
+                    Text {
+                        text: "\uf013"
+                        font.pointSize: 15
+                        font.family: "fontawesome"
+                        color: backGroundColor
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
+                    }
+
+                    Text {
+                        text: "Settings"
+                        font.bold: true
+                        color: backGroundColor
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+                    }
+                    MouseArea {
+						id: settingsMA
+                        anchors.fill: parent
+                    }
+
+                    Menu {
+                        id: settingsMenu
+                        y: findButton.height
+
+                        MenuItem {
+                            text: "New..."
+                        }
+                        MenuItem {
+                            text: "Open..."
+                        }
+                        MenuItem {
+                            text: "Save"
+                        }
+                    }
+                }
+            }
+            Image {
+                id: logo
+                width: parent.width
+                source: "qrc:/user.png"
+                fillMode: implicitWidth > width ? Image.PreserveAspectFit : Image.Pad
             }
         }
     }
@@ -139,7 +332,7 @@ Page {
         }
     }
 
-    Button {
+  /*  Button {
         id: buttonRequests
         x: 601
         anchors.right: parent.right
@@ -159,29 +352,7 @@ Page {
         background: Rectangle {
             color: backGroundColor
         }
-
-        Dialog {
-            id: friendRequestDialog
-            title: "Friend requests"
-            background: Rectangle {
-                color: backGroundColor
-                border.color: friendListColor
-            }
-            x: -130
-            y: 25
-            height: 300
-            width: 150
-
-            ListView {
-                id: friendRequestList
-                anchors.fill: parent
-                highlightRangeMode: ListView.ApplyRange
-                flickableDirection: Flickable.VerticalFlick
-                boundsBehavior: Flickable.StopAtBounds
-                orientation: ListView.Vertical
-            }
-        }
-    }
+	}*/
 }
 
 
