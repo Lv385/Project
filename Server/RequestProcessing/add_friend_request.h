@@ -1,5 +1,5 @@
 #pragma once
-#include "AbstractRequest.h"
+#include "abstract_request.h"
 #include "../Parser&Structs/parser.h"
 // In one session:
 // receives:  FRIEND_REQUEST,//+FriendRequestInfo(c->s)I,-user

@@ -38,7 +38,7 @@ bool FriendRequestModel::RemoveRequestFromList(FriendRequestItem * friend_reques
     const int index = friend_requests_list_.indexOf(friend_request_to_delete);
 
     beginRemoveRows(QModelIndex(), index, index);
-    //friends_list_[index]->deleteLater();
+    friend_requests_list_[index]->deleteLater();
     friend_requests_list_.removeAt(index);
     endRemoveRows();
 

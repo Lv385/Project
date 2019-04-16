@@ -3,7 +3,7 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 
 Page {
-id: page
+    id: page
     property alias friendList: friendList
     property alias messageList: messageList
     property alias messageField: messageField
@@ -23,12 +23,11 @@ id: page
 
         Rectangle {
             id: rectangle
-            x: pane1.x-12
-            y: pane1.y-12
+            x: pane1.x - 12
+            y: pane1.y - 12
             width: pane1.width
             height: pane1.height
             color: friendListColor
-
 
             TextField {
                 id: findUserField
@@ -39,10 +38,9 @@ id: page
                 Layout.fillWidth: true
                 placeholderText: qsTr("Enter user login")
                 wrapMode: TextArea.Wrap
-				background: Rectangle {
-				color: friendMouseAreaColor
-				}
-
+                background: Rectangle {
+                    color: friendMouseAreaColor
+                }
             }
 
             Button {
@@ -50,23 +48,21 @@ id: page
                 x: 241
                 y: 11
                 width: 32
-				height: 32
+                height: 32
                 text: qsTr("Add friend")
                 //focusPolicy: Qt.WheelFocus
                 enabled: findUserField.length > 0
-				background: 
-			
-			Rectangle {
-				color: friendListColor
-				}
-				
-				Text {
-            text: "\uf055"
-            anchors.right: parent.right
-            font.pointSize: 20
-            font.family: "fontawesome"
-            color: backGroundColor
-				}
+                background: Rectangle {
+                    color: friendListColor
+                }
+
+                Text {
+                    text: "\uf055"
+                    anchors.right: parent.right
+                    font.pointSize: 20
+                    font.family: "fontawesome"
+                    color: backGroundColor
+                }
             }
         }
     }
@@ -95,8 +91,8 @@ id: page
         id: columnLayout
         x: 283
         y: 100
-        width: parent.width-283
-        height: parent.height-120
+        width: parent.width - 283
+        height: parent.height - 120
 
         ListView {
             id: messageList
@@ -113,20 +109,18 @@ id: page
             verticalLayoutDirection: ListView.BottomToTop
             spacing: 12
 
-
             ScrollBar.vertical: ScrollBar {
-            anchors.left: parent.right
+                anchors.left: parent.right
             }
-	}
+        }
 
         Pane {
             id: pane
             y: 540
-            width: parent.width+25
+            width: parent.width + 25
             height: 80
             Layout.fillWidth: true
-			focus: true
-
+            focus: true
 
             TextField {
                 id: messageField
@@ -134,13 +128,13 @@ id: page
                 y: -12
                 width: pane.width
                 height: 70
-				focus: true
+                focus: true
                 Layout.fillWidth: true
                 placeholderText: qsTr("Compose message")
                 wrapMode: TextArea.Wrap
-				background: Rectangle {
-				color: friendMouseAreaColor
-				}
+                background: Rectangle {
+                    color: friendMouseAreaColor
+                }
             }
         }
     }
@@ -168,6 +162,7 @@ id: page
 
         Dialog {
             id: friendRequestDialog
+            title: "Friend requests"
             background: Rectangle {
                 color: backGroundColor
                 border.color: friendListColor
@@ -176,12 +171,6 @@ id: page
             y: 25
             height: 300
             width: 150
-
-            Label {
-                id: friendRequestLabel
-                text: "Friend requests"
-                color: mainTextCOlor
-            }
 
             ListView {
                 id: friendRequestList

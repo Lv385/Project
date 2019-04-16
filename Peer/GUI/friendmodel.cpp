@@ -57,6 +57,7 @@ bool FriendModel::RemoveFriendFromList(FriendItem* friend_to_delete) {
 }
 
 void FriendModel::SetStatus(unsigned id, bool status) {
+
   for(auto &a : friends_list_){
     if (a->id() == id) {
         a->set_status(status);
