@@ -14,6 +14,6 @@ class DeleteRequestResponseStrategy : public AbstractStrategy {
   virtual void DoWork() override;
 
  signals:
-  void DeleteRequestResult(bool);
+  void DeleteRequestResult(quint32);
 };
 #endif  // !DELETEREQUESTRESPONSESTRATEGY_H

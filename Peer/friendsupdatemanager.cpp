@@ -44,7 +44,7 @@ void FriendsUpdateManager::SendUpdateInfo() {
 
   for (const Friend& i : friends) {
     update_sender_.writeDatagram(to_write, QHostAddress(i.ip),
-                                 app_info_.my_port);
+                                 i.port);
   }
   logger_->WriteLog(LogType::INFO, " update sent");
 }
