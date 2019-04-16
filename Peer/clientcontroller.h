@@ -50,7 +50,7 @@ class ClientController : public QObject {
   void FriendRequestResult(bool);
   void AddFriendRequestInfo(QString);
   void NewFriendRequestResult(QString, quint32);
-  void DeleteRequestResult(bool);
+  void DeleteRequestResult(quint32);
 
 
  private slots:

@@ -18,6 +18,7 @@ public:
 
   void AddFriendToList(FriendItem*);
   bool RemoveFriendFromList(FriendItem*);
+  FriendItem* FindFriendItem(quint32);
   void SetStatus(unsigned id, bool status);
   void AddUnreadMesg(unsigned id);
   void DeleteUnreadMesgs(unsigned id);
