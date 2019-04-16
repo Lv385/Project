@@ -37,6 +37,9 @@ class Parser {
   static QByteArray FriendUpdateInfo_ToByteArray(FriendUpdateInfo& friend_update_info);
   static FriendUpdateInfo ParseAsFriendUpdateInfo(QByteArray& data);
 
+  static QByteArray DeleteNotificationInfo_ToByteArray(DeleteNotificationInfo &delete_notification_info);
+  static DeleteNotificationInfo ParseAsDeleteNotificationInfo(QByteArray &data);
+
   static QByteArray GetUnpossibleSequence();
   // hardcode, this shoud be added to the end of any
   // QByteArray that is written by socket to awoid

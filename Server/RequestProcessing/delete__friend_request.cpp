@@ -51,8 +51,20 @@ bool DeleteFriendRequest::SendResponde()
     client_socket_->waitForBytesWritten(1000);
     client_socket_->disconnectFromHost();
 
-    QTcpSocket output_socket;
-      
+    DeleteNotificationInfo data;
+    data.id = requester_.id;
+    QByteArray deleting_notif = Parser::DeleteNotificationInfo_ToByteArray(data);  // deleting notif to byte array
+    deleting_notif.append(Parser::GetUnpossibleSequence());
+
+    QTcpSocket output_socket; // send structure with id
+    output_socket.connectToHost(deleted_friend.ip,deleted_friend.port);
+    if (output_socket.waitForConnected(5000)) {
+      output_socket.write(deleting_notif);
+      output_socket.waitForBytesWritten(1000);
+      output_socket.disconnectFromHost();
+    } else {
+      // in future possibly add  data in table if cant connect
+    }
   } else {
     QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequest::DELETE_REQUEST_FAILED);
     b.append(Parser::GetUnpossibleSequence());

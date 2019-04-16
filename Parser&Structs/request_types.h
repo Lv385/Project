@@ -64,7 +64,8 @@ enum class ServerRequest : quint8 {
 
   NEW_FRIEND_INFO,  //+NewFriendInfo(s->c)I,-FRIENDSHIP_ACCEPTED||-FRIENDSHIP_REJECTED
   DELETE_REQUEST_SUCCEED,
-  DELETE_REQUEST_FAILED
+  DELETE_REQUEST_FAILED,
+  DELETE_NOTIFICATION_INFO // client get this to notice that he was deleted from someones friends
 };
 struct ConnectInfo {
   quint32 id;
@@ -130,7 +131,9 @@ struct AddFriendInfo {
 struct RegisterSuccessInfo {
   quint32 id;
 };
-
+struct DeleteNotificationInfo  {
+  quint32 id;
+};
 struct IdPort {
   quint32 id;
   quint16 port;

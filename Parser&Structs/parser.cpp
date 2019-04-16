@@ -158,6 +158,24 @@ FriendUpdateInfo Parser::ParseAsFriendUpdateInfo(QByteArray& data) {
   return result;
 }
 
+QByteArray Parser::DeleteNotificationInfo_ToByteArray(DeleteNotificationInfo
+         & delete_notification_info) {
+  QByteArray result;
+  QDataStream out(&result, QIODevice::WriteOnly);
+  out << quint8(ServerRequest::DELETE_NOTIFICATION_INFO);  // delete notification Info
+  out << delete_notification_info.id;                       // id
+  return result;
+}
+
+DeleteNotificationInfo Parser::ParseAsDeleteNotificationInfo(QByteArray & data) {
+  DeleteNotificationInfo result;
+  QDataStream in(&data, QIODevice::ReadOnly);
+  quint8 type;
+  in >> type;
+  in >> result.id;
+  return result;
+}
+
 QByteArray Parser::FriendUpdateInfo_ToByteArray(
     FriendUpdateInfo& friend_update_info) {
   QByteArray result;
