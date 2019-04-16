@@ -18,6 +18,8 @@ GUIManager::GUIManager(QObject *parent)
           SLOT(OnAddFriendRequest(QString)));
   connect(controller_, SIGNAL(NewFriendRequestResult(QString, quint32)), this,
           SLOT(OnNewFriendInfo(QString, quint32)));
+  connect(controller_, SIGNAL(DeleteRequestResult(bool)),this, 
+          SLOT(OnDeleteFriend(bool)));
 }
 
 int GUIManager::my_id() const { 
@@ -124,7 +126,7 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   controller_->app_info_.my_port = 8989;  //FIXME
   controller_->app_info_.my_login = user_login;
   controller_->app_info_.my_password = user_password;
-  controller_->app_info_.my_id = client_data_.get_id_by_login(user_login);  //FIXME
+  controller_->app_info_.my_id = client_data_.GetIdByLogin(user_login);  //FIXME
   logger_->WriteLog(LogType::SUCCESS, user_login);
   controller_->LogIn(user_login, user_password);
   //OnLoginResult(true);
@@ -197,6 +199,10 @@ void GUIManager::OnNewFriendInfo(QString login, quint32 id) {
   logger_->WriteLog(LogType::SUCCESS, "User with login '" + login + "' added");
   emit showInfo("User " + login + " added to your friend list");
   newFriend(login, id);
+}
+
+void GUIManager::OnDeleteFriend(bool) {
+
 }
 
 void GUIManager::SendMessage(QString message) { 

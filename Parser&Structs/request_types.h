@@ -43,6 +43,7 @@ enum class ClientRequest : quint8 {
   FRIENDSHIP_REJECTED,//+FriendRequestInfo(c->s)ADD_FRIEND_REQUEST^, -prc friendship_request
   FRIENDSHIP_ACCEPTED,//+FriendRequestInfo(c->s)ADD_FRIEND_REQUEST^, -prc friendship_request
   ONLINE_UPDATE,
+  DELETE_REQUEST//+FriendRequestInfo(c->s)I,-user
 };
 
 // no more than 64 types
@@ -61,7 +62,9 @@ enum class ServerRequest : quint8 {
   // sending to all friends on peer logined
   FRIEND_UPDATE_INFO,  //+FriendUpdateInfo(s->c)I,-LOGIN ;
 
-  NEW_FRIEND_INFO  //+NewFriendInfo(s->c)I,-FRIENDSHIP_ACCEPTED||-FRIENDSHIP_REJECTED
+  NEW_FRIEND_INFO,  //+NewFriendInfo(s->c)I,-FRIENDSHIP_ACCEPTED||-FRIENDSHIP_REJECTED
+  DELETE_REQUEST_SUCCEED,
+  DELETE_REQUEST_FAILED
 };
 struct ConnectInfo {
   quint32 id;

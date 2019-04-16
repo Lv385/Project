@@ -70,6 +70,7 @@ public slots:
   void AcceptFriend(QString login);
   void RejectFriend(QString login);
   void OnNewFriendInfo(QString, quint32);
+  void OnDeleteFriend(bool);
 
   // void UserEntered();
 

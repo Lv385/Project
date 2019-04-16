@@ -66,7 +66,7 @@ void MainWindow::OnPbStartClicked() {
   client_controller_->app_info_.my_port = ui_->le_my_port->text().toUShort();
   client_controller_->app_info_.my_login = ui_->le_login->text();
 
-  client_controller_->app_info_.my_id = client_data_.get_id_by_login(ui_->le_login->text());
+  client_controller_->app_info_.my_id = client_data_.GetIdByLogin(ui_->le_login->text());
 
   logger_->WriteLog(SUCCESS,
       "my id: " + QString::number(client_controller_->app_info_.my_id));
@@ -93,7 +93,7 @@ void MainWindow::SetIpValidator() {
 }*/
 
 void MainWindow::AppendHistory(QString login) {
-  unsigned id = client_data_.get_id_by_login(login);
+  unsigned id = client_data_.GetIdByLogin(login);
   OnMessageRecieved(id);
 }
 
@@ -107,9 +107,9 @@ void MainWindow::OnPbSendClicked() {
   //     ui_->le_message->text());  // id + mes  zzz
   // 
 
-  for (auto a : friends_)
-    if (a.login == selected_login)
-      client_controller_->SendMessage(a.id, ui_->le_message->text());
+  //for (auto a : friends_)
+    //if (a.login == selected_login)
+      //client_controller_->SendMessage(a.id, ui_->le_message->text());
 }
 
 void MainWindow::AppendLogMessage(const char* value, QString message) {
@@ -122,7 +122,7 @@ void MainWindow::OnPbLoginClicked() {
 
   QString login = ui_->le_login->text();
   QString password = ui_->le_password->text();
-  quint32 id = client_data_.get_id_by_login(login);
+  quint32 id = client_data_.GetIdByLogin(login);
 
   client_controller_->LogIn(login, password);
 }
@@ -148,9 +148,9 @@ void MainWindow::OnMessageRecieved(unsigned id) {
   QVector<Message> history = client_controller_->LoadMessages(id);
   
   for (auto i : history) {
-    if (client_controller_->app_info_.my_login != client_data_.get_login_by_id(i.owner_id)) {
+    if (client_controller_->app_info_.my_login != client_data_.GetLoginById(i.owner_id)) {
       ui_->plainTextEdit->appendPlainText( i.time.toString() + '|' + '<' +
-              client_data_.get_login_by_id(i.owner_id) + ">: " + i.data);
+              client_data_.GetLoginById(i.owner_id) + ">: " + i.data);
     } else {
       ui_->plainTextEdit->appendPlainText(i.time.toString() + '|' + "<Me> : " + i.data);
     }

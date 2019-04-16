@@ -42,17 +42,17 @@ ClientController::~ClientController() {
 }
 
 QVector<Friend> ClientController::LoadFriends() {
-  return client_data_.get_friends();
+  return client_data_.GetFriends();
 }
 
-void ClientController::SendMessage(unsigned id, QString message) {
-  Friend friend_info = client_data_.get_friend(id);
+void ClientController::SendMessage(const unsigned& id, const QString& message) {
+  Friend friend_info = client_data_.GetFriend(id);
   friend_manager_.SendMessage(friend_info, message);
 }
 
-void ClientController::LogIn(QString login, QString password) {
+void ClientController::LogIn(const QString& login, const QString& password) {
   LoginInfo info;
-  info.id = client_data_.get_id_by_login(login);   //FIXME: LogIn should work by login(not id)
+  info.id = client_data_.GetIdByLogin(login);   //FIXME: LogIn should work by login(not id)
   info.password = password;
   info.port = app_info_.my_port;
 
@@ -61,7 +61,7 @@ void ClientController::LogIn(QString login, QString password) {
   server_manager_->SendRequest(data);
 }
 
-void ClientController::Register(QString login, QString password) {
+void ClientController::Register(const QString& login,const QString& password) {
   RegisterInfo info;
   info.login = login;
   info.password = password;
@@ -70,9 +70,10 @@ void ClientController::Register(QString login, QString password) {
   QByteArray data = Parser::RegisterInfo_ToByteArray(info);
 
   server_manager_->SendRequest(data);
+
 }
 
-void ClientController::AddFriend(QString login) {
+void ClientController::AddFriend(const QString& login) {
   FriendRequestInfo info;
   info.id = app_info_.my_id;
   info.other_login = login;
@@ -83,14 +84,25 @@ void ClientController::AddFriend(QString login) {
   server_manager_->SendRequest(data);
 }
 
+void ClientController::DeleteFriend(const QString& login) {
+  FriendRequestInfo info;
+  info.id = app_info_.my_id;
+  info.other_login = login;
+  info.password = app_info_.my_password;
+
+  QByteArray data = Parser::FriendRequestInfo_ToByteArray(
+      info, static_cast<quint8>(ClientRequest::DELETE_REQUEST));
+  server_manager_->SendRequest(data);
+}
+
 void ClientController::SetAppInfo(ApplicationInfo info) {}
 
 QVector<Message> ClientController::LoadMessages(unsigned id) {
-  QVector<Message> result = client_data_.get_messages(id);
+  QVector<Message> result = client_data_.GetMessages(id);
   return result;
 }
 
-void ClientController::FriendRequestAccepted(QString login) {
+void ClientController::FriendRequestAccepted(const QString& login) {
   FriendRequestInfo info;
   info.id = app_info_.my_id;
   info.other_login = login;
@@ -99,9 +111,11 @@ void ClientController::FriendRequestAccepted(QString login) {
   QByteArray data = Parser::FriendRequestInfo_ToByteArray(
       info, static_cast<quint8>(ClientRequest::FRIENDSHIP_ACCEPTED));
   server_manager_->SendRequest(data);
+  FriendRequest request_to_delete{login, RequestForMe};
+  client_data_.DeleteRequest(request_to_delete);
 }  
 
-void ClientController::FriendRequestRejected(QString login) {
+void ClientController::FriendRequestRejected(const QString& login) {
   FriendRequestInfo info;
   info.id = app_info_.my_id;
   info.other_login = login;
@@ -122,7 +136,6 @@ void ClientController::OnLogin(bool logged_in) {
   }
 }
 
-
 void ClientController::OnNewConnection(QTcpSocket *socket) {
   if (socket->peerAddress().isEqual(app_info_.remote_server_ip,
                                     QHostAddress::TolerantConversion)) {
@@ -138,4 +151,6 @@ void ClientController::Start() {
   local_server_.Start();
 }
 
-void ClientController::Stop() { local_server_.Stop(); }
+void ClientController::Stop() { 
+  local_server_.Stop(); 
+}

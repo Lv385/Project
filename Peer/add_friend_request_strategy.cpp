@@ -11,5 +11,8 @@ AddFriendRequestStrategy::~AddFriendRequestStrategy()
 
 void AddFriendRequestStrategy::DoWork() {
   info_ = Parser::ParseAsAddFriendInfo(data_);
+  FriendRequest request{info_.requester_login, RequestForMe};
+  client_data_.SaveRequest(request);
   emit AddFriendRequestInfo(info_.requester_login);
+ 
 }
