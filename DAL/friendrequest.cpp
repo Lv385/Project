@@ -59,10 +59,8 @@ bool FriendRequests::IsExist(const FriendRequest & friend_request)
 	FriendRequest value;
 	value.login = query_.record().value(0).toString();
 	value.type = query_.record().value(1).toBool();
-	if ((friend_request.login == value.login) && (friend_request.type == value.type)) {
-		return true;
-	}
-	return false;
+	
+  return (friend_request.login == value.login) && (friend_request.type == value.type);
 }
 
 QString FriendRequests::IsExistQuery(const FriendRequest & friend_request)

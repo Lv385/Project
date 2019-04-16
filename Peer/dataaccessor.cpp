@@ -86,9 +86,8 @@ void DataAccessor::SaveRequest(const FriendRequest& friend_request) {
   friend_requests_->Add(friend_request);
 }
 
-QVector<FriendRequest> DataAccessor::GetRequests() {
-  QVector<FriendRequest> requests = friend_requests_->Get();  
-  return requests;
+QVector<FriendRequest> DataAccessor::GetRequests() { 
+  return friend_requests_->Get();
 }
 
 void DataAccessor::DeleteRequest(const FriendRequest& friend_request) {

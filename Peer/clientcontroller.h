@@ -26,14 +26,14 @@ class ClientController : public QObject {
   ClientController(QObject* parent);
   ~ClientController();
 
-  void SendMessage(unsigned& id, QString& message);
-  void LogIn(QString& login, QString& password);
-  void Register(QString& login, QString& password);
-  void AddFriend(QString& login);
-  void DeleteFriend(QString& login);
+  void SendMessage(const unsigned& id, const QString& message);
+  void LogIn(const QString& login, const QString& password);
+  void Register(const QString& login, const QString& password);
+  void AddFriend(const QString& login);
+  void DeleteFriend(const QString& login);
  
-  void FriendRequestAccepted(QString);
-  void FriendRequestRejected(QString);
+  void FriendRequestAccepted(const QString& login);
+  void FriendRequestRejected(const QString& login);
 
   void SetAppInfo(ApplicationInfo info);
   //QString GetMessage(unsigned);
@@ -41,7 +41,6 @@ class ClientController : public QObject {
   QVector<Friend> LoadFriends();
 
  signals:
-
   void MessageSent(unsigned, bool);
   void LoginResult(bool);
   void RegisterResult(quint32 id);
