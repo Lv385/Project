@@ -37,7 +37,7 @@ class Parser {
   static QByteArray FriendUpdateInfo_ToByteArray(FriendUpdateInfo& friend_update_info);
   static FriendUpdateInfo ParseAsFriendUpdateInfo(QByteArray& data);
 
-  static QByteArray DeleteNotificationInfo_ToByteArray(DeleteNotificationInfo &delete_notification_info);
+  static QByteArray DeleteNotificationInfo_ToByteArray(DeleteNotificationInfo &delete_notification_info,quint8 type);
   static DeleteNotificationInfo ParseAsDeleteNotificationInfo(QByteArray &data);
 
   static QByteArray GetUnpossibleSequence();

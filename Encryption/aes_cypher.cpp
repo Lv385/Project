@@ -37,7 +37,7 @@ void AESCypher::Encrypt(QByteArray& plaintext, QString key)
   for (quint8 round = 1; round < rounds_num_; ++round) {
     InvShiftRows(plaintext);
     InvSubBytes(plaintext);
-     InvMixColumns(plaintext,C_s);
+    InvMixColumns(plaintext,C_s);
      //addRoundKey(round, expKey);
   }
   qDebug() << "  decrypted: " << plaintext << "\n";
@@ -128,6 +128,7 @@ void AESCypher::InvSubBytes(QByteArray)
 
 void AESCypher::InvMixColumns(QByteArray & plaintext,QVector<char>&C_S)
 {
+  //sraka povna
   // a(x)=res/c(x)
   QByteArray::iterator it = iter_state->begin();
   for (int i = 0; i < 16; i++)

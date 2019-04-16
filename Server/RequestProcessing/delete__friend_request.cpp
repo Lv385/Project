@@ -45,15 +45,17 @@ bool DeleteFriendRequest::SendResponde()
   // should add sending to deleted that he was deleted
   if(response_to_requester_== (quint8)ServerRequest::DELETE_REQUEST_SUCCEED)
   {
-    QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequest::DELETE_REQUEST_SUCCEED);
-    b.append(Parser::GetUnpossibleSequence());
+    DeleteNotificationInfo info;
+    info.id = deleted_friend.id;
+    QByteArray b = Parser::DeleteNotificationInfo_ToByteArray(info,response_to_requester_); 
+    b.append(Parser::GetUnpossibleSequence());                                                //info and send it on succseed
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(1000);
     client_socket_->disconnectFromHost();
 
-    DeleteNotificationInfo data;
+    DeleteNotificationInfo data; // to deleted friend
     data.id = requester_.id;
-    QByteArray deleting_notif = Parser::DeleteNotificationInfo_ToByteArray(data);  // deleting notif to byte array
+    QByteArray deleting_notif = Parser::DeleteNotificationInfo_ToByteArray(data, (quint8)ServerRequest::DELETE_NOTIFICATION_INFO);  // deleting notif to byte array
     deleting_notif.append(Parser::GetUnpossibleSequence());
 
     QTcpSocket output_socket; // send structure with id
