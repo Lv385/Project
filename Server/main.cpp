@@ -18,12 +18,5 @@ int main(int argc, char *argv[]) {
   AbstractCypher *cpp;
   cpp = new AESCypher();
   cpp->Encrypt(cpp->ConvertStringToByteArr(str),str);*/
-
-  DeleteNotificationInfo data;
-  data.id = 5;
-  QByteArray  arr= Parser::DeleteNotificationInfo_ToByteArray(data);
-  data = Parser::ParseAsDeleteNotificationInfo(arr);
-  qDebug() << data.id;
-
  return a.exec();
 }
