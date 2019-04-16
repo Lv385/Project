@@ -42,16 +42,17 @@ class GUIManager : public QObject {
   void set_selected_friend_id(unsigned);
 
   // theese functions must start from low letter
-  Q_INVOKABLE void newFriend(QString);  // temporary implementation(for testing)
+  Q_INVOKABLE void newFriend(QString, quint32);  // temporary implementation(for testing)
   Q_INVOKABLE void deleteFriend(FriendItem*);
   Q_INVOKABLE void newMessage(QString);
   Q_INVOKABLE void deleteFriendRiequest(FriendRequestItem*);
-  void newFriendRiequest();
+  void newFriendRiequest(QString);
 
 signals:
   void SelectedFriendIdChanged(unsigned id);
   void openMainPage();
   void openFailed(QString text);
+  void showInfo(QString text);
 
 public slots:
   void LogIn(QString user_login, QString user_password); 
@@ -63,9 +64,12 @@ public slots:
   void LoadAllMessages(unsigned id);
   void LoadMessage(Message* msg);
   void OnStatusChanged(unsigned id, bool status);
+  void AddFriendRequest(QString);
   void OnFriendRequestResult(bool);
   void OnAddFriendRequest(QString);
-  void OnNewFriendInfo(QString);
+  void AcceptFriend(QString login);
+  void RejectFriend(QString login);
+  void OnNewFriendInfo(QString, quint32);
 
   // void UserEntered();
 

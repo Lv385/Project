@@ -61,8 +61,6 @@ void FriendsUpdateManager::UpdateFriendsInfo() {
   if (check_timers_.find(updated_friend_info.id) == check_timers_.end()) {
     client_data_.set_friend_status(updated_friend_info.id, true);
 
-    emit StatusChanged(updated_friend_info.id, true);
-
     QTimer* timer = new QTimer();
     timer->start(10000);
     check_timers_[updated_friend_info.id] = timer;
@@ -71,6 +69,8 @@ void FriendsUpdateManager::UpdateFriendsInfo() {
   } else {
     check_timers_[updated_friend_info.id]->start(10000);  // reset timer
   }
+
+  emit StatusChanged(updated_friend_info.id, true);
 
   client_data_.UpdateIPPort(updated_friend_info.id,
   peer_address.toString(), updated_friend_info.port);
