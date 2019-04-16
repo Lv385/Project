@@ -95,6 +95,11 @@ void ClientController::DeleteFriend(const QString& login) {
   server_manager_->SendRequest(data);
 }
 
+void ClientController::AddMeToDB(quint32 new_id) {
+  client_data_.AddFriend(new_id, app_info_.my_login, app_info_.my_ip.toString(),
+                         app_info_.my_port);
+}
+
 void ClientController::SetAppInfo(ApplicationInfo info) {}
 
 QVector<Message> ClientController::LoadMessages(unsigned id) {

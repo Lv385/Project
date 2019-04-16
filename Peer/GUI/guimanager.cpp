@@ -128,7 +128,7 @@ void GUIManager::newFriendRiequest() {
 void GUIManager::LogIn(QString user_login, QString user_password) { 
   controller_->app_info_.remote_server_ip = "192.168.195.144";
   controller_->app_info_.remote_server_port = 8888;
-  controller_->app_info_.my_port = 8989;  //FIXME
+  controller_->app_info_.my_port = 8981;  //FIXME
   controller_->app_info_.my_login = user_login;
   controller_->app_info_.my_password = user_password;
   controller_->app_info_.my_id = client_data_.GetIdByLogin(user_login);  //FIXME
@@ -141,6 +141,7 @@ void GUIManager::Register(QString user_login, QString user_password) {
   controller_->app_info_.remote_server_ip = "192.168.195.144";
   controller_->app_info_.remote_server_port = 8888;
   controller_->app_info_.my_port = 8989;  // FIXME
+  controller_->app_info_.my_login = user_login;
   controller_->Register(user_login, user_password);
 }
 
@@ -161,6 +162,7 @@ void GUIManager::OnLoginResult(bool logged_in) {
 
 void GUIManager::OnRegisterResult(quint32 new_id) {
   if (new_id) {
+    controller_->AddMeToDB(new_id);
     selected_friend_id_ = friend_model_.GetFirstFriendId();
     emit openMainPage();
   }
