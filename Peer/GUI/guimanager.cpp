@@ -123,7 +123,7 @@ void GUIManager::newFriendRiequest(QString login) {
 void GUIManager::LogIn(QString user_login, QString user_password) { 
   controller_->app_info_.remote_server_ip = "192.168.195.144";
   controller_->app_info_.remote_server_port = 8888;
-  controller_->app_info_.my_port = 8981;  //FIXME
+  controller_->app_info_.my_port = 8989;  //FIXME
   controller_->app_info_.my_login = user_login;
   controller_->app_info_.my_password = user_password;
   controller_->app_info_.my_id = client_data_.GetIdByLogin(user_login);  //FIXME
@@ -137,6 +137,7 @@ void GUIManager::Register(QString user_login, QString user_password) {
   controller_->app_info_.remote_server_port = 8888;
   controller_->app_info_.my_port = 8989;  // FIXME
   controller_->app_info_.my_login = user_login;
+  controller_->app_info_.my_password = user_password;
   controller_->Register(user_login, user_password);
 }
 
@@ -157,7 +158,9 @@ void GUIManager::OnLoginResult(bool logged_in) {
 
 void GUIManager::OnRegisterResult(quint32 new_id) {
   if (new_id) {
-    controller_->AddMeToDB(new_id);
+    controller_->OnLogin(true);
+    controller_->app_info_.my_id = new_id;
+    controller_->AddMeToDB();
     selected_friend_id_ = friend_model_.GetFirstFriendId();
     emit openMainPage();
   }
@@ -201,6 +204,9 @@ void GUIManager::OnNewFriendInfo(QString login, quint32 id) {
   logger_->WriteLog(LogType::SUCCESS, "User with login '" + login + "' added");
   emit showInfo("User " + login + " added to your friend list");
   newFriend(login, id);
+  if(!selected_friend_id_) {
+    selected_friend_id_ = id;
+  }
 }
 
 void GUIManager::OnDeleteFriend(bool) {

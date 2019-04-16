@@ -61,7 +61,7 @@ void FriendsUpdateManager::UpdateFriendsInfo() {
 
     if (check_timers_.find(updated_friend_info.id) == check_timers_.end()) {
 
-    emit StatusChanged(updated_friend_info.id, true);
+    //emit StatusChanged(updated_friend_info.id, true);
 
     QTimer* timer = new QTimer();
     timer->start(10000);
