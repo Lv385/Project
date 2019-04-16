@@ -6,20 +6,13 @@ int main(int argc, char *argv[]) {
 
   QCoreApplication a(argc, argv);
   WebToken wt;
+  SpeckCypher sc;
   wt.SetHeader("SPEK");
   wt.SetPayload(1);
-  SpeckCypher sc;
-  std::string key = "ab301234aiEr12d4";
-  QString mystr = "45354354354";
-  QByteArray text(mystr.toUtf8());
-  QString keyQ = QString::fromUtf8(key.c_str());
-
-  sc.Encrypt(text, keyQ);
-  sc.Decrypt(text, keyQ);
-
-  QDataStream in(&text, QIODevice::ReadOnly);
-  QString s = text;
-  std::cout << s.toStdString();
-
+  std::string tok = wt.GetToken("ab301234aiEr12d4");
+  std::cout << tok << std::endl;
+  WebToken webt{tok};
+  webt.ParseToken();
+  std::cout << webt.IsSignatureValid("ab301234aiEr12d4");
   return a.exec();
 }

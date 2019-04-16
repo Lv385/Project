@@ -22,19 +22,27 @@ using json = nlohmann::json;
 
 class WebToken {
  public:
+
   explicit WebToken() = default;
   virtual ~WebToken() = default;
+
+  WebToken(const std::string& token);//for server
+
   std::string GetToken(const std::string& key);  // static?
-  void SetPayload(const unsigned int id);//static?
-  void SetHeader(const std::string& algorithm_name,
+  void		  SetPayload(const unsigned int id);//static?
+  void		  SetHeader(const std::string& algorithm_name,
                  const std::string& type = "JWT");  // static?
-  std::string signature_;
+  void		  ParseToken();
+  bool		  IsSignatureValid(const std::string& key);
+
  private:
-  std::string token_;
   json header_;
   json payload_;
-  
+  std::string token_;
+  std::string signature_;
+
   SpeckCypher cypher;
+
 };
 
 #endif  // !WEB_TOKEN
