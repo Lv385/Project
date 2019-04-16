@@ -48,8 +48,8 @@ void SignalRedirector::ConnectToNewFriendRequestResult(QObject *object) {
 }
 
 void SignalRedirector::ConnectToDeleteRequestResult(QObject *object) {
-  connect(object, SIGNAL(DeleteRequestResult(bool)), clientController_,
-          SIGNAL(DeleteRequestResult(bool)));
+  connect(object, SIGNAL(DeleteRequestResult(quint32)), clientController_,
+          SIGNAL(DeleteRequestResult(quint32)));
 }
 
 void SignalRedirector::set_controller(ClientController * controller) {

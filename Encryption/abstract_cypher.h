@@ -1,9 +1,14 @@
 #pragma once
-#include <QByteArray>
 #include <QString>
 #include <QCryptographicHash>
 #include <QDebug>
 #include <QTextCodec>
+#include <QObject>
+#include <QByteArray>
+#include <QDataStream>
+#include <iostream>
+
+using namespace std;
 class AbstractCypher
 {
    public:
@@ -11,5 +16,6 @@ class AbstractCypher
     virtual void Decrypt(QByteArray& cypher_text, QString key) = 0;
    //protected:
     static QString HashString(QString); 
-
+    QByteArray ConvertStringToByteArr(QString);
+    QString ConvertByteArrayToString(QByteArray);
 };

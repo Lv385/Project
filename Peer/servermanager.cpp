@@ -27,6 +27,7 @@ ServerManager::ServerManager(QTcpSocket *socket, ApplicationInfo& info)
   strategies_.insert(ServerRequest::NEW_FRIEND_INFO, new_friend);
   strategies_.insert(ServerRequest::DELETE_REQUEST_SUCCEED, delete_friend);
   strategies_.insert(ServerRequest::DELETE_REQUEST_FAILED, delete_friend);
+  strategies_.insert(ServerRequest::DELETE_NOTIFICATION_INFO, delete_friend);
 }
 
 ServerManager::~ServerManager() {}

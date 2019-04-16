@@ -99,36 +99,45 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="..\Parser&amp;Structs\parser.cpp" />
-    <ClCompile Include="AsyncServer.cpp" />
-    <ClCompile Include="DAL\client.cpp" />
+    <ClCompile Include="async_server.cpp" />
     <ClCompile Include="DAL\dal.cpp" />
     <ClCompile Include="Logger\logger.cpp" />
     <ClCompile Include="main.cpp" />
-    <ClCompile Include="RequestProcessing\AbstractRequest.cpp" />
+    <ClCompile Include="RequestProcessing\abstract_request.cpp" />
     <ClCompile Include="RequestProcessing\add_friend_request.cpp" />
+    <ClCompile Include="RequestProcessing\delete__friend_request.cpp" />
     <ClCompile Include="RequestProcessing\friendship_request.cpp" />
-    <ClCompile Include="RequestProcessing\LoginRequest.cpp" />
-    <ClCompile Include="RequestProcessing\NewUserRequest.cpp" />
-    <ClCompile Include="ServerThread.cpp" />
+    <ClCompile Include="RequestProcessing\login_request.cpp" />
+    <ClCompile Include="RequestProcessing\new_user_request.cpp" />
+    <ClCompile Include="server_thread.cpp" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="AsyncServer.h" />
+    <QtMoc Include="async_server.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Common;$(SolutionDir)DAL;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="ServerThread.h" />
+    <QtMoc Include="server_thread.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Common;$(SolutionDir)DAL;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\Parser&amp;Structs\parser.h" />
     <ClInclude Include="..\Parser&amp;Structs\request_types.h" />
-    <ClInclude Include="DAL\Client.h" />
     <ClInclude Include="DAL\dal.h" />
-    <QtMoc Include="RequestProcessing\AbstractRequest.h" />
+    <QtMoc Include="RequestProcessing\abstract_request.h">
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(SolutionDir)Common;$(SolutionDir)DAL;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql</IncludePath>
+      <IncludePath Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.;$(QTDIR)\include;.\GeneratedFiles\$(ConfigurationName);$(QTDIR)\include\QtCore;$(QTDIR)\include\QtNetwork;$(QTDIR)\include\QtSql</IncludePath>
+    </QtMoc>
     <ClInclude Include="Exceptions\user_not_found.h" />
     <ClInclude Include="Logger\logger.h" />
     <ClInclude Include="RequestProcessing\add_friend_request.h" />
+    <ClInclude Include="RequestProcessing\delete_friend_request.h" />
     <ClInclude Include="RequestProcessing\friendship_request.h" />
-    <ClInclude Include="RequestProcessing\LoginRequest.h" />
-    <ClInclude Include="RequestProcessing\NewUserRequest.h" />
+    <ClInclude Include="RequestProcessing\login_request.h" />
+    <ClInclude Include="RequestProcessing\new_user_request.h" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\Common\Common.vcxproj">
