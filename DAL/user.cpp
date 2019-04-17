@@ -23,7 +23,7 @@ Users::Users(std::shared_ptr<Connect> Connect) : Statement(Connect) {
 		user.notification = GetFriendsNotification(user.id);
 		user.friends = GetFriends(user.id);
 		user.requests = GetFriendsRequest(user.id);
-		
+    user.deletenotificatoin = GetDeleteFriendsNotification(user.id);
 		return user;
 
 	}
