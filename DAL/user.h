@@ -39,7 +39,7 @@ namespace dal {
 	  std::shared_ptr<FriendInfo>       friend_obj;
 	  std::shared_ptr<RequestInfo>      request_obj;
 	  std::shared_ptr<NotificationInfo> notification_obj;
-	  std::shared_ptr<NotificationInfo> delete_notification_obj;
+	  std::shared_ptr<DeleteFriendNotification> delete_notification_obj;
 
 	  QString							  UpdateQuery(User user);
 	  QString							  SelectQuery(unsigned int user_id);

@@ -27,7 +27,7 @@ private:
 
   void SendingPendingFriendRequests();
   void SendingPendingNotifications();
-
+  void SendingPendingDeleteFriendNotificatons();
 	LoginInfo incoming_structure_;	
 	FriendUpdateInfo send_to_friends_;  
 	User requester_; 
