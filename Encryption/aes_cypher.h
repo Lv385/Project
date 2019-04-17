@@ -21,16 +21,21 @@ private:
   quint8 GetSBoxValue(quint8 num) { return sbox[num]; }
   quint8 GetSBoxInvert(quint8 num) { return rsbox[num]; }
 
+  inline quint8 xTime(quint8 x);
+
+  inline quint8 Multiply(quint8 x, quint8 y);
+
+
   //forward operations
   void SubBytes(QByteArray&);
   void ShiftRows(QByteArray&);
-  void MixColumns(QByteArray&, QVector<char>&);
+  void MixColumns(QByteArray&);
   void XorRoundKey(QByteArray);
   int gcd(int,int);
   //backward operations
-  void InvSubBytes(QByteArray);
-  void InvShiftRows(QByteArray);
-  void InvMixColumns(QByteArray &, QVector<char>&);
+  void InvSubBytes(QByteArray&);
+  void InvShiftRows(QByteArray&);
+  void InvMixColumns(QByteArray &);
 
   //independent func
   void swap(char&,char&);

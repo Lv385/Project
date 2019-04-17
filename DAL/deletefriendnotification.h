@@ -5,11 +5,11 @@
 
 namespace dal {
 
-	class DeleteFriendNotification : public Info
+	class DeleteFriendNotifications : public Info
 	{
 	public:
-		DeleteFriendNotification();
-		DeleteFriendNotification(std::shared_ptr<Connect> Connect);
+		DeleteFriendNotifications();
+		DeleteFriendNotifications(std::shared_ptr<Connect> Connect);
 		
 		void			   Add(const UsersID& users_id);
 		QVector<UsersID>   Get(const unsigned int id);

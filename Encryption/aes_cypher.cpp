@@ -23,31 +23,41 @@ void AESCypher::Encrypt(QByteArray& plaintext, QString key)
 {
   AESCypher();
   iter_state = &plaintext;
-  QVector<char>C_s;
+  
   //addRoundKey(0, expKey);
   qDebug() << "    " << plaintext << "\n";
   for (quint8 round = 1; round < rounds_num_; ++round) {
-    SubBytes(plaintext);
-    ShiftRows(plaintext);
-    MixColumns(plaintext,C_s);
+    //SubBytes(plaintext);
+    //ShiftRows(plaintext);
+    MixColumns(plaintext);
     //addRoundKey(round, expKey);
   }
   qDebug() << "  encrypted: " << plaintext << "\n";
   
-  for (quint8 round = 1; round < rounds_num_; ++round) {
-    InvShiftRows(plaintext);
-    InvSubBytes(plaintext);
-    InvMixColumns(plaintext,C_s);
-     //addRoundKey(round, expKey);
-  }
-  qDebug() << "  decrypted: " << plaintext << "\n";
   //SubBytes();
   //ShiftRows();
   //addRoundKey(rounds_num_, expKey);
-  qDebug() << "" << ConvertByteArrayToString( plaintext)<<"\n";
 }
 void AESCypher::Decrypt(QByteArray & plaintext, QString key)
 {
+  for (quint8 round = rounds_num_ - 1; round > 0; round--) {
+    //InvShiftRows(plaintext);
+    //InvSubBytes(plaintext);
+    InvMixColumns(plaintext);
+    //addRoundKey(round, expKey);
+  }
+  qDebug() << "  decrypted: " << plaintext << "\n";
+  qDebug() << "" << ConvertByteArrayToString(plaintext) << "\n";
+}
+// multipliying 
+inline quint8 AESCypher::xTime(quint8 x)
+{
+  return ((x << 1) ^ (((x >> 7) & 1) * 0x1b));
+}
+inline quint8 AESCypher::Multiply(quint8 x, quint8 y)
+{
+  return (((y & 1) * x) ^ ((y >> 1 & 1) * xTime(x)) ^ ((y >> 2 & 1) * xTime(xTime(x))) ^ ((y >> 3 & 1)
+    * xTime(xTime(xTime(x)))) ^ ((y >> 4 & 1) * xTime(xTime(xTime(xTime(x))))));
 }
 // done
 void AESCypher::SubBytes(QByteArray& text)
@@ -56,6 +66,13 @@ void AESCypher::SubBytes(QByteArray& text)
   QByteArray::iterator it = iter_state->begin();
   for (int i = 0; i < 16; i++)
     text[i] = GetSBoxValue((quint8)it[i]);
+}
+//done
+void AESCypher::InvSubBytes(QByteArray&)
+{
+  QByteArray::iterator it = iter_state->begin();
+  for (int i = 0; i < 16; i++)
+    it[i] = GetSBoxInvert((quint8)it[i]); // get data from rsbox
 }
 //done
 void AESCypher::ShiftRows(QByteArray& text)
@@ -84,7 +101,7 @@ void AESCypher::ShiftRows(QByteArray& text)
   
 }
 //done
-void AESCypher::InvShiftRows(QByteArray)
+void AESCypher::InvShiftRows(QByteArray&plaintext)
 {
   QByteArray::iterator it = iter_state->begin();
   swap(it[1], it[5]);
@@ -92,7 +109,7 @@ void AESCypher::InvShiftRows(QByteArray)
   swap(it[7], it[11]);
   swap(it[7],it[15]);
 }
-void AESCypher::MixColumns(QByteArray& plaintext, QVector<char>&C_s)
+void AESCypher::MixColumns(QByteArray& plaintext)
 {
   // a(x) polynomial of 4 power 
   //res == a(x)*c(x)
@@ -100,43 +117,42 @@ void AESCypher::MixColumns(QByteArray& plaintext, QVector<char>&C_s)
   //a(x) =  x*x*x*x + x*x*x + x*x + x +1
   //c(x) = 3*x*x*x + x*x + x+2
  // + is XOR     * is bitwise AND
-  
+   //  00011011 is representing  pow(x,8)+ pow(x,4) +pow(x,3) + pow(x,1)+1  pow(x,n) == x*x*x*x*... n times
  // possibly working
-
   QByteArray::iterator it = iter_state->begin();
- 
-  for (int i = 0; i < 16; i++)
+  quint8 tmp, tm, t;
+  
+  for (int i = 0; i < 16; i += 4) 
   {
-    char a_x= (it[i] & it[i] & it[i] & it[i]) ^ (it[i] & it[i] & it[i]) ^ (it[i] & it[i]) ^ 1;
-    char c_x = (3 & it[i] & it[i] & it[i]) ^ (it[i] & it[i]) ^ (it[i])^2;
-      it[i] = a_x & c_x;
-      C_s.push_back(c_x);
+    char t = it[i] ^ it[i+1] ^ it[i+2] ^ it[i+3];
+    char u = it[i];
+    it[i] = it[i] ^ xTime(it[i] ^ it[i + 1]) ^ t;
+    it[i+1]= it[i+1] ^ xTime(it[i+1] ^ it[i + 2]) ^ t;
+    it[i+2]= it[i+2] ^ xTime(it[i+2] ^ it[i + 3]) ^ t;
+    it[i+3]= it[i+3] ^ xTime(it[i+3] ^ u) ^ t;
   }
+
+}
+void AESCypher::InvMixColumns(QByteArray & plaintext)
+{
+  QByteArray::iterator it = iter_state->begin();
+  for (int i = 0; i < 16; i += 4)
+  {
+    char u = xTime(xTime(it[i]^it[i+2]));
+    char v = xTime(xTime(it[i+1] ^ it[i + 3]));
+    it[i] = it[i] ^ u;
+    it[i+1] = it[i+1] ^ v;
+    it[i+2] = it[i + 2] ^ u;
+    it[i+3] = it[i + 3] ^ v;
+  }
+
 }
 
 void AESCypher::XorRoundKey(QByteArray)
 {
 }
-//done
-void AESCypher::InvSubBytes(QByteArray) 
-{
-  QByteArray::iterator it = iter_state->begin();
-  for (int i = 0; i < 16; i++)
-    it[i] = GetSBoxInvert((quint8)it[i]); // get data from rsbox
-}
 
 
-void AESCypher::InvMixColumns(QByteArray & plaintext,QVector<char>&C_S)
-{
-  //sraka povna
-  // a(x)=res/c(x)
-  QByteArray::iterator it = iter_state->begin();
-  for (int i = 0; i < 16; i++)
-  {
-    it[i]=(char)gcd(it[i],C_S[i]);
-  }
-
-}
 int AESCypher::gcd(int a, int b) {
   int t;
   while (b != 0) {

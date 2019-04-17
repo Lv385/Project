@@ -65,14 +65,12 @@ bool DeleteFriendRequest::SendResponde()
       output_socket.waitForBytesWritten(1000);
       output_socket.disconnectFromHost();
     } else {
-      // in future possibly add  data in table if cant connect
-
-      // fix code  in future below in that else case
-      QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequest::DELETE_REQUEST_FAILED);
-      b.append(Parser::GetUnpossibleSequence());
-      client_socket_->write(b);
-      client_socket_->waitForBytesWritten(1000);
-      client_socket_->disconnectFromHost();
+      //in table if cant connect
+      UsersID pair;
+      pair.first_user_id = requester_.id;
+      pair.second_user_id = deleted_friend.id;
+      deleted_friend.deletenotificatoin.push_back(pair);
+      database_->UpdateClient(deleted_friend);
     }
   } else {
     QByteArray b = Parser::Empty_ToByteArray((quint8)ServerRequest::DELETE_REQUEST_FAILED);

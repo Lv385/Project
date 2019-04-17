@@ -5,7 +5,7 @@ Users::Users(std::shared_ptr<Connect> Connect) : Statement(Connect) {
   friend_obj = std::make_shared<FriendInfo>(Connect);
   request_obj = std::make_shared<RequestInfo>(Connect);
   notification_obj = std::make_shared<NotificationInfo>(Connect);
-  delete_notification_obj = std::make_shared<dal::DeleteFriendNotification>(Connect);
+  delete_notification_obj = std::make_shared<dal::DeleteFriendNotifications>(Connect);
 }
 
 	Users::~Users() {}
@@ -23,7 +23,7 @@ Users::Users(std::shared_ptr<Connect> Connect) : Statement(Connect) {
 		user.notification = GetFriendsNotification(user.id);
 		user.friends = GetFriends(user.id);
 		user.requests = GetFriendsRequest(user.id);
-		
+    user.deletenotificatoin = GetDeleteFriendsNotification(user.id);
 		return user;
 
 	}
