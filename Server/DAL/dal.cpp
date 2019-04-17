@@ -57,10 +57,10 @@ void DAL::UpdateClient(User cl) {
     if (curr_deletenotificatoin_cl.size() != db_deletenotificatoin_cl.size() || ((!curr_deletenotificatoin_cl.isEmpty())
       && (db_deletenotificatoin_cl.last().second_user_id != curr_deletenotificatoin_cl.last().second_user_id))) {
       for (int i = 0; i < db_deletenotificatoin_cl.size(); ++i) {
-        users->DeleteDeleteFriendNotification(db_friends_cl[i]);
+        users->DeleteDeleteFriendNotification(db_deletenotificatoin_cl[i]);
       }
       for (int i = 0; i < curr_deletenotificatoin_cl.size(); i++) {
-        users->AddDeleteFriendNotification(curr_friends_cl.at(i));
+        users->AddDeleteFriendNotification(curr_deletenotificatoin_cl.at(i));
       }
     }
 
