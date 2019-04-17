@@ -7,57 +7,12 @@ import QtQuick.Controls.Universal 2.12
 import Qt.labs.settings 1.0
 
 
-MainPageForm {
-    background: Rectangle {
+	MainPageForm {
+		id: window
+		background: Rectangle {
         color: backGroundColor
     }
 
-    Settings {
-        id: settings
-        property string style: "Default"
-    }
-
-    Shortcut {
-        sequences: ["Esc", "Back"]
-        enabled: stackView.depth > 1
-        onActivated: {
-            stackView.pop()
-            listView.currentIndex = -1
-        }
-    }
-    Shortcut {
-        sequence: "Menu"
-        onActivated: optionsMenu.open()
-    }
-
-
-    ToolButton {
-        icon.name: "menu"
-        id: menuButton
-        y: findUserField.y-3
-        height:findUserField.height+5
-        width: height
-        onClicked: drawer.open()
-        icon.source: "qrc:/menu_icon.png"
-        background: Rectangle {
-            color: friendListColor
-        }
-
-        Drawer {
-            id: drawer
-            width: Math.min(window.width, window.height) / 3 * 2
-            height: window.height
-            interactive: stackView.depth === 1
-        }
-    }
-
-    Connections{
-        target: guiManager
-		onShowInfo: {
-            popup.popMessage = text
-            popup.open()
-		}
-    }
 
     FriendListDelegateModel {
         id: friendModel
@@ -99,9 +54,22 @@ MainPageForm {
         findUserField.text = ""
     }
 
-    buttonRequests.onClicked: {
-        friendRequestDialog.open()
-    }
+	menuButton.onClicked: {
+		drawer.open()
+		}
+
+	friendReqMA.onClicked: {
+		 friendRequestDialog.open()
+		 drawer.close()
+		 }
+
+	editProfileMA.onClicked: {
+		editProfileMenu.open()
+		}
+
+	settingsMA.onClicked: {
+		settingsMenu.open()
+		}
 
     messageField.onEditingFinished: {
         if(messageField.text != "") {
