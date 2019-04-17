@@ -108,6 +108,7 @@ void GUIManager::LoadMessage(Message* msg) {
   } else {
     friend_model_.AddUnreadMesg(msg->chat_id);
   }
+  emit messageRing();
 }
 
 void GUIManager::deleteFriendRiequest(FriendRequestItem* friend_request_to_delete) {
@@ -119,10 +120,12 @@ void GUIManager::deleteFriendRiequest(FriendRequestItem* friend_request_to_delet
 void GUIManager::newFriendRiequest(QString login) {
   FriendRequestItem* new_friend_request = new FriendRequestItem(login);
   friend_request_model_.AddRequestToList(new_friend_request);
+
+  emit requestRing();
 }
 
 void GUIManager::LogIn(QString user_login, QString user_password) { 
-  controller_->app_info_.remote_server_ip = "192.168.195.144";
+  controller_->app_info_.remote_server_ip = "192.168.103.121";    //"192.168.195.144"
   controller_->app_info_.remote_server_port = 8888;
   controller_->app_info_.my_port = 8989;  //FIXME
   controller_->app_info_.my_login = user_login;
@@ -134,7 +137,7 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
 }
 
 void GUIManager::Register(QString user_login, QString user_password) {
-  controller_->app_info_.remote_server_ip = "192.168.195.144";
+  controller_->app_info_.remote_server_ip = "192.168.103.121";     //"192.168.195.144"
   controller_->app_info_.remote_server_port = 8888;
   controller_->app_info_.my_port = 8989;  // FIXME
   controller_->app_info_.my_login = user_login;

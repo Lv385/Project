@@ -7,10 +7,20 @@ import QtQuick.Controls.Universal 2.12
 import Qt.labs.settings 1.0
 
 
-	MainPageForm {
+MainPageForm {
 		id: window
 		background: Rectangle {
         color: backGroundColor
+    }
+
+	    Connections{
+        target: guiManager
+        onMessageRing: {
+			messageSound.play()
+        }
+		onRequestRing: {
+			friendSound.play()
+		}
     }
 
 
@@ -66,6 +76,7 @@ import Qt.labs.settings 1.0
 	editProfileMA.onClicked: {
 		editProfileMenu.open()
 		}
+								
 
 	settingsMA.onClicked: {
 		settingsMenu.open()

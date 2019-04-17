@@ -25,7 +25,7 @@ Item {
                 width: Math.min(messageText.implicitWidth + 24, messageList.width)
                 height: messageText.implicitHeight + 24
                 color: sentByMe ? "lightgrey" : "steelblue"
-                radius: height / 4
+                radius: 10
 
                 Label {
                     id: messageText

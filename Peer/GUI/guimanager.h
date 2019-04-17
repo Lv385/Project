@@ -53,6 +53,8 @@ signals:
   void openMainPage();
   void openFailed(QString text);
   void showInfo(QString text);
+  void messageRing();
+  void requestRing();
 
 public slots:
   void LogIn(QString user_login, QString user_password); 
