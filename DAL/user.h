@@ -22,19 +22,24 @@ namespace dal {
 	  QVector<UsersID>			 GetFriends(const unsigned int id);
 	  QVector<UsersID>			 GetFriendsRequest(const unsigned int id);
 	  QVector<UsersID>			 GetFriendsNotification(const unsigned int id);
+	  QVector<UsersID>			 GetDeleteFriendsNotification(const unsigned int id);
+
 
 	  void			 AddFriend(const UsersID& ids);
 	  void			 AddFriendRequest(const UsersID& ids);
 	  void			 AddFriendNotification(const UsersID& ids);
+	  void			 AddDeleteFriendNotification(const UsersID& ids);
 
 	  void           DeleteFriend(const UsersID& ids);
 	  void			 DeleteFriendRequest(const UsersID& ids);
 	  void			 DeleteFriendNotification(const UsersID& ids);
+	  void			 DeleteDeleteFriendNotification(const UsersID& ids);//delete from table/entity delete_friend_notification
  
   private:
 	  std::shared_ptr<FriendInfo>       friend_obj;
 	  std::shared_ptr<RequestInfo>      request_obj;
 	  std::shared_ptr<NotificationInfo> notification_obj;
+	  std::shared_ptr<NotificationInfo> delete_notification_obj;
 
 	  QString							  UpdateQuery(User user);
 	  QString							  SelectQuery(unsigned int user_id);

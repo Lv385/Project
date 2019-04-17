@@ -5,6 +5,7 @@ Users::Users(std::shared_ptr<Connect> Connect) : Statement(Connect) {
   friend_obj = std::make_shared<FriendInfo>(Connect);
   request_obj = std::make_shared<RequestInfo>(Connect);
   notification_obj = std::make_shared<NotificationInfo>(Connect);
+  delete_notification_obj = std::make_shared<dal::DeleteFriendNotification>(Connect);
 }
 
 	Users::~Users() {}
@@ -40,6 +41,8 @@ Users::Users(std::shared_ptr<Connect> Connect) : Statement(Connect) {
 		user.friends = GetFriends(user.id);
 		user.requests = GetFriendsRequest(user.id);
 		user.notification = GetFriendsNotification(user.id);
+		user.deletenotificatoin = GetDeleteFriendsNotification(user.id);
+		
 
 		return user;
 	}
@@ -74,6 +77,11 @@ QVector<UsersID> Users::GetFriendsNotification(const unsigned int id) {
   return notification_obj->Get(id);
 }
 
+QVector<UsersID> Users::GetDeleteFriendsNotification(const unsigned int id)
+{
+	return delete_notification_obj->Get(id);
+}
+
 void Users::AddFriend(const UsersID& ids) {
 
   friend_obj->Add(ids);
@@ -87,6 +95,11 @@ void Users::AddFriendNotification(const UsersID& ids) {
   notification_obj->Add(ids);
 }
 
+void Users::AddDeleteFriendNotification(const UsersID & ids)
+{
+	delete_notification_obj->Add(ids);
+}
+
 void Users::DeleteFriend(const UsersID& ids) {
   friend_obj->Delete(ids);
 }
@@ -97,6 +110,11 @@ void Users::DeleteFriendRequest(const UsersID& ids) {
 
 void Users::DeleteFriendNotification(const UsersID& ids) {
   notification_obj->Delete(ids);
+}
+
+void Users::DeleteDeleteFriendNotification(const UsersID & ids)
+{
+	delete_notification_obj->Delete(ids);
 }
 
 QString Users::SelectQuery(unsigned int user_id) {
