@@ -1,4 +1,4 @@
-#include "AbstractRequest.h"
+#include "abstract_request.h"
 
 
 AbstractRequest::AbstractRequest(DAL* d, QTcpSocket* s)

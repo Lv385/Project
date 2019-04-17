@@ -1,5 +1,5 @@
-#include "AsyncServer.h"
-#include "ServerThread.h"
+#include "async_server.h"
+#include "server_thread.h"
 #include <QNetworkInterface>
 #include <QUuid>
 

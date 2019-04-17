@@ -18,9 +18,12 @@ public:
 
   void AddFriendToList(FriendItem*);
   bool RemoveFriendFromList(FriendItem*);
+  FriendItem* FindFriendItem(quint32);
   void SetStatus(unsigned id, bool status);
+  void AddUnreadMesg(unsigned id);
+  void DeleteUnreadMesgs(unsigned id);
 
 private:
-  QList<FriendItem*> friends_list_;
+  QList<FriendItem*> friends_list_;  //using QMap will be more comfortable
 };
 #endif // FRIENDMODEL_H

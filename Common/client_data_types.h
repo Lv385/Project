@@ -4,15 +4,16 @@
 #include <QString>
 #include <QDate>
 #include <QTime>
+#include <QVector>
 #include <qbytearray.h>
 
 //
 //// This is our entity from database
 struct Friend {
-  unsigned int id;
+  quint32 id;
+  QString login;
   QString ip;
   unsigned int port;
-  QString login;
   QString name;
   QString surname;
   bool status;

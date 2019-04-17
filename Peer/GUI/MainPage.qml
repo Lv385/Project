@@ -1,14 +1,18 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 import QtQml.Models 2.12
+import QtQuick.Layouts 1.12
+import QtQuick.Controls.Material 2.12
+import QtQuick.Controls.Universal 2.12
+import Qt.labs.settings 1.0
 
 
-MainPageForm {
-
-    background: Rectangle {
+	MainPageForm {
+		id: window
+		background: Rectangle {
         color: backGroundColor
-
     }
+
 
     FriendListDelegateModel {
         id: friendModel
@@ -24,7 +28,6 @@ MainPageForm {
         id: friendRequestModel
         visualModel.model: guiManager.friend_request_model
     }
-
 
     Component {
         id: highlightBar
@@ -47,17 +50,30 @@ MainPageForm {
     friendRequestList.model: friendRequestModel.visualModel
 
     findButton.onClicked: {
-        guiManager.newFriend(findUserField.text)
+        guiManager.AddFriendRequest(findUserField.text)
         findUserField.text = ""
     }
 
-    buttonRequests.onClicked: {
-        friendRequestDialog.open()
-    }
+	menuButton.onClicked: {
+		drawer.open()
+		}
+
+	friendReqMA.onClicked: {
+		 friendRequestDialog.open()
+		 drawer.close()
+		 }
+
+	editProfileMA.onClicked: {
+		editProfileMenu.open()
+		}
+
+	settingsMA.onClicked: {
+		settingsMenu.open()
+		}
 
     messageField.onEditingFinished: {
         if(messageField.text != "") {
-			guiManager.SendMessage(messageField.text)
+            guiManager.SendMessage(messageField.text)
             messageField.text = "";
         }
     }

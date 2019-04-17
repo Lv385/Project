@@ -87,42 +87,11 @@ bool DAL::CheckIfClientExistsInDb(QString login) {
   return user.id != 0;
 }
 
-bool DAL::CheckIfFriends(User user1, User user2)  // test
-{
-  if (user1.friends.size() != user2.friends.size())  {
-    if (user1.friends.size() > user2.friends.size()) {
-      for (int i = 0; i < user2.friends.size(); i++) {
-        for (int j = 0; user1.friends.size(); i++)   {
-          if (user2.friends[i].second_user_id == user1.friends[j].first_user_id) {
-            return true;
-          }
-        }
-         //sort by second user id  1 and 2 and binary search of smaller in bigger  // not implemented
-      }
-    }
-    if (user1.friends.size() < user2.friends.size()) {
-      for (int i = 0; i < user1.friends.size(); i++)
-      {
-        for (int j = 0; user2.friends.size(); i++)
-        {
-          if (user1.friends[i].second_user_id == user2.friends[j].first_user_id) {
-            return true;
-          }
-        }
-      }
-    }
-  }
-  else
-  {
-    for(int i=0;i<user2.friends.size();i++)
-    {
-      if(user1.friends[i].first_user_id==user2.friends[i].second_user_id)
-      {
-        return true;
-      }
-    }
-  }
-  return false;
+bool DAL::CheckIfFriends(User user1, User user2) {
+  return std::find_if(user1.friends.begin(), user1.friends.end(),
+                      [user2](const UsersID& users_id) {
+                        return users_id.second_user_id == user2.id;
+                      }) != user1.friends.end();
 }
 
 int DAL::GetClientId(User cl) {

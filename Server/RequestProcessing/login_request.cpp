@@ -1,4 +1,4 @@
-#include "LoginRequest.h"
+#include "login_request.h"
 
 
 LoginRequest::LoginRequest(QByteArray& A, DAL* d, QTcpSocket* s)
@@ -46,8 +46,6 @@ bool LoginRequest::SendResponde() {
     client_socket_->waitForBytesWritten(3000);
     SendingPendingFriendRequests(); 
     SendingPendingNotifications();  
-    SendingPendingFriendRequests();
-    SendingPendingNotifications();
     database_->UpdateClient(requester_);
     client_socket_->disconnectFromHost();
 
@@ -58,6 +56,7 @@ bool LoginRequest::SendResponde() {
     send_to_friends_.port = requester_.port;
     QByteArray raw_data = Parser::FriendUpdateInfo_ToByteArray(send_to_friends_);
     raw_data.append(Parser::GetUnpossibleSequence());
+
     QVector<UsersID> currentFriends = requester_.friends;
     QTcpSocket output_socket;  // for friends
     for (unsigned i = 0; i < currentFriends.size(); i++) {
@@ -127,6 +126,10 @@ void LoginRequest::SendingPendingFriendRequests() {
       }
     }
     //and than update requester_ in db by updateClient outside of this func
+    /*std::find_if(requester_.requests.begin(), requester_.requests.end(),
+      [requester_](const UsersID& users_id) {
+      return users_id.second_user_id == user2.id;
+    });*/
   }
 }
 
