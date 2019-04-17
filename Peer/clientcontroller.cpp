@@ -68,7 +68,7 @@ void ClientController::Register(const QString& login,const QString& password) {
   info.port = app_info_.my_port;
 
   QByteArray data = Parser::RegisterInfo_ToByteArray(info);
-
+  this->Start();
   server_manager_->SendRequest(data);
 
 }
@@ -93,6 +93,12 @@ void ClientController::DeleteFriend(const QString& login) {
   QByteArray data = Parser::FriendRequestInfo_ToByteArray(
       info, static_cast<quint8>(ClientRequest::DELETE_REQUEST));
   server_manager_->SendRequest(data);
+}
+
+void ClientController::AddMeToDB() {
+  client_data_.AddFriend(app_info_.my_id, app_info_.my_login,
+                         app_info_.my_ip.toString(),
+                         app_info_.my_port);
 }
 
 void ClientController::SetAppInfo(ApplicationInfo info) {}

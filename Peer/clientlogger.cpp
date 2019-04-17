@@ -1,7 +1,8 @@
 #include "clientlogger.h"
 
-std::atomic<ClientLogger*> ClientLogger::logger_ = nullptr;
+//std::atomic<ClientLogger*> ClientLogger::logger_ = nullptr;
 std::mutex ClientLogger::mutex_;
+ClientLogger* ClientLogger::logger_ = nullptr;
 
 ClientLogger* ClientLogger::Instance() {
   std::lock_guard<std::mutex> lock(mutex_);

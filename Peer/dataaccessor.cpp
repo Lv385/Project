@@ -81,6 +81,11 @@ void DataAccessor::AddMessageToDB(const Message& message) {
   message_->AddNewMessage(message);
 }
 
+void DataAccessor::DeleteFriend(const unsigned& id) {
+  Friend to_delete = GetFriend(id);
+  user_->DeleteFriend(to_delete);
+}
+
 void DataAccessor::SaveRequest(const FriendRequest& friend_request) {
   friend_requests_->Add(friend_request);
 }

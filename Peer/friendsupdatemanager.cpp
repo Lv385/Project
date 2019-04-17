@@ -44,7 +44,7 @@ void FriendsUpdateManager::SendUpdateInfo() {
 
   for (const Friend& i : friends) {
     update_sender_.writeDatagram(to_write, QHostAddress(i.ip),
-                                 app_info_.my_port);
+                                 i.port);
   }
   logger_->WriteLog(LogType::INFO, " update sent");
 }
@@ -60,8 +60,6 @@ void FriendsUpdateManager::UpdateFriendsInfo() {
           continue;
 
     if (check_timers_.find(updated_friend_info.id) == check_timers_.end()) {
-
-    emit StatusChanged(updated_friend_info.id, true);
 
     QTimer* timer = new QTimer();
     timer->start(10000);

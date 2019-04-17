@@ -31,7 +31,8 @@ class ClientController : public QObject {
   void Register(const QString& login, const QString& password);
   void AddFriend(const QString& login);
   void DeleteFriend(const QString& login);
- 
+  void AddMeToDB();
+
   void FriendRequestAccepted(const QString& login);
   void FriendRequestRejected(const QString& login);
 
@@ -49,11 +50,12 @@ class ClientController : public QObject {
   void FriendRequestResult(bool);
   void AddFriendRequestInfo(QString);
   void NewFriendRequestResult(QString, quint32);
-  void DeleteRequestResult(bool);
+  void DeleteRequestResult(quint32);
 
 
  private slots:
   void OnNewConnection(QTcpSocket* socket);
+ public slots:
   void OnLogin(bool);
 
  private:
