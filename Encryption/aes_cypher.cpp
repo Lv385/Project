@@ -100,7 +100,7 @@ void AESCypher::MixColumns(QByteArray& plaintext, QVector<char>&C_s)
   //a(x) =  x*x*x*x + x*x*x + x*x + x +1
   //c(x) = 3*x*x*x + x*x + x+2
  // + is XOR     * is bitwise AND
-  
+   //  00011011 is representing  pow(x,8)+ pow(x,4) +pow(x,3) + pow(x,1)+1  pow(x,n) == x*x*x*x*... n times
  // possibly working
 
   QByteArray::iterator it = iter_state->begin();
