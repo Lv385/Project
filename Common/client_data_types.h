@@ -45,6 +45,7 @@ struct User {
 	QVector<UsersID> friends;
 	QVector<UsersID> requests;
 	QVector<UsersID> notification;
+	QVector<UsersID> deletenotificatoin;
 };
 //
 enum  RequestType
