@@ -3,7 +3,6 @@ import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
 import QtMultimedia 5.12
 
-
 Page {
     id: page
 
@@ -23,19 +22,19 @@ Page {
     property alias editProfileMenu: editProfileMenu
     property alias settingsMenu: settingsMenu
     property alias settingsMA: settingsMA
-	property alias logoutMA: logoutMA
-	property alias messageSound: messageSound
-	property alias friendSound: friendSound
+    property alias logoutMA: logoutMA
+    property alias messageSound: messageSound
+    property alias friendSound: friendSound
 
-	SoundEffect {
-		id: messageSound
-		source: "qrc:/message_sound.wav"
-		}
+    SoundEffect {
+        id: messageSound
+        source: "qrc:/message_sound.wav"
+    }
 
-	SoundEffect {
-		id: friendSound
-		source: "qrc:/friend_sound.wav"
-		}
+    SoundEffect {
+        id: friendSound
+        source: "qrc:/friend_sound.wav"
+    }
 
     Pane {
         id: pane1
@@ -102,26 +101,24 @@ Page {
             font.family: "fontawesome"
             color: backGroundColor
 
-					Text {
-			text: guiManager.unread_requests ? guiManager.unread_requests : ""
-			color: friendListColor
-            font.pointSize: 6
-			anchors.right: parent.right
-			anchors.bottom: parent.bottom 
-			clip: false
-			Rectangle {
-				z: -1
-				height: parent.height + 5
-				width: (parent.width == 0) ? 0 : (parent.width < parent.height) ? parent.height + 7 : parent.width + 7   //  =)
-				anchors.verticalCenter: parent.verticalCenter
-				anchors.horizontalCenter: parent.horizontalCenter
-				color: borderColor
-				radius: width
-			}
-		}
+            Text {
+                text: guiManager.unread_requests ? guiManager.unread_requests : ""
+                color: friendListColor
+                font.pointSize: 6
+                anchors.right: parent.right
+                anchors.bottom: parent.bottom
+                clip: false
+                Rectangle {
+                    z: -1
+                    height: parent.height + 5
+                    width: (parent.width == 0) ? 0 : (parent.width < parent.height) ? parent.height + 7 : parent.width + 7 //  =)
+                    anchors.verticalCenter: parent.verticalCenter
+                    anchors.horizontalCenter: parent.horizontalCenter
+                    color: borderColor
+                    radius: width
+                }
+            }
         }
-
-
 
         background: Rectangle {
             color: friendListColor
@@ -151,23 +148,23 @@ Page {
                         anchors.left: parent.left
                         anchors.leftMargin: 5
 
-								Text {
-			text: guiManager.unread_requests ? guiManager.unread_requests : ""
-			color: friendListColor
-            font.pointSize: 5
-			anchors.right: parent.right
-			anchors.bottom: parent.bottom 
-			clip: false
-			Rectangle {
-				z: -1
-				height: parent.height + 5
-				width: (parent.width == 0) ? 0 : (parent.width < parent.height) ? parent.height + 7 : parent.width + 7   //  =)
-				anchors.verticalCenter: parent.verticalCenter
-				anchors.horizontalCenter: parent.horizontalCenter
-				color: borderColor
-				radius: width
-			}
-		}
+                        Text {
+                            text: guiManager.unread_requests ? guiManager.unread_requests : ""
+                            color: friendListColor
+                            font.pointSize: 5
+                            anchors.right: parent.right
+                            anchors.bottom: parent.bottom
+                            clip: false
+                            Rectangle {
+                                z: -1
+                                height: parent.height + 5
+                                width: (parent.width == 0) ? 0 : (parent.width < parent.height) ? parent.height + 7 : parent.width + 7 //  =)
+                                anchors.verticalCenter: parent.verticalCenter
+                                anchors.horizontalCenter: parent.horizontalCenter
+                                color: borderColor
+                                radius: width
+                            }
+                        }
                     }
 
                     Text {
@@ -279,10 +276,10 @@ Page {
                         color: backGroundColor
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
-                        anchors.leftMargin: 30	
-					}
-                  
-				  MouseArea {
+                        anchors.leftMargin: 30
+                    }
+
+                    MouseArea {
                         id: settingsMA
                         anchors.fill: parent
                     }
@@ -302,8 +299,8 @@ Page {
                         }
                     }
                 }
-				
-				Rectangle {
+
+                Rectangle {
                     x: 0
                     y: 410
                     width: friendList.width
@@ -311,7 +308,7 @@ Page {
                     height: 30
                     color: friendMouseAreaColor
 
-					Text {
+                    Text {
                         text: "\uf057"
                         font.pointSize: 15
                         font.family: "fontawesome"
@@ -328,24 +325,23 @@ Page {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
                         anchors.leftMargin: 30
-					}
+                    }
 
                     MouseArea {
                         id: logoutMA
                         anchors.fill: parent
                     }
-				}
+                }
 
-            Image {
-                id: logo
-                width: parent.width
-                source: "qrc:/user.png"
-                fillMode: implicitWidth > width ? Image.PreserveAspectFit : Image.Pad
+                Image {
+                    id: logo
+                    width: parent.width
+                    source: "qrc:/user.png"
+                    fillMode: implicitWidth > width ? Image.PreserveAspectFit : Image.Pad
+                }
             }
         }
     }
-}
-
 
     Rectangle {
         x: friendList.x
@@ -366,16 +362,36 @@ Page {
         boundsBehavior: Flickable.StopAtBounds
         orientation: ListView.Vertical
     }
+    Pane {
+        id: pane
+        anchors.bottom: parent.bottom
+        anchors.right: parent.right
+        width: page.width - friendList.width
+        height: 70
+        Layout.fillWidth: true
+		padding: 0
+       
+        TextField {
+            id: messageField
+            anchors.fill: parent
+            focus: true
+            Layout.fillWidth: true
+            placeholderText: qsTr("Compose message")
+            wrapMode: TextField.Wrap
+            background: Rectangle {
+            color: friendMouseAreaColor
+            }
+        }
+    }
 
     ColumnLayout {
         id: columnLayout
         width: page.width - 330
-        height:page.height-150
-		anchors.right: parent.right
-		anchors.top: parent.top
-		anchors.topMargin: 70
-		anchors.rightMargin: 20
-
+        height: page.height - 150
+        anchors.right: parent.right
+        anchors.top: parent.top
+        anchors.topMargin: 70
+        anchors.rightMargin: 20
 
         ListView {
             id: messageList
@@ -394,33 +410,6 @@ Page {
 
             ScrollBar.vertical: ScrollBar {
                 anchors.left: parent.right
-            }
-        }
-
-        Pane {
-            id: pane
-            anchors.bottom:window.bottom
-			anchors.right:window.right
-			parent: window.overlay
-            width: parent.width-friendList.width
-            height: 70
-            Layout.fillWidth: true
-            focus: true 
-
-            TextField {
-                id: messageField
-                anchors.bottom: window.bottom
-				anchors.right:window.right
-				//parent: window.overlay
-                width: window.width-friendList.width
-                height: 70
-                focus: true
-                Layout.fillWidth: true
-                placeholderText: qsTr("Compose message")
-                wrapMode: TextField.Wrap
-                background: Rectangle {
-                color: friendMouseAreaColor
-                }
             }
         }
     }

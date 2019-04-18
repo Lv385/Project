@@ -25,17 +25,12 @@ Page {
         border.width: 0
         transformOrigin: Item.Center
 
-        Text {
-            id: icontext
-            width: 390
-            height: 160
-            text: qsTr("MesX")
-            anchors.verticalCenterOffset: 0
-            anchors.horizontalCenterOffset: 0
-            anchors.centerIn: parent
-            font.pointSize: 110
-            font.family: "Verdana"
-            color: mainAppColor
+        Image {
+		source: "qrc:/MesX_logo.png"
+		anchors.horizontalCenter: parent.horizontalCenter
+		anchors.verticalCenter: parent.verticalCenter
+		height: iconRect.height
+		width: height
         }
     }
 

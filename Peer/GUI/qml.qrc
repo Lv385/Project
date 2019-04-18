@@ -15,5 +15,6 @@
         <file>user.png</file>
         <file>message_sound.wav</file>
         <file>friend_sound.wav</file>
+        <file>MesX_logo.png</file>
     </qresource>
 </RCC>
