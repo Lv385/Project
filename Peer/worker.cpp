@@ -17,8 +17,8 @@ Worker::Worker(BlockReader* reader, unsigned user_id, unsigned my_id)
                      new RecieveMessageStrategy());
 }
 
-Worker::Worker(Friend peer_info, QString message, unsigned my_id)
-    : message_(message), peer_info_(peer_info), 
+Worker::Worker(Friend peer_info, unsigned my_id)
+    : peer_info_(peer_info), 
       my_id_(my_id),
       logger_(ClientLogger::Instance()),
       redirector_(SignalRedirector::get_instance()) {
@@ -60,7 +60,7 @@ void Worker::SendMessage(const QString& message) {
   //timer_.start(k_msc);
   MessageInfo mes = {message};
   QByteArray data = Parser::Message_ToByteArray(mes);
-  client_data_.AddMessageToDB(message_, peer_info_.id, my_id_);
+  client_data_.AddMessageToDB(message, peer_info_.id, my_id_);
   writer_->WriteBlock(data);
   emit MessageSent(peer_info_.id, true);
 }
@@ -93,13 +93,21 @@ void Worker::OnReadyReadBlock() {
   QByteArray data;
   while (reader_->HasPendingBlock()) {
     data = reader_->ReadNextBlock();
-    quint8 type = Parser::getRequestType(data);
-    strategy_ = strategies_[static_cast<ClientClientRequest>(type)];
-    Friend info;
-    strategy_->set_data(data);
-    strategy_->set_peer_info(peer_info_);
-    strategy_->set_my_id(my_id_);
-    DoWork();
+    ClientClientRequest type =
+        static_cast<ClientClientRequest>(Parser::getRequestType(data));
+
+    if (strategies_.find(type) != strategies_.end()) {
+      strategy_ = strategies_[static_cast<ClientClientRequest>(type)];
+      Friend info;
+      strategy_->set_data(data);
+      strategy_->set_peer_info(peer_info_);
+      strategy_->set_my_id(my_id_);
+      DoWork();
+    } else {
+      logger_->WriteLog(
+          LogType::WARNING,
+          "unknown client request recieved from" + socket_->peerName());
+    }
   }
 }
 

@@ -4,7 +4,7 @@
 ClientController::ClientController(QObject *parent)
     : QObject(parent),
       local_server_(app_info_),
-      friend_manager_(app_info_),
+      friends_manager_(app_info_),
       redirector_(SignalRedirector::get_instance()),
       server_manager_(nullptr),
       cache_data_(CacheData::get_instance()) {
@@ -22,7 +22,10 @@ ClientController::ClientController(QObject *parent)
 
   connect(friends_update_manager_, SIGNAL(StatusChanged(unsigned, bool)), this,
           SIGNAL(StatusChanged(unsigned, bool)));
-
+  connect(this, SIGNAL(StatusChanged(unsigned, bool)), this,
+          SLOT(OnStatusChanged(unsigned, bool)));
+  connect(this, SIGNAL(MessagesSent(unsigned)), &friends_manager_, 
+          SIGNAL(MessagesSent(unsigned)));
   QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
   // use the first non-localhost IPv4 address
   for (int i = 0; i < ipAddressesList.size(); ++i) {
@@ -46,13 +49,18 @@ QVector<Friend> ClientController::LoadFriends() {
 }
 
 void ClientController::SendMessage(const unsigned& id, const QString& message) {
-  Friend friend_info = client_data_.GetFriend(id);
-  friend_manager_.SendMessage(friend_info, message);
+  friends_manager_.AddMessageToSend(id, message);
+  friends_manager_.SendMessages(id);
 }
 
 void ClientController::LogIn(const QString& login, const QString& password) {
+  app_info_.my_id = client_data_.GetIdByLogin(login);
+  app_info_.my_login = login;
+  app_info_.my_password = password;
+  InitNetworkSettings();
+
   LoginInfo info;
-  info.id = client_data_.GetIdByLogin(login);   //FIXME: LogIn should work by login(not id)
+  info.id = client_data_.GetIdByLogin(login);
   info.password = password;
   info.port = app_info_.my_port;
 
@@ -62,6 +70,9 @@ void ClientController::LogIn(const QString& login, const QString& password) {
 }
 
 void ClientController::Register(const QString& login,const QString& password) {
+  app_info_.my_login = login;
+  app_info_.my_password = password;
+  InitNetworkSettings();
   RegisterInfo info;
   info.login = login;
   info.password = password;
@@ -101,13 +112,15 @@ void ClientController::AddMeToDB() {
                          app_info_.my_port);
 }
 
-void ClientController::SetAppInfo(ApplicationInfo info) {}
-
 void ClientController::InitNetworkSettings() {
   QSettings settings(k_ini_file_name, QSettings::IniFormat);
   app_info_.remote_server_ip = settings.value("remote_server_ip", k_default_remote_server_ip).toString();
-  app_info_.remote_server_port = settings.value("remote_server_port", k_default_remote_server_ip).toInt();
-  app_info_.my_port = settings.value("my_port", k_default_my_ip).toInt();
+  app_info_.remote_server_port = settings.value("remote_server_port", k_default_remote_server_port).toInt();
+  app_info_.my_port = settings.value("my_port", k_default_my_port).toInt();
+
+  settings.setValue("remote_server_ip", app_info_.remote_server_ip.toString());
+  settings.setValue("remote_server_port", app_info_.remote_server_port);
+  settings.setValue("my_port", app_info_.my_port);
   settings.sync();
 }
 
@@ -160,8 +173,14 @@ void ClientController::OnNewConnection(QTcpSocket *socket) {
     server_manager_->set_socket(socket);
   } else {
     BlockReader *reader = new BlockReader(socket);
-    connect(reader, SIGNAL(ReadyReadBlock()), &friend_manager_,
+    connect(reader, SIGNAL(ReadyReadBlock()), &friends_manager_,
             SLOT(OnFirstRequestRecieved()));
+  }
+}
+
+void ClientController::OnStatusChanged(unsigned id, bool status) { 
+  if (status) {
+    friends_manager_.SendMessages(id);
   }
 }
 
@@ -171,4 +190,6 @@ void ClientController::Start() {
 
 void ClientController::Stop() { 
   local_server_.Stop(); 
+  friends_update_manager_->Stop();
+  friends_manager_.CleanUp();
 }

@@ -23,7 +23,7 @@ class Worker : public QObject {
 
  public:
   Worker(BlockReader* reader, unsigned user_id, unsigned my_id);
-  Worker(Friend peer_info, QString message, unsigned my_id);
+  Worker(Friend peer_info, unsigned my_id);
   ~Worker();
 
   void DoWork();
