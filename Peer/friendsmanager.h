@@ -24,7 +24,8 @@ class FriendsManager : public QObject {
   void AddMessageToSend(unsigned id, QString message);
   void CleanUp();
  private:
-  void ReallySendMessages(unsigned id);
+  void SendPendingMessages(unsigned id);
+
 signals:
   void MessagesSent(unsigned);
 

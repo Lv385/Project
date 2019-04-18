@@ -31,7 +31,7 @@ void FriendsManager::SendMessages(const unsigned& id) {
               SLOT(OnError(unsigned))); worker->dumpObjectInfo();
     } else {
       logger_->WriteLog(INFO, "Sending  to " + log);
-      ReallySendMessages(id);
+      SendPendingMessages(id);
     }
   }
 }
@@ -47,7 +47,7 @@ void FriendsManager::CleanUp() {
   connecting_workers_.clear();
 }
 
-void FriendsManager::ReallySendMessages(unsigned id) {
+void FriendsManager::SendPendingMessages(unsigned id) {
   while (pending_messages_[id].size()) {
     QString toSend = *pending_messages_[id].begin();
     workers_[id]->SendMessage(toSend);
@@ -60,7 +60,7 @@ void FriendsManager::OnConnected(unsigned id) {
   workers_.insert(id, connecting_workers_[id]);
   connecting_workers_.remove(id);
 
-  ReallySendMessages(id);
+  SendPendingMessages(id);
 }
 
 void FriendsManager::OnError(unsigned id) {
