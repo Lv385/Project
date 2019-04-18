@@ -23,6 +23,8 @@ class FriendsManager : public QObject {
   ~FriendsManager();
   void SendMessage(Friend peer_info, QString message);
 
+ private:
+  
  private slots:
   void OnFirstRequestRecieved();
 
@@ -34,6 +36,7 @@ class FriendsManager : public QObject {
   ApplicationInfo& app_info;
   QHash<unsigned, Worker*> connecting_workers_;
   QHash<unsigned, Worker*> workers_;
+  QMap<unsigned, QList<QString>> pending_messages_; 
   ClientLogger* logger_;
 };
 

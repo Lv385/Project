@@ -85,6 +85,18 @@ void ClientController::AddFriend(QString login) {
 
 void ClientController::SetAppInfo(ApplicationInfo info) {}
 
+void ClientController::InitNetworkSettings() {
+  QSettings settings(k_ini_file_name, QSettings::IniFormat);
+  app_info_.remote_server_ip = settings.value("remote_server_ip", k_default_remote_server_ip).toString();
+  app_info_.remote_server_port = settings.value("remote_server_port", k_default_remote_server_ip).toInt();
+  app_info_.my_port = settings.value("my_port", k_default_my_ip).toInt();
+  settings.sync();
+}
+
+void ClientController::GetIdByLogin(const QString &login) {
+  client_data_.get_id_by_login(login);
+}
+
 QVector<Message> ClientController::LoadMessages(unsigned id) {
   QVector<Message> result = client_data_.get_messages(id);
   return result;
@@ -114,11 +126,9 @@ void ClientController::FriendRequestRejected(QString login) {
 
 void ClientController::OnLogin(bool logged_in) {
   if(logged_in){
-    friends_update_manager_->SetUpdateReceiver();
-    friends_update_manager_->SetUpdateSender();
+    friends_update_manager_->Start();
   } else{
     this->Stop();
-    friends_update_manager_->StopUpdateListening();
   }
 }
 
@@ -131,7 +141,6 @@ void ClientController::OnNewConnection(QTcpSocket *socket) {
     BlockReader *reader = new BlockReader(socket);
     connect(reader, SIGNAL(ReadyReadBlock()), &friend_manager_,
             SLOT(OnFirstRequestRecieved()));
-
   }
 }
 
@@ -139,4 +148,6 @@ void ClientController::Start() {
   local_server_.Start();
 }
 
-void ClientController::Stop() { local_server_.Stop(); }
+void ClientController::Stop() { 
+  local_server_.Stop(); 
+}

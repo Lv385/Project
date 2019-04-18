@@ -56,9 +56,9 @@ void Worker::set_my_id(unsigned id) {
   my_id_ = id; 
 }
 
-void Worker::SendMessage() {
-  timer_.start(k_msc);
-  MessageInfo mes = {message_};
+void Worker::SendMessage(const QString& message) {
+  //timer_.start(k_msc);
+  MessageInfo mes = {message};
   QByteArray data = Parser::Message_ToByteArray(mes);
   client_data_.AddMessageToDB(message_, peer_info_.id, my_id_);
   writer_->WriteBlock(data);
@@ -84,10 +84,9 @@ void Worker::OnConnected() {
   //connect(&timer_, SIGNAL(timeout()), 
   //        this, SLOT(OnTimedOut()));
   unsigned id = peer_info_.id;
-  emit Connected(id);
   ConnectInfo connect_info = {my_id_};
   writer_->WriteBlock(Parser::ConnectInfo_ToByteArray(connect_info));
-  SendMessage();
+  emit Connected(id);
 }
 
 void Worker::OnReadyReadBlock() {

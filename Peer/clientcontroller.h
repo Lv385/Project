@@ -1,12 +1,13 @@
 #ifndef CLIENT_CONTROLLER_H
 #define CLIENT_CONTROLLER_H
 
+#include "config.h"
+
 #include "application_info.h"
 #include "cachedata.h"
 #include "friendsmanager.h"
 #include "friendsupdatemanager.h"
 #include "localserver.h"
- 
 #include "servermanager.h"
 
 #include <QByteArray>
@@ -14,6 +15,7 @@
 #include <QObject>
 #include <QTcpSocket>
 #include <memory>
+#include <QSettings>
 
 #include "../Parser&Structs/request_types.h"
 
@@ -36,6 +38,8 @@ class ClientController : public QObject {
   void FriendRequestRejected(QString);
 
   void SetAppInfo(ApplicationInfo info);
+  void InitNetworkSettings();
+  void GetIdByLogin(const QString& login);
   //QString GetMessage(unsigned);
   QVector<Message> LoadMessages(unsigned id);
   QVector<Friend> LoadFriends();
@@ -55,6 +59,7 @@ class ClientController : public QObject {
  private slots:
   void OnNewConnection(QTcpSocket* socket);
   void OnLogin(bool);
+  //void OnRegistered();
 
  private:
   void Start();

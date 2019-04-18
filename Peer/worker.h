@@ -39,7 +39,7 @@ class Worker : public QObject {
   void MessageRecieved(Message* message);
 
  public slots:
-  void SendMessage();
+  void SendMessage(const QString& message);
 
  private slots:
   void OnDisconnected();

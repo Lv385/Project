@@ -3,11 +3,7 @@
 
 LocalServer::LocalServer(ApplicationInfo& app_info)
     : app_info_(app_info),
-      logger_(ClientLogger::Instance())
-      
-      //remote_server_ip_(remote_server_ip),
-      //remote_server_port_(remote_server_port) 
-{}
+      logger_(ClientLogger::Instance()){}
 
 
 void LocalServer::incomingConnection(qintptr socketDescriptor) {
@@ -15,11 +11,6 @@ void LocalServer::incomingConnection(qintptr socketDescriptor) {
   socket->setSocketDescriptor(socketDescriptor);
   emit NewConnection(socket);
 }
-//void LocalServer::set_remote_server_ip_port(QHostAddress& remote_server_ip,
-//                                          quint16& remote_server_port) {
-//  app = remote_server_ip;
-//  remote_server_port_ = remote_server_port;
-//}
 
 bool LocalServer::Start() {
   QString log; 

@@ -15,12 +15,17 @@ FriendsUpdateManager::FriendsUpdateManager(ApplicationInfo& app_info)
 FriendsUpdateManager::~FriendsUpdateManager(){
 }
 
-void FriendsUpdateManager::SetUpdateReceiver() {
-  update_receiver_.bind(QHostAddress::AnyIPv4, app_info_.my_port,
+bool FriendsUpdateManager::SetUpdateReceiver() {
+ return update_receiver_.bind(QHostAddress::AnyIPv4, app_info_.my_port,
                         QUdpSocket::ShareAddress);
 }
 
-void FriendsUpdateManager::StopUpdateListening() {
+bool FriendsUpdateManager::Start() {
+  SetUpdateSender();
+  return SetUpdateReceiver();
+}
+
+void FriendsUpdateManager::Stop() {
   update_sender_.close();
   update_receiver_.close();
   update_info_timer_.stop();
@@ -42,14 +47,12 @@ void FriendsUpdateManager::SendUpdateInfo() {
 
   QVector<Friend> friends = client_data_.get_friends();
   for (const Friend& i : friends) {
-    update_sender_.writeDatagram(to_write, QHostAddress(i.ip),
-                                 app_info_.my_port);
+    update_sender_.writeDatagram(to_write, QHostAddress(i.ip), i.port);
   }
   logger_->WriteLog(LogType::INFO, " update sent");
 }
 
 void FriendsUpdateManager::UpdateFriendsInfo() {
-
   while (update_receiver_.hasPendingDatagrams()) {
   datagram.resize(static_cast<int>(update_receiver_.pendingDatagramSize()));
   QHostAddress peer_address;

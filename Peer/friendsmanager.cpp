@@ -6,7 +6,6 @@ FriendsManager::FriendsManager(ApplicationInfo& info)
 
 }
 
-
 FriendsManager::~FriendsManager() {}
 
 void FriendsManager::SendMessage(Friend peer_info, QString message) { 
@@ -16,8 +15,9 @@ void FriendsManager::SendMessage(Friend peer_info, QString message) {
   
   if(connecting_workers_.find(id) != connecting_workers_.end()) {
     logger_->WriteLog(INFO, "Still connecting to " + log);
-
+    pending_messages_[peer_info.id].append(message);
   } else if(workers_.find(id) == workers_.end()) {
+    pending_messages_[peer_info.id].append(message);
     logger_->WriteLog(INFO, "Connecting to " + log);
     Worker* worker = new Worker(peer_info, message, app_info.my_id);
     connecting_workers_.insert(id, worker);
@@ -28,29 +28,40 @@ void FriendsManager::SendMessage(Friend peer_info, QString message) {
     connect(worker, SIGNAL(Error(unsigned)), this, SLOT(OnError(unsigned)));
   } else {
     logger_->WriteLog(INFO, "Sending  to " + log);
-    workers_[id]->set_my_id(app_info.my_id);
-    workers_[id]->set_message(message);
-    workers_[id]->SendMessage();
+    workers_[id]->SendMessage(message);
   }
 }
 
 
-void FriendsManager::OnDisconnected(unsigned id) {
-  if (workers_.find(id) != workers_.end()) {
-    Worker* to_delete = workers_[id];
-    workers_.remove(id);
-    delete to_delete; 
-  }
-}
+
 
 void FriendsManager::OnConnected(unsigned id) { 
   workers_.insert(id, connecting_workers_[id]);
   connecting_workers_.remove(id);
+
+  while (pending_messages_[id].size()) {
+    QString toSend = *pending_messages_[id].begin();
+    workers_[id]->SendMessage(toSend);
+    pending_messages_[id].pop_front();
+  }
 }
 
 void FriendsManager::OnError(unsigned id) {
   logger_->WriteLog(ERROR, "Failed on to" + QString::number(id));
 
+  if (connecting_workers_.find(id) != connecting_workers_.end()) {
+    Worker* to_delete = connecting_workers_[id];
+    connecting_workers_.remove(id);
+    delete to_delete;
+  }
+  if (workers_.find(id) != workers_.end()) {
+    Worker* to_delete = workers_[id];
+    workers_.remove(id);
+    delete to_delete;
+  }
+}
+
+void FriendsManager::OnDisconnected(unsigned id) {
   if (connecting_workers_.find(id) != connecting_workers_.end()) {
     Worker* to_delete = connecting_workers_[id];
     connecting_workers_.remove(id);

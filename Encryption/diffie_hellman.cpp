@@ -15,7 +15,7 @@ Key::Key()
 
 int Key::SetNewPow()
 {
-  my_pow = int(rand()%5000); // our a should fix
+  my_pow = int(rand() % 5000); // our a should fix
   return my_pow;
 }
 
@@ -29,9 +29,7 @@ void Key::SetFriendCode(int B)
   friend_code = B;
 }
 
-int Key::GetKey()
-{
+int Key::GetKey(){
   return int(pow(friend_code, my_pow));
-
 }
 
