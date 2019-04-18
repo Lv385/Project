@@ -17,5 +17,6 @@
         <file>friend_sound.wav</file>
         <file>loading-icon.png</file>
         <file>loading-icon2.png</file>
+	<file>MesX_logo.png</file>
     </qresource>
 </RCC>
