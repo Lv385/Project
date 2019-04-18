@@ -19,6 +19,10 @@ using json = nlohmann::json;
 //  wt.SetHeader("SPEK");
 //  wt.SetPayload(1);
 //  QString token = wt.GetToken("key");
+//@To parse token back:
+//	WebToken webt{tok};
+//	webt.ParseToken();
+//	std::cout << webt.IsSignatureValid("key");
 
 class WebToken {
  public:
@@ -42,7 +46,6 @@ class WebToken {
   std::string signature_;
 
   SpeckCypher cypher;
-
 };
 
 #endif  // !WEB_TOKEN
