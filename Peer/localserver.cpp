@@ -1,5 +1,4 @@
 #include "localserver.h"
-#include "connection.h"
 
 LocalServer::LocalServer(ApplicationInfo& app_info)
     : app_info_(app_info),

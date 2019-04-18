@@ -10,15 +10,15 @@ DeleteRequestResponseStrategy::~DeleteRequestResponseStrategy()
 {}
 
 void DeleteRequestResponseStrategy::DoWork() {
-  quint8 type = Parser::getRequestType(data_);
+  ServerRequest type = static_cast<ServerRequest> (Parser::getRequestType(data_));
   DeleteNotificationInfo info = Parser::ParseAsDeleteNotificationInfo(data_);
 
-  if (type == static_cast<quint8>(ServerRequest::DELETE_REQUEST_SUCCEED)) {
+  if (type == ServerRequest::DELETE_REQUEST_SUCCEED) {
     client_data_.DeleteFriend(info.id);
     emit DeleteRequestResult(info.id);
-  } else if (type == static_cast<quint8>(ServerRequest::DELETE_REQUEST_FAILED)) {
+  } else if (type == ServerRequest::DELETE_REQUEST_FAILED) {
     emit DeleteRequestResult(0);
-  } else if (type == static_cast<quint8>(ServerRequest::DELETE_NOTIFICATION_INFO)) {
+  } else if (type == ServerRequest::DELETE_NOTIFICATION_INFO) {
     client_data_.DeleteFriend(info.id);
     emit DeleteRequestResult(info.id);
   }
