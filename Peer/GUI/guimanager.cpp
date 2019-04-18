@@ -77,7 +77,7 @@ void GUIManager::deleteFriend(quint32 friend_to_delete) {
 
 void GUIManager::newMessage(QString message) {
   Message* temp = new Message{0, selected_friend_id_, controller_->app_info_.my_id, message,
-                              QDate::currentDate(), QTime::currentTime()};
+                              QDate::currentDate(), QTime::currentTime(), false};
   messages_cache_[selected_friend_id_].push_back(temp);
   MessageItem* new_message = new MessageItem(temp);
   message_model_.AddMessageToList(new_message);
@@ -106,7 +106,8 @@ void GUIManager::LoadAllMessages(unsigned friend_id) {
   Message* temp;
   QList<Message*> messages;
   QVector<Message> history = controller_->LoadMessages(friend_id);  //use controller's func  
-  for (const auto& msg : history) {
+  for (auto msg : history) {
+    msg.status = true;
     temp = new Message(msg);
     messages.push_back(temp);
   }
@@ -115,6 +116,7 @@ void GUIManager::LoadAllMessages(unsigned friend_id) {
 
 void GUIManager::LoadMessage(Message* msg) {
   MessageItem* new_message;
+  msg->status = true;
 
   messages_cache_[msg->chat_id].push_back(msg);
   if (selected_friend_id_ == msg->chat_id) {
@@ -147,8 +149,8 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   controller_->app_info_.my_password = user_password;
   controller_->app_info_.my_id = client_data_.GetIdByLogin(user_login);  //FIXME
   logger_->WriteLog(LogType::SUCCESS, user_login);
-  controller_->LogIn(user_login, user_password);
-  //OnLoginResult(true);
+  //controller_->LogIn(user_login, user_password);
+  OnLoginResult(true);
 }
 
 void GUIManager::LogOut() {
