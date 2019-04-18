@@ -142,6 +142,8 @@ void ClientController::FriendRequestRejected(const QString& login) {
   QByteArray data = Parser::FriendRequestInfo_ToByteArray(
       info, static_cast<quint8>(ClientRequest::FRIENDSHIP_REJECTED));
   server_manager_->SendRequest(data);
+  FriendRequest request_to_delete{login, RequestForMe};
+  client_data_.DeleteRequest(request_to_delete);
 }
 
 void ClientController::OnLogin(bool logged_in) {
