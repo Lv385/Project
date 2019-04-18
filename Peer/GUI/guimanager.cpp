@@ -151,6 +151,11 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   //OnLoginResult(true);
 }
 
+void GUIManager::LogOut() {
+  friend_model_.RemoveAllFriendsFromList();
+  controller_->Stop();
+}
+
 void GUIManager::Register(QString user_login, QString user_password) {
   controller_->app_info_.remote_server_ip = "192.168.195.144";  //"192.168.103.121" sviatoslav
   controller_->app_info_.remote_server_port = 8888;

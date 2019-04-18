@@ -90,6 +90,11 @@ import Qt.labs.settings 1.0
 	settingsMA.onClicked: {
 		settingsMenu.open()
 		}
+	logoutMA.onClicked: {
+			guiManager.LogOut()
+			drawer.close()
+			stackView.pop()
+		}
 
     messageField.onEditingFinished: {
         if(messageField.text != "") {

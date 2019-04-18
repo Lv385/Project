@@ -22,6 +22,7 @@ Page {
     property alias editProfileMenu: editProfileMenu
     property alias settingsMenu: settingsMenu
     property alias settingsMA: settingsMA
+	property alias logoutMA: logoutMA
 	property alias messageSound: messageSound
 	property alias friendSound: friendSound
 

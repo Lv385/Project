@@ -35,6 +35,8 @@ class ClientController : public QObject {
 
   void FriendRequestAccepted(const QString& login);
   void FriendRequestRejected(const QString& login);
+  
+  void Stop();
 
   void SetAppInfo(ApplicationInfo info);
   //QString GetMessage(unsigned);
@@ -61,7 +63,6 @@ class ClientController : public QObject {
 
  private:
   void Start();
-  void Stop();
 
  public:
   ApplicationInfo app_info_;
