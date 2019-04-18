@@ -56,6 +56,15 @@ bool FriendModel::RemoveFriendFromList(FriendItem* friend_to_delete) {
   }
 }
 
+void FriendModel::RemoveAllFriendsFromList(){
+  if (!friends_list_.isEmpty()) {
+    beginRemoveRows(QModelIndex(), 0, friends_list_.size() - 1);
+    qDeleteAll(friends_list_);  // deleting all elements
+    friends_list_.clear();      // removing all elements
+    endRemoveRows();
+  }
+}
+
 FriendItem* FriendModel::FindFriendItem(quint32 id) { 
   FriendItem *friend_item = nullptr;
   for (auto* a : friends_list_) {

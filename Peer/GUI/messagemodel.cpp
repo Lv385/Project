@@ -41,3 +41,13 @@ void MessageModel::RemoveAllMessagesFromList() {
   }
 }
 
+void MessageModel::SetMessagesAsSent() {
+  for (auto it = messages_list_.begin(); it != messages_list_.end(); it++) {
+    if ((*it)->sent_status()) {
+      break;
+    } else {
+      (*it)->set_sent_status(true);
+    }
+  }
+}
+

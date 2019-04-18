@@ -1,9 +1,11 @@
 import QtQuick 2.12
 import QtQuick.Controls 2.5
 
+
+
 LoginPageForm {
     id: rect
-	
+
 	Keys.onPressed: {
 		if (event.key === Qt.Key_Return) {
 			runIndicator = true
@@ -32,6 +34,7 @@ LoginPageForm {
         stackView.push("RegisterPage.qml")
     }
 }
+
 
 /*##^## Designer {
     D{i:0;autoSize:true;height:480;width:640}

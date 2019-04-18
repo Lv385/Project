@@ -1,6 +1,18 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
+    <ClCompile Include="new_friend_response_strategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="delete_request_response_strategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="abstractstrategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="add_friend_request_strategy.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
     <ClCompile Include="blockreader.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
@@ -14,6 +26,9 @@
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="clientlogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="connection.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
     <ClCompile Include="dataaccessor.cpp">
@@ -203,6 +218,9 @@
     </QtMoc>
     <QtMoc Include="messagestrategy.h">
       <Filter>Header Files\Strategies</Filter>
+    </QtMoc>
+    <QtMoc Include="GUI\guimanager.h">
+      <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
   <ItemGroup>

@@ -2,7 +2,8 @@
 
 GUIManager::GUIManager(QObject *parent)
     : QObject(parent),
-      logger_(ClientLogger::Instance()) {     //for testing
+      logger_(ClientLogger::Instance()),
+      unread_requests_(0){     //for testing
   controller_ = new ClientController(this);
   logger_->set_log_level(LogLevel::HIGH);
 
@@ -38,7 +39,7 @@ FriendRequestModel *GUIManager::friend_request_model() {
   return &friend_request_model_;
 }
 
-unsigned GUIManager::selected_friend_id() { 
+unsigned GUIManager::selected_friend_id() const { 
   return selected_friend_id_; 
 }
 
@@ -47,6 +48,17 @@ void GUIManager::set_selected_friend_id(unsigned selected_id) {
 
   selected_friend_id_ = selected_id;
   emit SelectedFriendIdChanged(selected_id);
+}
+
+unsigned GUIManager::unread_requests() const {
+  return unread_requests_; 
+}
+
+void GUIManager::set_unread_requests(unsigned unread_requests) {
+  if (unread_requests_ == unread_requests) return;
+
+  unread_requests_ = unread_requests;
+  emit UnreadRequestsChanged(unread_requests);
 }
 
 void GUIManager::newFriend(QString new_friend_login, quint32 id) {
@@ -59,11 +71,13 @@ void GUIManager::deleteFriend(quint32 friend_to_delete) {
       return;
   FriendItem* to_delete = friend_model_.FindFriendItem(friend_to_delete);
   friend_model_.RemoveFriendFromList(to_delete);
+  message_model_.RemoveAllMessagesFromList(); //
+  emit showHighlighter(false);
 }
 
 void GUIManager::newMessage(QString message) {
   Message* temp = new Message{0, selected_friend_id_, controller_->app_info_.my_id, message,
-                              QDate::currentDate(), QTime::currentTime()};
+                              QDate::currentDate(), QTime::currentTime(), false};
   messages_cache_[selected_friend_id_].push_back(temp);
   MessageItem* new_message = new MessageItem(temp);
   message_model_.AddMessageToList(new_message);
@@ -84,6 +98,7 @@ void GUIManager::ShowMessages(unsigned friend_id) {
       message_model_.AddMessageToList(new_message);
     }
     friend_model_.DeleteUnreadMesgs(friend_id);
+    emit showHighlighter(true);
   }
 }
 
@@ -91,15 +106,17 @@ void GUIManager::LoadAllMessages(unsigned friend_id) {
   Message* temp;
   QList<Message*> messages;
   QVector<Message> history = controller_->LoadMessages(friend_id);  //use controller's func  
-  for (const auto& msg : history) {
+  for (auto msg : history) {
+    msg.status = true;
     temp = new Message(msg);
     messages.push_back(temp);
   }
-  messages_cache_[friend_id] = messages;
+  messages_cache_[friend_id] = messages;  //make masgs cache in client controller
 }
 
 void GUIManager::LoadMessage(Message* msg) {
   MessageItem* new_message;
+  msg->status = true;
 
   messages_cache_[msg->chat_id].push_back(msg);
   if (selected_friend_id_ == msg->chat_id) {
@@ -107,6 +124,22 @@ void GUIManager::LoadMessage(Message* msg) {
     message_model_.AddMessageToList(new_message);
   } else {
     friend_model_.AddUnreadMesg(msg->chat_id);
+  }
+  emit messageRing();
+}
+
+void GUIManager::OnMessagesSent(unsigned friend_id) {
+  if (selected_friend_id_ == friend_id) {
+    message_model_.SetMessagesAsSent();  
+  } else {
+    for (auto it = messages_cache_[friend_id].rbegin();
+         it < messages_cache_[friend_id].rend(); it++) {
+      if ((*it)->status) {
+        break;
+      } else {
+        (*it)->status = true;
+      }
+    }
   }
 }
 
@@ -119,11 +152,18 @@ void GUIManager::deleteFriendRiequest(FriendRequestItem* friend_request_to_delet
 void GUIManager::newFriendRiequest(QString login) {
   FriendRequestItem* new_friend_request = new FriendRequestItem(login);
   friend_request_model_.AddRequestToList(new_friend_request);
+  set_unread_requests(unread_requests() + 1);  // unread_requests_++
+  emit requestRing();
 }
 
 void GUIManager::LogIn(QString user_login, QString user_password) { 
   logger_->WriteLog(LogType::SUCCESS, user_login);
   controller_->LogIn(user_login, user_password);
+}
+
+void GUIManager::LogOut() {
+  friend_model_.RemoveAllFriendsFromList();
+  controller_->Stop();
 }
 
 void GUIManager::Register(QString user_login, QString user_password) {
@@ -132,10 +172,14 @@ void GUIManager::Register(QString user_login, QString user_password) {
 
 void GUIManager::OnLoginResult(bool logged_in) {
   if (logged_in) {
-    LoadFriends();
+    LoadFriendsAndMesgs();
 
     ShowMessages(friend_model_.GetFirstFriendId());
     selected_friend_id_ = friend_model_.GetFirstFriendId();
+
+    for (QString login : controller_->LoadFriendRequests()) {
+      newFriendRiequest(login);
+    }
 
     logger_->WriteLog(LogType::SUCCESS, controller_->app_info_.my_login);
     emit openMainPage();
@@ -163,7 +207,9 @@ void GUIManager::OnStatusChanged(unsigned id, bool status) {
 }
 
 void GUIManager::AddFriendRequest(QString new_friend_login) {
-  controller_->AddFriend(new_friend_login);
+  if (new_friend_login != controller_->app_info_.my_login) {
+    controller_->AddFriend(new_friend_login);
+  }
 }
 
 void GUIManager::OnFriendRequestResult(bool request_result) {
@@ -183,10 +229,12 @@ void GUIManager::OnAddFriendRequest(QString login) {
 
 void GUIManager::AcceptFriend(QString login) {
   controller_->FriendRequestAccepted(login);
+  set_unread_requests(unread_requests() - 1);
 }
 
 void GUIManager::RejectFriend(QString login) {
   controller_->FriendRequestRejected(login);  
+  set_unread_requests(unread_requests() - 1);
 }
 
 void GUIManager::OnNewFriendInfo(QString login, quint32 id) {
@@ -218,9 +266,10 @@ void GUIManager::SendMessage(QString message) {
   }
 }
 
-void GUIManager::LoadFriends() {   //don't forget to load id
+void GUIManager::LoadFriendsAndMesgs() {   //don't forget to load id
   for (const Friend& i : controller_->LoadFriends()) {
     if (i.id == controller_->app_info_.my_id) continue;
+    LoadAllMessages(i.id);
     FriendItem* friend_item = new FriendItem(i.login, false, i.id);
     friend_model_.AddFriendToList(friend_item);
   }
