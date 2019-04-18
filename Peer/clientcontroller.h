@@ -40,6 +40,7 @@ class ClientController : public QObject {
   //QString GetMessage(unsigned);
   QVector<Message> LoadMessages(unsigned id);
   QVector<Friend> LoadFriends();
+  QVector<QString> LoadFriendRequests();
 
  signals:
   void MessageSent(unsigned, bool);

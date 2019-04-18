@@ -27,6 +27,8 @@ class GUIManager : public QObject {
 
   Q_PROPERTY(unsigned selected_friend_id READ selected_friend_id 
              WRITE set_selected_friend_id NOTIFY SelectedFriendIdChanged)
+  Q_PROPERTY(unsigned unread_requests READ unread_requests 
+             WRITE set_unread_requests NOTIFY UnreadRequestsChanged)
 
  public:
   explicit GUIManager(QObject* parent = nullptr);
@@ -38,8 +40,11 @@ class GUIManager : public QObject {
   MessageModel* message_model();
   FriendRequestModel* friend_request_model();
 
-  unsigned selected_friend_id();
+  unsigned selected_friend_id() const;
   void set_selected_friend_id(unsigned);
+  unsigned unread_requests() const;
+  void set_unread_requests(unsigned);
+
 
   // theese functions must start from low letter
   Q_INVOKABLE void newFriend(QString, quint32);  // temporary implementation(for testing)
@@ -50,9 +55,12 @@ class GUIManager : public QObject {
 
 signals:
   void SelectedFriendIdChanged(unsigned id);
+  void UnreadRequestsChanged(unsigned num);
+
   void openMainPage();
   void openFailed(QString text);
   void showInfo(QString text);
+  void showHighlighter(bool to_show);
 
 public slots:
   void LogIn(QString user_login, QString user_password); 
@@ -78,6 +86,7 @@ public slots:
  private:
   void LoadFriends();  // temporary implementation(for testing)
   unsigned selected_friend_id_;
+  unsigned unread_requests_;
 
   FriendModel friend_model_;
   MessageModel message_model_;

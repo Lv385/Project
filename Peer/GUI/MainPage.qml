@@ -7,12 +7,14 @@ import QtQuick.Controls.Universal 2.12
 import Qt.labs.settings 1.0
 
 
-	MainPageForm {
+	
+
+
+MainPageForm {
 		id: window
 		background: Rectangle {
         color: backGroundColor
     }
-
 
     FriendListDelegateModel {
         id: friendModel
@@ -32,9 +34,18 @@ import Qt.labs.settings 1.0
     Component {
         id: highlightBar
         Rectangle {
+			property alias highlightRect: highlightRect
+			id: highlightRect
             width: friendList.width; height: 40
             color: friendMouseAreaColor
             y: friendList.currentItem.y;
+        }
+    }
+
+	Connections{
+        target: guiManager
+        onShowHighlighter: {
+			highlightRect.color = to_show ? friendMouseAreaColor :  "trasparent" //FIXME:
         }
     }
 

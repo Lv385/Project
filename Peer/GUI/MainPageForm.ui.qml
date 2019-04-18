@@ -85,7 +85,28 @@ Page {
             font.pointSize: 20
             font.family: "fontawesome"
             color: backGroundColor
+
+					Text {
+			text: guiManager.unread_requests ? guiManager.unread_requests : ""
+			color: friendListColor
+            font.pointSize: 6
+			anchors.right: parent.right
+			anchors.bottom: parent.bottom 
+			clip: false
+			Rectangle {
+				z: -1
+				height: parent.height + 5
+				width: (parent.width == 0) ? 0 : (parent.width < parent.height) ? parent.height + 7 : parent.width + 7   //  =)
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.horizontalCenter: parent.horizontalCenter
+				color: borderColor
+				radius: width
+			}
+		}
         }
+
+
+
         background: Rectangle {
             color: friendListColor
         }
@@ -113,6 +134,24 @@ Page {
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
                         anchors.leftMargin: 5
+
+								Text {
+			text: guiManager.unread_requests ? guiManager.unread_requests : ""
+			color: friendListColor
+            font.pointSize: 5
+			anchors.right: parent.right
+			anchors.bottom: parent.bottom 
+			clip: false
+			Rectangle {
+				z: -1
+				height: parent.height + 5
+				width: (parent.width == 0) ? 0 : (parent.width < parent.height) ? parent.height + 7 : parent.width + 7   //  =)
+				anchors.verticalCenter: parent.verticalCenter
+				anchors.horizontalCenter: parent.horizontalCenter
+				color: borderColor
+				radius: width
+			}
+		}
                     }
 
                     Text {
