@@ -24,7 +24,7 @@ ClientController::ClientController(QObject *parent)
           SIGNAL(StatusChanged(unsigned, bool)));
   connect(this, SIGNAL(StatusChanged(unsigned, bool)), this,
           SLOT(OnStatusChanged(unsigned, bool)));
-  connect(this, SIGNAL(MessagesSent(unsigned)), &friends_manager_, 
+  connect(&friends_manager_, SIGNAL(MessagesSent(unsigned)), this, 
           SIGNAL(MessagesSent(unsigned)));
   QList<QHostAddress> ipAddressesList = QNetworkInterface::allAddresses();
   // use the first non-localhost IPv4 address
