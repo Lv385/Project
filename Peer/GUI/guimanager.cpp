@@ -128,6 +128,21 @@ void GUIManager::LoadMessage(Message* msg) {
   emit messageRing();
 }
 
+void GUIManager::OnMessagesSent(unsigned friend_id) {
+  if (selected_friend_id_ == friend_id) {
+    message_model_.SetMessagesAsSent();  
+  } else {
+    for (auto it = messages_cache_[friend_id].rbegin();
+         it < messages_cache_[friend_id].rend(); it++) {
+      if ((*it)->status) {
+        break;
+      } else {
+        (*it)->status = true;
+      }
+    }
+  }
+}
+
 void GUIManager::deleteFriendRiequest(FriendRequestItem* friend_request_to_delete) {
   if (!friend_request_to_delete)
       return;
@@ -149,8 +164,8 @@ void GUIManager::LogIn(QString user_login, QString user_password) {
   controller_->app_info_.my_password = user_password;
   controller_->app_info_.my_id = client_data_.GetIdByLogin(user_login);  //FIXME
   logger_->WriteLog(LogType::SUCCESS, user_login);
-  //controller_->LogIn(user_login, user_password);
-  OnLoginResult(true);
+  controller_->LogIn(user_login, user_password);
+  //OnLoginResult(true);
 }
 
 void GUIManager::LogOut() {

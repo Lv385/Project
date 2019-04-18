@@ -74,6 +74,7 @@ public slots:
   void ShowMessages(unsigned id);  // temporary implementation(for testing)
   void LoadAllMessages(unsigned id);
   void LoadMessage(Message* msg);
+  void OnMessagesSent(unsigned);
   void OnStatusChanged(unsigned id, bool status);
   void AddFriendRequest(QString);
   void OnFriendRequestResult(bool);
