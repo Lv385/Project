@@ -263,8 +263,9 @@ void GUIManager::OnDeleteFriend(quint32 id) {
 
 void GUIManager::SendMessage(QString message) { 
   if (selected_friend_id_) {
-    controller_->SendMessage(selected_friend_id_, message);
     newMessage(message);
+    controller_->SendMessage(selected_friend_id_, message);
+    
   }
 }
 
