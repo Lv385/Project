@@ -94,6 +94,7 @@
   </ItemDefinitionGroup>
   <ItemGroup>
     <ClCompile Include="Connection\connect.cpp" />
+    <ClCompile Include="deletefriendnotification.cpp" />
     <ClCompile Include="friend.cpp" />
     <ClCompile Include="friendinfo.cpp" />
     <ClCompile Include="friendrequest.cpp" />
@@ -107,6 +108,7 @@
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="Connection\connect.h" />
+    <ClInclude Include="deletefriendnotification.h" />
     <ClInclude Include="friend.h" />
     <ClInclude Include="friendinfo.h" />
     <ClInclude Include="friendrequest.h" />

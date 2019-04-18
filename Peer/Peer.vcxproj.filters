@@ -1,86 +1,241 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <ClCompile Include="..\Parser&amp;Structs\parser.cpp" />
-    <ClCompile Include="blockreader.cpp" />
-    <ClCompile Include="blockwriter.cpp" />
-    <ClCompile Include="cachedata.cpp" />
-    <ClCompile Include="clientcontroller.cpp" />
-    <ClCompile Include="recieve_mesage_strategy.cpp" />
-    <ClCompile Include="friendsmanager.cpp" />
-    <ClCompile Include="connection.cpp" />
-    <ClCompile Include="clientlogger.cpp" />
-    <ClCompile Include="friendsupdatemanager.cpp" />
-    <ClCompile Include="friend_update_strategy.cpp" />
-    <ClCompile Include="login_response_strategy.cpp" />
-    <ClCompile Include="dataaccessor.cpp" />
-    <ClCompile Include="GUI\frienditem.cpp" />
-    <ClCompile Include="GUI\friendmodel.cpp" />
-    <ClCompile Include="GUI\friendrequestitem.cpp" />
-    <ClCompile Include="GUI\friendrequestmodel.cpp" />
-    <ClCompile Include="GUI\guimanager.cpp" />
-    <ClCompile Include="GUI\messageitem.cpp" />
-    <ClCompile Include="GUI\messagemodel.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="mainwindow.cpp" />
-    <ClCompile Include="messagestrategy.cpp" />
-    <ClCompile Include="peer.cpp" />
-    <ClCompile Include="localserver.cpp" />
-    <ClCompile Include="abstractstrategy.cpp" />
-    <ClCompile Include="register_response_strategy.cpp" />
-    <ClCompile Include="signalredirector.cpp" />
-    <ClCompile Include="servermanager.cpp" />
-    <ClCompile Include="worker.cpp" />
-    <ClCompile Include="workhelper.cpp" />
+    <ClCompile Include="blockreader.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="blockwriter.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="cachedata.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="clientcontroller.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="clientlogger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="dataaccessor.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="friendsmanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="friendsupdatemanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="localserver.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="servermanager.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="signalredirector.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="worker.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="add_friend_request_strategy.cpp">
+      <Filter>Source Files\Strategies</Filter>
+    </ClCompile>
+    <ClCompile Include="abstractstrategy.cpp">
+      <Filter>Source Files\Strategies</Filter>
+    </ClCompile>
+    <ClCompile Include="delete_request_response_strategy.cpp">
+      <Filter>Source Files\Strategies</Filter>
+    </ClCompile>
+    <ClCompile Include="friend_request_response_strategy.cpp">
+      <Filter>Source Files\Strategies</Filter>
+    </ClCompile>
+    <ClCompile Include="friend_update_strategy.cpp">
+      <Filter>Source Files\Strategies</Filter>
+    </ClCompile>
+    <ClCompile Include="login_response_strategy.cpp">
+      <Filter>Source Files\Strategies</Filter>
+    </ClCompile>
+    <ClCompile Include="new_friend_response_strategy.cpp">
+      <Filter>Source Files\Strategies</Filter>
+    </ClCompile>
+    <ClCompile Include="recieve_mesage_strategy.cpp">
+      <Filter>Source Files\Strategies</Filter>
+    </ClCompile>
+    <ClCompile Include="register_response_strategy.cpp">
+      <Filter>Source Files\Strategies</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\frienditem.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\friendmodel.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\friendrequestitem.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\friendrequestmodel.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\messageitem.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\messagemodel.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="messagestrategy.cpp">
+      <Filter>Source Files\Strategies</Filter>
+    </ClCompile>
+    <ClCompile Include="GUI\guimanager.cpp">
+      <Filter>Source Files\UI</Filter>
+    </ClCompile>
+    <ClCompile Include="..\Parser&amp;Structs\parser.cpp">
+      <Filter>Source Files\Parser</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="peer.h" />
-    <ClInclude Include="..\Parser&amp;Structs\parser.h" />
-    <ClInclude Include="connection.h" />
-    <ClInclude Include="dataaccessor.h" />
-    <ClInclude Include="GUI\rolesenum.h" />
-    <ClInclude Include="..\Parser&amp;Structs\request_types.h" />
-    <ClInclude Include="application_info.h" />
-    <ClInclude Include="ui_mainwindow.h" />
+    <ClInclude Include="dataaccessor.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="config.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="application_info.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="GUI\rolesenum.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Parser&amp;Structs\parser.h">
+      <Filter>Header Files\Parser</Filter>
+    </ClInclude>
+    <ClInclude Include="..\Parser&amp;Structs\request_types.h">
+      <Filter>Header Files\Parser</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <CustomBuild Include="debug\moc_predefs.h.cbt" />
     <CustomBuild Include="release\moc_predefs.h.cbt" />
   </ItemGroup>
   <ItemGroup>
-    <QtMoc Include="mainwindow.h" />
-    <QtMoc Include="friend_update_strategy.h" />
-    <QtMoc Include="cachedata.h" />
-    <QtMoc Include="blockwriter.h" />
-    <QtMoc Include="worker.h" />
-    <QtMoc Include="workhelper.h" />
-    <QtMoc Include="servermanager.h" />
-    <QtMoc Include="localserver.h" />
-    <QtMoc Include="clientlogger.h" />
-    <QtMoc Include="GUI\guimanager.h" />
-    <QtMoc Include="GUI\frienditem.h" />
-    <QtMoc Include="GUI\friendmodel.h" />
-    <QtMoc Include="GUI\messagemodel.h" />
-    <QtMoc Include="GUI\messageitem.h" />
-    <QtMoc Include="GUI\friendrequestitem.h" />
-    <QtMoc Include="GUI\friendrequestmodel.h" />
-    <QtMoc Include="clientcontroller.h" />
-    <QtMoc Include="abstractstrategy.h" />
-    <QtMoc Include="friendsupdatemanager.h" />
-    <QtMoc Include="messagestrategy.h" />
-    <QtMoc Include="blockreader.h" />
-    <QtMoc Include="friendsmanager.h" />
-    <QtMoc Include="recieve_mesage_strategy.h" />
-    <QtMoc Include="login_response_strategy.h" />
-    <QtMoc Include="signalredirector.h" />
-    <QtMoc Include="register_response_strategy.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <QtRcc Include="GUI\qml.qrc" />
+    <QtMoc Include="worker.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="blockreader.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="blockwriter.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="cachedata.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="clientcontroller.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="clientlogger.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="friendsmanager.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="friendsupdatemanager.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="localserver.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="servermanager.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="signalredirector.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="abstractstrategy.h">
+      <Filter>Header Files\Strategies</Filter>
+    </QtMoc>
+    <QtMoc Include="delete_request_response_strategy.h">
+      <Filter>Header Files\Strategies</Filter>
+    </QtMoc>
+    <QtMoc Include="add_friend_request_strategy.h">
+      <Filter>Header Files\Strategies</Filter>
+    </QtMoc>
+    <QtMoc Include="friend_request_response_strategy.h">
+      <Filter>Header Files\Strategies</Filter>
+    </QtMoc>
+    <QtMoc Include="friend_update_strategy.h">
+      <Filter>Header Files\Strategies</Filter>
+    </QtMoc>
+    <QtMoc Include="login_response_strategy.h">
+      <Filter>Header Files\Strategies</Filter>
+    </QtMoc>
+    <QtMoc Include="new_friend_response_strategy.h">
+      <Filter>Header Files\Strategies</Filter>
+    </QtMoc>
+    <QtMoc Include="recieve_mesage_strategy.h">
+      <Filter>Header Files\Strategies</Filter>
+    </QtMoc>
+    <QtMoc Include="register_response_strategy.h">
+      <Filter>Header Files\Strategies</Filter>
+    </QtMoc>
+    <QtMoc Include="GUI\friendmodel.h">
+      <Filter>Header Files\UI</Filter>
+    </QtMoc>
+    <QtMoc Include="GUI\frienditem.h">
+      <Filter>Header Files\UI</Filter>
+    </QtMoc>
+    <QtMoc Include="GUI\friendrequestitem.h">
+      <Filter>Header Files\UI</Filter>
+    </QtMoc>
+    <QtMoc Include="GUI\friendrequestmodel.h">
+      <Filter>Header Files\UI</Filter>
+    </QtMoc>
+    <QtMoc Include="GUI\messageitem.h">
+      <Filter>Header Files\UI</Filter>
+    </QtMoc>
+    <QtMoc Include="GUI\guimanager.h">
+      <Filter>Header Files\UI</Filter>
+    </QtMoc>
+    <QtMoc Include="GUI\messagemodel.h">
+      <Filter>Header Files\UI</Filter>
+    </QtMoc>
+    <QtMoc Include="messagestrategy.h">
+      <Filter>Header Files\Strategies</Filter>
+    </QtMoc>
   </ItemGroup>
   <ItemGroup>
     <Filter Include="QML">
       <UniqueIdentifier>{59951566-ba40-46a1-a57c-6714caf7cd1c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+      <ParseFiles>true</ParseFiles>
+    </Filter>
+    <Filter Include="Header Files\Strategies">
+      <UniqueIdentifier>{f4f8cfb4-a96e-42a4-955e-b6c03f25ceeb}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Strategies">
+      <UniqueIdentifier>{4b788040-db18-4c88-b8a0-078a4f8ccd8c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\UI">
+      <UniqueIdentifier>{be57d6fb-21a8-4a40-a7c4-59cab5d2ef60}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\UI">
+      <UniqueIdentifier>{c766c32c-d0d5-4ac5-8d36-ad8bc5a26027}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\Parser">
+      <UniqueIdentifier>{4688d65f-482f-48cd-a01e-92d5f6c50def}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source Files\Parser">
+      <UniqueIdentifier>{0ed8f2b2-0f2e-4550-9739-318b5a30c3a5}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -119,5 +274,10 @@
     <QtUic Include="mainwindow.ui">
       <Filter>QML</Filter>
     </QtUic>
+  </ItemGroup>
+  <ItemGroup>
+    <QtRcc Include="GUI\qml.qrc">
+      <Filter>QML</Filter>
+    </QtRcc>
   </ItemGroup>
 </Project>

@@ -23,7 +23,7 @@ class Worker : public QObject {
 
  public:
   Worker(BlockReader* reader, unsigned user_id, unsigned my_id);
-  Worker(Friend peer_info, QString message, unsigned my_id);
+  Worker(Friend peer_info, unsigned my_id);
   ~Worker();
 
   void DoWork();
@@ -39,11 +39,10 @@ class Worker : public QObject {
   void MessageRecieved(Message* message);
 
  public slots:
-  void SendMessage();
+  void SendMessage(const QString& message);
 
  private slots:
   void OnDisconnected();
-  void OnTimedOut();
   void OnConnected();
   void OnError(QAbstractSocket::SocketError);
   void OnReadyReadBlock();
@@ -61,7 +60,7 @@ class Worker : public QObject {
   SignalRedirector& redirector_;
   ClientLogger* logger_;
   QTimer timer_;
-  int k_msc = 10000;  // connection time
+  int k_msc = 20000;  // connection time
 };
 
 #endif  // !WORKER_H

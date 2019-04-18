@@ -9,11 +9,11 @@ LoginResponseStrategy::LoginResponseStrategy()
 LoginResponseStrategy::~LoginResponseStrategy() {}
 
 void LoginResponseStrategy::DoWork() {
-  quint8 type = Parser::getRequestType(data_); 
-  if(type == static_cast<quint8>(ServerRequest::LOGIN_SUCCEED)){
-    emit LoginResult(true);
+  ServerRequest type = static_cast<ServerRequest> (Parser::getRequestType(data_)); 
+  if(type == ServerRequest::LOGIN_SUCCEED){
+  emit LoginResult(true);
   }
-  if(type == static_cast<quint8>(ServerRequest::LOGIN_FAILED)){
+  if(type == ServerRequest::LOGIN_FAILED){
     emit LoginResult(false);
   }
 }

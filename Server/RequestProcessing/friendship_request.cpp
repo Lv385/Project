@@ -53,6 +53,7 @@ bool FriendshipRequest::SendResponde() {
   if (doNothing_==false) {
     outcome_data_ =
         Parser::NewFriendInfo_ToByteArray(outcome_for_requester_);
+    outcome_data_.append(Parser::GetUnpossibleSequence());
 
     QString Ip = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();
     QString Logstring = Ip + "::" + Logger::ConvertQuint16ToString(requester_.port);
@@ -63,6 +64,7 @@ bool FriendshipRequest::SendResponde() {
     client_socket_->disconnectFromHost();
 
     outcome_data_ = Parser::NewFriendInfo_ToByteArray(outcome_for_new_friend_);
+    outcome_data_.append(Parser::GetUnpossibleSequence());
 
     // sending FRIEND_UPDATE_INFO//+FriendUpdateInfo(s->c)I,-LOGIN ;
     QTcpSocket output_socket;

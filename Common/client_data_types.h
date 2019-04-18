@@ -5,17 +5,19 @@
 #include <QDate>
 #include <QTime>
 #include <QVector>
+#include <qbytearray.h>
+
 //
 //// This is our entity from database
 struct Friend {
-  unsigned int id;
+  quint32 id;
   QString login;
   QString ip;
   unsigned int port;
   QString name;
   QString surname;
   bool status;
-  // IMAGE photo  //in progress
+  QByteArray photo; //in progress
 };
 //
 struct Message {
@@ -43,6 +45,7 @@ struct User {
 	QVector<UsersID> friends;
 	QVector<UsersID> requests;
 	QVector<UsersID> notification;
+	QVector<UsersID> deletenotificatoin;
 };
 //
 enum  RequestType

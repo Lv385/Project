@@ -1,10 +1,13 @@
 #include "frienditem.h"
 
 
-FriendItem::FriendItem(QString login, bool status, unsigned id, QObject *parent) : QObject(parent)
+FriendItem::FriendItem(QString login, bool status, unsigned id, 
+  unsigned unread_msgs, QObject *parent) 
+  : QObject(parent)
     ,login_(login)
     ,status_(status)
-    ,id_(id){
+    ,id_(id)
+    ,unread_msgs_(unread_msgs) {
 }
 
 QString FriendItem::login() const {
@@ -43,4 +46,16 @@ void FriendItem::set_id(unsigned id)
 
   id_ = id;
   emit IdChanged();
+}
+
+unsigned FriendItem::unread_msgs() const { 
+  return unread_msgs_; 
+}
+
+void FriendItem::set_unread_msgs(unsigned unread_msgs) {
+  if (unread_msgs_ == unread_msgs)
+    return;
+
+  unread_msgs_ = unread_msgs;
+  emit UnreadMsgsChanged();
 }

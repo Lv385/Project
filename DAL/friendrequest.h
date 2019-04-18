@@ -12,12 +12,14 @@ namespace dal {
 		QVector<FriendRequest>   Get();
 		QVector<FriendRequest>   Get(const bool& type);
 		void					 Delete(const FriendRequest& friend_request);
+		bool IsExist(const FriendRequest& friend_request);
 
 	private:
+		QString					 IsExistQuery(const FriendRequest& friend_request);
 		QString					 AddQuery(const FriendRequest& friend_request);
 		QString					 GetQuery();
 		QString					 GetQuery(const bool& type);
-		QString				     DeleteQuery(const FriendRequest& friend_request);
+		QString				   DeleteQuery(const FriendRequest& friend_request);
 	};
 }  // namespace dal
 
