@@ -87,6 +87,7 @@ void Worker::OnConnected() {
   emit Connected(id);
   ConnectInfo connect_info = {my_id_};
   writer_->WriteBlock(Parser::ConnectInfo_ToByteArray(connect_info));
+  
   SendMessage();
 }
 
@@ -94,13 +95,20 @@ void Worker::OnReadyReadBlock() {
   QByteArray data;
   while (reader_->HasPendingBlock()) {
     data = reader_->ReadNextBlock();
-    quint8 type = Parser::getRequestType(data);
+    ClientClientRequest type =
+        static_cast<ClientClientRequest> (Parser::getRequestType(data));
+
+    if(strategies_.find(type) != strategies_.end()) {
     strategy_ = strategies_[static_cast<ClientClientRequest>(type)];
     Friend info;
     strategy_->set_data(data);
     strategy_->set_peer_info(peer_info_);
     strategy_->set_my_id(my_id_);
     DoWork();
+    }else{
+      logger_->WriteLog(LogType::WARNING,
+                        "unknown request recieved from" + socket_->peerName());
+    }
   }
 }
 
