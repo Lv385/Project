@@ -18,9 +18,7 @@ int main(int argc, char* argv[]) {
     QCoreApplication::setAttribute(Qt::AA_EnableHighDpiScaling);
 
     QGuiApplication app(argc, argv);
-
     GUIManager guiManager;
-
     QQmlApplicationEngine engine;
     engine.rootContext()->setContextProperty("guiManager", &guiManager);
 

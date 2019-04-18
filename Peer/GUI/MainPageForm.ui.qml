@@ -6,6 +6,7 @@ import QtMultimedia 5.12
 
 Page {
     id: page
+
     property alias friendList: friendList
     property alias messageList: messageList
     property alias messageField: messageField
@@ -328,10 +329,13 @@ Page {
 
     ColumnLayout {
         id: columnLayout
-        x: 283
-        y: 100
-        width: parent.width - 283
-        height: parent.height - 120
+        width: page.width - 330
+        height:page.height-150
+		anchors.right: parent.right
+		anchors.top: parent.top
+		anchors.topMargin: 70
+		anchors.rightMargin: 20
+
 
         ListView {
             id: messageList
@@ -355,21 +359,21 @@ Page {
 
         Pane {
             id: pane
-            anchors.bottom: parent.bottom
-			anchors.right:parent.right
-			parent: ApplicationWindow.overlay
+            anchors.bottom:window.bottom
+			anchors.right:window.right
+			parent: window.overlay
             width: parent.width-friendList.width
-            height: 90
+            height: 70
             Layout.fillWidth: true
-            focus: true
+            focus: true 
 
             TextField {
                 id: messageField
-                anchors.bottom: parent.bottom
-				anchors.right:parent.right
-				parent: ApplicationWindow.overlay
-                width: pane.width
-                height: 90
+                anchors.bottom: window.bottom
+				anchors.right:window.right
+				//parent: window.overlay
+                width: window.width-friendList.width
+                height: 70
                 focus: true
                 Layout.fillWidth: true
                 placeholderText: qsTr("Compose message")

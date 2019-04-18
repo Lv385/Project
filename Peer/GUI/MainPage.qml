@@ -5,12 +5,20 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls.Material 2.12
 import QtQuick.Controls.Universal 2.12
 import Qt.labs.settings 1.0
+import QtQuick.Window 2.2
+import QtQuick.Layouts 1.11
 
 
 MainPageForm {
 		id: window
+		Layout.minimumWidth: 800
+        Layout.minimumHeight: 480
+        Layout.preferredWidth: 768
+        Layout.preferredHeight: 480
 		background: Rectangle {
         color: backGroundColor
+
+
     }
 
 	    Connections{

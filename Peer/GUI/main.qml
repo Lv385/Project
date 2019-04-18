@@ -10,6 +10,8 @@ ApplicationWindow {
     visible: true
     width: 800
     height: 600
+	minimumWidth: 700
+	minimumHeight: 400
     title: qsTr("MesX")
 
     property color backGroundColor : "#263238"

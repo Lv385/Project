@@ -4,7 +4,6 @@ import QtQuick.Layouts 1.12
 
 Page {
     id: loginPage
-
     property alias buttonLogIn: buttonLogIn
     property alias buttonRegister: buttonRegister
     property alias loginUsername: loginUsername
