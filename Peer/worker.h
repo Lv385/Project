@@ -43,7 +43,6 @@ class Worker : public QObject {
 
  private slots:
   void OnDisconnected();
-  void OnTimedOut();
   void OnConnected();
   void OnError(QAbstractSocket::SocketError);
   void OnReadyReadBlock();
@@ -61,7 +60,7 @@ class Worker : public QObject {
   SignalRedirector& redirector_;
   ClientLogger* logger_;
   QTimer timer_;
-  int k_msc = 10000;  // connection time
+  int k_msc = 20000;  // connection time
 };
 
 #endif  // !WORKER_H
