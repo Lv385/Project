@@ -17,6 +17,7 @@ private:
   int rounds_num_; // rounds number
   int expanded_key_;
   int padding_;
+  
   QByteArray* iter_state;
   quint8 GetSBoxValue(quint8 num) { return sbox[num]; }
   quint8 GetSBoxInvert(quint8 num) { return rsbox[num]; }
@@ -30,7 +31,7 @@ private:
   void SubBytes(QByteArray&);
   void ShiftRows(QByteArray&);
   void MixColumns(QByteArray&);
-  void XorRoundKey(QByteArray);
+  void XorRoundKey(QByteArray&,QByteArray&, quint8);
   int gcd(int,int);
   //backward operations
   void InvSubBytes(QByteArray&);
@@ -38,7 +39,8 @@ private:
   void InvMixColumns(QByteArray &);
 
   //independent func
-  void swap(char&,char&);
+  void CharSwap(char&,char&);
+  void swap(quint8, quint8);
   
 
 
