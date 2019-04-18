@@ -192,9 +192,6 @@
     <QtMoc Include="friendsupdatemanager.h">
       <Filter>Header Files</Filter>
     </QtMoc>
-    <QtMoc Include="GUI\guimanager.h">
-      <Filter>Header Files</Filter>
-    </QtMoc>
     <QtMoc Include="localserver.h">
       <Filter>Header Files</Filter>
     </QtMoc>
@@ -226,6 +223,9 @@
       <Filter>Header Files</Filter>
     </QtMoc>
     <QtMoc Include="workhelper.h">
+      <Filter>Header Files</Filter>
+    </QtMoc>
+    <QtMoc Include="GUI\guimanager.h">
       <Filter>Header Files</Filter>
     </QtMoc>
   </ItemGroup>
@@ -280,11 +280,6 @@
     <QtUic Include="mainwindow.ui">
       <Filter>QML</Filter>
     </QtUic>
-  </ItemGroup>
-  <ItemGroup>
-    <Image Include="GUI\menu_icon.png">
-      <Filter>QML</Filter>
-    </Image>
   </ItemGroup>
   <ItemGroup>
     <QtRcc Include="GUI\qml.qrc">

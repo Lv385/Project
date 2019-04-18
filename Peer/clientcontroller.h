@@ -35,11 +35,14 @@ class ClientController : public QObject {
 
   void FriendRequestAccepted(const QString& login);
   void FriendRequestRejected(const QString& login);
+  
+  void Stop();
 
   void SetAppInfo(ApplicationInfo info);
   //QString GetMessage(unsigned);
   QVector<Message> LoadMessages(unsigned id);
   QVector<Friend> LoadFriends();
+  QVector<QString> LoadFriendRequests();
 
  signals:
   void MessageSent(unsigned, bool);
@@ -60,7 +63,6 @@ class ClientController : public QObject {
 
  private:
   void Start();
-  void Stop();
 
  public:
   ApplicationInfo app_info_;

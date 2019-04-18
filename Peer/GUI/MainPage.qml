@@ -9,7 +9,7 @@ import QtQuick.Window 2.2
 import QtQuick.Layouts 1.11
 
 
-MainPageForm {
+	MainPageForm {
 		id: window
 		Layout.minimumWidth: 800
         Layout.minimumHeight: 480
@@ -50,9 +50,18 @@ MainPageForm {
     Component {
         id: highlightBar
         Rectangle {
+			property alias highlightRect: highlightRect
+			id: highlightRect
             width: friendList.width; height: 40
             color: friendMouseAreaColor
             y: friendList.currentItem.y;
+        }
+    }
+
+	Connections{
+        target: guiManager
+        onShowHighlighter: {
+			highlightRect.color = to_show ? friendMouseAreaColor :  "trasparent" //FIXME:
         }
     }
 
@@ -88,6 +97,11 @@ MainPageForm {
 
 	settingsMA.onClicked: {
 		settingsMenu.open()
+		}
+	logoutMA.onClicked: {
+			guiManager.LogOut()
+			drawer.close()
+			stackView.pop()
 		}
 
     messageField.onEditingFinished: {

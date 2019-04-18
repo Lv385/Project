@@ -45,6 +45,14 @@ QVector<Friend> ClientController::LoadFriends() {
   return client_data_.GetFriends();
 }
 
+QVector<QString> ClientController::LoadFriendRequests() {
+  QVector<QString> requests;
+  for (FriendRequest fr : client_data_.GetRequests()) {
+    requests.push_back(fr.login);
+  }
+  return requests;
+}
+
 void ClientController::SendMessage(const unsigned& id, const QString& message) {
   Friend friend_info = client_data_.GetFriend(id);
   friend_manager_.SendMessage(friend_info, message);

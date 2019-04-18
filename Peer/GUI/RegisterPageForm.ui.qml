@@ -81,7 +81,7 @@ Page {
             font.family: "fontawesome"
             leftPadding: 30
 			selectByMouse: true
-            echoMode: TextField.PasswordEchoOnEdit
+            echoMode: TextField.Password
             background: Rectangle {
                 implicitWidth: 200
                 implicitHeight: 50
@@ -117,7 +117,7 @@ Page {
             font.family: "fontawesome"
             leftPadding: 30
 			selectByMouse: true
-            echoMode: TextField.PasswordEchoOnEdit
+            echoMode: TextField.Password
             background: Rectangle {
                 implicitWidth: 200
                 implicitHeight: 50
