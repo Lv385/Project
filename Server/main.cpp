@@ -13,10 +13,12 @@ int main(int argc, char *argv[]) {
 	AsyncServer async_server; // run server
   //HWND hWnd = GetConsoleWindow();
   //ShowWindow(hWnd, SW_HIDE);
-
-  /*QString str = "hello_oleksa_libomyr_marko";
+/*
+  QString str = "hello_oleksa_libomyr_marko";
   AbstractCypher *cpp;
   cpp = new AESCypher();
-  cpp->Encrypt(cpp->ConvertStringToByteArr(str),str);*/
+  QByteArray arr= cpp->ConvertStringToByteArr(str);
+  cpp->Encrypt(arr,str);
+  cpp->Decrypt(arr, str);*/
  return a.exec();
 }

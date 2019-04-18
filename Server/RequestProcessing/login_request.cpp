@@ -44,8 +44,9 @@ bool LoginRequest::SendResponde() {
 
     client_socket_->write(b);
     client_socket_->waitForBytesWritten(3000);
+    SendingPendingDeleteFriendNotificatons();
     SendingPendingFriendRequests(); 
-    SendingPendingNotifications();  
+    SendingPendingNotifications(); 
     database_->UpdateClient(requester_);
     client_socket_->disconnectFromHost();
 
@@ -162,6 +163,37 @@ void LoginRequest::SendingPendingNotifications() {
       if (requester_.notification[i].second_user_id == requester_.id)
       {
         requester_.notification.remove(i);
+      }
+    }
+  }
+}
+
+void LoginRequest::SendingPendingDeleteFriendNotificatons()
+{
+  
+  QVector<UsersID> pend_delet_notif = requester_.deletenotificatoin;
+  QByteArray raw_data;
+
+  for (int i = 0; i < pend_delet_notif.size(); i++) {
+    DeleteNotificationInfo from_crush_friend;
+    User tmp = database_->getClient(pend_delet_notif[i].first_user_id);
+    from_crush_friend.id = tmp.id;
+    
+    raw_data = Parser::DeleteNotificationInfo_ToByteArray(from_crush_friend,(quint8)ServerRequest::DELETE_NOTIFICATION_INFO);
+    raw_data.append(Parser::GetUnpossibleSequence());
+
+    QString Ip__ = QHostAddress(client_socket_->peerAddress().toIPv4Address(false)).toString();
+    QString Logstring__ = Ip__ + "::" + Logger::ConvertQuint16ToString(incoming_structure_.port);
+    Logger::LogOut(Logstring__, raw_data);
+
+    client_socket_->write(raw_data);
+    client_socket_->waitForBytesWritten(1000);
+
+    for (int i = 0; i < requester_.deletenotificatoin.size(); i++)
+    {
+      if (requester_.deletenotificatoin[i].second_user_id == requester_.id)
+      {
+        requester_.deletenotificatoin.remove(i);
       }
     }
   }
