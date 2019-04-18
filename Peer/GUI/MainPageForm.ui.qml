@@ -355,18 +355,21 @@ Page {
 
         Pane {
             id: pane
-            y: 540
-            width: parent.width + 25
-            height: 80
+            anchors.bottom: parent.bottom
+			anchors.right:parent.right
+			parent: ApplicationWindow.overlay
+            width: parent.width-friendList.width
+            height: 90
             Layout.fillWidth: true
             focus: true
 
             TextField {
                 id: messageField
-                x: -12
-                y: -12
+                anchors.bottom: parent.bottom
+				anchors.right:parent.right
+				parent: ApplicationWindow.overlay
                 width: pane.width
-                height: 70
+                height: 90
                 focus: true
                 Layout.fillWidth: true
                 placeholderText: qsTr("Compose message")
