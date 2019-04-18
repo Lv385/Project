@@ -112,7 +112,7 @@ void ClientController::InitNetworkSettings() {
 }
 
 void ClientController::GetIdByLogin(const QString &login) {
-  client_data_.get_id_by_login(login);
+  client_data_.GetIdByLogin(login);
 }
 
 QVector<Message> ClientController::LoadMessages(unsigned id) {

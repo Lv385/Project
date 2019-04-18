@@ -86,6 +86,10 @@ void DataAccessor::DeleteFriend(const unsigned& id) {
   user_->DeleteFriend(to_delete);
 }
 
+bool DataAccessor::Exist(const FriendRequest& friend_request) { 
+  return friend_requests_->IsExist(friend_request);
+}
+
 void DataAccessor::SaveRequest(const FriendRequest& friend_request) {
   friend_requests_->Add(friend_request);
 }
