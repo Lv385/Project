@@ -56,8 +56,19 @@ bool FriendModel::RemoveFriendFromList(FriendItem* friend_to_delete) {
   }
 }
 
+FriendItem* FriendModel::FindFriendItem(quint32 id) { 
+  FriendItem *friend_item = nullptr;
+  for (auto* a : friends_list_) {
+    if (a->id() == id) {
+      friend_item = a;
+      break;
+    }
+  }
+  return friend_item;
+}
+
 void FriendModel::SetStatus(unsigned id, bool status) {
-  for(auto &a : friends_list_){
+  for(auto* a : friends_list_){
     if (a->id() == id) {
         a->set_status(status);
       break;
@@ -66,7 +77,7 @@ void FriendModel::SetStatus(unsigned id, bool status) {
 }
 
 void FriendModel::AddUnreadMesg(unsigned id) {
-  for (auto &a : friends_list_) {
+  for (auto* a : friends_list_) {
     if (a->id() == id) {
       a->set_unread_msgs(a->unread_msgs() + 1);
       break;

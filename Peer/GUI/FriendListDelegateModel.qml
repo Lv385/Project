@@ -89,7 +89,7 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
                 width: height
-                onClicked: guiManager.deleteFriend(friend)
+                onClicked: guiManager.DeleteFriend(friend.login)
             }
         }
     }

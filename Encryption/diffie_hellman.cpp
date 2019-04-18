@@ -15,7 +15,7 @@ Key::Key()
 
 int Key::SetNewPow()
 {
-  my_pow = int(rand() % 5000); // our a should fix
+  my_pow = int(rand()%5001); // our a //should fix
   return my_pow;
 }
 

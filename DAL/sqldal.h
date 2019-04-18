@@ -6,3 +6,4 @@
 #include "unitofwork.h"
 #include "user.h"
 #include "friendrequest.h"
+#include "deletefriendnotification.h"

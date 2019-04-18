@@ -13,7 +13,7 @@ public:
     virtual void DoWork() override;
 
 signals:
-  void NewFriendRequestResult(QString);
+  void NewFriendRequestResult(QString, quint32); 
 
 private:
   NewFriendInfo info_;
