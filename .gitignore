@@ -20,9 +20,9 @@
 
 #databases
 
-Server/DAL/Client
-DAL/Client
-DAL/Server
+#Server/DAL/Client
+#DAL/Client
+#DAL/Server
 **/*.txt
 
 #other files

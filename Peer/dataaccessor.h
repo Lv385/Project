@@ -29,6 +29,7 @@ class DataAccessor {
   void AddMessageToDB(const Message& message);
   void DeleteFriend(const unsigned& id);
    
+  bool Exist(const FriendRequest& friend_request);
   void SaveRequest(const FriendRequest& friend_request);
   QVector<FriendRequest> GetRequests();
   void DeleteRequest(const FriendRequest& friend_request);
