@@ -14,11 +14,11 @@ int main(int argc, char *argv[]) {
   //HWND hWnd = GetConsoleWindow();
   //ShowWindow(hWnd, SW_HIDE);
 
-  QString str = "hello_oleksa_libomyr_marko";
+  /*QString str = "hello_oleksa_libomyr_marko";
   AbstractCypher *cpp;
   cpp = new AESCypher();
   QByteArray arr= cpp->ConvertStringToByteArr(str);
   cpp->Encrypt(arr,str);
-  cpp->Decrypt(arr, str);
+  cpp->Decrypt(arr, str);*/
  return a.exec();
 }
