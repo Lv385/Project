@@ -4,7 +4,7 @@
 #include <QGuiApplication>
 #include <QQmlApplicationEngine>
 #include <QQmlContext>
-
+#include <QIcon>
 #include "GUI/guimanager.h"
 #include "GUI/friendmodel.h"
 #include "GUI/frienditem.h"

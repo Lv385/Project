@@ -21,6 +21,8 @@ GUIManager::GUIManager(QObject *parent)
           SLOT(OnNewFriendInfo(QString, quint32)));
   connect(controller_, SIGNAL(DeleteRequestResult(quint32)), this, 
           SLOT(OnDeleteFriend(quint32)));
+  connect(controller_, SIGNAL(MessagesSent(unsigned)), this,
+          SLOT(OnMessagesSent(unsigned)));
 }
 
 int GUIManager::my_id() const { 
