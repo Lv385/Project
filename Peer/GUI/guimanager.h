@@ -87,7 +87,7 @@ public slots:
   // void UserEntered();
 
  private:
-  void LoadFriends();  // temporary implementation(for testing)
+  void LoadFriendsAndMesgs();  // temporary implementation(for testing)
   unsigned selected_friend_id_;
   unsigned unread_requests_;
 

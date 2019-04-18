@@ -110,7 +110,7 @@ void GUIManager::LoadAllMessages(unsigned friend_id) {
     temp = new Message(msg);
     messages.push_back(temp);
   }
-  messages_cache_[friend_id] = messages;
+  messages_cache_[friend_id] = messages;  //make masgs cache in client controller
 }
 
 void GUIManager::LoadMessage(Message* msg) {
@@ -167,7 +167,7 @@ void GUIManager::Register(QString user_login, QString user_password) {
 
 void GUIManager::OnLoginResult(bool logged_in) {
   if (logged_in) {
-    LoadFriends();
+    LoadFriendsAndMesgs();
 
     ShowMessages(friend_model_.GetFirstFriendId());
     selected_friend_id_ = friend_model_.GetFirstFriendId();
@@ -261,9 +261,10 @@ void GUIManager::SendMessage(QString message) {
   }
 }
 
-void GUIManager::LoadFriends() {   //don't forget to load id
+void GUIManager::LoadFriendsAndMesgs() {   //don't forget to load id
   for (const Friend& i : controller_->LoadFriends()) {
     if (i.id == controller_->app_info_.my_id) continue;
+    LoadAllMessages(i.id);
     FriendItem* friend_item = new FriendItem(i.login, false, i.id);
     friend_model_.AddFriendToList(friend_item);
   }
