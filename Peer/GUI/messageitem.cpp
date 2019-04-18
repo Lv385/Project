@@ -10,8 +10,7 @@ QString MessageItem::data() const {
   return msg_->data;
 }
 
-void MessageItem::set_data(QString data)
-{
+void MessageItem::set_data(QString data) {
   if (msg_->data == data)
       return;
   
@@ -30,5 +29,16 @@ QString MessageItem::date() const {
 
 
 int MessageItem::owner_id() const {
-  return msg_->owner_id;
+  return msg_->owner_id; 
+}
+
+bool MessageItem::sent_status() const { 
+  return msg_->status; 
+}
+
+void MessageItem::set_sent_status(bool sent_status) {
+  if (msg_->status == sent_status) return;
+
+  msg_->status = sent_status;
+  emit SentStatusChanged();
 }

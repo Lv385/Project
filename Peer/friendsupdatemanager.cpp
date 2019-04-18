@@ -15,12 +15,17 @@ FriendsUpdateManager::FriendsUpdateManager(ApplicationInfo& app_info)
 FriendsUpdateManager::~FriendsUpdateManager(){
 }
 
-void FriendsUpdateManager::SetUpdateReceiver() {
-  update_receiver_.bind(QHostAddress::AnyIPv4, app_info_.my_port,
+bool FriendsUpdateManager::SetUpdateReceiver() {
+ return update_receiver_.bind(QHostAddress::AnyIPv4, app_info_.my_port,
                         QUdpSocket::ShareAddress);
 }
 
-void FriendsUpdateManager::StopUpdateListening() {
+bool FriendsUpdateManager::Start() {
+  SetUpdateSender();
+  return SetUpdateReceiver();
+}
+
+void FriendsUpdateManager::Stop() {
   update_sender_.close();
   update_receiver_.close();
   update_info_timer_.stop();
@@ -29,6 +34,7 @@ void FriendsUpdateManager::StopUpdateListening() {
 void FriendsUpdateManager::SetUpdateSender() {
     update_sender_.bind(QHostAddress(QHostAddress::AnyIPv4), 0);
     update_info_timer_.start(3000);  
+    logger_->WriteLog(LogType::SUCCESS, "friend manager started");
 }
 
 void FriendsUpdateManager::SendUpdateInfo() { 
@@ -50,7 +56,6 @@ void FriendsUpdateManager::SendUpdateInfo() {
 }
 
 void FriendsUpdateManager::UpdateFriendsInfo() {
-
   while (update_receiver_.hasPendingDatagrams()) {
     datagram.resize(static_cast<int>(update_receiver_.pendingDatagramSize()));
     QHostAddress peer_address;
@@ -60,10 +65,9 @@ void FriendsUpdateManager::UpdateFriendsInfo() {
           continue;
 
     if (check_timers_.find(updated_friend_info.id) == check_timers_.end()) {
-
-    QTimer* timer = new QTimer();
-    timer->start(10000);
-    check_timers_[updated_friend_info.id] = timer;
+      QTimer* timer = new QTimer();
+      timer->start(10000);
+      check_timers_[updated_friend_info.id] = timer;
 
       logger_->WriteLog(LogType::INFO,
                         " updated " + QString::number(updated_friend_info.id) + "'s info");
@@ -74,8 +78,7 @@ void FriendsUpdateManager::UpdateFriendsInfo() {
     } else {
       check_timers_[updated_friend_info.id]->start(10000);  // reset timer
     }
-
-  emit StatusChanged(updated_friend_info.id, true);
+    emit StatusChanged(updated_friend_info.id, true);
   }
 }
 

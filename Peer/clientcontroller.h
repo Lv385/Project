@@ -1,17 +1,20 @@
 #ifndef CLIENT_CONTROLLER_H
 #define CLIENT_CONTROLLER_H
 
+#include "config.h"
+
 #include "application_info.h"
 #include "cachedata.h"
 #include "friendsmanager.h"
 #include "friendsupdatemanager.h"
 #include "localserver.h"
- 
 #include "servermanager.h"
+#include "hashhelper.h"
 
 #include <QByteArray>
 #include <QNetworkInterface>
 #include <QObject>
+#include <QSettings>
 #include <QTcpSocket>
 #include <memory>
 
@@ -35,14 +38,18 @@ class ClientController : public QObject {
 
   void FriendRequestAccepted(const QString& login);
   void FriendRequestRejected(const QString& login);
+  
+  void Stop();
 
-  void SetAppInfo(ApplicationInfo info);
-  //QString GetMessage(unsigned);
+  void InitNetworkSettings();
+  void GetIdByLogin(const QString& login);
+  // QString GetMessage(unsigned);
   QVector<Message> LoadMessages(unsigned id);
   QVector<Friend> LoadFriends();
+  QVector<QString> LoadFriendRequests();
 
  signals:
-  void MessageSent(unsigned, bool);
+  void MessagesSent(unsigned);
   void LoginResult(bool);
   void RegisterResult(quint32 id);
   void MessageRecieved(Message* message);
@@ -52,15 +59,16 @@ class ClientController : public QObject {
   void NewFriendRequestResult(QString, quint32);
   void DeleteRequestResult(quint32);
 
-
  private slots:
   void OnNewConnection(QTcpSocket* socket);
+  void OnStatusChanged(unsigned id, bool status);
+
  public slots:
   void OnLogin(bool);
+  // void OnRegistered();
 
  private:
   void Start();
-  void Stop();
 
  public:
   ApplicationInfo app_info_;
@@ -72,7 +80,7 @@ class ClientController : public QObject {
   QHash<unsigned, Friend> friends_cache;
   LocalServer local_server_;
   SignalRedirector& redirector_;
-  FriendsManager friend_manager_;
+  FriendsManager friends_manager_;
   ServerManager* server_manager_;
 
   DataAccessor client_data_;

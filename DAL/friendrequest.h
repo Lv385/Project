@@ -19,7 +19,7 @@ namespace dal {
 		QString					 AddQuery(const FriendRequest& friend_request);
 		QString					 GetQuery();
 		QString					 GetQuery(const bool& type);
-		QString				     DeleteQuery(const FriendRequest& friend_request);
+		QString				   DeleteQuery(const FriendRequest& friend_request);
 	};
 }  // namespace dal
 

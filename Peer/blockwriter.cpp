@@ -10,7 +10,6 @@ BlockWriter::~BlockWriter(){}
 
 void BlockWriter::WriteBlock(QByteArray data) {  
   socket_->write(data.append(unpossible_sequence_));
-  //
 }
 
 void BlockWriter::set_socket(QTcpSocket* socket) { 

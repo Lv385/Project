@@ -5,12 +5,30 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls.Material 2.12
 import QtQuick.Controls.Universal 2.12
 import Qt.labs.settings 1.0
+import QtQuick.Window 2.2
+import QtQuick.Layouts 1.11
 
 
 	MainPageForm {
 		id: window
+		Layout.minimumWidth: 800
+        Layout.minimumHeight: 480
+        Layout.preferredWidth: 768
+        Layout.preferredHeight: 480
 		background: Rectangle {
         color: backGroundColor
+
+
+    }
+
+	    Connections{
+        target: guiManager
+        onMessageRing: {
+			messageSound.play()
+        }
+		onRequestRing: {
+			friendSound.play()
+		}
     }
 
 
@@ -32,9 +50,18 @@ import Qt.labs.settings 1.0
     Component {
         id: highlightBar
         Rectangle {
+			property alias highlightRect: highlightRect
+			id: highlightRect
             width: friendList.width; height: 40
             color: friendMouseAreaColor
             y: friendList.currentItem.y;
+        }
+    }
+
+	Connections{
+        target: guiManager
+        onShowHighlighter: {
+			highlightRect.color = to_show ? friendMouseAreaColor :  "trasparent" //FIXME:
         }
     }
 
@@ -66,9 +93,15 @@ import Qt.labs.settings 1.0
 	editProfileMA.onClicked: {
 		editProfileMenu.open()
 		}
+								
 
 	settingsMA.onClicked: {
 		settingsMenu.open()
+		}
+	logoutMA.onClicked: {
+			guiManager.LogOut()
+			drawer.close()
+			stackView.pop()
 		}
 
     messageField.onEditingFinished: {

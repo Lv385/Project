@@ -19,11 +19,14 @@ class FriendsUpdateManager : public QObject {
   FriendsUpdateManager(ApplicationInfo& app_info);
   ~FriendsUpdateManager();
 
-  void SetUpdateReceiver();
-  void StopUpdateListening();
+  bool Start();
+  void Stop();
+
+ private:
+  bool SetUpdateReceiver();
   void SetUpdateSender();
 
-signals:
+ signals:
   void StatusChanged(unsigned id, bool status);
 
  private slots:

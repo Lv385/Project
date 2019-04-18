@@ -36,6 +36,9 @@
     <ClCompile Include="..\Encryption\speck_cypher.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="hashhelper.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="client_data_types.h">
@@ -51,6 +54,9 @@
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="..\Encryption\aes_cypher.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="hashhelper.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

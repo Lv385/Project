@@ -65,9 +65,14 @@ void ServerManager::OnReadyReadBlock() {
   while (reader_->HasPendingBlock()) {
     data = reader_->ReadNextBlock();
     ServerRequest type = static_cast<ServerRequest>(Parser::getRequestType(data));
-    strategy_ = strategies_[type];
-    strategy_->set_data(data);
+    if (strategies_.find(type) != strategies_.end()) {
+      strategy_ = strategies_[type];
+      strategy_->set_data(data);
     DoWork();
+    } else {
+      logger_->WriteLog(LogType::WARNING,
+                        "unknown server request recieved from" + socket_->peerName());
+    }
   }
 }
 
