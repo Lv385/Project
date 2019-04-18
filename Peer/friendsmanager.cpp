@@ -27,8 +27,8 @@ void FriendsManager::SendMessages(const unsigned& id) {
               SLOT(OnConnected(unsigned)));
       connect(worker, SIGNAL(Disconnected(unsigned)), this,
               SLOT(OnDisconnected(unsigned)));
-      connect(worker, SIGNAL(Error(unsigned)), this, SLOT(OnError(unsigned)));
-      worker->dumpObjectInfo();
+      connect(worker, SIGNAL(Error(unsigned)), this, 
+              SLOT(OnError(unsigned))); worker->dumpObjectInfo();
     } else {
       logger_->WriteLog(INFO, "Sending  to " + log);
       ReallySendMessages(id);
@@ -101,13 +101,13 @@ void FriendsManager::OnFirstRequestRecieved() {
 
     Worker* worker = new Worker(reader, connect_info.id, app_info.my_id);
     workers_.insert(connect_info.id, worker);
-    connect(worker, SIGNAL(Disconnected(unsigned id)), this,
-            SLOT(OnDisconnected(unsigned id)));
-    connect(worker, SIGNAL(Error(unsigned id)), this,
-            SLOT(OnDisconnected(unsigned id)));
+
+    connect(worker, SIGNAL(Disconnected(unsigned)), this,
+            SLOT(OnDisconnected(unsigned)));
+    connect(worker, SIGNAL(Error(unsigned)), this, 
+            SLOT(OnError(unsigned)));
     disconnect(reader, SIGNAL(ReadyReadBlock()), this,
                SLOT(OnFirstRequestRecieved()));
-    worker->dumpObjectInfo();
   } 
 }
 

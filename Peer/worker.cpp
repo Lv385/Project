@@ -17,6 +17,9 @@ Worker::Worker(BlockReader* reader, unsigned user_id, unsigned my_id)
   redirector_.ConnectToMessageRecieved(this);
 
   connect(socket_, SIGNAL(disconnected()), this, SLOT(OnDisconnected()));
+  connect(socket_, SIGNAL(error(QAbstractSocket::SocketError)), this,
+          SLOT(OnError(QAbstractSocket::SocketError)));
+
   connect(reader_, SIGNAL(ReadyReadBlock()), this, SLOT(OnReadyReadBlock()));
 
   strategies_.insert(ClientClientRequest::MESSAGE,
@@ -38,10 +41,8 @@ Worker::Worker(Friend peer_info, unsigned my_id)
   redirector_.ConnectToMessageRecieved(this);
 
   connect(&timer_, &QTimer::timeout, socket_, &QTcpSocket::disconnectFromHost);
-  this->dumpObjectInfo();
 
   connect(reader_, SIGNAL(ReadyReadBlock()), this, SLOT(OnReadyReadBlock()));
-  this->dumpObjectInfo();
 
   connect(socket_, SIGNAL(connected()), this, SLOT(OnConnected()));
   connect(socket_, SIGNAL(disconnected()), this, SLOT(OnDisconnected()));
