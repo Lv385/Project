@@ -101,6 +101,7 @@
     <ClCompile Include="..\Encryption\aes_cypher.cpp" />
     <ClCompile Include="..\Encryption\diffie_hellman.cpp" />
     <ClCompile Include="..\Encryption\speck_cypher.cpp" />
+    <ClCompile Include="hashhelper.cpp" />
     <ClCompile Include="main.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -109,6 +110,7 @@
     <ClInclude Include="..\Encryption\diffie_hellman.h" />
     <ClInclude Include="..\Encryption\speck_cypher.h" />
     <ClInclude Include="client_data_types.h" />
+    <ClInclude Include="hashhelper.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Condition="Exists('$(QtMsBuild)\qt.targets')">

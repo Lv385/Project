@@ -9,13 +9,14 @@
 #include "friendsupdatemanager.h"
 #include "localserver.h"
 #include "servermanager.h"
+#include "hashhelper.h"
 
 #include <QByteArray>
 #include <QNetworkInterface>
 #include <QObject>
+#include <QSettings>
 #include <QTcpSocket>
 #include <memory>
-#include <QSettings>
 
 #include "../Parser&Structs/request_types.h"
 
@@ -40,7 +41,7 @@ class ClientController : public QObject {
 
   void InitNetworkSettings();
   void GetIdByLogin(const QString& login);
-  //QString GetMessage(unsigned);
+  // QString GetMessage(unsigned);
   QVector<Message> LoadMessages(unsigned id);
   QVector<Friend> LoadFriends();
 
@@ -55,14 +56,13 @@ class ClientController : public QObject {
   void NewFriendRequestResult(QString, quint32);
   void DeleteRequestResult(quint32);
 
-
  private slots:
   void OnNewConnection(QTcpSocket* socket);
   void OnStatusChanged(unsigned id, bool status);
 
  public slots:
   void OnLogin(bool);
-  //void OnRegistered();
+  // void OnRegistered();
 
  private:
   void Start();

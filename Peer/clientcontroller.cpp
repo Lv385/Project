@@ -56,12 +56,12 @@ void ClientController::SendMessage(const unsigned& id, const QString& message) {
 void ClientController::LogIn(const QString& login, const QString& password) {
   app_info_.my_id = client_data_.GetIdByLogin(login);
   app_info_.my_login = login;
-  app_info_.my_password = password;
+  app_info_.my_password = hashhelper::HashString(password);
   InitNetworkSettings();
 
   LoginInfo info;
   info.id = client_data_.GetIdByLogin(login);
-  info.password = password;
+  info.password = app_info_.my_password;
   info.port = app_info_.my_port;
 
   QByteArray data = Parser::LoginInfo_ToByteArray(info);
@@ -71,11 +71,11 @@ void ClientController::LogIn(const QString& login, const QString& password) {
 
 void ClientController::Register(const QString& login,const QString& password) {
   app_info_.my_login = login;
-  app_info_.my_password = password;
+  app_info_.my_password = hashhelper::HashString(password);
   InitNetworkSettings();
   RegisterInfo info;
   info.login = login;
-  info.password = password;
+  info.password = app_info_.my_password;
   info.port = app_info_.my_port;
 
   QByteArray data = Parser::RegisterInfo_ToByteArray(info);
