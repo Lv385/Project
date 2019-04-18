@@ -123,6 +123,7 @@ void GUIManager::LoadMessage(Message* msg) {
   } else {
     friend_model_.AddUnreadMesg(msg->chat_id);
   }
+  emit messageRing();
 }
 
 void GUIManager::deleteFriendRiequest(FriendRequestItem* friend_request_to_delete) {
@@ -135,6 +136,7 @@ void GUIManager::newFriendRiequest(QString login) {
   FriendRequestItem* new_friend_request = new FriendRequestItem(login);
   friend_request_model_.AddRequestToList(new_friend_request);
   set_unread_requests(unread_requests() + 1);  // unread_requests_++
+  emit requestRing();
 }
 
 void GUIManager::LogIn(QString user_login, QString user_password) { 

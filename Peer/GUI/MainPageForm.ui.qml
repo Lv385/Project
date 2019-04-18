@@ -1,6 +1,8 @@
 import QtQuick 2.4
 import QtQuick.Controls 2.3
 import QtQuick.Layouts 1.3
+import QtMultimedia 5.12
+
 
 Page {
     id: page
@@ -20,6 +22,18 @@ Page {
     property alias editProfileMenu: editProfileMenu
     property alias settingsMenu: settingsMenu
     property alias settingsMA: settingsMA
+	property alias messageSound: messageSound
+	property alias friendSound: friendSound
+
+	SoundEffect {
+		id: messageSound
+		source: "qrc:/message_sound.wav"
+		}
+
+	SoundEffect {
+		id: friendSound
+		source: "qrc:/friend_sound.wav"
+		}
 
     Pane {
         id: pane1
@@ -202,7 +216,7 @@ Page {
                     color: friendMouseAreaColor
 
                     Text {
-                        text: "\uf013"
+                        text: "\uf044"
                         font.pointSize: 15
                         font.family: "fontawesome"
                         color: backGroundColor
@@ -263,9 +277,10 @@ Page {
                         color: backGroundColor
                         anchors.verticalCenter: parent.verticalCenter
                         anchors.left: parent.left
-                        anchors.leftMargin: 30
-                    }
-                    MouseArea {
+                        anchors.leftMargin: 30	
+					}
+                  
+				  MouseArea {
                         id: settingsMA
                         anchors.fill: parent
                     }
@@ -285,7 +300,40 @@ Page {
                         }
                     }
                 }
-            }
+				
+				Rectangle {
+                    x: 0
+                    y: 410
+                    width: friendList.width
+                    id: logoutButton
+                    height: 30
+                    color: friendMouseAreaColor
+
+					Text {
+                        text: "\uf057"
+                        font.pointSize: 15
+                        font.family: "fontawesome"
+                        color: backGroundColor
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 5
+                    }
+
+                    Text {
+                        text: "Logout"
+                        font.bold: true
+                        color: backGroundColor
+                        anchors.verticalCenter: parent.verticalCenter
+                        anchors.left: parent.left
+                        anchors.leftMargin: 30
+					}
+
+                    MouseArea {
+                        id: logoutMA
+                        anchors.fill: parent
+                    }
+				}
+
             Image {
                 id: logo
                 width: parent.width
@@ -294,6 +342,8 @@ Page {
             }
         }
     }
+}
+
 
     Rectangle {
         x: friendList.x
@@ -344,24 +394,27 @@ Page {
 
         Pane {
             id: pane
-            y: 540
-            width: parent.width + 25
-            height: 80
+            anchors.bottom: parent.bottom
+			anchors.right:parent.right
+			parent: ApplicationWindow.overlay
+            width: parent.width-friendList.width
+            height: 90
             Layout.fillWidth: true
             focus: true
 
             TextField {
                 id: messageField
-                x: -12
-                y: -12
+                anchors.bottom: parent.bottom
+				anchors.right:parent.right
+				parent: ApplicationWindow.overlay
                 width: pane.width
-                height: 70
+                height: 90
                 focus: true
                 Layout.fillWidth: true
                 placeholderText: qsTr("Compose message")
-                wrapMode: TextArea.Wrap
+                wrapMode: TextField.Wrap
                 background: Rectangle {
-                    color: friendMouseAreaColor
+                color: friendMouseAreaColor
                 }
             }
         }

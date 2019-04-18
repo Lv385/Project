@@ -61,6 +61,8 @@ signals:
   void openFailed(QString text);
   void showInfo(QString text);
   void showHighlighter(bool to_show);
+  void messageRing();
+  void requestRing();
 
 public slots:
   void LogIn(QString user_login, QString user_password); 
