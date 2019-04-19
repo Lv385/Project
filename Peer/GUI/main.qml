@@ -10,6 +10,8 @@ ApplicationWindow {
     visible: true
     width: 800
     height: 600
+	minimumWidth: 700
+	minimumHeight: 400
     title: qsTr("MesX")
 
     property color backGroundColor : "#263238"
@@ -22,8 +24,8 @@ ApplicationWindow {
     property color onlineFriendColor: "#AED581"
     property color offlineFriendColor: "#FFAB91"
     property color borderColor: "#FFB74D"
-	
-	property bool runIndicator
+
+    property bool runIndicator
 
 
     FontLoader {
@@ -63,9 +65,9 @@ ApplicationWindow {
             color: mainTextCOlor
         }
         onOpened: {
-			popupClose.start()
-			runIndicator = false
-		}
+            popupClose.start()
+            runIndicator = false
+        }
     }
 
     // Popup will be closed automatically in 2 seconds after its opened
@@ -74,8 +76,38 @@ ApplicationWindow {
         interval: 2000
         onTriggered: popup.close()
     }
-	
-	function loginUser(uname, pword) {
+
+    Dialog {
+        id: infoDialog
+        property alias popMessage: textInfo.text
+
+        title: "Information"
+        standardButtons: Dialog.Ok
+        onAccepted: this.close()
+        background: Rectangle {
+            color: backGroundColor
+            border.color: friendListColor
+        }
+        //anchros.horizontalCenter: parent.horizontalCenter
+        //anchors.top: parent.top
+        y: 50
+        height: 50
+        width: 300
+
+        Text {
+            id: textInfo
+            color: mainTextCOlor
+        }
+
+    }
+
+    Timer {
+        id: infoClose
+        interval: 3000
+        onTriggered: infoDialog.close()
+    }
+
+    function loginUser(uname, pword) {
         var ret  = Validator.validateUserCredentials(uname, pword)
         var message = ""
         if(ret) {
@@ -84,10 +116,10 @@ ApplicationWindow {
             popup.open()
             return
         }
-		guiManager.LogIn(uname, pword)
+        guiManager.LogIn(uname, pword)
     }
-	
-	function registerNewUser(uname, pword, pword2) {
+
+    function registerNewUser(uname, pword, pword2) {
         var ret  = Validator.validateRegisterCredentials(uname, pword, pword2)
         var message = ""
         switch(ret) {
@@ -95,15 +127,15 @@ ApplicationWindow {
             break;
         case 2: message = "Password does not match!"
             break;
-		default:
-			break;
+        default:
+            break;
         }
-		
+
         if(ret) {
             popup.popMessage = message
             popup.open()
             return
         }
-		guiManager.Register(uname, pword)
+        guiManager.Register(uname, pword)
     }
 }

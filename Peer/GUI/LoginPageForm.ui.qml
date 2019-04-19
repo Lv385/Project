@@ -4,7 +4,6 @@ import QtQuick.Layouts 1.12
 
 Page {
     id: loginPage
-
     property alias buttonLogIn: buttonLogIn
     property alias buttonRegister: buttonRegister
     property alias loginUsername: loginUsername
@@ -26,17 +25,12 @@ Page {
         border.width: 0
         transformOrigin: Item.Center
 
-        Text {
-            id: icontext
-            width: 390
-            height: 160
-            text: qsTr("MesX")
-            anchors.verticalCenterOffset: 0
-            anchors.horizontalCenterOffset: 0
-            anchors.centerIn: parent
-            font.pointSize: 110
-            font.family: "Verdana"
-            color: mainAppColor
+        Image {
+		source: "qrc:/MesX_logo.png"
+		anchors.horizontalCenter: parent.horizontalCenter
+		anchors.verticalCenter: parent.verticalCenter
+		height: iconRect.height
+		width: height
         }
     }
 
@@ -50,13 +44,14 @@ Page {
 
         TextField {
             id: loginUsername
-			text: "oleksa"
+			text: ""
             width: parent.width
             placeholderText: qsTr("User name")
             color: mainTextCOlor
             font.pointSize: 14
             font.family: "fontawesome"
             leftPadding: 20
+			selectByMouse: true
             background: Rectangle {
                 implicitWidth: columnLogin.width
                 implicitHeight: 50
@@ -84,13 +79,14 @@ Page {
 
         TextField {
             id: loginPassword
-			text: "password"
+			text: ""
             width: parent.width
             placeholderText: qsTr("Password")
             color: mainTextCOlor
             font.pointSize: 14
             font.family: "fontawesome"
             leftPadding: 20
+			selectByMouse: true
             echoMode: TextInput.Password
             background: Rectangle {
                 implicitWidth: columnLogin.width

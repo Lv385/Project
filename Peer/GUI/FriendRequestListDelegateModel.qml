@@ -44,7 +44,10 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
                 width: height
-                onClicked: guiManager.deleteFriendRiequest(friend_request)
+                onClicked: {
+					guiManager.RejectFriend(friend_request.login)
+					guiManager.deleteFriendRiequest(friend_request)
+				}
             }
 
             Button {
@@ -61,7 +64,10 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
                 width: height
-                onClicked: guiManager.deleteFriendRiequest(friend_request)
+                onClicked:  {
+					guiManager.AcceptFriend(friend_request.login)
+					guiManager.deleteFriendRiequest(friend_request)
+				}
             }
         }
     }

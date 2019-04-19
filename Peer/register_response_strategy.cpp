@@ -11,12 +11,12 @@ RegisterResponseStrategy::~RegisterResponseStrategy()
 {}
 
 void RegisterResponseStrategy::DoWork() {
-  quint8 type = Parser::getRequestType(data_); 
+  ServerRequest type = static_cast<ServerRequest>(Parser::getRequestType(data_)); 
   RegisterSuccessInfo info = Parser::ParseAsRegisterSuccessInfo(data_);
-  if (type == static_cast<quint8>(ServerRequest::REGISTER_SUCCEED)) {
+  if (type == ServerRequest::REGISTER_SUCCEED) {
     emit RegisterResult(info.id);
   }
-  if (type == static_cast<quint8>(ServerRequest::REGISTER_FAILED)) {
+  if (type == ServerRequest::REGISTER_FAILED) {
     emit RegisterResult(0);
   }
 }

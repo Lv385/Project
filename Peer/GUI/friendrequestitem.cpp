@@ -1,8 +1,7 @@
 #include "friendrequestitem.h"
 
-FriendRequestItem::FriendRequestItem(QString login, unsigned id, QObject *parent) : QObject(parent)
-    ,login_(login)
-    ,id_(id) {
+FriendRequestItem::FriendRequestItem(QString login, QObject *parent) : QObject(parent)
+    ,login_(login) {
 }
 
 QString FriendRequestItem::login() const {
@@ -15,18 +14,4 @@ void FriendRequestItem::set_login(QString login) {
 
   login_ = login;
   emit LoginChanged();
-}
-
-unsigned FriendRequestItem::id() const
-{
-  return id_;
-}
-
-void FriendRequestItem::set_id(unsigned id)
-{
-  if (id_ == id)
-      return;
-
-  id_ = id;
-  emit IdChanged();
 }

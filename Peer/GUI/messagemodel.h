@@ -17,6 +17,7 @@ public:
 
   void AddMessageToList(MessageItem*);
   void RemoveAllMessagesFromList();
+  void SetMessagesAsSent();
 
 private:
   QList<MessageItem*> messages_list_;

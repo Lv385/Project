@@ -1,17 +1,20 @@
 #ifndef CLIENT_CONTROLLER_H
 #define CLIENT_CONTROLLER_H
 
+#include "config.h"
+
 #include "application_info.h"
 #include "cachedata.h"
 #include "friendsmanager.h"
 #include "friendsupdatemanager.h"
 #include "localserver.h"
- 
 #include "servermanager.h"
+#include "hashhelper.h"
 
 #include <QByteArray>
 #include <QNetworkInterface>
 #include <QObject>
+#include <QSettings>
 #include <QTcpSocket>
 #include <memory>
 
@@ -26,39 +29,46 @@ class ClientController : public QObject {
   ClientController(QObject* parent);
   ~ClientController();
 
+  void SendMessage(const unsigned& id, const QString& message);
+  void LogIn(const QString& login, const QString& password);
+  void Register(const QString& login, const QString& password);
+  void AddFriend(const QString& login);
+  void DeleteFriend(const QString& login);
+  void AddMeToDB();
 
-  void SendMessage(unsigned id, QString message);
-  void LogIn(QString login, QString password);
-  void Register(QString login, QString password);
-  void AddFriend(QString login);
- 
-  void FriendRequestAccepted(QString);
-  void FriendRequestRejected(QString);
+  void FriendRequestAccepted(const QString& login);
+  void FriendRequestRejected(const QString& login);
+  
+  void Stop();
 
-  void SetAppInfo(ApplicationInfo info);
-  //QString GetMessage(unsigned);
+  void InitNetworkSettings();
+  void GetIdByLogin(const QString& login);
+  // QString GetMessage(unsigned);
   QVector<Message> LoadMessages(unsigned id);
   QVector<Friend> LoadFriends();
+  QVector<QString> LoadFriendRequests();
 
  signals:
-
-  void MessageSent(unsigned, bool);
+  void MessagesSent(unsigned);
   void LoginResult(bool);
   void RegisterResult(quint32 id);
   void MessageRecieved(Message* message);
   void StatusChanged(unsigned id, bool status);
   void FriendRequestResult(bool);
   void AddFriendRequestInfo(QString);
-  void NewFriendRequestResult(QString);
-
+  void NewFriendRequestResult(QString, quint32);
+  void DeleteRequestResult(quint32);
 
  private slots:
   void OnNewConnection(QTcpSocket* socket);
+  void OnStatusChanged(unsigned id, bool status);
+
+ public slots:
   void OnLogin(bool);
+  // void OnRegistered();
 
  private:
   void Start();
-  void Stop();
 
  public:
   ApplicationInfo app_info_;
@@ -70,7 +80,7 @@ class ClientController : public QObject {
   QHash<unsigned, Friend> friends_cache;
   LocalServer local_server_;
   SignalRedirector& redirector_;
-  FriendsManager friend_manager_;
+  FriendsManager friends_manager_;
   ServerManager* server_manager_;
 
   DataAccessor client_data_;

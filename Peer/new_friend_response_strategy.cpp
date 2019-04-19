@@ -9,7 +9,7 @@ NewFriendResponseStrategy::~NewFriendResponseStrategy() {}
 
 void NewFriendResponseStrategy::DoWork() {
   info_ = Parser::ParseAsNewFriendInfo(data_);
-  emit NewFriendRequestResult(info_.login);
+  emit NewFriendRequestResult(info_.login, info_.id);
   client_data_.AddFriend(info_.id, info_.login, info_.ip.toString(),
                          info_.port);
 }

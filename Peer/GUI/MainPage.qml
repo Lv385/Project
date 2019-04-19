@@ -5,51 +5,32 @@ import QtQuick.Layouts 1.12
 import QtQuick.Controls.Material 2.12
 import QtQuick.Controls.Universal 2.12
 import Qt.labs.settings 1.0
+import QtQuick.Window 2.2
+import QtQuick.Layouts 1.11
 
 
 	MainPageForm {
+		id: window
+		Layout.minimumWidth: 800
+        Layout.minimumHeight: 480
+        Layout.preferredWidth: 768
+        Layout.preferredHeight: 480
 		background: Rectangle {
         color: backGroundColor
+
+
     }
 
-	  Settings {
-        id: settings
-        property string style: "Default"
-    }
-
-	    Shortcut {
-        sequences: ["Esc", "Back"]
-        enabled: stackView.depth > 1
-        onActivated: {
-            stackView.pop()
-            listView.currentIndex = -1
+	    Connections{
+        target: guiManager
+        onMessageRing: {
+			messageSound.play()
         }
+		onRequestRing: {
+			friendSound.play()
 		}
-		    Shortcut {
-        sequence: "Menu"
-        onActivated: optionsMenu.open()
     }
-	  
 
-           ToolButton {
-                icon.name: "menu"
-				id: menuButton
-				y: findUserField.y-3
-				height:findUserField.height+5
-				width: height
-                onClicked: drawer.open()
-				icon.source: "qrc:/menu_icon.png"
-				background: Rectangle {
-				color: friendListColor
-				}
-
-                 Drawer {
-        id: drawer
-        width: Math.min(window.width, window.height) / 3 * 2
-        height: window.height
-        interactive: stackView.depth === 1
-		}
-		}
 
     FriendListDelegateModel {
         id: friendModel
@@ -69,9 +50,18 @@ import Qt.labs.settings 1.0
     Component {
         id: highlightBar
         Rectangle {
+			property alias highlightRect: highlightRect
+			id: highlightRect
             width: friendList.width; height: 40
             color: friendMouseAreaColor
             y: friendList.currentItem.y;
+        }
+    }
+
+	Connections{
+        target: guiManager
+        onShowHighlighter: {
+			highlightRect.color = to_show ? friendMouseAreaColor :  "trasparent" //FIXME:
         }
     }
 
@@ -87,17 +77,36 @@ import Qt.labs.settings 1.0
     friendRequestList.model: friendRequestModel.visualModel
 
     findButton.onClicked: {
-        guiManager.newFriend(findUserField.text)
+        guiManager.AddFriendRequest(findUserField.text)
         findUserField.text = ""
     }
 
-    buttonRequests.onClicked: {
-        friendRequestDialog.open()
-    }
+	menuButton.onClicked: {
+		drawer.open()
+		}
+
+	friendReqMA.onClicked: {
+		 friendRequestDialog.open()
+		 drawer.close()
+		 }
+
+	editProfileMA.onClicked: {
+		editProfileMenu.open()
+		}
+								
+
+	settingsMA.onClicked: {
+		settingsMenu.open()
+		}
+	logoutMA.onClicked: {
+			guiManager.LogOut()
+			drawer.close()
+			stackView.pop()
+		}
 
     messageField.onEditingFinished: {
         if(messageField.text != "") {
-			guiManager.SendMessage(messageField.text)
+            guiManager.SendMessage(messageField.text)
             messageField.text = "";
         }
     }

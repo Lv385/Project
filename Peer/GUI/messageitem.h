@@ -11,6 +11,8 @@ class MessageItem : public QObject {
   Q_PROPERTY(QString time READ time CONSTANT)
   Q_PROPERTY(QString date READ date CONSTANT)
   Q_PROPERTY(int owner_id READ owner_id CONSTANT)
+  Q_PROPERTY(bool sent_status READ sent_status WRITE set_sent_status NOTIFY
+                 SentStatusChanged)
 
  public:
   MessageItem(Message* msg, QObject* parent = nullptr);
@@ -20,9 +22,12 @@ class MessageItem : public QObject {
   QString time() const;
   QString date() const;
   int owner_id() const;
+  bool sent_status() const;
+  void set_sent_status(bool);
 
  signals:
   void DataChanged();
+  void SentStatusChanged();
 
  private:
   Message* msg_;

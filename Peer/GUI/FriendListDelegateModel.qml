@@ -89,9 +89,57 @@ Item {
                     anchors.horizontalCenter: parent.horizontalCenter
                 }
                 width: height
-                onClicked: guiManager.deleteFriend(friend)
+                onClicked: {
+					guiManager.friend_to_delete = friend.login
+					deleteConfirmation.open()
+				}
             }
+
+			 Dialog {
+                id: deleteConfirmation
+                title: "Delete confirmation"
+                background: Rectangle {
+                    color: friendListColor
+                    border.color: friendMouseAreaColor
+                    anchors.verticalCenter: window.verticalCenter
+                }
+                modal: true
+                height: 150
+                width: 350
+                x: (window.width - width) / 2
+                y: (window.height - height) / 2
+                parent: ApplicationWindow.overlay
+
+			    Column {
+                    spacing: 20
+                    anchors.fill: parent
+                    Label {
+                        text: "Are you sure to delete " + guiManager.friend_to_delete + " from your friend list?"
+						color: mainTextCOlor
+						font.pixelSize: 12
+                    }
+					Row {
+						x: 100
+						spacing: 5
+						Button {
+							text: "Yes"
+							onClicked: {
+								guiManager.DeleteFriend(guiManager.friend_to_delete)
+								deleteConfirmation.close()
+							}
+						}
+						Button {
+							text: "No"
+							onClicked: {								
+								guiManager.friend_to_delete = ""
+								deleteConfirmation.close()
+							}
+						}
+					}
+
+                }
+            }
+
         }
     }
 }
-

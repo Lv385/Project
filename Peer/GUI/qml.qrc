@@ -12,6 +12,12 @@
         <file>RegisterPageForm.ui.qml</file>
         <file>FriendRequestListDelegateModel.qml</file>
         <file>validator.js</file>
-        <file>menu_icon.png</file>
+        <file>user.png</file>
+        <file>message_sound.wav</file>
+        <file>friend_sound.wav</file>
+        <file>loading-icon.png</file>
+        <file>loading-icon2.png</file>
+        <file>MesX_logo.png</file>
+        <file>MesX_logo2.png</file>
     </qresource>
 </RCC>

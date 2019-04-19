@@ -37,7 +37,7 @@ class ClientLogger : public QObject {
   LogType specific_type_;
   LogLevel log_level_;
 
-  static std::atomic<ClientLogger*> logger_;
+  static ClientLogger* logger_;
   static std::mutex mutex_;
 
 };
