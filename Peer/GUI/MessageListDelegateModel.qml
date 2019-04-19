@@ -32,6 +32,7 @@ Item {
                 Label {
                     id: messageText
                     text: message.data
+					font.pixelSize: 13
                     color: sentByMe ? "black" : "white"
                     anchors.fill: parent
                     anchors.margins: 12

@@ -364,6 +364,7 @@ Page {
     }
     Pane {
         id: pane
+		z: 3
         anchors.bottom: parent.bottom
         anchors.right: parent.right
         width: page.width - friendList.width
