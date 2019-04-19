@@ -44,7 +44,7 @@ Page {
 
         TextField {
             id: loginUsername
-			text: "oleksa"
+			text: ""
             width: parent.width
             placeholderText: qsTr("User name")
             color: mainTextCOlor
@@ -79,7 +79,7 @@ Page {
 
         TextField {
             id: loginPassword
-			text: "password"
+			text: ""
             width: parent.width
             placeholderText: qsTr("Password")
             color: mainTextCOlor
