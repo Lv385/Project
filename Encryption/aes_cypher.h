@@ -29,14 +29,14 @@ private:
 
   //forward operations
   void SubBytes(QByteArray&);
-  void ShiftRows(QByteArray&);
-  void MixColumns(QByteArray&);
+  void ShiftRows();
+  void MixColumns();
   void XorRoundKey(QByteArray&,QByteArray&, quint8);
   int gcd(int,int);
   //backward operations
-  void InvSubBytes(QByteArray&);
-  void InvShiftRows(QByteArray&);
-  void InvMixColumns(QByteArray &);
+  void InvSubBytes();
+  void InvShiftRows();
+  void InvMixColumns();
 
   //independent func
   void CharSwap(char&,char&);
